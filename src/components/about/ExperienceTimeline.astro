@@ -1,0 +1,152 @@
+---
+interface ExperienceEntry {
+  client: string;
+  title: string;
+  subtitle: string;
+  description: string;
+}
+
+const entries: ExperienceEntry[] = [
+  {
+    client: 'Slovak Government',
+    title: 'Cloud Architect',
+    subtitle: 'Public sector / Government cloud',
+    description:
+      "Worked as a Cloud Architect on public-sector cloud initiatives, helping shape secure and scalable government cloud capabilities, governance, and adoption models. Contributed to the EuroCloud initiative as part of Slovakia's representation in an EU-level collaboration framework.",
+  },
+  {
+    client: 'Enterprise Operations',
+    title: 'Operations, Analysis & Process Architecture',
+    subtitle: 'Enterprise IT / Operations',
+    description:
+      'Built experience across analysis, operations, support, and architecture, with a strong focus on process optimisation, BPM platforms, and cloud transformation.',
+  },
+];
+---
+
+<section class="experience">
+  <div class="experience__inner container">
+    <!--
+      Heading row: text + flex-grow hairline extending to the right edge.
+      Figma: display:flex, gap:16px, the divider uses flex-grow:1 and a
+      30% opacity warm gray background — the only decorative line on the page,
+      acceptable here because it serves as a structural layout separator
+      rather than a content divider between items.
+    -->
+    <div class="experience__heading-row">
+      <h2 class="experience__heading">Selected Experience</h2>
+      <div class="experience__heading-rule" aria-hidden="true"></div>
+    </div>
+    <div class="experience__list">
+      {entries.map((entry) => (
+        <article class="experience__entry">
+          <div class="experience__meta">
+            <span class="experience__client">{entry.client}</span>
+          </div>
+          <div class="experience__detail">
+            <h3 class="experience__title">{entry.title}</h3>
+            <p class="experience__subtitle">{entry.subtitle}</p>
+            <p class="experience__body">{entry.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience {
+    padding-block: 0 var(--space-6);   /* 0 top, 24px bottom — same rhythm as all sections */
+    background-color: var(--color-surface);
+  }
+
+  /* Heading row: text + extending hairline rule */
+  .experience__heading-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);   /* tighter — 32px */
+  }
+
+  .experience__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-headline-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    white-space: nowrap;
+  }
+
+  /* Figma: flex-grow:1, background rgba(179,178,177,0.3) — felt, not seen */
+  .experience__heading-rule {
+    flex: 1;
+    height: 1px;
+    background-color: rgba(179, 178, 177, 0.3);
+  }
+
+  .experience__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);   /* 32px between entries — tighter */
+  }
+
+  .experience__entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 640px) {
+    .experience__entry {
+      grid-template-columns: 160px 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .experience__entry {
+      grid-template-columns: 200px 1fr;
+    }
+  }
+
+  .experience__meta {
+    padding-top: 3px;
+  }
+
+  .experience__client {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .experience__detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .experience__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .experience__subtitle {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface-muted);
+    font-style: italic;
+  }
+
+  .experience__body {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 68ch;
+    margin-top: var(--space-2);
+  }
+</style>

@@ -1,19 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/about/HeroSection.astro';
+import NarrativeSection from '../components/about/NarrativeSection.astro';
+import CertsStackSection from '../components/about/CertsStackSection.astro';
+import ExperienceTimeline from '../components/about/ExperienceTimeline.astro';
+import CtaBanner from '../components/about/CtaBanner.astro';
 ---
 
 <BaseLayout
   title="Marek Hronec"
   description="Senior Cloud Architect — Architecting clarity in the cloud. Azure, GCP, DevOps, and Cloud-Native solutions."
 >
-  <section class="page-stub container">
-    <h1>About</h1>
-    <p>Coming soon — About / Landing page.</p>
-  </section>
+  <HeroSection />
+  <NarrativeSection />
+  <CertsStackSection />
+  <ExperienceTimeline />
+  <CtaBanner />
 </BaseLayout>
-
-<style>
-  .page-stub {
-    padding-block: var(--space-12);
-  }
-</style>

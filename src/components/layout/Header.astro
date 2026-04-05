@@ -1,8 +1,22 @@
 ---
+/**
+ * Header / global navigation bar.
+ *
+ * Layout strategy — 3-column grid:
+ *   [logo (1fr)] | [nav links (auto)] | [cta + hamburger (1fr)]
+ *
+ * The 1fr columns on each side act as flexible "gutters" that always
+ * push the nav links into the true visual center of the bar, regardless
+ * of logo or CTA width. This matches the reference design exactly.
+ *
+ * Glassmorphism: 80% surface opacity + 24px backdrop-blur, as specified
+ * in DESIGN.md, so underlying page content bleeds through while scrolling.
+ */
+
 const navLinks = [
-  { label: 'About', href: '/' },
+  { label: 'About',          href: '/' },
   { label: 'Knowledge Base', href: '/knowledge-base' },
-  { label: 'Case Studies', href: '/case-studies' },
+  { label: 'Case Studies',   href: '/case-studies' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -10,16 +24,25 @@ const currentPath = Astro.url.pathname;
 
 <header class="header">
   <nav class="header__nav container" aria-label="Main navigation">
+
+    <!-- ── Left zone: wordmark / home link ────────────────────────── -->
     <a class="header__logo" href="/">
       Marek Hronec
     </a>
 
-    <!-- Desktop navigation -->
+    <!-- ── Center zone: desktop nav links ────────────────────────── -->
+    <!-- Hidden on mobile; shown via flex at ≥768 px.
+         Because this element sits in the auto-width center column of
+         the 3-col grid, it is always perfectly centred between the
+         logo and the CTA button. -->
     <ul class="header__links" role="list">
       {navLinks.map(({ label, href }) => (
         <li>
           <a
-            class:list={['header__link', { 'header__link--active': currentPath === href }]}
+            class:list={[
+              'header__link',
+              { 'header__link--active': currentPath === href },
+            ]}
             href={href}
           >
             {label}
@@ -28,28 +51,38 @@ const currentPath = Astro.url.pathname;
       ))}
     </ul>
 
-    <a class="header__cta" href="/contact">Get in Touch</a>
+    <!-- ── Right zone: CTA button (desktop) + hamburger (mobile) ── -->
+    <!-- Both live in the same flex container so they share the
+         rightmost grid column. CSS then shows/hides each at the
+         correct breakpoint. -->
+    <div class="header__actions">
+      <a class="header__cta" href="/contact">Get in Touch</a>
 
-    <!-- Mobile hamburger -->
-    <button
-      class="header__hamburger"
-      aria-label="Toggle navigation menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-    >
-      <span class="header__hamburger-bar"></span>
-      <span class="header__hamburger-bar"></span>
-      <span class="header__hamburger-bar"></span>
-    </button>
+      <button
+        class="header__hamburger"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="header__hamburger-bar"></span>
+        <span class="header__hamburger-bar"></span>
+        <span class="header__hamburger-bar"></span>
+      </button>
+    </div>
+
   </nav>
 
-  <!-- Mobile menu -->
+  <!-- ── Mobile drop-down menu ─────────────────────────────────────── -->
+  <!-- Toggled via the script below. Forced hidden at ≥768 px. -->
   <div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">
     <ul class="header__mobile-links" role="list">
       {navLinks.map(({ label, href }) => (
         <li>
           <a
-            class:list={['header__mobile-link', { 'header__mobile-link--active': currentPath === href }]}
+            class:list={[
+              'header__mobile-link',
+              { 'header__mobile-link--active': currentPath === href },
+            ]}
             href={href}
           >
             {label}
@@ -63,6 +96,7 @@ const currentPath = Astro.url.pathname;
   </div>
 </header>
 
+<!-- Hamburger toggle — only a tiny script, no framework needed. -->
 <script>
   const hamburger = document.querySelector('.header__hamburger') as HTMLButtonElement;
   const mobileMenu = document.querySelector('.header__mobile-menu') as HTMLElement;
@@ -77,31 +111,48 @@ const currentPath = Astro.url.pathname;
 </script>
 
 <style>
+  /* ── Glassmorphism shell ──────────────────────────────────────────
+     Sticky so it stays at viewport top while scrolling.
+     Glass border uses glass-border token (8 % opacity dark) rather
+     than a solid 1 px line — DESIGN.md "No-Line" rule applies here
+     except for this structural UI boundary.
+  ─────────────────────────────────────────────────────────────────── */
   .header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
+    background: var(--glass-bg);              /* surface @ 80 % opacity  */
+    backdrop-filter: var(--glass-blur);        /* blur(24px)              */
     -webkit-backdrop-filter: var(--glass-blur);
     border-bottom: 1px solid var(--glass-border);
   }
 
+  /* ── 3-column grid layout ────────────────────────────────────────
+     grid-template-columns: 1fr auto 1fr
+       • Column 1 (1fr)  — stretches to absorb spare space on the left
+       • Column 2 (auto) — nav links take only the space they need;
+                           because both outer columns are equal 1fr,
+                           the auto column sits in the exact centre
+       • Column 3 (1fr)  — mirrors column 1 on the right
+     align-items: center — vertically centres all three columns.
+  ─────────────────────────────────────────────────────────────────── */
   .header__nav {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: var(--space-6);
     height: 4rem;
   }
 
+  /* ── Logo — left-aligned inside column 1 ─────────────────────── */
+  /* Figma: Manrope 700, 20px, letter-spacing -1px */
   .header__logo {
     font-family: var(--font-display);
-    font-size: var(--text-title-md);
+    font-size: 1.25rem;             /* 20px — Figma */
     font-weight: var(--weight-bold);
     color: var(--color-on-surface);
-    letter-spacing: var(--tracking-tight);
-    flex-shrink: 0;
-    margin-right: auto;
+    letter-spacing: -0.0625rem;    /* -1px — Figma */
+    justify-self: start;
+    white-space: nowrap;
   }
 
   .header__logo:hover {
@@ -109,10 +160,12 @@ const currentPath = Astro.url.pathname;
     color: var(--color-primary);
   }
 
+  /* ── Nav links — column 2, auto-centred ──────────────────────── */
+  /* Hidden on mobile; displayed as flex row on ≥768 px. */
   .header__links {
     display: none;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-6);
   }
 
   @media (min-width: 768px) {
@@ -121,34 +174,55 @@ const currentPath = Astro.url.pathname;
     }
   }
 
+  /* Individual link — Figma: Manrope 500, 14px */
   .header__link {
-    font-family: var(--font-body);
-    font-size: var(--text-body-md);
+    font-family: var(--font-display);   /* Manrope — Figma */
+    font-size: 0.875rem;               /* 14px — Figma */
     font-weight: var(--weight-medium);
     color: var(--color-on-surface-muted);
     transition: color var(--duration-fast) var(--ease-standard);
+    white-space: nowrap;
+    padding-bottom: 4px;               /* space for the active border */
   }
 
-  .header__link:hover,
-  .header__link--active {
+  .header__link:hover {
     color: var(--color-on-surface);
     opacity: 1;
   }
 
+  /* Active / current page — Figma: primary green, Manrope 700,
+     border-bottom: 2px solid primary with 4px offset via padding */
   .header__link--active {
-    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    font-weight: var(--weight-bold);
+    opacity: 1;
+    border-bottom: 2px solid var(--color-primary);
   }
 
+  /* ── Right actions zone — column 3 ───────────────────────────── */
+  /* Flex container so CTA and hamburger can share the column and
+     be pinned to the right edge. */
+  .header__actions {
+    justify-self: end;              /* pin to right edge of column 3 */
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* CTA button — gradient pill, desktop only */
   .header__cta {
     display: none;
     padding: var(--space-2) var(--space-5);
     background: var(--gradient-cta);
     color: var(--color-on-primary);
+    font-family: var(--font-body);
     font-size: var(--text-body-md);
     font-weight: var(--weight-semibold);
     border-radius: var(--radius-sm);
-    transition: transform var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
-    flex-shrink: 0;
+    white-space: nowrap;
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      opacity var(--duration-fast) var(--ease-standard);
   }
 
   @media (min-width: 768px) {
@@ -163,13 +237,13 @@ const currentPath = Astro.url.pathname;
     transform: translateY(-2px);
   }
 
-  /* Hamburger */
+  /* ── Hamburger — mobile only ──────────────────────────────────── */
+  /* Three bars animate into an ✕ when open. */
   .header__hamburger {
     display: flex;
     flex-direction: column;
     gap: 5px;
     padding: var(--space-2);
-    margin-left: auto;
   }
 
   @media (min-width: 768px) {
@@ -184,23 +258,23 @@ const currentPath = Astro.url.pathname;
     height: 2px;
     background-color: var(--color-on-surface);
     border-radius: var(--radius-full);
-    transition: transform var(--duration-normal) var(--ease-standard),
-                opacity var(--duration-normal) var(--ease-standard);
+    transition:
+      transform var(--duration-normal) var(--ease-standard),
+      opacity  var(--duration-normal) var(--ease-standard);
   }
 
+  /* ✕ state when menu is open */
   .header__hamburger--open .header__hamburger-bar:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
-
   .header__hamburger--open .header__hamburger-bar:nth-child(2) {
     opacity: 0;
   }
-
   .header__hamburger--open .header__hamburger-bar:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* Mobile menu */
+  /* ── Mobile dropdown ─────────────────────────────────────────── */
   .header__mobile-menu {
     display: none;
     background: var(--glass-bg);
@@ -213,6 +287,7 @@ const currentPath = Astro.url.pathname;
     display: block;
   }
 
+  /* Always hidden once the desktop breakpoint is reached */
   @media (min-width: 768px) {
     .header__mobile-menu {
       display: none !important;

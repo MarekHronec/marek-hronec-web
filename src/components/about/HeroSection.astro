@@ -1,0 +1,137 @@
+---
+---
+
+<section class="hero">
+  <div class="hero__inner container">
+    <div class="hero__content">
+      <p class="hero__label">Introduction</p>
+      <h1 class="hero__heading">
+        Architecting Clarity<br />
+        <!--
+          "in the Cloud" in primary teal; the period is a separate span
+          in a neutral warm gray — Figma: rgba(123, 122, 122, 1).
+          This matches the reference screenshot exactly.
+        -->
+        <span class="hero__heading--accent">in the Cloud</span><span class="hero__heading--period">.</span>
+      </h1>
+      <p class="hero__body">
+        I'm Marek Hronec, a Cloud Architect designing scalable, reliable
+        systems built to last. My approach is simple: think clearly, engineer
+        carefully, and avoid unnecessary complexity.
+      </p>
+    </div>
+
+    <div class="hero__photo-wrap">
+      <div class="hero__photo-placeholder" aria-hidden="true">
+        <svg class="hero__photo-icon" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="40" cy="28" r="20" fill="currentColor" opacity="0.18"/>
+          <path d="M4 88c0-19.882 16.118-36 36-36s36 16.118 36 36" stroke="currentColor" stroke-width="2" opacity="0.12" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-8) var(--space-6);  /* 48px top, 24px bottom */
+    background-color: var(--color-surface);
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .hero__inner {
+      grid-template-columns: 1fr 260px;   /* narrower photo column = less wasted height */
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__inner {
+      grid-template-columns: 1fr 300px;
+    }
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-top: var(--space-4);
+  }
+
+  .hero__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);   /* Figma: teal green, not muted gray */
+  }
+
+  .hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));  /* max 72px — Figma */
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+  }
+
+  /* "in the Cloud" — primary teal */
+  .hero__heading--accent {
+    color: var(--color-primary);
+  }
+
+  /* Period "." — warm gray, Figma: rgba(123, 122, 122, 1) */
+  .hero__heading--period {
+    color: rgba(123, 122, 122, 1);
+  }
+
+  .hero__body {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 48ch;
+  }
+
+  /* Photo — right column, aligned top */
+  .hero__photo-wrap {
+    width: 100%;
+  }
+
+  .hero__photo-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 4;                /* less tall than 4/5 — matches Figma proportions */
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-on-surface-muted);
+    overflow: hidden;
+    max-height: 360px;                  /* cap height so it doesn't dwarf the text */
+  }
+
+  @media (max-width: 767px) {
+    .hero__photo-wrap {
+      order: -1;
+    }
+
+    .hero__photo-placeholder {
+      aspect-ratio: 3 / 2;
+      max-height: 200px;
+    }
+  }
+
+  .hero__photo-icon {
+    width: 50%;
+    height: 50%;
+  }
+</style>
