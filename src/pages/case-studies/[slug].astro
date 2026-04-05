@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('caseStudies');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, client, excerpt } = entry.data;
+---
+
+<BaseLayout title={title} description={excerpt}>
+  <article class="page-stub container">
+    <h1>{title}</h1>
+    <p class="page-stub__client">{client}</p>
+    <p>Coming soon — Case Study detail page.</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-stub {
+    padding-block: var(--space-12);
+  }
+
+  .page-stub__client {
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+    margin-top: var(--space-2);
+  }
+</style>

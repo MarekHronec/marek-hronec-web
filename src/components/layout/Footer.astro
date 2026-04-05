@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner container">
+    <p class="footer__copy">
+      &copy; {year} Marek Hronec. All rights reserved.
+    </p>
+    <a
+      class="footer__linkedin"
+      href="https://www.linkedin.com/in/marekhronec"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Marek Hronec on LinkedIn"
+    >
+      LinkedIn
+    </a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-surface-container-low);
+    padding-block: var(--space-6);
+    margin-top: var(--space-12);
+  }
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .footer__copy {
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-on-surface-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .footer__linkedin {
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .footer__linkedin:hover {
+    opacity: 0.7;
+  }
+</style>

@@ -1,17 +1,19 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Marek Hronec"
+  description="Senior Cloud Architect — Architecting clarity in the cloud. Azure, GCP, DevOps, and Cloud-Native solutions."
+>
+  <section class="page-stub container">
+    <h1>About</h1>
+    <p>Coming soon — About / Landing page.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-stub {
+    padding-block: var(--space-12);
+  }
+</style>

@@ -1,0 +1,259 @@
+---
+const navLinks = [
+  { label: 'About', href: '/' },
+  { label: 'Knowledge Base', href: '/knowledge-base' },
+  { label: 'Case Studies', href: '/case-studies' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="header">
+  <nav class="header__nav container" aria-label="Main navigation">
+    <a class="header__logo" href="/">
+      Marek Hronec
+    </a>
+
+    <!-- Desktop navigation -->
+    <ul class="header__links" role="list">
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            class:list={['header__link', { 'header__link--active': currentPath === href }]}
+            href={href}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <a class="header__cta" href="/contact">Get in Touch</a>
+
+    <!-- Mobile hamburger -->
+    <button
+      class="header__hamburger"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="header__hamburger-bar"></span>
+      <span class="header__hamburger-bar"></span>
+      <span class="header__hamburger-bar"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">
+    <ul class="header__mobile-links" role="list">
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            class:list={['header__mobile-link', { 'header__mobile-link--active': currentPath === href }]}
+            href={href}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a class="header__mobile-cta" href="/contact">Get in Touch</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const hamburger = document.querySelector('.header__hamburger') as HTMLButtonElement;
+  const mobileMenu = document.querySelector('.header__mobile-menu') as HTMLElement;
+
+  hamburger?.addEventListener('click', () => {
+    const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!isOpen));
+    mobileMenu.setAttribute('aria-hidden', String(isOpen));
+    mobileMenu.classList.toggle('header__mobile-menu--open');
+    hamburger.classList.toggle('header__hamburger--open');
+  });
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    height: 4rem;
+  }
+
+  .header__logo {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    letter-spacing: var(--tracking-tight);
+    flex-shrink: 0;
+    margin-right: auto;
+  }
+
+  .header__logo:hover {
+    opacity: 1;
+    color: var(--color-primary);
+  }
+
+  .header__links {
+    display: none;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .header__links {
+      display: flex;
+    }
+  }
+
+  .header__link {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-on-surface-muted);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .header__link:hover,
+  .header__link--active {
+    color: var(--color-on-surface);
+    opacity: 1;
+  }
+
+  .header__link--active {
+    font-weight: var(--weight-semibold);
+  }
+
+  .header__cta {
+    display: none;
+    padding: var(--space-2) var(--space-5);
+    background: var(--gradient-cta);
+    color: var(--color-on-primary);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-sm);
+    transition: transform var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .header__cta {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .header__cta:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  /* Hamburger */
+  .header__hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--space-2);
+    margin-left: auto;
+  }
+
+  @media (min-width: 768px) {
+    .header__hamburger {
+      display: none;
+    }
+  }
+
+  .header__hamburger-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: var(--color-on-surface);
+    border-radius: var(--radius-full);
+    transition: transform var(--duration-normal) var(--ease-standard),
+                opacity var(--duration-normal) var(--ease-standard);
+  }
+
+  .header__hamburger--open .header__hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .header__hamburger--open .header__hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .header__hamburger--open .header__hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile menu */
+  .header__mobile-menu {
+    display: none;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .header__mobile-menu--open {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .header__mobile-menu {
+      display: none !important;
+    }
+  }
+
+  .header__mobile-links {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4) var(--gutter) var(--space-6);
+    gap: var(--space-1);
+  }
+
+  .header__mobile-link {
+    display: block;
+    padding: var(--space-3) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-on-surface-muted);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .header__mobile-link:hover,
+  .header__mobile-link--active {
+    color: var(--color-on-surface);
+    opacity: 1;
+  }
+
+  .header__mobile-cta {
+    display: inline-flex;
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-6);
+    background: var(--gradient-cta);
+    color: var(--color-on-primary);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-sm);
+  }
+
+  .header__mobile-cta:hover {
+    opacity: 0.9;
+  }
+</style>

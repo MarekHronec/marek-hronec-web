@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('knowledgeBase');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, category, excerpt } = entry.data;
+---
+
+<BaseLayout title={title} description={excerpt}>
+  <article class="page-stub container">
+    <nav class="page-stub__breadcrumb" aria-label="Breadcrumb">
+      <a href="/knowledge-base">Knowledge Base</a>
+      <span aria-hidden="true"> › </span>
+      <span>{category}</span>
+    </nav>
+    <h1>{title}</h1>
+    <p>Coming soon — Knowledge Base article detail.</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-stub {
+    padding-block: var(--space-12);
+  }
+
+  .page-stub__breadcrumb {
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .page-stub__breadcrumb a {
+    color: var(--color-primary);
+  }
+</style>
