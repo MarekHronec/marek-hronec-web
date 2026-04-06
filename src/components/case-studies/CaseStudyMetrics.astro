@@ -1,0 +1,74 @@
+---
+/**
+ * CaseStudyMetrics — a row of metric stat blocks.
+ *
+ * Used on both the featured card and the detail page.
+ * Each metric has a large value and a small uppercase label below,
+ * separated from adjacent metrics by a 2px primary-green left border.
+ *
+ * Figma: node-44 / node-47
+ *   padding: 4px 0 4px 12px
+ *   border-left: 2px solid rgba(44,105,78,1)
+ *   value: Inter 700 20px -1px tracking
+ *   label: Inter regular 9px uppercase muted
+ */
+
+interface Metric {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  metrics: Metric[];
+}
+
+const { metrics } = Astro.props;
+---
+
+<ul class="metrics" role="list">
+  {metrics.map((m) => (
+    <li class="metrics__item">
+      <span class="metrics__value">{m.value}</span>
+      <span class="metrics__label">{m.label.toUpperCase()}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* Horizontal row — gap matches CLIENT/TIMELINE spacing in featured card */
+  .metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-10);   /* 64px — same generous gap as meta row */
+  }
+
+  /* Each metric: left border accent + stacked value/label */
+  .metrics__item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: var(--space-1) 0 var(--space-1) var(--space-3);
+    border-left: 2px solid var(--color-primary);
+  }
+
+  /* Large number — Figma: Inter 700, 20px, -1px tracking */
+  .metrics__value {
+    font-family: var(--font-body);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  /* Label — Figma: Inter regular, 9px, uppercase, muted warm gray */
+  .metrics__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    line-height: 1;
+  }
+</style>

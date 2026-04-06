@@ -1,19 +1,657 @@
 ---
+/**
+ * Case Studies listing page — /case-studies
+ *
+ * Layout (Figma):
+ *   ┌─ Hero ─────────────────────────────────────────────────────────┐
+ *   │  PRINCIPAL CLOUD ARCHITECT          subtitle (vertically        │
+ *   │  Case Studies.                      centered beside heading)    │
+ *   └────────────────────────────────────────────────────────────────┘
+ *   ┌─ Featured card (white + shadow) ───────────────────────────────┐
+ *   │  Left (38%): chip | title | meta | problem | outcome/metrics   │
+ *   │  Right (62%): dark diagram | [tradeoffs card | report link row] │
+ *   └────────────────────────────────────────────────────────────────┘
+ *   ┌─ Secondary cards (2-col equal) ────────────────────────────────┐
+ *   │  Card 02 / Legacy Migration    │  Card 03 / Data Engineering   │
+ *   └────────────────────────────────────────────────────────────────┘
+ */
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import CaseStudyCard from '../../components/case-studies/CaseStudyCard.astro';
+import CaseStudyMetrics from '../../components/case-studies/CaseStudyMetrics.astro';
+
+const allStudies = await getCollection('caseStudies');
+const featured   = allStudies.find((s) => s.data.featured);
+const others     = allStudies.filter((s) => !s.data.featured);
 ---
 
 <BaseLayout
   title="Case Studies"
   description="Real-world cloud architecture engagements — outcomes, metrics, and technical decisions."
 >
-  <section class="page-stub container">
-    <h1>Case Studies</h1>
-    <p>Coming soon — Case Studies listing.</p>
+
+  <!-- ── Hero ──────────────────────────────────────────────────────
+       Mirrors the About page HeroSection structure exactly so that
+       vertical rhythm is identical when switching pages:
+
+       About:        Case Studies:
+       section       section
+         padding-top: space-8 (48px)
+         .hero__content / .cs-hero__content
+           padding-top: space-4 (16px)   ← top gap to label
+           gap: space-5 (24px)           ← label→heading, heading→body
+           label
+           h1
+           body / subtitle
+
+       The subtitle on Case Studies sits in the same flex column as
+       the label and heading — identical DOM position to About's body
+       paragraph — so the gap tokens produce the same rendered height.
+  ───────────────────────────────────────────────────────────────── -->
+  <section class="cs-hero">
+    <div class="cs-hero__inner container">
+
+      <!--
+        Single content column (left) — identical structure to
+        .hero__content in HeroSection.astro.
+        padding-top + gap are the only spacing controls; they match
+        the About page token-for-token.
+      -->
+      <div class="cs-hero__content">
+        <p class="cs-hero__label">Principal Cloud Architect</p>
+        <h1 class="cs-hero__heading">Case Studies.</h1>
+        <!-- subtitle takes the same slot as .hero__body on About -->
+        <p class="cs-hero__subtitle">
+          Elite-level digital infrastructure strategy. I transform architectural
+          complexity into scalable, cost-efficient, and resilient systems for
+          global enterprises.
+        </p>
+      </div>
+
+    </div>
   </section>
+
+  <!-- ── Featured card ─────────────────────────────────────────────
+       Figma: node-12 (light gray 4px outer tray) wrapping
+       background-shadow-13 (pure white card + shadow).
+       Left: narrative info (38% width).
+       Right: dark diagram (flex: 1) stacked above a flex row of
+              [tradeoffs card (flex:1) | report link (right-aligned)].
+  ───────────────────────────────────────────────────────────────── -->
+  {featured && (
+    <section class="cs-featured">
+      <div class="container">
+        <!-- Outer tray — Figma: node-12, surface-container-low bg, 4px radius -->
+        <div class="cs-featured__tray">
+          <article class="cs-featured__card">
+
+            <!-- ── Left panel ─────────────────────────────────────── -->
+            <div class="cs-featured__left">
+
+              <!--
+                "FEATURED PROJECT" chip — Figma: background-17.
+                display: inline-flex so it ONLY wraps its text.
+                background: #b1f0ce, text: rgba(29,92,66,1), radius: 2px.
+              -->
+              <span class="cs-featured__chip">Featured Project</span>
+
+              <!-- Title — Figma: Manrope 700, 30px, -0.75px tracking -->
+              <h2 class="cs-featured__title">{featured.data.title}</h2>
+
+              <!--
+                Meta row — Figma: border-21 — padded top+bottom with
+                hairline borders above and below. Gap between CLIENT and
+                TIMELINE is generous (space-10 = 64px on desktop).
+              -->
+              <div class="cs-featured__meta">
+                <div class="cs-featured__meta-item">
+                  <span class="cs-featured__meta-label">Client</span>
+                  <span class="cs-featured__meta-value">{featured.data.client}</span>
+                </div>
+                <div class="cs-featured__meta-item">
+                  <span class="cs-featured__meta-label">Timeline</span>
+                  <span class="cs-featured__meta-value">{featured.data.duration}</span>
+                </div>
+              </div>
+
+              <!-- Problem + Outcome narrative blocks -->
+              <div class="cs-featured__narrative">
+
+                <div class="cs-featured__narrative-block">
+                  <h3 class="cs-featured__narrative-heading">
+                    <!-- Circle-i: problem/info icon -->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
+                      <path d="M7 6v3.5M7 4.25v.5" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round"/>
+                    </svg>
+                    The Problem
+                  </h3>
+                  <p class="cs-featured__narrative-body">
+                    Monitoring stack failed at 400+ microservices. Telemetry costs
+                    outpaced revenue growth while latency spikes remained undetected
+                    until customer impact.
+                  </p>
+                </div>
+
+                <div class="cs-featured__narrative-block">
+                  <h3 class="cs-featured__narrative-heading">
+                    <!-- Circle-check: outcome/success icon -->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
+                      <path d="M4.5 7l2 2 3-3.5" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    The Outcome
+                  </h3>
+                  <CaseStudyMetrics metrics={featured.data.metrics} />
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- ── Right panel ────────────────────────────────────── -->
+            <div class="cs-featured__right">
+
+              <!--
+                Diagram panel — dark background with pipeline stage overlay.
+                Uses position: relative so the stage labels and caption sit
+                on top of the image. Replace /images/case-study-featured.jpg
+                with a real architecture diagram when available — the <img>
+                tag makes the swap a one-liner.
+              -->
+              <div class="cs-featured__diagram" aria-label="Telemetry flow diagram">
+                <!-- Swappable image — replace src to update the visual -->
+                <img
+                  class="cs-featured__diagram-img"
+                  src="/images/case-study-featured.jpg"
+                  alt="Hyper-scale telemetry architecture diagram"
+                  onerror="this.style.display='none'"
+                />
+                <!-- Stage labels overlay — always visible regardless of image -->
+                <div class="cs-featured__diagram-overlay">
+                  <div class="cs-featured__diagram-stages">
+                    <span class="cs-featured__stage cs-featured__stage--active">Ingestion</span>
+                    <span class="cs-featured__stage">Processing</span>
+                    <span class="cs-featured__stage">Storage</span>
+                    <span class="cs-featured__stage cs-featured__stage--active">Viz</span>
+                  </div>
+                  <p class="cs-featured__diagram-caption">Fig. 01: Telemetry Flow</p>
+                </div>
+              </div>
+
+              <!--
+                Bottom row — Figma: container-68 — flex ROW:
+                  left: Key Tradeoffs card (flex: 1, ~half width)
+                  right: "View Full Report →" link (right-aligned)
+                This is what keeps the tradeoffs card at half-width.
+              -->
+              <div class="cs-featured__bottom-row">
+
+                <!-- Key Tradeoffs card — Figma: background-69, #f0eded, 2px radius -->
+                <div class="cs-featured__tradeoffs">
+                  <h4 class="cs-featured__tradeoffs-heading">
+                    <!--
+                      Balance scales icon — matches the Figma reference.
+                      A horizontal beam balanced on a central post, with
+                      two hanging pans (arcs) on each end.
+                    -->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <!-- Central post -->
+                      <line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                      <!-- Horizontal beam -->
+                      <line x1="1" y1="4" x2="13" y2="4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                      <!-- Left pan strings -->
+                      <line x1="2.5" y1="4" x2="2.5" y2="7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                      <!-- Left pan arc -->
+                      <path d="M1 7 Q2.5 9.5 4 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+                      <!-- Right pan strings -->
+                      <line x1="11.5" y1="4" x2="11.5" y2="8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                      <!-- Right pan arc (slightly lower = unbalanced) -->
+                      <path d="M10 8 Q11.5 10.5 13 8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+                      <!-- Base -->
+                      <line x1="5" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                    </svg>
+                    Key Tradeoffs
+                  </h4>
+                  <ul class="cs-featured__tradeoffs-list">
+                    <li>Accepted 5s lag for 40% cost reduction.</li>
+                    <li>Sampled tracing for healthy traffic.</li>
+                  </ul>
+                </div>
+
+                <!-- "View Full Report →" — pinned to bottom-right -->
+                <div class="cs-featured__report-col">
+                  <a class="cs-featured__report-link" href={`/case-studies/${featured.id}`}>
+                    View Full Report
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ── Secondary cards ───────────────────────────────────────────
+       Figma: node-88 — flex row. Cards: card-2-89 / card-3-107.
+       Background: rgba(246,243,242,1) = surface-container-low.
+       No outer tray — cards sit directly on the page surface.
+  ───────────────────────────────────────────────────────────────── -->
+  <section class="cs-grid">
+    <div class="cs-grid__inner container">
+      {others.map((study, i) => (
+        <CaseStudyCard
+          slug={study.id}
+          index={i + 2}
+          category={study.data.industry}
+          title={study.data.title}
+          excerpt={study.data.excerpt}
+          tags={study.data.tags.slice(0, 2)}
+        />
+      ))}
+    </div>
+  </section>
+
 </BaseLayout>
 
 <style>
-  .page-stub {
-    padding-block: var(--space-12);
+  /* ── Hero ────────────────────────────────────────────────────────
+     Token-for-token copy of HeroSection.astro spacing so vertical
+     rhythm is identical when navigating between pages.
+
+     About page reference:
+       .hero              → padding-block: space-8 space-6  (48/32px)
+       .hero__content     → padding-top: space-4 (16px)
+                            gap: space-5 (24px) between all children
+       .hero__label       → text-label-md, semibold, primary
+       .hero__heading     → clamp(2.5rem,6vw,display-lg), bold,
+                            tracking-tight, leading-tight
+       .hero__body        → text-body-lg, relaxed leading, muted, 48ch
+  ─────────────────────────────────────────────────────────────────── */
+  .cs-hero {
+    /* ← identical to .hero */
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .cs-hero__inner {
+    /* single column — content takes full width left */
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  /* ← identical to .hero__content */
+  .cs-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);          /* 24px — label→heading, heading→subtitle */
+    padding-top: var(--space-4);  /* 16px — top gap before label */
+    max-width: 680px;             /* keep subtitle to a readable width */
+  }
+
+  /* ← identical to .hero__label */
+  .cs-hero__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  /* ← identical to .hero__heading */
+  .cs-hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+  }
+
+  /* ← mirrors .hero__body (same size/color/leading, wider max-width
+     because this subtitle is longer than the About body paragraph) */
+  .cs-hero__subtitle {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 52ch;
+  }
+
+  /* ── Featured section ────────────────────────────────────────────
+     Outer tray (node-12) = surface-container-low with 4px radius.
+     Inner card = pure white + ambient shadow.
+  ─────────────────────────────────────────────────────────────────── */
+  .cs-featured {
+    padding-block: 0 var(--space-5);
+  }
+
+  /* Figma: node-12 — light gray tray, 4px radius, 4px padding */
+  .cs-featured__tray {
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-md);
+    padding: 4px;
+  }
+
+  /* Figma: background-shadow-13 — white, 40px padding, subtle shadow */
+  .cs-featured__card {
+    background-color: var(--color-surface-container-lowest);
+    border-radius: calc(var(--radius-md) - 2px);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .cs-featured__card {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--space-8);
+    }
+  }
+
+  /* ── Left panel — Figma: left-core-info-15, width: 38.58% ─────── */
+  .cs-featured__left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .cs-featured__left {
+      width: 38%;
+      flex-shrink: 0;
+    }
+  }
+
+  /* "FEATURED PROJECT" chip — Figma: background-17.
+     display: inline-flex → ONLY as wide as its text content. */
+  .cs-featured__chip {
+    display: inline-flex;
+    align-self: flex-start;           /* prevents stretch to full parent width */
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.45px;           /* Figma: 0.45px */
+    text-transform: uppercase;
+    color: rgba(29, 92, 66, 1);       /* Figma: rgba(29,92,66,1) — darker primary */
+    background-color: var(--color-cta-surface);   /* #b1f0ce */
+    padding: 2px var(--space-2);
+    border-radius: 2px;
+  }
+
+  /* Title — Figma: Manrope 700, 30px, -0.75px tracking */
+  .cs-featured__title {
+    font-family: var(--font-display);
+    font-size: var(--text-headline-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.025em;
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  /* Meta row — Figma: border-21 — hairline borders top+bottom.
+     Large gap between CLIENT and TIMELINE matches the Figma spacing. */
+  .cs-featured__meta {
+    display: flex;
+    gap: var(--space-10);             /* wide gap between meta items — Figma */
+    padding-block: var(--space-4);
+    border-top: 1px solid rgba(179, 178, 177, 0.1);
+    border-bottom: 1px solid rgba(179, 178, 177, 0.1);
+  }
+
+  .cs-featured__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* "CLIENT" / "TIMELINE" — Figma: Inter 9px, warm gray */
+  .cs-featured__meta-label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: rgba(123, 122, 122, 1);    /* Figma: rgba(123,122,122,1) */
+  }
+
+  /* "GLOBAL PAYMENTS" / "6 MONTHS" — Figma: Manrope 700, 12px */
+  .cs-featured__meta-value {
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  /* Problem + Outcome blocks — Figma: container-30, gap: 16px */
+  .cs-featured__narrative {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-2);
+  }
+
+  .cs-featured__narrative-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* "The Problem" / "The Outcome" headings — Figma: Manrope 700, 14px */
+  .cs-featured__narrative-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .cs-featured__narrative-heading svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .cs-featured__narrative-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  /* ── Right panel — Figma: node-50, width: 57.87% ─────────────── */
+  .cs-featured__right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+  }
+
+  /* Dark diagram panel — position: relative so the overlay sits on top.
+     min-height increased to 300px (~1.5× the previous 200px).
+     When a real image is present, it fills the dark bg naturally.
+  ─────────────────────────────────────────────────────────────────── */
+  .cs-featured__diagram {
+    background-color: var(--color-inverse-surface);
+    border-radius: 2px;
+    position: relative;
+    min-height: 300px;                 /* 1.5× taller than before */
+    overflow: hidden;
+    flex: 1;
+  }
+
+  /* Swappable image — covers the panel; hidden if src 404s */
+  .cs-featured__diagram-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.6;                      /* dim so overlay labels stay readable */
+  }
+
+  /* Overlay — stage labels + caption, always on top of image/bg */
+  .cs-featured__diagram-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;         /* stages sit near the bottom */
+    gap: var(--space-3);
+    padding: var(--space-6);
+  }
+
+  /* 4 pipeline stage boxes — Figma: overlay-border elements */
+  .cs-featured__diagram-stages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+  }
+
+  .cs-featured__stage {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    text-align: center;
+    padding: var(--space-2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Active stages (Ingestion, Viz) — primary green tint */
+  .cs-featured__stage--active {
+    border-color: rgba(44, 105, 78, 0.4);
+    background-color: rgba(44, 105, 78, 0.05);
+    color: rgba(163, 226, 192, 1);
+  }
+
+  .cs-featured__diagram-caption {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-md);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.2);
+    text-align: right;
+  }
+
+  /* ── Bottom row — Figma: container-68 — FLEX ROW ─────────────────
+     Left: tradeoffs card (flex: 1, grows to ~half width).
+     Right: "View Full Report" column (right-aligned, ~half width).
+     This is the key fix: they are SIDE BY SIDE, not stacked.
+  ─────────────────────────────────────────────────────────────────── */
+  .cs-featured__bottom-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--space-4);
+  }
+
+  /* Tradeoffs card — Figma: background-69, rgba(240,237,237,1) = surface-container */
+  .cs-featured__tradeoffs {
+    flex: 1;                           /* takes left ~half of the row */
+    background-color: var(--color-surface-container);
+    border-radius: 2px;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* "Key Tradeoffs" — Figma: Manrope 700, 12px, icon + text */
+  .cs-featured__tradeoffs-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .cs-featured__tradeoffs-heading svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  /* Bullet list — Figma: list-74, Inter 11px */
+  .cs-featured__tradeoffs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: var(--space-4);
+    list-style: disc;
+  }
+
+  .cs-featured__tradeoffs-list li {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  /* Report link column — right half, pinned to bottom-right.
+     No flex:1 — let it sit naturally to the right of the tradeoffs card.
+     padding matches the card footer padding so the link visually
+     aligns with "Case Study →" in the secondary cards below. */
+  .cs-featured__report-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    align-self: flex-end;
+    flex-shrink: 0;
+  }
+
+  /* "View Full Report →" — Figma: button-84, Manrope 700, 12px, primary */
+  .cs-featured__report-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .cs-featured__report-link:hover {
+    opacity: 0.75;
+  }
+
+  /* ── Secondary cards grid ────────────────────────────────────────
+     Figma: card-2-89 / card-3-107 — rgba(246,243,242,1) = surface-container-low.
+     Cards sit directly on the page surface; the tonal contrast
+     (warm white page vs slightly darker cards) provides separation.
+  ─────────────────────────────────────────────────────────────────── */
+  .cs-grid {
+    padding-block: 0 var(--space-6);
+  }
+
+  .cs-grid__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 640px) {
+    .cs-grid__inner {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>

@@ -1,6 +1,24 @@
 ---
-import { getCollection } from 'astro:content';
+/**
+ * Case Study detail page — /case-studies/[slug]
+ *
+ * Layout:
+ *   ┌─ Article header ───────────────────────────────────────────────┐
+ *   │  Category label  |  Title  |  Client, Duration, Industry       │
+ *   │  Tags row                                                       │
+ *   │  Metrics bar                                                    │
+ *   └────────────────────────────────────────────────────────────────┘
+ *   ┌─ Body ─────────────────────────────────────────────────────────┐
+ *   │  Rendered markdown — prose styles applied via .prose class      │
+ *   └────────────────────────────────────────────────────────────────┘
+ *
+ * Uses the same surface/spacing tokens as every other page so
+ * the header and footer match the about page exactly.
+ */
+
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyMetrics from '../../components/case-studies/CaseStudyMetrics.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('caseStudies');
@@ -11,25 +29,208 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, client, excerpt } = entry.data;
+const { title, client, industry, duration, tags, metrics, excerpt } = entry.data;
+const { Content } = await render(entry);
 ---
 
 <BaseLayout title={title} description={excerpt}>
-  <article class="page-stub container">
-    <h1>{title}</h1>
-    <p class="page-stub__client">{client}</p>
-    <p>Coming soon — Case Study detail page.</p>
+
+  <!-- ── Article header ─────────────────────────────────────────── -->
+  <header class="cs-detail-header">
+    <div class="cs-detail-header__inner container">
+
+      <!-- Industry / category label -->
+      <p class="cs-detail-header__category">{industry}</p>
+
+      <!-- Main title -->
+      <h1 class="cs-detail-header__title">{title}</h1>
+
+      <!-- Meta row: client, duration, industry badges -->
+      <div class="cs-detail-header__meta">
+        <div class="cs-detail-header__meta-item">
+          <span class="cs-detail-header__meta-label">Client</span>
+          <span class="cs-detail-header__meta-value">{client}</span>
+        </div>
+        <div class="cs-detail-header__meta-item">
+          <span class="cs-detail-header__meta-label">Duration</span>
+          <span class="cs-detail-header__meta-value">{duration}</span>
+        </div>
+        <div class="cs-detail-header__meta-item">
+          <span class="cs-detail-header__meta-label">Industry</span>
+          <span class="cs-detail-header__meta-value">{industry}</span>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <ul class="cs-detail-header__tags" role="list">
+        {tags.map((tag) => (
+          <li class="cs-detail-header__tag">{tag}</li>
+        ))}
+      </ul>
+
+      <!-- Metrics bar -->
+      <div class="cs-detail-header__metrics">
+        <CaseStudyMetrics metrics={metrics} />
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Article body ───────────────────────────────────────────── -->
+  <article class="cs-detail-body">
+    <div class="cs-detail-body__inner container">
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
   </article>
+
 </BaseLayout>
 
 <style>
-  .page-stub {
-    padding-block: var(--space-12);
+  /* ── Header section ───────────────────────────────────────────── */
+  .cs-detail-header {
+    padding-block: var(--space-8) var(--space-6);
+    border-bottom: 1px solid var(--color-outline-variant);
   }
 
-  .page-stub__client {
+  .cs-detail-header__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* Industry label — uppercase primary green */
+  .cs-detail-header__category {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
     color: var(--color-primary);
-    font-weight: var(--weight-medium);
-    margin-top: var(--space-2);
+  }
+
+  /* Title — large display heading */
+  .cs-detail-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, var(--text-headline-md));
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  /* Meta grid — three items side by side */
+  .cs-detail-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    padding-block: var(--space-4);
+    border-top: 1px solid rgba(179, 178, 177, 0.1);
+    border-bottom: 1px solid rgba(179, 178, 177, 0.1);
+  }
+
+  .cs-detail-header__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-detail-header__meta-label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-on-surface-muted);
+  }
+
+  .cs-detail-header__meta-value {
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  /* Tags */
+  .cs-detail-header__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .cs-detail-header__tag {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-on-surface);
+    background-color: var(--color-secondary-container);
+    padding: 2px var(--space-2);
+    border-radius: 2px;
+  }
+
+  /* Metrics bar */
+  .cs-detail-header__metrics {
+    padding-top: var(--space-2);
+  }
+
+  /* ── Body ─────────────────────────────────────────────────────── */
+  .cs-detail-body {
+    padding-block: var(--space-8) var(--space-10);
+  }
+
+  /* Prose — readable measure, generous line-height */
+  .prose {
+    max-width: var(--container-content);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    letter-spacing: var(--tracking-tight);
+    margin-top: var(--space-6);
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+    margin-top: var(--space-4);
+  }
+
+  .prose :global(p) {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .prose :global(ul) { list-style: disc; }
+  .prose :global(ol) { list-style: decimal; }
+
+  .prose :global(li) {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  /* Strong inside prose — charcoal, not black */
+  .prose :global(strong) {
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
   }
 </style>
