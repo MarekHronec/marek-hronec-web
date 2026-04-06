@@ -1,19 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactHero from '../components/contact/ContactHero.astro';
+import ContactChannels from '../components/contact/ContactChannels.astro';
+import ContactServices from '../components/contact/ContactServices.astro';
 ---
 
 <BaseLayout
   title="Contact"
   description="Get in touch with Marek Hronec — Senior Cloud Architect available for architecture reviews, cloud strategy, and consulting."
 >
-  <section class="page-stub container">
-    <h1>Contact</h1>
-    <p>Coming soon — Contact page.</p>
-  </section>
+  <!--
+    .contact-page stretches to fill all available space inside #main-content
+    (which itself is flex:1). ContactServices is the last section and has
+    flex:1 here, so it expands to push itself flush against the footer
+    instead of leaving an empty gap.
+  -->
+  <div class="contact-page">
+    <ContactHero />
+    <ContactChannels />
+    <ContactServices />
+  </div>
 </BaseLayout>
 
 <style>
-  .page-stub {
-    padding-block: var(--space-12);
+  .contact-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;                /* fill the flex:1 space of #main-content */
+    min-height: 0;
+  }
+
+  /* Make ContactServices grow to absorb any remaining vertical space */
+  .contact-page :global(.contact-services) {
+    flex: 1;
   }
 </style>

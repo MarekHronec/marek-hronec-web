@@ -1,0 +1,162 @@
+---
+/**
+ * ContactHero — hero + availability card
+ *
+ * Figma: header-hero-section-3
+ *   Two-column flex row:
+ *     Left (flex:1): label → heading → body paragraph
+ *     Right (fixed): availability card, bottom-aligned with left col
+ *
+ * align-items: flex-end on the row ensures the card's bottom
+ * sits flush with the body text bottom — so its top naturally
+ * appears just below the heading, beside the body paragraph.
+ */
+---
+
+<section class="contact-hero">
+  <div class="contact-hero__inner container">
+
+    <!-- Left: label + display heading + body -->
+    <div class="contact-hero__content">
+
+      <p class="contact-hero__label">Direct Communications</p>
+
+      <h1 class="contact-hero__heading">
+        Let's architect the
+        <em class="contact-hero__heading--accent">future</em>
+        of your cloud ecosystem.
+      </h1>
+
+      <p class="contact-hero__body">
+        Available for complex cloud transformations, high-availability
+        infrastructure reviews, and technical advisory roles. Reach out via a
+        direct channel below.
+      </p>
+
+    </div>
+
+    <!-- Right: availability card — bottom-aligned next to body text -->
+    <div class="contact-hero__aside">
+      <div class="contact-hero__availability">
+        <span class="contact-hero__availability-label">Current Availability</span>
+        <span class="contact-hero__availability-value">
+          Accepting 2026 Consulting Projects
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .contact-hero {
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  /* Two-column row — card bottom-aligns with body text bottom */
+  .contact-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .contact-hero__inner {
+      flex-direction: row;
+      align-items: flex-end;   /* card bottom = left-col bottom → sits beside body text */
+      gap: var(--space-8);
+    }
+  }
+
+  /* Left content column */
+  .contact-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+    padding-top: var(--space-4);
+  }
+
+  /* "DIRECT COMMUNICATIONS" — 12px, tracked, primary green */
+  .contact-hero__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  /* Display heading — Manrope 700, 72px, -3.6px tracking, lh 1 */
+  .contact-hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--color-on-surface);
+  }
+
+  /* "future" — primary green + italic */
+  .contact-hero__heading--accent {
+    color: var(--color-primary);
+    font-style: italic;
+  }
+
+  /* Body text — extra margin-top separates it from the heading */
+  .contact-hero__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: 1.625;
+    color: var(--color-on-surface-muted);
+    max-width: 42ch;
+    margin-top: var(--space-4);
+  }
+
+  /* Right aside — fixed width, bottom-aligned via parent flex-end */
+  .contact-hero__aside {
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .contact-hero__aside {
+      width: auto;
+      min-width: 260px;
+      max-width: 320px;
+    }
+  }
+
+  /* Availability card — surface-container-low, 4px primary left border */
+  .contact-hero__availability {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    background-color: var(--color-surface-container-low);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+  }
+
+  /* "CURRENT AVAILABILITY" */
+  .contact-hero__availability-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+  }
+
+  /* "Accepting 2026 Consulting Projects" */
+  .contact-hero__availability-value {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: var(--weight-medium);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+</style>
