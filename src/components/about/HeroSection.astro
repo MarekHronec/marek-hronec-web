@@ -1,4 +1,5 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <section class="hero">
@@ -22,11 +23,13 @@
     </div>
 
     <div class="hero__photo-wrap">
-      <div class="hero__photo-placeholder" aria-hidden="true">
-        <svg class="hero__photo-icon" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="40" cy="28" r="20" fill="currentColor" opacity="0.18"/>
-          <path d="M4 88c0-19.882 16.118-36 36-36s36 16.118 36 36" stroke="currentColor" stroke-width="2" opacity="0.12" fill="none"/>
-        </svg>
+      <div class="hero__photo-placeholder">
+        <img
+          class="hero__photo"
+          src={`${base}/images/profile.png`}
+          alt="Marek Hronec"
+          loading="eager"
+        />
       </div>
     </div>
   </div>
@@ -108,15 +111,10 @@
 
   .hero__photo-placeholder {
     width: 100%;
-    aspect-ratio: 3 / 4;                /* less tall than 4/5 — matches Figma proportions */
-    background-color: var(--color-surface-container-low);
+    aspect-ratio: 3 / 4;
     border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-on-surface-muted);
     overflow: hidden;
-    max-height: 360px;                  /* cap height so it doesn't dwarf the text */
+    max-height: 360px;
   }
 
   /* Mobile: photo above content, shorter aspect ratio */
@@ -141,8 +139,11 @@
     }
   }
 
-  .hero__photo-icon {
-    width: 50%;
-    height: 50%;
+  .hero__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
 </style>
