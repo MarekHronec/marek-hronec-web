@@ -28,7 +28,7 @@ const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advance
 const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 ---
 
-<a class="article-card" href={`/knowledge-base/${slug}`}>
+<a class="article-card" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/knowledge-base/${slug}`}>
 
   <div class="article-card__header">
     <!-- Level badge -->

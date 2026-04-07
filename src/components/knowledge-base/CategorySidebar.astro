@@ -14,6 +14,7 @@ interface Props {
 }
 
 const { currentCategory } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <aside class="kb-sidebar">
@@ -30,7 +31,7 @@ const { currentCategory } = Astro.props;
     <nav class="kb-sidebar__nav" aria-label="Knowledge Base categories">
       <a
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'azure' }]}
-        href="/knowledge-base?category=azure"
+        href={`${base}/knowledge-base?category=azure`}
       >
         <!-- Cloud icon -->
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -42,17 +43,17 @@ const { currentCategory } = Astro.props;
 
       <!-- Azure sub-items — always visible -->
       <ul class="kb-sidebar__subnav">
-        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Networking">Networking</a></li>
-        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Identity">Identity</a></li>
-        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Security">Security</a></li>
-        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=FinOps">FinOps</a></li>
-        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Landing+Zones">Landing Zones</a></li>
+        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Networking`}>Networking</a></li>
+        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Identity`}>Identity</a></li>
+        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Security`}>Security</a></li>
+        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=FinOps`}>FinOps</a></li>
+        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Landing+Zones`}>Landing Zones</a></li>
       </ul>
 
       <!-- OCI -->
       <a
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'oci' }]}
-        href="/knowledge-base?category=oci"
+        href={`${base}/knowledge-base?category=oci`}
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M11 9.5H3.5A2.5 2.5 0 013.5 4.5h.08A3 3 0 019.5 5h.5a2 2 0 010 4h1z"
@@ -64,7 +65,7 @@ const { currentCategory } = Astro.props;
       <!-- DevOps -->
       <a
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'devops' }]}
-        href="/knowledge-base?category=devops"
+        href={`${base}/knowledge-base?category=devops`}
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <rect x="1.5" y="3" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
@@ -77,7 +78,7 @@ const { currentCategory } = Astro.props;
       <!-- BPM -->
       <a
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'bpm' }]}
-        href="/knowledge-base?category=bpm"
+        href={`${base}/knowledge-base?category=bpm`}
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <rect x="1" y="2" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>

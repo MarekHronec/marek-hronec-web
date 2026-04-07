@@ -13,10 +13,12 @@
  * in DESIGN.md, so underlying page content bleeds through while scrolling.
  */
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const navLinks = [
-  { label: 'About',          href: '/' },
-  { label: 'Knowledge Base', href: '/knowledge-base' },
-  { label: 'Case Studies',   href: '/case-studies' },
+  { label: 'About',          href: `${base}/` },
+  { label: 'Knowledge Base', href: `${base}/knowledge-base` },
+  { label: 'Case Studies',   href: `${base}/case-studies` },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -26,7 +28,7 @@ const currentPath = Astro.url.pathname;
   <nav class="header__nav container" aria-label="Main navigation">
 
     <!-- ── Left zone: wordmark / home link ────────────────────────── -->
-    <a class="header__logo" href="/">
+    <a class="header__logo" href={`${base}/`}>
       Marek Hronec
     </a>
 
@@ -56,7 +58,7 @@ const currentPath = Astro.url.pathname;
          rightmost grid column. CSS then shows/hides each at the
          correct breakpoint. -->
     <div class="header__actions">
-      <a class="header__cta" href="/contact">Get in Touch</a>
+      <a class="header__cta" href={`${base}/contact`}>Get in Touch</a>
 
       <button
         class="header__hamburger"
@@ -90,7 +92,7 @@ const currentPath = Astro.url.pathname;
         </li>
       ))}
       <li>
-        <a class="header__mobile-cta" href="/contact">Get in Touch</a>
+        <a class="header__mobile-cta" href={`${base}/contact`}>Get in Touch</a>
       </li>
     </ul>
   </div>

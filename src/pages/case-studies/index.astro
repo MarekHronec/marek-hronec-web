@@ -224,7 +224,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
 
                 <!-- "View Full Report →" — pinned to bottom-right -->
                 <div class="cs-featured__report-col">
-                  <a class="cs-featured__report-link" href={`/case-studies/${featured.id}`}>
+                  <a class="cs-featured__report-link" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/case-studies/${featured.id}`}>
                     View Full Report
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                       <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5"
