@@ -86,13 +86,33 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     align-items: stretch;
     flex: 1;
     min-height: 0;
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  /* Hide sidebar on mobile — not enough space */
+  .kb-page :global(.kb-sidebar) {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .kb-page :global(.kb-sidebar) {
+      display: block;
+    }
   }
 
   /* Content panel — fills remaining width */
   .kb-content {
     flex: 1;
     min-width: 0;
-    padding: var(--space-8) var(--space-8) var(--space-10);
+    padding: var(--space-6) var(--space-5) var(--space-10);
+  }
+
+  @media (min-width: 768px) {
+    .kb-content {
+      padding: var(--space-8) var(--space-8) var(--space-10);
+    }
   }
 
   @media (min-width: 1024px) {
@@ -102,7 +122,6 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
   }
 
   .kb-content__inner {
-    max-width: 960px;
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
@@ -146,6 +165,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-5);
+    width: 100%;
   }
 
   @media (min-width: 640px) {
