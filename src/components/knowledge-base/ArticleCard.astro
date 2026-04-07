@@ -1,0 +1,177 @@
+---
+/**
+ * ArticleCard — card used in the Knowledge Base listing grid
+ *
+ * Layout:
+ *   Level badge (top)
+ *   Category label (primary green, uppercase)
+ *   Title (Manrope 700, title-lg)
+ *   Excerpt (muted, body-md)
+ *   Footer: date + read time | tags
+ */
+
+interface Props {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  date: Date;
+  readTime: number;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  tags: string[];
+}
+
+const { slug, title, category, excerpt, date, readTime, level, tags } = Astro.props;
+
+const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[level];
+
+const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<a class="article-card" href={`/knowledge-base/${slug}`}>
+
+  <div class="article-card__header">
+    <!-- Level badge -->
+    <span class:list={['article-card__badge', `article-card__badge--${level}`]}>{levelLabel}</span>
+    <!-- Category -->
+    <p class="article-card__category">{category.toUpperCase()}</p>
+  </div>
+
+  <!-- Title -->
+  <h2 class="article-card__title">{title}</h2>
+
+  <!-- Excerpt -->
+  <p class="article-card__excerpt">{excerpt}</p>
+
+  <!-- Footer -->
+  <footer class="article-card__footer">
+    <div class="article-card__meta">
+      <span>{dateStr}</span>
+      <span class="article-card__meta-dot" aria-hidden="true">·</span>
+      <span>{readTime} min read</span>
+    </div>
+    <ul class="article-card__tags" role="list">
+      {tags.slice(0, 2).map((tag) => (
+        <li class="article-card__tag">{tag}</li>
+      ))}
+    </ul>
+  </footer>
+
+</a>
+
+<style>
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+    width: 100%;
+    height: 100%;
+  }
+
+  .article-card:hover {
+    background-color: var(--color-surface-container);
+    opacity: 1;
+  }
+
+  .article-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Level badge */
+  .article-card__badge {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px var(--space-2);
+    border-radius: 2px;
+  }
+
+  .article-card__badge--beginner {
+    background-color: rgba(220, 252, 231, 1);
+    color: rgba(22, 101, 52, 1);
+  }
+
+  .article-card__badge--intermediate {
+    background-color: rgba(254, 249, 195, 1);
+    color: rgba(113, 63, 18, 1);
+  }
+
+  .article-card__badge--advanced {
+    background-color: rgba(236, 253, 245, 1);
+    color: rgba(6, 95, 70, 1);
+  }
+
+  .article-card__category {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-primary);
+  }
+
+  .article-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .article-card__excerpt {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    flex: 1;
+  }
+
+  .article-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  .article-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: rgba(161, 161, 170, 1);
+  }
+
+  .article-card__meta-dot {
+    opacity: 0.5;
+  }
+
+  .article-card__tags {
+    display: flex;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .article-card__tag {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-on-surface-muted);
+    background-color: var(--color-secondary-container);
+    padding: 2px var(--space-2);
+    border-radius: 2px;
+  }
+</style>

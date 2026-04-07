@@ -283,14 +283,16 @@ const currentPath = Astro.url.pathname;
     border-top: 1px solid var(--glass-border);
   }
 
-  .header__mobile-menu--open {
-    display: block;
+  /* Only show the open state on mobile — desktop hides the whole menu via display:none base */
+  @media (max-width: 767px) {
+    .header__mobile-menu--open {
+      display: block;
+    }
   }
 
-  /* Always hidden once the desktop breakpoint is reached */
   @media (min-width: 768px) {
     .header__mobile-menu {
-      display: none !important;
+      display: none;
     }
   }
 

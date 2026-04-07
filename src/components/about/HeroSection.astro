@@ -91,7 +91,7 @@
 
   /* Period "." — warm gray, Figma: rgba(123, 122, 122, 1) */
   .hero__heading--period {
-    color: rgba(123, 122, 122, 1);
+    color: var(--color-meta-label);
   }
 
   .hero__body {
@@ -119,14 +119,25 @@
     max-height: 360px;                  /* cap height so it doesn't dwarf the text */
   }
 
-  @media (max-width: 767px) {
+  /* Mobile: photo above content, shorter aspect ratio */
+  .hero__photo-wrap {
+    order: -1;
+  }
+
+  .hero__photo-placeholder {
+    aspect-ratio: 3 / 2;
+    max-height: 200px;
+  }
+
+  /* Desktop: restore natural grid order, full portrait aspect */
+  @media (min-width: 768px) {
     .hero__photo-wrap {
-      order: -1;
+      order: 0;
     }
 
     .hero__photo-placeholder {
-      aspect-ratio: 3 / 2;
-      max-height: 200px;
+      aspect-ratio: 3 / 4;
+      max-height: 360px;
     }
   }
 

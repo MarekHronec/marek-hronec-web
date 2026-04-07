@@ -34,6 +34,20 @@
   /* Ghost border — felt, not seen */
   --color-outline-variant: rgba(50, 50, 50, 0.15);
 
+  /* Warm gray — Figma: rgba(179,178,177,1) — used for dividers, arrows, separators */
+  --color-warm-gray: rgba(179, 178, 177, 1);
+  --color-warm-gray-30: rgba(179, 178, 177, 0.3);
+  --color-warm-gray-20: rgba(179, 178, 177, 0.2);
+  --color-warm-gray-15: rgba(179, 178, 177, 0.15);
+  --color-warm-gray-10: rgba(179, 178, 177, 0.1);
+
+  /* Muted warm gray text — Figma: rgba(123,122,122,1) — meta labels */
+  --color-meta-label: rgba(123, 122, 122, 1);
+
+  /* CTA surface text — Figma: rgba(225,255,236,1) — light mint on primary bg */
+  --color-on-cta: rgba(225, 255, 236, 1);
+
+
   /* ---------- Typography ---------- */
 
   --font-display: 'Manrope', sans-serif;

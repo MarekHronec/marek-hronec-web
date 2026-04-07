@@ -1,0 +1,221 @@
+---
+/**
+ * CategorySidebar — left navigation for Knowledge Base
+ *
+ * Figma: aside-sidenavbar-3
+ *   bg: rgba(250,250,250,1), border-right ghost
+ *   Active item: rgba(236,253,245,1) bg, 4px right border rgba(6,95,70,1)
+ *   Category heading: Manrope 700, 12px, 1.2px tracking, rgba(113,113,122)
+ *   Sub-items: Inter 700, 10px, 1px tracking, rgba(161,161,170)
+ */
+
+interface Props {
+  currentCategory?: string;
+}
+
+const { currentCategory } = Astro.props;
+---
+
+<aside class="kb-sidebar">
+  <div class="kb-sidebar__sticky">
+
+  <!-- Infrastructure group -->
+  <div class="kb-sidebar__group">
+    <div class="kb-sidebar__group-header">
+      <p class="kb-sidebar__group-label">Infrastructure</p>
+      <p class="kb-sidebar__group-sub">Technical Documentation</p>
+    </div>
+
+    <!-- Azure with sub-items -->
+    <nav class="kb-sidebar__nav" aria-label="Knowledge Base categories">
+      <a
+        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'azure' }]}
+        href="/knowledge-base?category=azure"
+      >
+        <!-- Cloud icon -->
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M11 9.5H3.5A2.5 2.5 0 013.5 4.5h.08A3 3 0 019.5 5h.5a2 2 0 010 4h1z"
+                stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        Azure
+      </a>
+
+      <!-- Azure sub-items — always visible -->
+      <ul class="kb-sidebar__subnav">
+        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Networking">Networking</a></li>
+        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Identity">Identity</a></li>
+        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Security">Security</a></li>
+        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=FinOps">FinOps</a></li>
+        <li><a class="kb-sidebar__subitem" href="/knowledge-base?category=azure&tag=Landing+Zones">Landing Zones</a></li>
+      </ul>
+
+      <!-- OCI -->
+      <a
+        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'oci' }]}
+        href="/knowledge-base?category=oci"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M11 9.5H3.5A2.5 2.5 0 013.5 4.5h.08A3 3 0 019.5 5h.5a2 2 0 010 4h1z"
+                stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        OCI
+      </a>
+
+      <!-- DevOps -->
+      <a
+        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'devops' }]}
+        href="/knowledge-base?category=devops"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <rect x="1.5" y="3" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="8.5" y="7" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M5.5 5h2a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        DevOps
+      </a>
+
+      <!-- BPM -->
+      <a
+        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'bpm' }]}
+        href="/knowledge-base?category=bpm"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <rect x="1" y="2" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="1" y="8.5" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9.5" y="5.25" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M4.5 3.75h3a1 1 0 011 1v2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M4.5 10.25h3a1 1 0 001-1V6.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        BPM
+      </a>
+    </nav>
+  </div>
+
+  </div><!-- /.kb-sidebar__sticky -->
+</aside>
+
+<style>
+  /* ── Sidebar shell ───────────────────────────────────────────────
+     Figma: aside-sidenavbar-3 — 20% width, cool near-white bg
+  ─────────────────────────────────────────────────────────────────── */
+  /* Sidebar shell — stretches full height of parent for background fill */
+  .kb-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background-color: rgba(250, 250, 250, 1);
+    border-right: 1px solid rgba(228, 228, 231, 0.5);
+  }
+
+  /* Inner wrapper — this is what actually sticks while content scrolls */
+  .kb-sidebar__sticky {
+    position: sticky;
+    top: 64px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding: var(--space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .kb-sidebar__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* "INFRASTRUCTURE" + "Technical Documentation" */
+  .kb-sidebar__group-header {
+    padding: 0 var(--space-5) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .kb-sidebar__group-label {
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(113, 113, 122, 1);
+  }
+
+  .kb-sidebar__group-sub {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: rgba(161, 161, 170, 1);
+  }
+
+  .kb-sidebar__nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Category row — Figma: link-12 / link-29 */
+  .kb-sidebar__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(113, 113, 122, 1);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+    border-right: 4px solid transparent;
+  }
+
+  .kb-sidebar__item:hover {
+    color: var(--color-primary);
+    opacity: 1;
+  }
+
+  /* Active state — Figma: green tint bg, 4px primary right border */
+  .kb-sidebar__item--active {
+    background-color: rgba(236, 253, 245, 1);
+    color: rgba(6, 95, 70, 1);
+    border-right-color: rgba(6, 95, 70, 1);
+  }
+
+  .kb-sidebar__item svg {
+    flex-shrink: 0;
+    color: inherit;
+  }
+
+  /* Sub-items — Figma: submenu-azure-17, 10px muted */
+  .kb-sidebar__subnav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-1) 0 var(--space-2);
+    list-style: none;
+  }
+
+  .kb-sidebar__subitem {
+    display: block;
+    padding: var(--space-2) var(--space-5) var(--space-2) calc(var(--space-5) + 26px);
+    font-family: var(--font-body);
+    font-size: 0.625rem;          /* Figma: 10px */
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(161, 161, 170, 1);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-sidebar__subitem:hover {
+    color: var(--color-primary);
+    opacity: 1;
+  }
+
+  .kb-sidebar__subitem--active {
+    color: var(--color-primary);
+  }
+</style>

@@ -409,8 +409,8 @@ const others     = allStudies.filter((s) => !s.data.featured);
     display: flex;
     gap: var(--space-10);             /* wide gap between meta items — Figma */
     padding-block: var(--space-4);
-    border-top: 1px solid rgba(179, 178, 177, 0.1);
-    border-bottom: 1px solid rgba(179, 178, 177, 0.1);
+    border-top: 1px solid var(--color-warm-gray-10);
+    border-bottom: 1px solid var(--color-warm-gray-10);
   }
 
   .cs-featured__meta-item {
@@ -425,7 +425,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     font-size: var(--text-label-md);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
-    color: rgba(123, 122, 122, 1);    /* Figma: rgba(123,122,122,1) */
+    color: var(--color-meta-label);    /* Figma: rgba(123,122,122,1) */
   }
 
   /* "GLOBAL PAYMENTS" / "6 MONTHS" — Figma: Manrope 700, 12px */

@@ -88,8 +88,8 @@
   .contact-channels__inner {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid rgba(179, 178, 177, 0.3);
-    border-bottom: 1px solid rgba(179, 178, 177, 0.15);
+    border-top: 1px solid var(--color-warm-gray-30);
+    border-bottom: 1px solid var(--color-warm-gray-15);
   }
 
   @media (min-width: 640px) {
@@ -110,7 +110,7 @@
     transition: background-color var(--duration-fast) var(--ease-standard);
 
     /* Ghost right border between columns */
-    border-right: 1px solid rgba(179, 178, 177, 0.2);
+    border-right: 1px solid var(--color-warm-gray-20);
   }
 
   /* Last column has no right border */
@@ -122,7 +122,7 @@
   @media (max-width: 639px) {
     .channel-card {
       border-right: none;
-      border-bottom: 1px solid rgba(179, 178, 177, 0.2);
+      border-bottom: 1px solid var(--color-warm-gray-20);
       padding: var(--space-5) 0;
     }
 
@@ -157,7 +157,7 @@
 
   /* ↗ Arrow — warm gray */
   .channel-card__arrow {
-    color: rgba(179, 178, 177, 1);
+    color: var(--color-warm-gray);
     flex-shrink: 0;
     margin-top: 1px;
   }

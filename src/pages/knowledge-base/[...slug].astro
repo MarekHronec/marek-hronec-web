@@ -1,6 +1,23 @@
 ---
-import { getCollection } from 'astro:content';
+/**
+ * Knowledge Base article detail — /knowledge-base/[...slug]
+ *
+ * Layout:
+ *   ┌─ Sidebar (220px) ─┬─ Article (flex:1) ─┬─ TOC (220px) ─┐
+ *   │  CategorySidebar  │  breadcrumb          │  ArticleOutline │
+ *   │                   │  level badge + title │                 │
+ *   │                   │  date / read time    │                 │
+ *   │                   │  prose body          │                 │
+ *   │                   │  related articles    │                 │
+ *   └───────────────────┴──────────────────────┴─────────────────┘
+ *
+ * Figma: knowledge-base-1 detail view
+ */
+
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
+import ArticleOutline from '../../components/knowledge-base/ArticleOutline.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('knowledgeBase');
@@ -11,36 +28,483 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, category, excerpt } = entry.data;
+const { title, category, date, readTime, level, excerpt } = entry.data;
+const { Content, headings } = await render(entry);
+
+/* Related articles — same category, excluding self */
+const allArticles = await getCollection('knowledgeBase');
+const related = allArticles
+  .filter((a) => a.id !== entry.id && a.data.category === category)
+  .slice(0, 2);
+
+const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[level];
+const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+/* Breadcrumb: KNOWLEDGE BASE > CATEGORY > TITLE */
+const categoryLabel = category.toUpperCase();
 ---
 
 <BaseLayout title={title} description={excerpt}>
-  <article class="page-stub container">
-    <nav class="page-stub__breadcrumb" aria-label="Breadcrumb">
-      <a href="/knowledge-base">Knowledge Base</a>
-      <span aria-hidden="true"> › </span>
-      <span>{category}</span>
-    </nav>
-    <h1>{title}</h1>
-    <p>Coming soon — Knowledge Base article detail.</p>
-  </article>
+  <div class="kb-page">
+
+    <CategorySidebar currentCategory={category} />
+
+    <!-- Main content area -->
+    <div class="kb-main">
+
+      <!-- Breadcrumb — Figma: nav-breadcrumbs-46 -->
+      <nav class="kb-breadcrumb" aria-label="Breadcrumb">
+        <a class="kb-breadcrumb__link" href="/knowledge-base">Knowledge Base</a>
+        <span class="kb-breadcrumb__sep" aria-hidden="true">›</span>
+        <a class="kb-breadcrumb__link" href="/knowledge-base">{categoryLabel}</a>
+        <span class="kb-breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="kb-breadcrumb__current">{title}</span>
+      </nav>
+
+      <!-- Article content -->
+      <article class="kb-article">
+
+        <!-- Article header — Figma: header-59 -->
+        <header class="kb-article__header">
+
+          <!-- Level badge — Figma: background-60, green tint, 2px radius -->
+          <div class="kb-article__badge-row">
+            <span class:list={['kb-article__badge', `kb-article__badge--${level}`]}>
+              <!-- Leaf/level icon -->
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                <circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="5" cy="5" r="1.5" fill="currentColor"/>
+              </svg>
+              {levelLabel} Architecture
+            </span>
+          </div>
+
+          <!-- Title — Figma: text-65, Manrope 700, 48px, -1.2px tracking -->
+          <h1 class="kb-article__title">{title}</h1>
+
+          <!-- Meta: date + read time — Figma: container-66 -->
+          <div class="kb-article__meta">
+            <span class="kb-article__meta-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M1.5 5.5h11M4.5 1v3M9.5 1v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              Published {dateStr}
+            </span>
+            <span class="kb-article__meta-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              {readTime} min read
+            </span>
+          </div>
+
+        </header>
+
+        <!-- Prose body — Figma: section-article-body-77 -->
+        <div class="prose">
+          <Content />
+        </div>
+
+        <!-- Related articles — Figma: node-123 -->
+        {related.length > 0 && (
+          <section class="kb-related">
+            <h3 class="kb-related__heading">Related Notes</h3>
+            <div class="kb-related__grid">
+              {related.map((article) => (
+                <a class="kb-related__card" href={`/knowledge-base/${article.id}`}>
+                  <span class="kb-related__card-category">{article.data.category.toUpperCase()}</span>
+                  <h4 class="kb-related__card-title">{article.data.title}</h4>
+                  <p class="kb-related__card-excerpt">{article.data.excerpt}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+      </article>
+
+    </div>
+
+    <!-- TOC — third column, sibling of sidebar so sticky fires at top of content -->
+    <div class="kb-toc">
+      <ArticleOutline headings={headings} />
+    </div>
+
+  </div>
 </BaseLayout>
 
 <style>
-  .page-stub {
-    padding-block: var(--space-12);
+  /* ── Three-column layout ─────────────────────────────────────── */
+  .kb-page {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
   }
 
-  .page-stub__breadcrumb {
+  /* Right of sidebar: breadcrumb + article */
+  .kb-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-6) var(--space-8) var(--space-10);
+    gap: var(--space-6);
+  }
+
+  /* ── Breadcrumb ──────────────────────────────────────────────── */
+  .kb-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .kb-breadcrumb__link {
+    font-family: var(--font-body);
     font-size: var(--text-label-md);
-    font-weight: var(--weight-medium);
+    font-weight: var(--weight-regular);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--color-on-surface-muted);
-    margin-bottom: var(--space-4);
+    color: rgba(161, 161, 170, 1);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
   }
 
-  .page-stub__breadcrumb a {
+  .kb-breadcrumb__link:hover {
     color: var(--color-primary);
+    opacity: 1;
+  }
+
+  .kb-breadcrumb__sep {
+    color: rgba(161, 161, 170, 1);
+    font-size: var(--text-label-md);
+  }
+
+  .kb-breadcrumb__current {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  /* Article fills main column */
+  .kb-article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* TOC — third column in .kb-page, same level as sidebar.
+     Starts at the top of the content area so sticky fires immediately. */
+  .kb-toc {
+    width: 200px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    position: sticky;
+    top: 64px;
+    padding-top: var(--space-6);
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .kb-toc {
+      display: block;
+    }
+  }
+
+  /* ── Article header ──────────────────────────────────────────── */
+  .kb-article__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .kb-article__badge-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Level badge — Figma: background-60, mint green tint, 2px radius */
+  .kb-article__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    padding: 4px var(--space-2);
+    border-radius: 2px;
+  }
+
+  .kb-article__badge--advanced {
+    background-color: rgba(236, 253, 245, 1);
+    color: rgba(6, 95, 70, 1);
+  }
+
+  .kb-article__badge--intermediate {
+    background-color: rgba(254, 249, 195, 1);
+    color: rgba(113, 63, 18, 1);
+  }
+
+  .kb-article__badge--beginner {
+    background-color: rgba(220, 252, 231, 1);
+    color: rgba(22, 101, 52, 1);
+  }
+
+  /* Title — Figma: Manrope 700, 48px, -1.2px tracking */
+  .kb-article__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.025em;
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+  }
+
+  /* Meta row — Figma: container-66, Inter 14px muted */
+  .kb-article__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+    padding-top: var(--space-1);
+  }
+
+  .kb-article__meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    color: rgba(113, 113, 122, 1);
+  }
+
+  .kb-article__meta-item svg {
+    flex-shrink: 0;
+    color: rgba(161, 161, 170, 1);
+  }
+
+  /* ── Prose body ──────────────────────────────────────────────── */
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 68ch;
+  }
+
+  /* Intro paragraph (first <p>) — slightly larger */
+  .prose :global(p:first-child) {
+    font-size: 1.125rem;
+    line-height: 1.625;
+    color: rgba(82, 82, 91, 1);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-headline-md);
+    font-weight: var(--weight-bold);
+    color: rgba(24, 24, 27, 1);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+    margin-top: var(--space-4);
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    color: rgba(24, 24, 27, 1);
+    margin-top: var(--space-3);
+  }
+
+  .prose :global(p) {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .prose :global(ul), .prose :global(ol) {
+    padding-left: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .prose :global(ul) { list-style: disc; }
+  .prose :global(ol) { list-style: decimal; }
+
+  .prose :global(li) {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .prose :global(strong) {
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  /* Code blocks — Figma: code-block-105, #0e0e0e bg, 8px radius */
+  .prose :global(pre) {
+    background-color: var(--color-inverse-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    overflow-x: auto;
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: rgba(52, 211, 153, 1); /* Figma: text-rgb-52-211-153 emerald */
+  }
+
+  /* Inline code */
+  .prose :global(:not(pre) > code) {
+    background-color: var(--color-secondary-container);
+    color: var(--color-on-surface);
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-sm);
+    font-size: 0.875em;
+  }
+
+  /* Pro Tip callout — Figma: callout-pro-tip-85 */
+  .prose :global(.callout-tip) {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background-color: var(--color-surface-container-low);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 4px;
+  }
+
+  .prose :global(.callout-tip__icon) {
+    flex-shrink: 0;
+    color: var(--color-primary);
+    margin-top: 2px;
+  }
+
+  .prose :global(.callout-tip__label) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(30, 93, 67, 1);
+    margin-bottom: var(--space-1);
+  }
+
+  .prose :global(.callout-tip__content p:not(.callout-tip__label)) {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    margin-top: 0;
+  }
+
+  /* Warning callout — Figma: callout-warning-115 */
+  .prose :global(.callout-warning) {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background-color: rgba(254, 137, 131, 0.1);
+    border-left: 4px solid rgba(159, 64, 61, 1);
+    border-radius: 4px;
+  }
+
+  .prose :global(.callout-warning__icon) {
+    flex-shrink: 0;
+    color: rgba(159, 64, 61, 1);
+    margin-top: 2px;
+  }
+
+  .prose :global(.callout-warning__label) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(159, 64, 61, 1);
+    margin-bottom: var(--space-1);
+  }
+
+  .prose :global(.callout-warning__content p:not(.callout-warning__label)) {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    margin-top: 0;
+  }
+
+  /* ── Related articles ────────────────────────────────────────── */
+  .kb-related {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-top: var(--space-8);
+    border-top: 1px solid rgba(228, 228, 231, 0.5);
+  }
+
+  .kb-related__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(161, 161, 170, 1);
+  }
+
+  .kb-related__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+  }
+
+  /* Related card — Figma: link-127, surface-container-low */
+  .kb-related__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-related__card:hover {
+    background-color: var(--color-surface-container);
+    opacity: 1;
+  }
+
+  .kb-related__card-category {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .kb-related__card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .kb-related__card-excerpt {
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: rgba(113, 113, 122, 1);
   }
 </style>

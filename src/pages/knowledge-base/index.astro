@@ -1,19 +1,216 @@
 ---
+/**
+ * Knowledge Base listing — /knowledge-base
+ *
+ * Layout:
+ *   Full-height sidebar (220px) on the left
+ *   Article card grid (flex:1) on the right
+ *
+ * The sidebar background extends full height via align-items:stretch
+ * on the outer kb-page wrapper — no 1px border separation needed.
+ */
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
+import ArticleCard from '../../components/knowledge-base/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('knowledgeBase');
+
+/* Sort newest first */
+const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <BaseLayout
   title="Knowledge Base"
-  description="Technical articles on Azure, OCI and BPM."
+  description="Technical articles on cloud architecture, Azure, DevOps, and infrastructure patterns."
 >
-  <section class="page-stub container">
-    <h1>Knowledge Base</h1>
-    <p>Coming soon — Knowledge Base listing with category sidebar.</p>
-  </section>
+  <div class="kb-page">
+
+    <CategorySidebar />
+
+    <div class="kb-content">
+      <div class="kb-content__inner">
+
+        <!-- Page header -->
+        <header class="kb-header">
+          <p class="kb-header__label">Knowledge Base</p>
+          <h1 class="kb-header__title">Technical Notes.</h1>
+          <p class="kb-header__subtitle">
+            In-depth architecture patterns, implementation guides, and
+            operational constraints for cloud-native systems.
+          </p>
+        </header>
+
+        <!-- Article grid -->
+        {sorted.length > 0 ? (
+          <div class="kb-grid" id="kb-grid">
+            {sorted.map((article) => (
+              <div
+                class="kb-card-wrapper"
+                data-article-category={article.data.category}
+                data-article-tags={article.data.tags.join(',')}
+              >
+                <ArticleCard
+                  slug={article.id}
+                  title={article.data.title}
+                  category={article.data.category}
+                  excerpt={article.data.excerpt}
+                  date={article.data.date}
+                  readTime={article.data.readTime}
+                  level={article.data.level}
+                  tags={article.data.tags}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="kb-empty">No articles published yet.</p>
+        )}
+        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" style="display:none">
+          No articles found for this filter.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
 </BaseLayout>
 
 <style>
-  .page-stub {
-    padding-block: var(--space-12);
+  /* ── Two-column layout ───────────────────────────────────────────
+     Sidebar + content stretch to fill #main-content (flex:1 in global)
+  ─────────────────────────────────────────────────────────────────── */
+  .kb-page {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Content panel — fills remaining width */
+  .kb-content {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-8) var(--space-8) var(--space-10);
+  }
+
+  @media (min-width: 1024px) {
+    .kb-content {
+      padding: var(--space-8) var(--space-10) var(--space-10);
+    }
+  }
+
+  .kb-content__inner {
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* ── Page header ─────────────────────────────────────────────── */
+  .kb-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+  }
+
+  .kb-header__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .kb-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, var(--text-display-lg));
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+  }
+
+  .kb-header__subtitle {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 52ch;
+  }
+
+  /* ── Article grid ────────────────────────────────────────────── */
+  .kb-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 640px) {
+    .kb-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Card wrappers must stretch so cards fill equal row height */
+  .kb-card-wrapper {
+    display: flex;
+  }
+
+  .kb-empty {
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-lg);
+    padding: var(--space-8) 0;
   }
 </style>
+
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const activeCategory = params.get('category');
+    const activeTag = params.get('tag');
+
+    /* ── Filter article cards ──────────────────────────────────── */
+    const wrappers = document.querySelectorAll<HTMLElement>('[data-article-category]');
+    let visibleCount = 0;
+
+    wrappers.forEach((wrapper) => {
+      const cardCategory = wrapper.getAttribute('data-article-category') ?? '';
+      const cardTags = (wrapper.getAttribute('data-article-tags') ?? '')
+        .split(',')
+        .map((t) => t.trim());
+
+      let show = true;
+      if (activeCategory && cardCategory !== activeCategory) show = false;
+      if (activeTag && !cardTags.includes(activeTag)) show = false;
+
+      wrapper.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+
+    /* Empty-state message */
+    const emptyEl = document.getElementById('kb-filter-empty');
+    if (emptyEl) {
+      emptyEl.style.display = (activeCategory || activeTag) && visibleCount === 0 ? '' : 'none';
+    }
+
+    /* ── Sync sidebar active state ─────────────────────────────── */
+    /* Main category links */
+    document.querySelectorAll<HTMLAnchorElement>('.kb-sidebar__item').forEach((link) => {
+      const href = link.getAttribute('href') ?? '';
+      const p = new URLSearchParams(href.split('?')[1] ?? '');
+      const isActive = p.get('category') === activeCategory && p.get('tag') === activeTag;
+      link.classList.toggle('kb-sidebar__item--active', isActive);
+    });
+
+    /* Sub-items */
+    document.querySelectorAll<HTMLAnchorElement>('.kb-sidebar__subitem').forEach((link) => {
+      const href = link.getAttribute('href') ?? '';
+      const p = new URLSearchParams(href.split('?')[1] ?? '');
+      const isActive = p.get('category') === activeCategory && p.get('tag') === activeTag;
+      link.classList.toggle('kb-sidebar__subitem--active', isActive);
+    });
+  })();
+</script>

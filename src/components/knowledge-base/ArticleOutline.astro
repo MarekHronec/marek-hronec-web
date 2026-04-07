@@ -1,0 +1,145 @@
+---
+/**
+ * ArticleOutline — sticky floating TOC for article detail pages
+ *
+ * Figma: node-141
+ *   "OUTLINE" heading (Inter 700, 10px, 1px tracking, muted)
+ *   List of heading links:
+ *     Active: 2px primary left border, primary text
+ *     Inactive: transparent border, muted text
+ *   Glassmorphism: glass-bg + blur on sticky container
+ */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+/* Only h2 and h3 in the outline */
+const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{outlineItems.length > 0 && (
+  <nav class="article-outline" aria-label="Article outline">
+
+    <p class="article-outline__label">Outline</p>
+
+    <ul class="article-outline__list" role="list">
+      {outlineItems.map((heading) => (
+        <li class:list={['article-outline__item', { 'article-outline__item--sub': heading.depth === 3 }]}>
+          <a class="article-outline__link" href={`#${heading.slug}`}>
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+  </nav>
+)}
+
+<style>
+  /* ── Outline panel ───────────────────────────────────────────────
+     Figma: node-141 — sticky, starts at 64px (nav height)
+  ─────────────────────────────────────────────────────────────────── */
+  .article-outline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(228, 228, 231, 0.4);
+  }
+
+  /* "OUTLINE" — Figma: text-145, Inter 700, 10px, 1px tracking, muted */
+  .article-outline__label {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(161, 161, 170, 1);
+  }
+
+  .article-outline__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* Outline item — Figma: item-147 / item-150 */
+  .article-outline__item {
+    padding-left: var(--space-4);
+    border-left: 2px solid transparent;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* Sub-heading (h3): extra indent */
+  .article-outline__item--sub {
+    padding-left: calc(var(--space-4) + var(--space-3));
+  }
+
+  .article-outline__link {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: rgba(113, 113, 122, 1);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+    display: block;
+  }
+
+  .article-outline__link:hover {
+    color: var(--color-primary);
+    opacity: 1;
+  }
+
+  /* JS-driven active state — added by scroll observer script */
+  .article-outline__item.is-active {
+    border-left-color: var(--color-primary);
+  }
+
+  .article-outline__item.is-active .article-outline__link {
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+  }
+</style>
+
+<!-- Scroll spy: highlight active heading in outline -->
+<script>
+  const links = document.querySelectorAll<HTMLAnchorElement>('.article-outline__link');
+  const items = document.querySelectorAll('.article-outline__item');
+
+  if (links.length > 0) {
+    const headingEls: HTMLElement[] = Array.from(links).map((link) => {
+      const id = link.getAttribute('href')?.replace('#', '') ?? '';
+      return document.getElementById(id) as HTMLElement;
+    }).filter(Boolean);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            items.forEach((item) => item.classList.remove('is-active'));
+            const activeLink = document.querySelector(`.article-outline__link[href="#${id}"]`);
+            activeLink?.closest('.article-outline__item')?.classList.add('is-active');
+          }
+        });
+      },
+      { rootMargin: '-20% 0% -70% 0%' }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+</script>

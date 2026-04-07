@@ -42,7 +42,7 @@
   /* ── Card — green surface, rounded, full-width of the container ───── */
   .cta-banner {
     background-color: var(--color-cta-surface);   /* #b1f0ce — Figma rgba(177,240,206,1) */
-    border-radius: 1rem;                           /* Figma: 16px */
+    border-radius: var(--radius-lg);               /* Figma: 16px */
     padding: var(--space-8) var(--space-10);       /* 48px vertical, 64px horizontal */
     display: flex;
     flex-direction: column;
@@ -88,7 +88,7 @@
     flex-shrink: 0;
     padding: var(--space-3) var(--space-7);
     background-color: var(--color-primary);    /* Figma: solid #2c694e, no gradient */
-    color: #e1ffec;                            /* Figma: rgba(225,255,236,1) light mint */
+    color: var(--color-on-cta);                    /* Figma: rgba(225,255,236,1) light mint */
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     font-weight: var(--weight-semibold);
