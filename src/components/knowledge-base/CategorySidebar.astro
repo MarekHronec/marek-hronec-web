@@ -95,6 +95,53 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   </div><!-- /.kb-sidebar__sticky -->
 </aside>
 
+<!-- ── Mobile bottom category bar (hidden on desktop) ───────────── -->
+<div class="kb-mobile-bar">
+  <button class="kb-mobile-bar__trigger" id="kb-mobile-trigger" aria-expanded="false" aria-controls="kb-mobile-sheet">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2 4.5h12M2 8h8M2 11.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Browse Categories
+    <svg class="kb-mobile-bar__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M2 8l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<!-- Bottom sheet overlay -->
+<div class="kb-sheet-overlay" id="kb-sheet-overlay" aria-hidden="true">
+  <div class="kb-mobile-sheet" id="kb-mobile-sheet" role="dialog" aria-label="Browse categories">
+    <div class="kb-mobile-sheet__handle"></div>
+    <div class="kb-mobile-sheet__head">
+      <p class="kb-mobile-sheet__title">Categories</p>
+      <button class="kb-mobile-sheet__close" id="kb-sheet-close" aria-label="Close categories">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="kb-mobile-sheet__nav">
+      <p class="kb-mobile-sheet__group">Infrastructure · Technical Documentation</p>
+      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'azure' }]}
+         href={`${base}/knowledge-base?category=azure`}>Azure</a>
+      <div class="kb-mobile-sheet__subnav">
+        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Networking`}>Networking</a>
+        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Identity`}>Identity</a>
+        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Security`}>Security</a>
+        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=FinOps`}>FinOps</a>
+        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Landing+Zones`}>Landing Zones</a>
+      </div>
+      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'oci' }]}
+         href={`${base}/knowledge-base?category=oci`}>OCI</a>
+      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'devops' }]}
+         href={`${base}/knowledge-base?category=devops`}>DevOps</a>
+      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'bpm' }]}
+         href={`${base}/knowledge-base?category=bpm`}>BPM</a>
+      <a class="kb-mobile-sheet__item" href={`${base}/knowledge-base`}>All Articles</a>
+    </nav>
+  </div>
+</div>
+
 <style>
   /* ── Sidebar shell ───────────────────────────────────────────────
      Figma: aside-sidenavbar-3 — 20% width, cool near-white bg
@@ -219,4 +266,235 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   .kb-sidebar__subitem--active {
     color: var(--color-primary);
   }
+
+  /* ── Mobile bottom bar ──────────────────────────────────────────
+     Hidden on desktop; fixed at viewport bottom on mobile.
+  ─────────────────────────────────────────────────────────────────── */
+  .kb-mobile-bar {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .kb-mobile-bar {
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-top: 1px solid var(--glass-border);
+      padding: var(--space-3) var(--gutter);
+      padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  .kb-mobile-bar__trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface-container-low);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-on-surface);
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .kb-mobile-bar__trigger svg:first-child {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .kb-mobile-bar__chevron {
+    margin-left: auto;
+    color: var(--color-on-surface-muted);
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-mobile-bar__trigger[aria-expanded="true"] .kb-mobile-bar__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ── Sheet overlay (backdrop + panel) ──────────────────────────── */
+  .kb-sheet-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 98;
+  }
+
+  .kb-sheet-overlay--open {
+    display: block;
+  }
+
+  .kb-sheet-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(50, 50, 50, 0.4);
+  }
+
+  /* Slide-up panel */
+  .kb-mobile-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    max-height: 75vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform var(--duration-normal) var(--ease-standard);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .kb-sheet-overlay--open .kb-mobile-sheet {
+    transform: translateY(0);
+  }
+
+  .kb-mobile-sheet__handle {
+    width: 40px;
+    height: 4px;
+    background: var(--color-outline-variant);
+    border-radius: var(--radius-full);
+    margin: var(--space-3) auto var(--space-2);
+  }
+
+  .kb-mobile-sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-5) var(--space-4);
+  }
+
+  .kb-mobile-sheet__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+  }
+
+  .kb-mobile-sheet__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface-container-low);
+    color: var(--color-on-surface-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .kb-mobile-sheet__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 var(--space-8);
+  }
+
+  .kb-mobile-sheet__group {
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(161, 161, 170, 1);
+  }
+
+  .kb-mobile-sheet__item {
+    display: block;
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-display);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    text-decoration: none;
+  }
+
+  .kb-mobile-sheet__item:hover,
+  .kb-mobile-sheet__item--active {
+    color: var(--color-primary);
+  }
+
+  .kb-mobile-sheet__item--active {
+    background-color: rgba(236, 253, 245, 0.6);
+  }
+
+  .kb-mobile-sheet__subnav {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--space-1);
+  }
+
+  .kb-mobile-sheet__subitem {
+    display: block;
+    padding: var(--space-2) var(--space-5) var(--space-2) calc(var(--space-5) + 1.25rem);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(161, 161, 170, 1);
+    text-decoration: none;
+  }
+
+  .kb-mobile-sheet__subitem:hover,
+  .kb-mobile-sheet__subitem--active {
+    color: var(--color-primary);
+  }
 </style>
+
+<script>
+  const trigger = document.getElementById('kb-mobile-trigger') as HTMLButtonElement | null;
+  const overlay = document.getElementById('kb-sheet-overlay') as HTMLElement | null;
+  const closeBtn = document.getElementById('kb-sheet-close') as HTMLButtonElement | null;
+
+  function openSheet() {
+    overlay?.classList.add('kb-sheet-overlay--open');
+    trigger?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    overlay?.classList.remove('kb-sheet-overlay--open');
+    trigger?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  trigger?.addEventListener('click', () => {
+    trigger.getAttribute('aria-expanded') === 'true' ? closeSheet() : openSheet();
+  });
+
+  closeBtn?.addEventListener('click', closeSheet);
+
+  // Tap backdrop to close
+  overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) closeSheet();
+  });
+
+  // Sync sheet active state from URL params (KB index page)
+  const params = new URLSearchParams(window.location.search);
+  const activeCategory = params.get('category');
+  const activeTag = params.get('tag');
+  if (activeCategory || activeTag) {
+    document.querySelectorAll<HTMLAnchorElement>('.kb-mobile-sheet__item').forEach((link) => {
+      const p = new URLSearchParams(link.getAttribute('href')?.split('?')[1] ?? '');
+      link.classList.toggle('kb-mobile-sheet__item--active', p.get('category') === activeCategory && !activeTag);
+    });
+    document.querySelectorAll<HTMLAnchorElement>('.kb-mobile-sheet__subitem').forEach((link) => {
+      const p = new URLSearchParams(link.getAttribute('href')?.split('?')[1] ?? '');
+      link.classList.toggle('kb-mobile-sheet__subitem--active',
+        p.get('category') === activeCategory && p.get('tag') === activeTag);
+    });
+  }
+</script>

@@ -106,7 +106,8 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
   .kb-content {
     flex: 1;
     min-width: 0;
-    padding: var(--space-6) var(--space-5) var(--space-10);
+    /* extra bottom padding on mobile so fixed bar doesn't cover cards */
+    padding: var(--space-6) var(--space-5) calc(var(--space-10) + 4rem);
   }
 
   @media (min-width: 768px) {

@@ -22,6 +22,15 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname;
+
+/** True when the current page is this nav item or a child of it. */
+const isActive = (href: string): boolean => {
+  if (href === `${base}/`) {
+    // Home: exact match only so KB/CS sub-paths don't accidentally highlight it
+    return currentPath === `${base}/` || currentPath === base;
+  }
+  return currentPath === href || currentPath.startsWith(href + '/');
+};
 ---
 
 <header class="header">
@@ -43,7 +52,7 @@ const currentPath = Astro.url.pathname;
           <a
             class:list={[
               'header__link',
-              { 'header__link--active': currentPath === href },
+              { 'header__link--active': isActive(href) },
             ]}
             href={href}
           >
@@ -83,7 +92,7 @@ const currentPath = Astro.url.pathname;
           <a
             class:list={[
               'header__mobile-link',
-              { 'header__mobile-link--active': currentPath === href },
+              { 'header__mobile-link--active': isActive(href) },
             ]}
             href={href}
           >
