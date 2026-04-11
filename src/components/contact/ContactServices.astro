@@ -12,6 +12,9 @@
  *     padding: 32px
  *     SVG icon (primary green) + title (Manrope 700 20px) + body (Inter 14px muted)
  */
+import ShieldCheck from '../icons/ShieldCheck.astro';
+import Target from '../icons/Target.astro';
+import Workflow from '../icons/Workflow.astro';
 ---
 
 <section class="contact-services">
@@ -28,14 +31,7 @@
 
       <!-- Architecture Reviews -->
       <div class="service-card">
-        <!-- Shield + check icon — Figma: icon-67 (primary green fill) -->
-        <svg class="service-card__icon" width="28" height="28" viewBox="0 0 28 28"
-             fill="none" aria-hidden="true">
-          <path d="M14 3L5 6.5V14c0 5.25 3.89 10.16 9 11.33C19.11 24.16 23 19.25 23 14V6.5L14 3Z"
-                stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M10 14l3 3 5-5.5" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <ShieldCheck size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Architecture Reviews</h3>
         <p class="service-card__body">
           Review existing cloud architectures for clarity, scalability, security,
@@ -45,17 +41,7 @@
 
       <!-- Cloud Strategy -->
       <div class="service-card">
-        <!-- Target/location pin icon — Figma: icon-73 -->
-        <svg class="service-card__icon" width="28" height="28" viewBox="0 0 28 28"
-             fill="none" aria-hidden="true">
-          <circle cx="14" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
-          <circle cx="14" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M14 4V2M14 22v-2M4 12H2M26 12h-2"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M14 20c0 3.314-2 5-2 5s-2-1.686-2-5"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round"/>
-        </svg>
+        <Target size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Cloud Strategy</h3>
         <p class="service-card__body">
           Help shape practical cloud direction, from platform decisions to
@@ -65,19 +51,7 @@
 
       <!-- Process Optimization -->
       <div class="service-card">
-        <!-- BPM/flow icon — Figma: icon-79 (two nodes + curve) -->
-        <svg class="service-card__icon" width="28" height="28" viewBox="0 0 28 28"
-             fill="none" aria-hidden="true">
-          <!-- Left node column -->
-          <rect x="4" y="5" width="5" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-          <rect x="4" y="17" width="5" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-          <!-- Right node column -->
-          <rect x="19" y="5" width="5" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-          <rect x="19" y="15" width="5" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-          <!-- Connecting curve -->
-          <path d="M9 9C13 9 15 19 19 19" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round"/>
-        </svg>
+        <Workflow size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Process Optimization</h3>
         <p class="service-card__body">
           Consultation on BPM workflows, automation opportunities, and process

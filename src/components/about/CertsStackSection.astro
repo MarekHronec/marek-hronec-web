@@ -20,6 +20,8 @@
  * NarrativeSection above, intentionally merging them into one band.
  */
 
+import BadgeCheck from '../icons/BadgeCheck.astro';
+
 interface Cert {
   name:  string;
   level: string;
@@ -97,21 +99,7 @@ const columns: TechColumn[] = [
               consistency with the reference screenshot.
             -->
             <span class="cs__cert-check" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle
-                  cx="10" cy="10" r="9"
-                  stroke="currentColor"
-                  stroke-width="1.25"
-                  stroke-opacity="0.4"
-                />
-                <path
-                  d="M6 10l3 3 5-6"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <BadgeCheck size={20} aria-hidden="true" />
             </span>
 
             <div class="cs__cert-text">

@@ -9,6 +9,10 @@
  *   Sub-items: Inter 700, 10px, 1px tracking, rgba(161,161,170)
  */
 
+import Cloud from '../icons/Cloud.astro';
+import Workflow from '../icons/Workflow.astro';
+import BpmMerge from '../icons/BpmMerge.astro';
+
 interface Props {
   currentCategory?: string;
 }
@@ -33,11 +37,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'azure' }]}
         href={`${base}/knowledge-base?category=azure`}
       >
-        <!-- Cloud icon -->
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M11 9.5H3.5A2.5 2.5 0 013.5 4.5h.08A3 3 0 019.5 5h.5a2 2 0 010 4h1z"
-                stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-        </svg>
+        <Cloud size={14} aria-hidden="true" />
         Azure
       </a>
 
@@ -55,10 +55,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'oci' }]}
         href={`${base}/knowledge-base?category=oci`}
       >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M11 9.5H3.5A2.5 2.5 0 013.5 4.5h.08A3 3 0 019.5 5h.5a2 2 0 010 4h1z"
-                stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-        </svg>
+        <Cloud size={14} aria-hidden="true" />
         OCI
       </a>
 
@@ -67,11 +64,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'devops' }]}
         href={`${base}/knowledge-base?category=devops`}
       >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <rect x="1.5" y="3" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
-          <rect x="8.5" y="7" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M5.5 5h2a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
+        <Workflow size={14} aria-hidden="true" />
         DevOps
       </a>
 
@@ -80,13 +73,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'bpm' }]}
         href={`${base}/knowledge-base?category=bpm`}
       >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <rect x="1" y="2" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>
-          <rect x="1" y="8.5" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>
-          <rect x="9.5" y="5.25" width="3.5" height="3.5" rx="0.75" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M4.5 3.75h3a1 1 0 011 1v2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M4.5 10.25h3a1 1 0 001-1V6.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
+        <BpmMerge size={14} aria-hidden="true" />
         BPM
       </a>
     </nav>

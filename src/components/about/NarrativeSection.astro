@@ -20,6 +20,8 @@
  * share the same height, regardless of content length.
  */
 
+import BookOpen from '../icons/BookOpen.astro';
+
 const expertise = [
   'Cloud Architecture',
   'Process Orchestration',
@@ -46,21 +48,7 @@ const expertise = [
           Two pages of an open book with a bookmark ribbon on the right.
           Stroked style, no fill, uses currentColor (primary teal).
         -->
-        <svg
-          class="narrative__icon"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          aria-hidden="true"
-        >
-          <!-- Left page -->
-          <path d="M10 4C10 4 7 3 4 3.5V16C7 15.5 10 16.5 10 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Right page -->
-          <path d="M10 4C10 4 13 3 16 3.5V16C13 15.5 10 16.5 10 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Spine -->
-          <line x1="10" y1="4" x2="10" y2="16.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-        </svg>
+        <BookOpen size={20} class="narrative__icon" aria-hidden="true" />
         The Narrative
       </h2>
 

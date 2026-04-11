@@ -1,0 +1,25 @@
+---
+/**
+ * BpmMerge — two input nodes merging into one output node.
+ * Based on the Lucide Workflow style but mirrored: two rects on the
+ * left feed via bezier curves into a single rect on the right.
+ *
+ * Layout (24×24 viewBox):
+ *   Top-left  rect: (2, 2)  8×8  → right-center at (10, 6)
+ *   Bot-left  rect: (2, 14) 8×8  → right-center at (10, 18)
+ *   Right     rect: (14, 8) 8×8  → left-center  at (14, 12)
+ */
+interface Props {
+  size?: number;
+  class?: string;
+  'aria-hidden'?: boolean | string;
+}
+const { size = 24, class: className, ...rest } = Astro.props;
+---
+<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={className} {...rest}>
+  <rect width="8" height="8" x="2" y="2" rx="2"/>
+  <rect width="8" height="8" x="2" y="14" rx="2"/>
+  <rect width="8" height="8" x="14" y="8" rx="2"/>
+  <path d="M10 6 C12 6, 12 12, 14 12"/>
+  <path d="M10 18 C12 18, 12 12, 14 12"/>
+</svg>

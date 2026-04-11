@@ -195,6 +195,14 @@ const { Content } = await render(entry);
     color: var(--color-on-surface);
     letter-spacing: var(--tracking-tight);
     margin-top: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .prose :global(h2 svg) {
+    color: var(--color-primary);
+    flex-shrink: 0;
   }
 
   .prose :global(h3) {
