@@ -1,15 +1,4 @@
 ---
-/**
- * ArticleCard — card used in the Knowledge Base listing grid
- *
- * Layout:
- *   Level badge (top)
- *   Category label (primary green, uppercase)
- *   Title (Manrope 700, title-lg)
- *   Excerpt (muted, body-md)
- *   Footer: date + read time | tags
- */
-
 interface Props {
   slug: string;
   title: string;
@@ -31,19 +20,13 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
 <a class="article-card" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/knowledge-base/${slug}`}>
 
   <div class="article-card__header">
-    <!-- Level badge -->
     <span class:list={['article-card__badge', `article-card__badge--${level}`]}>{levelLabel}</span>
-    <!-- Category -->
     <p class="article-card__category">{category.toUpperCase()}</p>
   </div>
 
-  <!-- Title -->
   <h2 class="article-card__title">{title}</h2>
-
-  <!-- Excerpt -->
   <p class="article-card__excerpt">{excerpt}</p>
 
-  <!-- Footer -->
   <footer class="article-card__footer">
     <div class="article-card__meta">
       <span>{dateStr}</span>
@@ -85,7 +68,6 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
     gap: var(--space-3);
   }
 
-  /* Level badge */
   .article-card__badge {
     font-family: var(--font-body);
     font-size: 0.625rem;
@@ -96,6 +78,7 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
     border-radius: 2px;
   }
 
+  /* Each level gets its own color pair for quick visual scanning */
   .article-card__badge--beginner {
     background-color: rgba(220, 252, 231, 1);
     color: rgba(22, 101, 52, 1);

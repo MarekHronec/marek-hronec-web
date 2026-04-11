@@ -1,13 +1,8 @@
 ---
-/**
+/*
  * Knowledge Base listing — /knowledge-base
- *
- * Layout:
- *   Full-height sidebar (220px) on the left
- *   Article card grid (flex:1) on the right
- *
- * The sidebar background extends full height via align-items:stretch
- * on the outer kb-page wrapper — no 1px border separation needed.
+ * Sidebar (220px) + article card grid (flex:1).
+ * align-items:stretch on kb-page keeps the sidebar bg full-height — no border needed.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -67,7 +62,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
         ) : (
           <p class="kb-empty">No articles published yet.</p>
         )}
-        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" style="display:none">
+        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty">
           No articles found for this filter.
         </p>
 
@@ -185,6 +180,11 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     font-size: var(--text-body-lg);
     padding: var(--space-8) 0;
   }
+
+  /* Hidden by default; shown by script when a filter returns no results */
+  .kb-empty--filtered {
+    display: none;
+  }
 </style>
 
 <script>
@@ -214,7 +214,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     /* Empty-state message */
     const emptyEl = document.getElementById('kb-filter-empty');
     if (emptyEl) {
-      emptyEl.style.display = (activeCategory || activeTag) && visibleCount === 0 ? '' : 'none';
+      emptyEl.style.display = (activeCategory || activeTag) && visibleCount === 0 ? 'block' : '';
     }
 
     /* ── Sync sidebar active state ─────────────────────────────── */

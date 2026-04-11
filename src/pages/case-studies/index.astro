@@ -1,19 +1,7 @@
 ---
-/**
- * Case Studies listing page — /case-studies
- *
- * Layout (Figma):
- *   ┌─ Hero ─────────────────────────────────────────────────────────┐
- *   │  PRINCIPAL CLOUD ARCHITECT          subtitle (vertically        │
- *   │  Case Studies.                      centered beside heading)    │
- *   └────────────────────────────────────────────────────────────────┘
- *   ┌─ Featured card (white + shadow) ───────────────────────────────┐
- *   │  Left (38%): chip | title | meta | problem | outcome/metrics   │
- *   │  Right (62%): dark diagram | [tradeoffs card | report link row] │
- *   └────────────────────────────────────────────────────────────────┘
- *   ┌─ Secondary cards (2-col equal) ────────────────────────────────┐
- *   │  Card 02 / Legacy Migration    │  Card 03 / Data Engineering   │
- *   └────────────────────────────────────────────────────────────────┘
+/*
+ * Case Studies listing — /case-studies
+ * Featured card (white + shadow) on top, two equal cards below.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -31,37 +19,13 @@ const others     = allStudies.filter((s) => !s.data.featured);
   description="Real-world cloud architecture engagements — outcomes, metrics, and technical decisions."
 >
 
-  <!-- ── Hero ──────────────────────────────────────────────────────
-       Mirrors the About page HeroSection structure exactly so that
-       vertical rhythm is identical when switching pages:
-
-       About:        Case Studies:
-       section       section
-         padding-top: space-8 (48px)
-         .hero__content / .cs-hero__content
-           padding-top: space-4 (16px)   ← top gap to label
-           gap: space-5 (24px)           ← label→heading, heading→body
-           label
-           h1
-           body / subtitle
-
-       The subtitle on Case Studies sits in the same flex column as
-       the label and heading — identical DOM position to About's body
-       paragraph — so the gap tokens produce the same rendered height.
-  ───────────────────────────────────────────────────────────────── -->
+  <!-- ── Hero — same spacing tokens as About page for consistent rhythm ── -->
   <section class="cs-hero">
     <div class="cs-hero__inner container">
 
-      <!--
-        Single content column (left) — identical structure to
-        .hero__content in HeroSection.astro.
-        padding-top + gap are the only spacing controls; they match
-        the About page token-for-token.
-      -->
       <div class="cs-hero__content">
         <p class="cs-hero__label">Principal Cloud Architect</p>
         <h1 class="cs-hero__heading">Case Studies.</h1>
-        <!-- subtitle takes the same slot as .hero__body on About -->
         <p class="cs-hero__subtitle">
           Elite-level digital infrastructure strategy. I transform architectural
           complexity into scalable, cost-efficient, and resilient systems for
@@ -72,38 +36,21 @@ const others     = allStudies.filter((s) => !s.data.featured);
     </div>
   </section>
 
-  <!-- ── Featured card ─────────────────────────────────────────────
-       Figma: node-12 (light gray 4px outer tray) wrapping
-       background-shadow-13 (pure white card + shadow).
-       Left: narrative info (38% width).
-       Right: dark diagram (flex: 1) stacked above a flex row of
-              [tradeoffs card (flex:1) | report link (right-aligned)].
-  ───────────────────────────────────────────────────────────────── -->
+  <!-- ── Featured card — left: narrative (38%), right: dark diagram + tradeoffs row ── -->
   {featured && (
     <section class="cs-featured">
       <div class="container">
-        <!-- Outer tray — Figma: node-12, surface-container-low bg, 4px radius -->
+        <!-- Outer tray — surface-container-low with 4px inset padding -->
         <div class="cs-featured__tray">
           <article class="cs-featured__card">
 
-            <!-- ── Left panel ─────────────────────────────────────── -->
+            <!-- Left panel -->
             <div class="cs-featured__left">
 
-              <!--
-                "FEATURED PROJECT" chip — Figma: background-17.
-                display: inline-flex so it ONLY wraps its text.
-                background: #b1f0ce, text: rgba(29,92,66,1), radius: 2px.
-              -->
               <span class="cs-featured__chip">Featured Project</span>
 
-              <!-- Title — Figma: Manrope 700, 30px, -0.75px tracking -->
               <h2 class="cs-featured__title">{featured.data.title}</h2>
 
-              <!--
-                Meta row — Figma: border-21 — padded top+bottom with
-                hairline borders above and below. Gap between CLIENT and
-                TIMELINE is generous (space-10 = 64px on desktop).
-              -->
               <div class="cs-featured__meta">
                 <div class="cs-featured__meta-item">
                   <span class="cs-featured__meta-label">Client</span>
@@ -152,25 +99,17 @@ const others     = allStudies.filter((s) => !s.data.featured);
 
             </div>
 
-            <!-- ── Right panel ────────────────────────────────────── -->
+            <!-- Right panel -->
             <div class="cs-featured__right">
 
-              <!--
-                Diagram panel — dark background with pipeline stage overlay.
-                Uses position: relative so the stage labels and caption sit
-                on top of the image. Replace /images/case-study-featured.jpg
-                with a real architecture diagram when available — the <img>
-                tag makes the swap a one-liner.
-              -->
+              <!-- Diagram panel — replace src with a real architecture image when ready -->
               <div class="cs-featured__diagram" aria-label="Telemetry flow diagram">
                 <!-- Swappable image — replace src to update the visual -->
                 <img
                   class="cs-featured__diagram-img"
                   src="/images/case-study-featured.jpg"
                   alt="Hyper-scale telemetry architecture diagram"
-                  onerror="this.style.display='none'"
                 />
-                <!-- Stage labels overlay — always visible regardless of image -->
                 <div class="cs-featured__diagram-overlay">
                   <div class="cs-featured__diagram-stages">
                     <span class="cs-featured__stage cs-featured__stage--active">Ingestion</span>
@@ -182,22 +121,11 @@ const others     = allStudies.filter((s) => !s.data.featured);
                 </div>
               </div>
 
-              <!--
-                Bottom row — Figma: container-68 — flex ROW:
-                  left: Key Tradeoffs card (flex: 1, ~half width)
-                  right: "View Full Report →" link (right-aligned)
-                This is what keeps the tradeoffs card at half-width.
-              -->
               <div class="cs-featured__bottom-row">
 
-                <!-- Key Tradeoffs card — Figma: background-69, #f0eded, 2px radius -->
+                <!-- Key Tradeoffs card -->
                 <div class="cs-featured__tradeoffs">
                   <h4 class="cs-featured__tradeoffs-heading">
-                    <!--
-                      Balance scales icon — matches the Figma reference.
-                      A horizontal beam balanced on a central post, with
-                      two hanging pans (arcs) on each end.
-                    -->
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                       <!-- Central post -->
                       <line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
@@ -222,7 +150,6 @@ const others     = allStudies.filter((s) => !s.data.featured);
                   </ul>
                 </div>
 
-                <!-- "View Full Report →" — pinned to bottom-right -->
                 <div class="cs-featured__report-col">
                   <a class="cs-featured__report-link" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/case-studies/${featured.id}`}>
                     View Full Report
@@ -243,11 +170,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     </section>
   )}
 
-  <!-- ── Secondary cards ───────────────────────────────────────────
-       Figma: node-88 — flex row. Cards: card-2-89 / card-3-107.
-       Background: rgba(246,243,242,1) = surface-container-low.
-       No outer tray — cards sit directly on the page surface.
-  ───────────────────────────────────────────────────────────────── -->
+  <!-- ── Secondary cards — no outer tray, sit directly on the page surface ── -->
   <section class="cs-grid">
     <div class="cs-grid__inner container">
       {others.map((study, i) => (
@@ -265,32 +188,26 @@ const others     = allStudies.filter((s) => !s.data.featured);
 
 </BaseLayout>
 
+<script>
+  /* Hide diagram image on load error so the dark background shows through */
+  document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
+    ?.addEventListener('error', function () { this.style.display = 'none'; });
+</script>
+
 <style>
   /* ── Hero ────────────────────────────────────────────────────────
      Token-for-token copy of HeroSection.astro spacing so vertical
      rhythm is identical when navigating between pages.
-
-     About page reference:
-       .hero              → padding-block: space-8 space-6  (48/32px)
-       .hero__content     → padding-top: space-4 (16px)
-                            gap: space-5 (24px) between all children
-       .hero__label       → text-label-md, semibold, primary
-       .hero__heading     → clamp(2.5rem,6vw,display-lg), bold,
-                            tracking-tight, leading-tight
-       .hero__body        → text-body-lg, relaxed leading, muted, 48ch
   ─────────────────────────────────────────────────────────────────── */
   .cs-hero {
-    /* ← identical to .hero */
     padding-block: var(--space-8) var(--space-6);
   }
 
   .cs-hero__inner {
-    /* single column — content takes full width left */
     display: grid;
     grid-template-columns: 1fr;
   }
 
-  /* ← identical to .hero__content */
   .cs-hero__content {
     display: flex;
     flex-direction: column;
@@ -319,8 +236,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     color: var(--color-on-surface);
   }
 
-  /* ← mirrors .hero__body (same size/color/leading, wider max-width
-     because this subtitle is longer than the About body paragraph) */
+  /* Wider max-width than .hero__body because the subtitle here runs longer */
   .cs-hero__subtitle {
     font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
@@ -328,22 +244,19 @@ const others     = allStudies.filter((s) => !s.data.featured);
     max-width: 52ch;
   }
 
-  /* ── Featured section ────────────────────────────────────────────
-     Outer tray (node-12) = surface-container-low with 4px radius.
-     Inner card = pure white + ambient shadow.
-  ─────────────────────────────────────────────────────────────────── */
+  /* ── Featured section ─────────────────────────────────────────── */
   .cs-featured {
     padding-block: 0 var(--space-5);
   }
 
-  /* Figma: node-12 — light gray tray, 4px radius, 4px padding */
+  /* Outer tray — surface-container-low with 4px inset padding */
   .cs-featured__tray {
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-md);
     padding: 4px;
   }
 
-  /* Figma: background-shadow-13 — white, 40px padding, subtle shadow */
+  /* White card with ambient shadow — sits inside the tray */
   .cs-featured__card {
     background-color: var(--color-surface-container-lowest);
     border-radius: calc(var(--radius-md) - 2px);
@@ -362,7 +275,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     }
   }
 
-  /* ── Left panel — Figma: left-core-info-15, width: 38.58% ─────── */
+  /* ── Left panel ─────────────────────────────────────────────── */
   .cs-featured__left {
     display: flex;
     flex-direction: column;
@@ -377,23 +290,21 @@ const others     = allStudies.filter((s) => !s.data.featured);
     }
   }
 
-  /* "FEATURED PROJECT" chip — Figma: background-17.
-     display: inline-flex → ONLY as wide as its text content. */
+  /* display: inline-flex → chip is only as wide as its text content */
   .cs-featured__chip {
     display: inline-flex;
     align-self: flex-start;           /* prevents stretch to full parent width */
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-regular);
-    letter-spacing: 0.45px;           /* Figma: 0.45px */
+    letter-spacing: 0.45px;
     text-transform: uppercase;
-    color: rgba(29, 92, 66, 1);       /* Figma: rgba(29,92,66,1) — darker primary */
+    color: rgba(29, 92, 66, 1);       /* darker variant of primary for contrast on mint bg */
     background-color: var(--color-cta-surface);   /* #b1f0ce */
     padding: 2px var(--space-2);
     border-radius: 2px;
   }
 
-  /* Title — Figma: Manrope 700, 30px, -0.75px tracking */
   .cs-featured__title {
     font-family: var(--font-display);
     font-size: var(--text-headline-md);
@@ -403,11 +314,10 @@ const others     = allStudies.filter((s) => !s.data.featured);
     line-height: var(--leading-snug);
   }
 
-  /* Meta row — Figma: border-21 — hairline borders top+bottom.
-     Large gap between CLIENT and TIMELINE matches the Figma spacing. */
+  /* Hairline borders top+bottom — 10% warm-gray opacity, barely visible */
   .cs-featured__meta {
     display: flex;
-    gap: var(--space-10);             /* wide gap between meta items — Figma */
+    gap: var(--space-10);             /* generous gap between CLIENT and TIMELINE */
     padding-block: var(--space-4);
     border-top: 1px solid var(--color-warm-gray-10);
     border-bottom: 1px solid var(--color-warm-gray-10);
@@ -419,16 +329,14 @@ const others     = allStudies.filter((s) => !s.data.featured);
     gap: 2px;
   }
 
-  /* "CLIENT" / "TIMELINE" — Figma: Inter 9px, warm gray */
   .cs-featured__meta-label {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
-    color: var(--color-meta-label);    /* Figma: rgba(123,122,122,1) */
+    color: var(--color-meta-label);
   }
 
-  /* "GLOBAL PAYMENTS" / "6 MONTHS" — Figma: Manrope 700, 12px */
   .cs-featured__meta-value {
     font-family: var(--font-display);
     font-size: var(--text-label-md);
@@ -437,7 +345,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     color: var(--color-on-surface);
   }
 
-  /* Problem + Outcome blocks — Figma: container-30, gap: 16px */
+  /* Problem + Outcome blocks */
   .cs-featured__narrative {
     display: flex;
     flex-direction: column;
@@ -451,7 +359,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     gap: var(--space-2);
   }
 
-  /* "The Problem" / "The Outcome" headings — Figma: Manrope 700, 14px */
+  /* "The Problem" / "The Outcome" headings with inline icon */
   .cs-featured__narrative-heading {
     font-family: var(--font-display);
     font-size: var(--text-body-md);
@@ -474,7 +382,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     color: var(--color-on-surface-muted);
   }
 
-  /* ── Right panel — Figma: node-50, width: 57.87% ─────────────── */
+  /* ── Right panel ────────────────────────────────────────────── */
   .cs-featured__right {
     display: flex;
     flex-direction: column;
@@ -482,20 +390,18 @@ const others     = allStudies.filter((s) => !s.data.featured);
     flex: 1;
   }
 
-  /* Dark diagram panel — position: relative so the overlay sits on top.
-     min-height increased to 300px (~1.5× the previous 200px).
-     When a real image is present, it fills the dark bg naturally.
-  ─────────────────────────────────────────────────────────────────── */
+  /* Dark diagram panel — position: relative so the overlay stage labels sit on top.
+     When a real architecture diagram image is dropped in, it fills the dark bg. */
   .cs-featured__diagram {
     background-color: var(--color-inverse-surface);
     border-radius: 2px;
     position: relative;
-    min-height: 300px;                 /* 1.5× taller than before */
+    min-height: 300px;
     overflow: hidden;
     flex: 1;
   }
 
-  /* Swappable image — covers the panel; hidden if src 404s */
+  /* Image covers the dark panel; JS hides it on load error so the dark bg shows */
   .cs-featured__diagram-img {
     position: absolute;
     inset: 0;
@@ -506,18 +412,18 @@ const others     = allStudies.filter((s) => !s.data.featured);
     opacity: 0.6;                      /* dim so overlay labels stay readable */
   }
 
-  /* Overlay — stage labels + caption, always on top of image/bg */
+  /* Overlay — always on top of the image */
   .cs-featured__diagram-overlay {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;         /* stages sit near the bottom */
+    justify-content: flex-end;         /* stages sit at the bottom of the panel */
     gap: var(--space-3);
     padding: var(--space-6);
   }
 
-  /* 4 pipeline stage boxes — Figma: overlay-border elements */
+  /* 4 pipeline stage boxes */
   .cs-featured__diagram-stages {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -551,11 +457,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     text-align: right;
   }
 
-  /* ── Bottom row — Figma: container-68 — FLEX ROW ─────────────────
-     Left: tradeoffs card (flex: 1, grows to ~half width).
-     Right: "View Full Report" column (right-aligned, ~half width).
-     This is the key fix: they are SIDE BY SIDE, not stacked.
-  ─────────────────────────────────────────────────────────────────── */
+  /* Bottom row — flex row so tradeoffs card and report link are side by side, not stacked */
   .cs-featured__bottom-row {
     display: flex;
     flex-direction: row;
@@ -563,9 +465,9 @@ const others     = allStudies.filter((s) => !s.data.featured);
     gap: var(--space-4);
   }
 
-  /* Tradeoffs card — Figma: background-69, rgba(240,237,237,1) = surface-container */
+  /* Tradeoffs card — surface-container bg, grows to fill left half */
   .cs-featured__tradeoffs {
-    flex: 1;                           /* takes left ~half of the row */
+    flex: 1;
     background-color: var(--color-surface-container);
     border-radius: 2px;
     padding: var(--space-4);
@@ -574,7 +476,6 @@ const others     = allStudies.filter((s) => !s.data.featured);
     gap: var(--space-2);
   }
 
-  /* "Key Tradeoffs" — Figma: Manrope 700, 12px, icon + text */
   .cs-featured__tradeoffs-heading {
     font-family: var(--font-display);
     font-size: var(--text-label-md);
@@ -590,7 +491,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     flex-shrink: 0;
   }
 
-  /* Bullet list — Figma: list-74, Inter 11px */
+  /* Bullet list */
   .cs-featured__tradeoffs-list {
     display: flex;
     flex-direction: column;
@@ -606,10 +507,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     color: var(--color-on-surface-muted);
   }
 
-  /* Report link column — right half, pinned to bottom-right.
-     No flex:1 — let it sit naturally to the right of the tradeoffs card.
-     padding matches the card footer padding so the link visually
-     aligns with "Case Study →" in the secondary cards below. */
+  /* Report link — no flex:1 so it sits naturally to the right of the tradeoffs card */
   .cs-featured__report-col {
     display: flex;
     justify-content: flex-end;
@@ -618,7 +516,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     flex-shrink: 0;
   }
 
-  /* "View Full Report →" — Figma: button-84, Manrope 700, 12px, primary */
+  /* "View Full Report →" */
   .cs-featured__report-link {
     display: inline-flex;
     align-items: center;
@@ -634,10 +532,8 @@ const others     = allStudies.filter((s) => !s.data.featured);
     opacity: 0.75;
   }
 
-  /* ── Secondary cards grid ────────────────────────────────────────
-     Figma: card-2-89 / card-3-107 — rgba(246,243,242,1) = surface-container-low.
-     Cards sit directly on the page surface; the tonal contrast
-     (warm white page vs slightly darker cards) provides separation.
+  /* ── Secondary cards grid ───────────────────────────────────────
+     Tonal contrast (page surface vs card bg) provides separation — no borders needed.
   ─────────────────────────────────────────────────────────────────── */
   .cs-grid {
     padding-block: 0 var(--space-6);

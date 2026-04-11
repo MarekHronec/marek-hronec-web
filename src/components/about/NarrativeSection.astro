@@ -1,23 +1,9 @@
 ---
-/**
- * NarrativeSection — the "about me in depth" band.
- *
- * Layout: two side-by-side cards on a tinted section background.
- *
- *   ┌─────────────────────────────┬──────────────────┐
- *   │  narrative__text  (card)    │ narrative__       │
- *   │  • icon + heading           │  expertise (card) │
- *   │  • two body paragraphs      │  • dark surface   │
- *   │  surface bg (light card)    │  • bullet list    │
- *   └─────────────────────────────┴──────────────────┘
- *
- * Color strategy (tonal layering, per DESIGN.md):
- *   Section bg     → surface-container-low  (#f6f3f2)  ← medium tint
- *   Left card bg   → surface               (#fcf9f8)  ← lighter, lifts from section
- *   Right card bg  → inverse-surface       (#0e0e0e)  ← dark, creates contrast
- *
- * Both cards use align-items: stretch on the grid so they always
- * share the same height, regardless of content length.
+/*
+ * Two cards side by side: light left (career text) + dark right (expertise list).
+ * No section background — the cards carry their own tonal surfaces so they
+ * stay bounded at wide viewports rather than bleeding full-width.
+ * align-items: stretch keeps both cards the same height regardless of content.
  */
 
 import BookOpen from '../icons/BookOpen.astro';
@@ -34,25 +20,13 @@ const expertise = [
 <section class="narrative">
   <div class="narrative__inner container">
 
-    <!-- ── Left card: career narrative ─────────────────────────────
-         This is a genuine card (its own background), NOT just text
-         floating on the section background. The surface colour lifts
-         it slightly above the section tint, matching the reference.
-    ──────────────────────────────────────────────────────────────── -->
     <div class="narrative__text">
 
-      <!-- Section icon + heading row -->
       <h2 class="narrative__heading">
-        <!--
-          Open book / journal icon — matches the Figma reference.
-          Two pages of an open book with a bookmark ribbon on the right.
-          Stroked style, no fill, uses currentColor (primary teal).
-        -->
         <BookOpen size={20} class="narrative__icon" aria-hidden="true" />
         The Narrative
       </h2>
 
-      <!-- Body paragraphs -->
       <div class="narrative__body">
         <p>
           Over nearly a decade in tech, I've moved through analysis, operations, support, and
@@ -69,31 +43,19 @@ const expertise = [
 
     </div>
 
-    <!-- ── Right card: core expertise ─────────────────────────────
-         Dark card (inverse-surface) deliberately contrasts with
-         the light left card. Uses green bullet dots (not dashes)
-         and ALL-CAPS text labels per the reference design.
-         A subtle hairline border-top separates the quote from the
-         list — the only place a line is acceptable inside a dark
-         container where tonal shift cannot provide separation.
-    ──────────────────────────────────────────────────────────────── -->
     <aside class="narrative__expertise">
 
-      <!-- Label — muted uppercase metadata style -->
       <p class="narrative__expertise-label">Core Expertise</p>
 
-      <!-- Bullet list — ALL CAPS + primary-green dots -->
       <ul class="narrative__expertise-list" role="list">
         {expertise.map((item) => (
           <li class="narrative__expertise-item">
-            <!-- 6 px green disc — uses primary token, not hardcoded colour -->
             <span class="narrative__expertise-dot" aria-hidden="true"></span>
             {item.toUpperCase()}
           </li>
         ))}
       </ul>
 
-      <!-- Closing quote — italic, further muted -->
       <p class="narrative__expertise-footer">
         "Complexity is the enemy of reliability."
       </p>
@@ -104,25 +66,16 @@ const expertise = [
 </section>
 
 <style>
-  /* ── Section shell ───────────────────────────────────────────────
-     No section-level background — the page body surface (#fcf9f8)
-     shows through. Only the cards themselves carry tonal backgrounds,
-     matching the Figma design where cards are constrained to the
-     container width (no full-bleed color bands at wide viewports).
-  ─────────────────────────────────────────────────────────────────── */
   .narrative {
-    padding-block: 0 var(--space-3);   /* 0 top (hero bottom provides the gap), 24px bottom */
+    padding-block: 0 var(--space-3);
   }
 
-  /* ── Two-column grid ─────────────────────────────────────────────
-     align-items: stretch  → both cards grow to the same height.
-     Mobile: stacked; ≥768 px: side by side (60 / 40 split).
-  ─────────────────────────────────────────────────────────────────── */
+  /* align-items: stretch so both cards grow to the same height */
   .narrative__inner {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-5);
-    align-items: stretch;          /* equal card heights */
+    align-items: stretch;
   }
 
   @media (min-width: 768px) {
@@ -138,11 +91,6 @@ const expertise = [
     }
   }
 
-  /* ── Left card: narrative text ───────────────────────────────────
-     Uses surface-container-low (#f6f3f2) — the Figma card background.
-     Without a section-level color, this provides the tonal lift that
-     separates it from the plain surface body background.
-  ─────────────────────────────────────────────────────────────────── */
   .narrative__text {
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-md);
@@ -151,7 +99,6 @@ const expertise = [
     flex-direction: column;
   }
 
-  /* Section heading row: icon + text aligned by flex */
   .narrative__heading {
     font-family: var(--font-display);
     font-size: var(--text-title-lg);
@@ -163,13 +110,11 @@ const expertise = [
     margin-bottom: var(--space-5);
   }
 
-  /* 2×2 grid icon coloured with primary teal */
   .narrative__icon {
     color: var(--color-primary);
     flex-shrink: 0;
   }
 
-  /* Body paragraphs — comfortable reading measure */
   .narrative__body {
     display: flex;
     flex-direction: column;
@@ -182,11 +127,7 @@ const expertise = [
     color: var(--color-on-surface-muted);
   }
 
-  /* ── Right card: Core Expertise (dark) ──────────────────────────
-     inverse-surface (#0e0e0e) creates maximum contrast against the
-     light section background.  All text uses on-inverse-surface or
-     rgba variants of it.
-  ─────────────────────────────────────────────────────────────────── */
+  /* Dark card — inverse-surface creates maximum contrast against the light left card */
   .narrative__expertise {
     background-color: var(--color-inverse-surface);
     border-radius: var(--radius-md);
@@ -196,36 +137,32 @@ const expertise = [
     gap: var(--space-4);
   }
 
-  /* "Core Expertise" — prominent white heading, Figma: full opacity */
   .narrative__expertise-label {
     font-family: var(--font-display);
     font-size: var(--text-title-lg);
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-tight);
-    color: var(--color-on-inverse-surface);   /* full white — Figma heading style */
+    color: var(--color-on-inverse-surface);
   }
 
-  /* Bullet list */
   .narrative__expertise-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    flex: 1;                           /* push footer to bottom of card */
+    flex: 1; /* pushes the closing quote to the card bottom */
   }
 
-  /* Each item: green dot + ALL-CAPS label — muted gray per Figma */
   .narrative__expertise-item {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
-    color: rgba(244, 241, 240, 0.65);  /* Figma: dimmer than the heading */
+    color: rgba(244, 241, 240, 0.65);
     display: flex;
     align-items: center;
     gap: var(--space-3);
   }
 
-  /* Green disc bullet — uses primary token */
   .narrative__expertise-dot {
     display: block;
     width: 6px;
@@ -235,9 +172,11 @@ const expertise = [
     flex-shrink: 0;
   }
 
-  /* Closing quote — separated by a hairline from the list above.
-     Exception to the no-line rule: inside a dark card, tonal shift
-     cannot provide separation, so a very low-opacity line is used. */
+  /*
+   * Hairline before the quote — one exception to the no-divider rule.
+   * Inside a dark card, tonal shift can't create separation, so a very
+   * low-opacity white line is used instead.
+   */
   .narrative__expertise-footer {
     font-family: var(--font-body);
     font-size: var(--text-label-md);

@@ -1,17 +1,5 @@
 ---
-/**
- * CaseStudyMetrics — a row of metric stat blocks.
- *
- * Used on both the featured card and the detail page.
- * Each metric has a large value and a small uppercase label below,
- * separated from adjacent metrics by a 2px primary-green left border.
- *
- * Figma: node-44 / node-47
- *   padding: 4px 0 4px 12px
- *   border-left: 2px solid rgba(44,105,78,1)
- *   value: Inter 700 20px -1px tracking
- *   label: Inter regular 9px uppercase muted
- */
+/* Used on both the featured card on the listing page and the case study detail page. */
 
 interface Metric {
   label: string;
@@ -35,14 +23,12 @@ const { metrics } = Astro.props;
 </ul>
 
 <style>
-  /* Horizontal row — gap matches CLIENT/TIMELINE spacing in featured card */
   .metrics {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-10);   /* 64px — same generous gap as meta row */
+    gap: var(--space-10);
   }
 
-  /* Each metric: left border accent + stacked value/label */
   .metrics__item {
     display: flex;
     flex-direction: column;
@@ -51,7 +37,6 @@ const { metrics } = Astro.props;
     border-left: 2px solid var(--color-primary);
   }
 
-  /* Large number — Figma: Inter 700, 20px, -1px tracking */
   .metrics__value {
     font-family: var(--font-body);
     font-size: var(--text-title-md);
@@ -61,7 +46,6 @@ const { metrics } = Astro.props;
     line-height: var(--leading-snug);
   }
 
-  /* Label — Figma: Inter regular, 9px, uppercase, muted warm gray */
   .metrics__label {
     font-family: var(--font-body);
     font-size: var(--text-label-md);

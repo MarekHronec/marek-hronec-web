@@ -1,17 +1,7 @@
 ---
-/**
+/*
  * Knowledge Base article detail — /knowledge-base/[...slug]
- *
- * Layout:
- *   ┌─ Sidebar (220px) ─┬─ Article (flex:1) ─┬─ TOC (220px) ─┐
- *   │  CategorySidebar  │  breadcrumb          │  ArticleOutline │
- *   │                   │  level badge + title │                 │
- *   │                   │  date / read time    │                 │
- *   │                   │  prose body          │                 │
- *   │                   │  related articles    │                 │
- *   └───────────────────┴──────────────────────┴─────────────────┘
- *
- * Figma: knowledge-base-1 detail view
+ * Three columns: sidebar (220px) | article (flex:1) | TOC (200px, desktop only).
  */
 
 import { getCollection, render } from 'astro:content';
@@ -52,7 +42,7 @@ const categoryLabel = category.toUpperCase();
     <!-- Main content area -->
     <div class="kb-main">
 
-      <!-- Breadcrumb — Figma: nav-breadcrumbs-46 -->
+      <!-- Breadcrumb -->
       <nav class="kb-breadcrumb" aria-label="Breadcrumb">
         <a class="kb-breadcrumb__link" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/knowledge-base`}>Knowledge Base</a>
         <span class="kb-breadcrumb__sep" aria-hidden="true">›</span>
@@ -64,10 +54,10 @@ const categoryLabel = category.toUpperCase();
       <!-- Article content -->
       <article class="kb-article">
 
-        <!-- Article header — Figma: header-59 -->
+        <!-- Article header -->
         <header class="kb-article__header">
 
-          <!-- Level badge — Figma: background-60, green tint, 2px radius -->
+          <!-- Level badge -->
           <div class="kb-article__badge-row">
             <span class:list={['kb-article__badge', `kb-article__badge--${level}`]}>
               <!-- Leaf/level icon -->
@@ -79,10 +69,10 @@ const categoryLabel = category.toUpperCase();
             </span>
           </div>
 
-          <!-- Title — Figma: text-65, Manrope 700, 48px, -1.2px tracking -->
+          <!-- Title -->
           <h1 class="kb-article__title">{title}</h1>
 
-          <!-- Meta: date + read time — Figma: container-66 -->
+          <!-- Meta: date + read time -->
           <div class="kb-article__meta">
             <span class="kb-article__meta-item">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -102,12 +92,13 @@ const categoryLabel = category.toUpperCase();
 
         </header>
 
-        <!-- Prose body — Figma: section-article-body-77 -->
+        <!-- Prose body -->
         <div class="prose">
           <Content />
         </div>
 
-        <!-- Related articles — Figma: node-123 -->
+        <!-- Related articles — same category, up to 2 -->
+
         {related.length > 0 && (
           <section class="kb-related">
             <h3 class="kb-related__heading">Related Notes</h3>
@@ -136,7 +127,7 @@ const categoryLabel = category.toUpperCase();
 </BaseLayout>
 
 <style>
-  /* ── Three-column layout ─────────────────────────────────────── */
+  /* ── Three-column layout — sidebar | article | TOC ──────────── */
   .kb-page {
     display: flex;
     align-items: stretch;
@@ -174,7 +165,7 @@ const categoryLabel = category.toUpperCase();
     }
   }
 
-  /* ── Breadcrumb ──────────────────────────────────────────────── */
+  /* ── Breadcrumb ─────────────────────────────────────────────── */
   .kb-breadcrumb {
     display: flex;
     align-items: center;
@@ -250,7 +241,7 @@ const categoryLabel = category.toUpperCase();
     gap: var(--space-3);
   }
 
-  /* Level badge — Figma: background-60, mint green tint, 2px radius */
+  /* Level badge — mint green tint at 2px radius */
   .kb-article__badge {
     display: inline-flex;
     align-items: center;
@@ -279,7 +270,6 @@ const categoryLabel = category.toUpperCase();
     color: rgba(22, 101, 52, 1);
   }
 
-  /* Title — Figma: Manrope 700, 48px, -1.2px tracking */
   .kb-article__title {
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 4vw, 3rem);
@@ -289,7 +279,6 @@ const categoryLabel = category.toUpperCase();
     color: var(--color-on-surface);
   }
 
-  /* Meta row — Figma: container-66, Inter 14px muted */
   .kb-article__meta {
     display: flex;
     align-items: center;
@@ -320,18 +309,18 @@ const categoryLabel = category.toUpperCase();
     max-width: 68ch;
   }
 
-  /* Intro paragraph (first <p>) — slightly larger */
+  /* Intro paragraph (first <p>) — slightly larger for a strong opening */
   .prose :global(p:first-child) {
     font-size: 1.125rem;
     line-height: 1.625;
-    color: rgba(82, 82, 91, 1);
+    color: var(--color-on-surface-muted);
   }
 
   .prose :global(h2) {
     font-family: var(--font-display);
     font-size: var(--text-headline-md);
     font-weight: var(--weight-bold);
-    color: rgba(24, 24, 27, 1);
+    color: var(--color-on-surface);
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-snug);
     margin-top: var(--space-4);
@@ -341,7 +330,7 @@ const categoryLabel = category.toUpperCase();
     font-family: var(--font-display);
     font-size: var(--text-title-lg);
     font-weight: var(--weight-semibold);
-    color: rgba(24, 24, 27, 1);
+    color: var(--color-on-surface);
     margin-top: var(--space-3);
   }
 
@@ -372,7 +361,7 @@ const categoryLabel = category.toUpperCase();
     color: var(--color-on-surface);
   }
 
-  /* Code blocks — Figma: code-block-105, #0e0e0e bg, 8px radius */
+  /* Code blocks — inverse-surface dark bg for high contrast */
   .prose :global(pre) {
     background-color: var(--color-inverse-surface);
     border-radius: var(--radius-md);
@@ -385,7 +374,7 @@ const categoryLabel = category.toUpperCase();
   .prose :global(code) {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    color: rgba(52, 211, 153, 1); /* Figma: text-rgb-52-211-153 emerald */
+    color: rgba(52, 211, 153, 1); /* emerald green — syntax highlight color on dark bg */
   }
 
   /* Inline code */
@@ -397,7 +386,7 @@ const categoryLabel = category.toUpperCase();
     font-size: 0.875em;
   }
 
-  /* Pro Tip callout — Figma: callout-pro-tip-85 */
+  /* Pro Tip callout */
   .prose :global(.callout-tip) {
     display: flex;
     gap: var(--space-4);
@@ -419,7 +408,7 @@ const categoryLabel = category.toUpperCase();
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(30, 93, 67, 1);
+    color: var(--color-primary-dim);
     margin-bottom: var(--space-1);
   }
 
@@ -430,7 +419,7 @@ const categoryLabel = category.toUpperCase();
     margin-top: 0;
   }
 
-  /* Warning callout — Figma: callout-warning-115 */
+  /* Warning callout */
   .prose :global(.callout-warning) {
     display: flex;
     gap: var(--space-4);
@@ -487,7 +476,7 @@ const categoryLabel = category.toUpperCase();
     gap: var(--space-4);
   }
 
-  /* Related card — Figma: link-127, surface-container-low */
+  /* Related card — surface-container-low, hover lifts to surface-container */
   .kb-related__card {
     display: flex;
     flex-direction: column;

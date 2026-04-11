@@ -1,15 +1,4 @@
 ---
-/**
- * ArticleOutline — sticky floating TOC for article detail pages
- *
- * Figma: node-141
- *   "OUTLINE" heading (Inter 700, 10px, 1px tracking, muted)
- *   List of heading links:
- *     Active: 2px primary left border, primary text
- *     Inactive: transparent border, muted text
- *   Glassmorphism: glass-bg + blur on sticky container
- */
-
 interface Heading {
   depth: number;
   slug: string;
@@ -22,7 +11,7 @@ interface Props {
 
 const { headings } = Astro.props;
 
-/* Only h2 and h3 in the outline */
+/* Only show h2 and h3 — deeper levels make the outline unwieldy */
 const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
@@ -45,9 +34,6 @@ const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
 )}
 
 <style>
-  /* ── Outline panel ───────────────────────────────────────────────
-     Figma: node-141 — sticky, starts at 64px (nav height)
-  ─────────────────────────────────────────────────────────────────── */
   .article-outline {
     display: flex;
     flex-direction: column;
@@ -60,7 +46,6 @@ const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
     border: 1px solid rgba(228, 228, 231, 0.4);
   }
 
-  /* "OUTLINE" — Figma: text-145, Inter 700, 10px, 1px tracking, muted */
   .article-outline__label {
     font-family: var(--font-body);
     font-size: 0.625rem;
@@ -76,14 +61,13 @@ const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
     gap: var(--space-4);
   }
 
-  /* Outline item — Figma: item-147 / item-150 */
   .article-outline__item {
     padding-left: var(--space-4);
     border-left: 2px solid transparent;
     transition: border-color var(--duration-fast) var(--ease-standard);
   }
 
-  /* Sub-heading (h3): extra indent */
+  /* h3 items get extra indent to show hierarchy */
   .article-outline__item--sub {
     padding-left: calc(var(--space-4) + var(--space-3));
   }
@@ -104,7 +88,7 @@ const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
     opacity: 1;
   }
 
-  /* JS-driven active state — added by scroll observer script */
+  /* is-active is toggled by the scroll spy script below */
   .article-outline__item.is-active {
     border-left-color: var(--color-primary);
   }
@@ -115,7 +99,6 @@ const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
   }
 </style>
 
-<!-- Scroll spy: highlight active heading in outline -->
 <script>
   const links = document.querySelectorAll<HTMLAnchorElement>('.article-outline__link');
   const items = document.querySelectorAll('.article-outline__item');
@@ -137,6 +120,11 @@ const outlineItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
           }
         });
       },
+      /*
+       * rootMargin shrinks the detection zone: a heading is "active"
+       * when it's between 20% from the top and 30% from the bottom of
+       * the viewport — avoids flickering at section boundaries.
+       */
       { rootMargin: '-20% 0% -70% 0%' }
     );
 

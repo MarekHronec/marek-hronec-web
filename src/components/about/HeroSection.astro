@@ -8,11 +8,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p class="hero__label">Introduction</p>
       <h1 class="hero__heading">
         Architecting Clarity<br />
-        <!--
-          "in the Cloud" in primary teal; the period is a separate span
-          in a neutral warm gray — Figma: rgba(123, 122, 122, 1).
-          This matches the reference screenshot exactly.
-        -->
         <span class="hero__heading--accent">in the Cloud</span><span class="hero__heading--period">.</span>
       </h1>
       <p class="hero__body">
@@ -37,7 +32,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <style>
   .hero {
-    padding-block: var(--space-8) var(--space-6);  /* 48px top, 24px bottom */
+    padding-block: var(--space-8) var(--space-6);
     background-color: var(--color-surface);
   }
 
@@ -50,7 +45,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   @media (min-width: 768px) {
     .hero__inner {
-      grid-template-columns: 1fr 260px;   /* narrower photo column = less wasted height */
+      /* narrower photo column wastes less vertical height */
+      grid-template-columns: 1fr 260px;
       gap: var(--space-8);
       align-items: start;
     }
@@ -75,24 +71,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--color-primary);   /* Figma: teal green, not muted gray */
+    color: var(--color-primary);
   }
 
   .hero__heading {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));  /* max 72px — Figma */
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
     color: var(--color-on-surface);
   }
 
-  /* "in the Cloud" — primary teal */
   .hero__heading--accent {
     color: var(--color-primary);
   }
 
-  /* Period "." — warm gray, Figma: rgba(123, 122, 122, 1) */
+  /* Period gets a softer warm gray so it doesn't compete with the teal */
   .hero__heading--period {
     color: var(--color-meta-label);
   }
@@ -104,7 +99,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-width: 48ch;
   }
 
-  /* Photo — right column, aligned top */
   .hero__photo-wrap {
     width: 100%;
   }
@@ -117,7 +111,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-height: 360px;
   }
 
-  /* Mobile: photo above content, shorter aspect ratio */
+  /* Mobile: photo comes first, shorter crop so it doesn't dominate */
   .hero__photo-wrap {
     order: -1;
   }
@@ -127,7 +121,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-height: 200px;
   }
 
-  /* Desktop: restore natural grid order, full portrait aspect */
+  /* Desktop: restore reading order, full portrait crop */
   @media (min-width: 768px) {
     .hero__photo-wrap {
       order: 0;

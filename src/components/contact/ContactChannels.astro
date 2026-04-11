@@ -1,25 +1,12 @@
 ---
-/**
- * ContactChannels — three contact method columns separated by ghost borders
- *
- * Figma: node-17 — full-width, border-top hairline, three equal columns.
- * Each column:
- *   Top row: category type (muted uppercase) + ↗ arrow icon
- *   Bottom: type label (primary uppercase) + value (Manrope 700 30px)
- *
- * Figma column padding: 40px
- * Border separators: rgba(179,178,177,0.2) — ghost borders per DESIGN.md
- */
 ---
 
 <section class="contact-channels">
   <div class="contact-channels__inner container">
 
-    <!-- Email -->
     <div class="channel-card channel-card--disabled" aria-label="Email coming soon">
       <div class="channel-card__top">
         <span class="channel-card__category">Primary Contact</span>
-        <!-- ↗ external arrow icon -->
         <svg class="channel-card__arrow" width="12" height="12" viewBox="0 0 12 12"
              fill="none" aria-hidden="true">
           <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
@@ -33,7 +20,6 @@
       </div>
     </div>
 
-    <!-- LinkedIn -->
     <a class="channel-card"
        href="https://www.linkedin.com/in/marekhronec"
        target="_blank"
@@ -54,7 +40,6 @@
       </div>
     </a>
 
-    <!-- Location — no link -->
     <div class="channel-card channel-card--location">
       <div class="channel-card__top">
         <span class="channel-card__category">Global Presence</span>
@@ -75,16 +60,11 @@
 </section>
 
 <style>
-  /* ── Section ──────────────────────────────────────────────────────
-     Figma: node-17 — border-top hairline across full width.
-     The container holds horizontal padding; the row stretches inside.
-  ─────────────────────────────────────────────────────────────────── */
   .contact-channels {
     padding-block: 0 var(--space-12);
   }
 
-  /* Three-column row — ghost borders between columns.
-     On mobile, stack vertically with a border-bottom separator instead. */
+  /* Three columns on desktop; stacks vertically on mobile with border-bottom separators instead. */
   .contact-channels__inner {
     display: flex;
     flex-direction: column;
@@ -98,27 +78,22 @@
     }
   }
 
-  /* ── Channel card ──────────────────────────────────────────────── */
   .channel-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-7);    /* Figma: 40px */
+    padding: var(--space-7);
     flex: 1;
     color: inherit;
     text-decoration: none;
     transition: background-color var(--duration-fast) var(--ease-standard);
-
-    /* Ghost right border between columns */
     border-right: 1px solid var(--color-warm-gray-20);
   }
 
-  /* Last column has no right border */
   .channel-card:last-child {
     border-right: none;
   }
 
-  /* Mobile: bottom separator instead of right */
   @media (max-width: 639px) {
     .channel-card {
       border-right: none;
@@ -131,70 +106,62 @@
     }
   }
 
-  /* Subtle hover tint for clickable columns */
   a.channel-card:hover {
     background-color: var(--color-surface-container-low);
     opacity: 1;
   }
 
-  /* Top row: category label + arrow icon */
   .channel-card__top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: var(--space-6);  /* Figma: margin-21 padding-bottom 32px */
+    margin-bottom: var(--space-6);
   }
 
-  /* "PRIMARY ENTRY" — Figma: Inter 700, 10px, 2px tracking, muted */
   .channel-card__category {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-bold);
-    letter-spacing: 0.15em;    /* Figma: 2px / ~12px ≈ 0.15em */
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--color-on-surface-muted);
   }
 
-  /* ↗ Arrow — warm gray */
   .channel-card__arrow {
     color: var(--color-warm-gray);
     flex-shrink: 0;
     margin-top: 1px;
   }
 
-  /* location card: arrow is muted (no link) */
+  /* location card has no link so the arrow is dimmed */
   .channel-card--location .channel-card__arrow {
     opacity: 0.5;
   }
 
-  /* Bottom: stacked type label + value */
   .channel-card__bottom {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  /* "EMAIL" / "LINKEDIN" / "BASE OPERATIONS" — Figma: Inter medium, 12px, primary */
   .channel-card__type {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-medium);
-    letter-spacing: 0.05em;    /* Figma: 0.6px / 12px ≈ 0.05em */
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--color-primary);
   }
 
-  /* Value — Figma: Manrope 700, 30px, -0.75px tracking, line-height 36px */
   .channel-card__value {
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 3vw, 1.875rem);   /* 30px max */
+    font-size: clamp(1.25rem, 3vw, 1.875rem);
     font-weight: var(--weight-bold);
-    letter-spacing: -0.025em;  /* Figma: -0.75px / 30px = -0.025em */
+    letter-spacing: -0.025em;
     line-height: 1.2;
     color: var(--color-on-surface);
   }
 
-  /* LinkedIn value: underlined per Figma */
   .channel-card__value--underline {
     text-decoration: underline;
     text-underline-offset: 3px;

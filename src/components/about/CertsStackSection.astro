@@ -1,23 +1,9 @@
 ---
-/**
- * CertsStackSection — Certifications + Technical Stack side by side.
- *
- * These two blocks appear as one visual band in the reference design,
- * directly beneath the NarrativeSection and sharing the same
- * surface-container-low background — creating a seamless gray tray.
- *
- * Layout (≥768 px):
- *   ┌──────────────────────┬───────────────────────────────────────┐
- *   │  Certifications      │  Technical Stack                      │
- *   │  (fixed 280 px)      │  (fills remaining space)              │
- *   │  surface bg card     │  surface bg card   — same height      │
- *   └──────────────────────┴───────────────────────────────────────┘
- *
- * Equal-height cards: the outer grid uses align-items: stretch so both
- * cards always share the same height regardless of list length.
- *
- * The section background (surface-container-low) is identical to
- * NarrativeSection above, intentionally merging them into one band.
+/*
+ * Certifications + Technical Stack side by side.
+ * align-items: stretch keeps both cards the same height.
+ * The section has no background of its own — it merges visually
+ * with NarrativeSection above because the card surface tones match.
  */
 
 import BadgeCheck from '../icons/BadgeCheck.astro';
@@ -33,27 +19,20 @@ interface TechCategory {
 }
 
 /*
- * A column can contain one or two TechCategory sections stacked vertically.
- * Using TechCategory[] per column lets us put Orchestration + Languages in
- * one column (matching the Figma layout — 4 visible columns, not 5).
+ * A column can hold one or two stacked TechCategory sections.
+ * Orchestration + Languages share column 3 so the grid stays at 4 columns
+ * instead of spreading to 5.
  */
 interface TechColumn {
   sections: TechCategory[];
 }
 
-/* ── Data ──────────────────────────────────────────────────────────── */
-
 const certifications: Cert[] = [
-  { name: 'Azure Solution Architect Expert', level: 'AZ-305'           },
-  { name: 'OCI Cloud Infrastructure Architect', level: 'Associate Level' },
-  { name: 'OCI Multicloud Architect',          level: 'Professional Level' },
+  { name: 'Azure Solution Architect Expert',    level: 'AZ-305'            },
+  { name: 'OCI Cloud Infrastructure Architect', level: 'Associate Level'   },
+  { name: 'OCI Multicloud Architect',           level: 'Professional Level' },
 ];
 
-/*
- * 4 visual columns: Infrastructure | Containers | Orchestration+Languages | Observability
- * Orchestration and Languages share column 3 to prevent the grid feeling
- * too narrow. This matches the Figma screenshot exactly.
- */
 const columns: TechColumn[] = [
   {
     sections: [
@@ -82,50 +61,25 @@ const columns: TechColumn[] = [
 <section class="cs">
   <div class="cs__inner container">
 
-    <!-- ── Certifications card ────────────────────────────────────── -->
     <div class="cs__certs">
-
-      <!-- Section label — bold, dark -->
       <p class="cs__label">Certifications</p>
-
       <ul class="cs__cert-list" role="list">
         {certifications.map((cert) => (
           <li class="cs__cert-item">
-
-            <!--
-              Circular checkmark icon.
-              The circle is a stroke (not filled) so it reads as an
-              outline badge. The checkmark path is also stroked for
-              consistency with the reference screenshot.
-            -->
             <span class="cs__cert-check" aria-hidden="true">
               <BadgeCheck size={20} aria-hidden="true" />
             </span>
-
             <div class="cs__cert-text">
-              <!-- Cert name — semibold body text -->
               <span class="cs__cert-name">{cert.name}</span>
-              <!-- Level / code — small muted label -->
               <span class="cs__cert-level">{cert.level}</span>
             </div>
-
           </li>
         ))}
       </ul>
-
     </div>
 
-    <!-- ── Technical Stack card ───────────────────────────────────── -->
     <div class="cs__stack">
-
-      <!-- Section label — muted, uppercase (less prominent than Certs) -->
       <p class="cs__label cs__label--muted">Technical Stack</p>
-
-      <!--
-        4-column grid: Infrastructure | Containers | Orchestration+Languages | Observability.
-        Orchestration and Languages share one column (stacked vertically) so the
-        grid stays compact and cert card can be wider — matching the Figma layout.
-      -->
       <div class="cs__stack-grid">
         {columns.map((col) => (
           <div class="cs__stack-col">
@@ -142,47 +96,33 @@ const columns: TechColumn[] = [
           </div>
         ))}
       </div>
-
     </div>
 
   </div>
 </section>
 
 <style>
-  /* ── Section shell ───────────────────────────────────────────────
-     No section-level background — cards carry their own tonal colors.
-     Top padding is 0 because NarrativeSection's padding-block-end
-     already provides the visual gap above these cards.
-  ─────────────────────────────────────────────────────────────────── */
   .cs {
-    padding-block: 0 var(--space-6);  /* 0 top, 24px bottom — same rhythm as all sections */
+    padding-block: 0 var(--space-6);
   }
 
-  /* ── Outer grid: Certs (fixed) | Stack (flexible) ───────────────
-     align-items: stretch  → both cards grow to the same height,
-     making them identical in the visual block.
-     280 px for certifications matches the reference proportions.
-  ─────────────────────────────────────────────────────────────────── */
+  /* align-items: stretch so both cards always share the same height */
   .cs__inner {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-5);
-    align-items: stretch;              /* equal card heights */
+    align-items: stretch;
   }
 
   @media (min-width: 768px) {
     .cs__inner {
-      grid-template-columns: 320px 1fr;   /* wider cert card — text no longer wraps */
+      /* 320px cert card is wide enough that long cert names don't wrap */
+      grid-template-columns: 320px 1fr;
     }
   }
 
-  /* ── Card styles ─────────────────────────────────────────────────
-     Each card uses a different surface tier to create depth without
-     borders (DESIGN.md tonal layering rule):
-       Certs card  → surface-container     (#f0eded) — Figma rgba(240,237,237,1)
-       Stack card  → surface-container-high (#eae8e7) — Figma rgba(234,232,231,1)
-     Both cards share the same padding and border-radius.
-  ─────────────────────────────────────────────────────────────────── */
+  /* The two cards use slightly different surface tones so they read as separate
+     without needing a border between them. */
   .cs__certs {
     background-color: var(--color-surface-container);
     border-radius: var(--radius-md);
@@ -195,10 +135,6 @@ const columns: TechColumn[] = [
     padding: var(--space-5);
   }
 
-  /* ── Shared label style ──────────────────────────────────────────
-     Both cards have a label above their content. Default: bold dark.
-     Modifier --muted: lighter treatment for the stack label.
-  ─────────────────────────────────────────────────────────────────── */
   .cs__label {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
@@ -213,27 +149,22 @@ const columns: TechColumn[] = [
     color: var(--color-on-surface-muted);
   }
 
-  /* ── Certifications list ─────────────────────────────────────────
-     Vertical stack of cert items.
-  ─────────────────────────────────────────────────────────────────── */
   .cs__cert-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);              /* generous spacing, no dividers */
+    gap: var(--space-5);
   }
 
-  /* Each cert: icon + text column */
   .cs__cert-item {
     display: flex;
     align-items: flex-start;
     gap: var(--space-3);
   }
 
-  /* Icon inherits primary teal via currentColor */
   .cs__cert-check {
     color: var(--color-primary);
     flex-shrink: 0;
-    margin-top: 1px;                  /* optical vertical alignment   */
+    margin-top: 1px; /* optical alignment with the cert name text */
   }
 
   .cs__cert-text {
@@ -242,7 +173,6 @@ const columns: TechColumn[] = [
     gap: 3px;
   }
 
-  /* Cert name — prominent semibold */
   .cs__cert-name {
     font-family: var(--font-body);
     font-size: var(--text-body-md);
@@ -251,17 +181,12 @@ const columns: TechColumn[] = [
     line-height: var(--leading-snug);
   }
 
-  /* Level / code — small muted metadata */
   .cs__cert-level {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     color: var(--color-on-surface-muted);
   }
 
-  /* ── Technical stack grid ────────────────────────────────────────
-     4 columns: Infrastructure | Containers | Orch+Lang | Observability.
-     Matching Figma — Orchestration and Languages share one column.
-  ─────────────────────────────────────────────────────────────────── */
   .cs__stack-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -281,7 +206,6 @@ const columns: TechColumn[] = [
     }
   }
 
-  /* Stacked sub-sections within one column (e.g. Orchestration + Languages) */
   .cs__stack-section {
     margin-bottom: var(--space-4);
   }
@@ -290,8 +214,6 @@ const columns: TechColumn[] = [
     margin-bottom: 0;
   }
 
-  /* Column heading — uppercase primary-green label above each item list.
-     Figma: rgba(44, 105, 78, 1) = --color-primary (not muted gray). */
   .cs__stack-heading {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
@@ -301,14 +223,12 @@ const columns: TechColumn[] = [
     margin-bottom: var(--space-2);
   }
 
-  /* Item list — no bullets, no dividers; gap separates items */
   .cs__stack-items {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
   }
 
-  /* Individual item — body size, muted colour */
   .cs__stack-item {
     font-family: var(--font-body);
     font-size: var(--text-body-md);

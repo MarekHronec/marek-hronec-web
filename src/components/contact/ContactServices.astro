@@ -1,17 +1,4 @@
 ---
-/**
- * ContactServices — "How I Can Help" section with 3 service cards
- *
- * Figma: node-61
- *   border-top hairline, padding-top 32px, gap 48px between heading and cards
- *   Heading row: "How I Can Help" + horizontal rule (flex:1, rgba(179,178,177,0.3))
- *   3-col card grid:
- *     background: rgba(240,237,237,1) = surface-container
- *     border: 1px solid rgba(179,178,177,0.1) — ghost border
- *     border-radius: 8px (radius-lg)
- *     padding: 32px
- *     SVG icon (primary green) + title (Manrope 700 20px) + body (Inter 14px muted)
- */
 import ShieldCheck from '../icons/ShieldCheck.astro';
 import Target from '../icons/Target.astro';
 import Workflow from '../icons/Workflow.astro';
@@ -20,16 +7,13 @@ import Workflow from '../icons/Workflow.astro';
 <section class="contact-services">
   <div class="contact-services__inner container">
 
-    <!-- Heading row with trailing rule — Figma: heading-2-62 -->
     <div class="contact-services__heading-row">
       <h2 class="contact-services__heading">How I Can Help</h2>
       <div class="contact-services__heading-rule" aria-hidden="true"></div>
     </div>
 
-    <!-- 3-column service cards -->
     <div class="services-grid">
 
-      <!-- Architecture Reviews -->
       <div class="service-card">
         <ShieldCheck size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Architecture Reviews</h3>
@@ -39,7 +23,6 @@ import Workflow from '../icons/Workflow.astro';
         </p>
       </div>
 
-      <!-- Cloud Strategy -->
       <div class="service-card">
         <Target size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Cloud Strategy</h3>
@@ -49,7 +32,6 @@ import Workflow from '../icons/Workflow.astro';
         </p>
       </div>
 
-      <!-- Process Optimization -->
       <div class="service-card">
         <Workflow size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Process Optimization</h3>
@@ -65,9 +47,6 @@ import Workflow from '../icons/Workflow.astro';
 </section>
 
 <style>
-  /* ── Section ──────────────────────────────────────────────────────
-     Figma: node-61 — border-top, padding-top 32px, gap 48px
-  ─────────────────────────────────────────────────────────────────── */
   .contact-services {
     padding-block: var(--space-4) var(--space-6);
   }
@@ -75,38 +54,33 @@ import Workflow from '../icons/Workflow.astro';
   .contact-services__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);        /* Figma: gap 48px */
+    gap: var(--space-8);
     padding-top: var(--space-6);
     border-top: 1px solid var(--color-warm-gray-30);
   }
 
-  /* Heading row — "How I Can Help" + horizontal rule */
+  /* Same heading + trailing rule pattern as the Experience section */
   .contact-services__heading-row {
     display: flex;
     align-items: center;
-    gap: var(--space-4);        /* Figma: gap 16px */
+    gap: var(--space-4);
   }
 
-  /* "How I Can Help" — Figma: Manrope 700, 30px */
   .contact-services__heading {
     font-family: var(--font-display);
-    font-size: var(--text-headline-md);   /* 1.75rem / 28px — close to 30px */
+    font-size: var(--text-headline-md);
     font-weight: var(--weight-bold);
     color: var(--color-on-surface);
     white-space: nowrap;
     letter-spacing: var(--tracking-tight);
   }
 
-  /* Trailing rule — Figma: flex:1, rgba(179,178,177,0.3) bg, 1px height */
   .contact-services__heading-rule {
     flex: 1;
     height: 1px;
     background-color: var(--color-warm-gray-30);
   }
 
-  /* ── 3-column card grid ───────────────────────────────────────────
-     Equal-width cards; stack on mobile, 3-col at 768px+
-  ─────────────────────────────────────────────────────────────────── */
   .services-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -125,37 +99,33 @@ import Workflow from '../icons/Workflow.astro';
     }
   }
 
-  /* ── Service card ──────────────────────────────────────────────── */
   .service-card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);        /* Figma: items stacked, generous gap */
-    padding: var(--space-6);    /* Figma: 32px */
-    background-color: var(--color-surface-container);   /* rgba(240,237,237,1) */
-    border: 1px solid var(--color-warm-gray-10);         /* ghost border */
-    border-radius: var(--radius-lg);                     /* Figma: 8px = radius-lg */
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background-color: var(--color-surface-container);
+    border: 1px solid var(--color-warm-gray-10);
+    border-radius: var(--radius-lg);
   }
 
-  /* SVG icon — Figma: primary green fill */
   .service-card__icon {
     color: var(--color-primary);
     flex-shrink: 0;
   }
 
-  /* Title — Figma: Manrope 700, 20px */
   .service-card__title {
     font-family: var(--font-display);
-    font-size: var(--text-title-md);    /* 1.125rem / 18px — closest to 20px */
+    font-size: var(--text-title-md);
     font-weight: var(--weight-bold);
     color: var(--color-on-surface);
     line-height: var(--leading-snug);
   }
 
-  /* Body — Figma: Inter regular, 14px (body-md), muted */
   .service-card__body {
     font-family: var(--font-body);
     font-size: var(--text-body-md);
-    line-height: 1.625;          /* Figma: 22.75px / 14px */
+    line-height: 1.625;
     color: var(--color-on-surface-muted);
   }
 </style>

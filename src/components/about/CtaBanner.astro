@@ -1,12 +1,7 @@
 ---
 ---
 
-<!--
-  CTA Banner — card constrained inside a container div.
-  The section itself has NO background so it cannot bleed full-width
-  at wide viewports. Only the inner .cta-banner card carries the
-  green surface color, so it is bounded by the container's max-width.
--->
+<!-- Section has no background so the green card stays bounded by container max-width — no full-bleed color at wide viewports. -->
 <section class="cta-section">
   <div class="cta-section__container container">
     <div class="cta-banner">
@@ -25,25 +20,18 @@
 </section>
 
 <style>
-  /* ── Section wrapper — no background, only provides vertical rhythm ── */
   .cta-section {
-    padding-block: 0 var(--space-6);   /* 0 top, 24px bottom before footer */
+    padding-block: 0 var(--space-6);
   }
 
-  /* ── Container forces max-width — card cannot exceed 1280px ─────────
-     padding-inline: 0 so the card padding handles horizontal spacing;
-     the .container class already applies --gutter on each side, which
-     keeps the card inset from the viewport on small screens.
-  ──────────────────────────────────────────────────────────────────── */
   .cta-section__container {
     padding-inline: var(--gutter);
   }
 
-  /* ── Card — green surface, rounded, full-width of the container ───── */
   .cta-banner {
-    background-color: var(--color-cta-surface);   /* #b1f0ce — Figma rgba(177,240,206,1) */
-    border-radius: var(--radius-lg);               /* Figma: 16px */
-    padding: var(--space-8) var(--space-10);       /* 48px vertical, 64px horizontal */
+    background-color: var(--color-cta-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8) var(--space-10);
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
@@ -55,7 +43,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      padding: var(--space-10);                    /* 64px all sides on wider screens */
+      padding: var(--space-10);
     }
   }
 
@@ -78,7 +66,8 @@
   .cta-banner__body {
     font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
-    color: rgba(29, 92, 66, 0.8);   /* Figma: dark primary @ 80% opacity */
+    /* dark primary at 80% — reads as body text, not a competing heading */
+    color: rgba(29, 92, 66, 0.8);
   }
 
   .cta-banner__button {
@@ -87,12 +76,13 @@
     white-space: nowrap;
     flex-shrink: 0;
     padding: var(--space-3) var(--space-7);
-    background-color: var(--color-primary);    /* Figma: solid #2c694e, no gradient */
-    color: var(--color-on-cta);                    /* Figma: rgba(225,255,236,1) light mint */
+    background-color: var(--color-primary);
+    color: var(--color-on-cta);
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     font-weight: var(--weight-semibold);
-    border-radius: 2px;                        /* Figma: very sharp corners */
+    /* intentionally sharp — no radius token */
+    border-radius: 2px;
     transition: transform var(--duration-fast) var(--ease-standard),
                 opacity var(--duration-fast) var(--ease-standard);
   }

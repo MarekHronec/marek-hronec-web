@@ -26,13 +26,7 @@ const entries: ExperienceEntry[] = [
 
 <section class="experience">
   <div class="experience__inner container">
-    <!--
-      Heading row: text + flex-grow hairline extending to the right edge.
-      Figma: display:flex, gap:16px, the divider uses flex-grow:1 and a
-      30% opacity warm gray background — the only decorative line on the page,
-      acceptable here because it serves as a structural layout separator
-      rather than a content divider between items.
-    -->
+    <!-- The hairline rule is the one place we break the no-divider rule — it frames the section heading, not content rows. -->
     <div class="experience__heading-row">
       <h2 class="experience__heading">Selected Experience</h2>
       <div class="experience__heading-rule" aria-hidden="true"></div>
@@ -56,16 +50,15 @@ const entries: ExperienceEntry[] = [
 
 <style>
   .experience {
-    padding-block: 0 var(--space-6);   /* 0 top, 24px bottom — same rhythm as all sections */
+    padding-block: 0 var(--space-6);
     background-color: var(--color-surface);
   }
 
-  /* Heading row: text + extending hairline rule */
   .experience__heading-row {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    margin-bottom: var(--space-6);   /* tighter — 32px */
+    margin-bottom: var(--space-6);
   }
 
   .experience__heading {
@@ -77,7 +70,7 @@ const entries: ExperienceEntry[] = [
     white-space: nowrap;
   }
 
-  /* Figma: flex-grow:1, background rgba(179,178,177,0.3) — felt, not seen */
+  /* flex: 1 makes the rule fill the remaining row width */
   .experience__heading-rule {
     flex: 1;
     height: 1px;
@@ -87,7 +80,7 @@ const entries: ExperienceEntry[] = [
   .experience__list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);   /* 32px between entries — tighter */
+    gap: var(--space-6);
   }
 
   .experience__entry {

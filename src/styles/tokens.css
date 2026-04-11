@@ -21,7 +21,7 @@
 
   /* On-surface text — never pure black */
   --color-on-surface: #323232;
-  --color-on-surface-muted: #5f5f5f;   /* Figma: rgba(95,95,95,1) */
+  --color-on-surface-muted: #5f5f5f;
 
   /* Inverse (code blocks) */
   --color-inverse-surface: #0e0e0e;
@@ -34,17 +34,17 @@
   /* Ghost border — felt, not seen */
   --color-outline-variant: rgba(50, 50, 50, 0.15);
 
-  /* Warm gray — Figma: rgba(179,178,177,1) — used for dividers, arrows, separators */
+  /* Warm gray — used for dividers, arrows, separators */
   --color-warm-gray: rgba(179, 178, 177, 1);
   --color-warm-gray-30: rgba(179, 178, 177, 0.3);
   --color-warm-gray-20: rgba(179, 178, 177, 0.2);
   --color-warm-gray-15: rgba(179, 178, 177, 0.15);
   --color-warm-gray-10: rgba(179, 178, 177, 0.1);
 
-  /* Muted warm gray text — Figma: rgba(123,122,122,1) — meta labels */
+  /* Muted warm gray — meta labels */
   --color-meta-label: rgba(123, 122, 122, 1);
 
-  /* CTA surface text — Figma: rgba(225,255,236,1) — light mint on primary bg */
+  /* Light mint — used on primary-colored backgrounds */
   --color-on-cta: rgba(225, 255, 236, 1);
 
 
@@ -55,7 +55,7 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Font sizes */
-  --text-display-lg: 4.5rem;            /* Figma: 72px */
+  --text-display-lg: 4.5rem;            /* 72px */
   --text-display-md: 2.5rem;
   --text-headline-md: 1.75rem;
   --text-title-lg: 1.375rem;
@@ -129,7 +129,7 @@
   --duration-normal: 250ms;
   --duration-slow: 400ms;
 
-  /* CTA banner surface — Figma: rgba(177,240,206,1) */
+  /* CTA banner surface — mint green */
   --color-cta-surface: #b1f0ce;
 
   /* ---------- Gradients ---------- */
