@@ -26,6 +26,15 @@ const year = new Date().getFullYear();
     margin-top: 0;                   /* CTA section bottom padding handles the gap */
   }
 
+  /* On mobile KB pages the fixed category bar sits at the bottom and
+     overlaps the footer. Extra bottom padding pushes the footer content
+     above the bar. env() adds iPhone home-indicator clearance on top. */
+  @media (max-width: 767px) {
+    .footer {
+      padding-bottom: calc(var(--space-5) + 4.5rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
   .footer__inner {
     display: flex;
     align-items: center;
