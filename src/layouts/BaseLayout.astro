@@ -51,9 +51,19 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${import.meta.env.BASE_URL.replace(/\/$/, '')}${ogImage}`} />
 
-    <!-- Google Fonts preconnect -->
+    <!-- Fonts: preconnect warms the connection; stylesheet loads as "print"
+         (non-blocking) then a script switches it to "all" once downloaded.
+         noscript covers the JS-disabled case. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link id="google-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+    </noscript>
+    <script is:inline>
+      document.getElementById('google-fonts')?.addEventListener('load', function() { this.media = 'all'; });
+    </script>
   </head>
   <body>
     <Header />
