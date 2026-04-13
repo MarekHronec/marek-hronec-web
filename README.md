@@ -138,7 +138,3 @@ Node ≥ 22 required.
 | [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Developer setup, project conventions, file naming, build process |
 
 ---
-
-## License
-
-MIT
