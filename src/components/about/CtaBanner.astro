@@ -66,8 +66,8 @@
   .cta-banner__body {
     font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
-    /* dark primary at 80% — reads as body text, not a competing heading */
-    color: rgba(29, 92, 66, 0.8);
+    /* Change B: was rgba(29,92,66,0.8) — opaque token gives 6.0:1 on #b1f0ce, WCAG AA */
+    color: var(--color-primary-dim);
   }
 
   .cta-banner__button {

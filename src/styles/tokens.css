@@ -27,6 +27,12 @@
   --color-inverse-surface: #0e0e0e;
   --color-on-inverse-surface: #f4f1f0;
 
+  /* Dark card text hierarchy — for elements on inverse-surface (#0e0e0e) backgrounds.
+     Change A: --color-on-dark-dim raised from 0.40 to 0.60 to meet WCAG AA 4.5:1.
+     Ratios on #0e0e0e: muted ≈ 7.6:1 | dim ≈ 6.6:1 */
+  --color-on-dark-muted: rgba(244, 241, 240, 0.65);
+  --color-on-dark-dim:   rgba(244, 241, 240, 0.60);
+
   /* Secondary */
   --color-secondary-container: #e4e2e2;
   --color-on-secondary-container: #323232;
