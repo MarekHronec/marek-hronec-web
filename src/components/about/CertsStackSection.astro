@@ -6,15 +6,15 @@
  * with NarrativeSection above because the card surface tones match.
  */
 
-import BadgeCheck from '../icons/BadgeCheck.astro';
+import BadgeCheck from "../icons/BadgeCheck.astro";
 
 interface Cert {
-  name:  string;
+  name: string;
   level: string;
 }
 
 interface TechCategory {
-  name:  string;
+  name: string;
   items: string[];
 }
 
@@ -28,31 +28,48 @@ interface TechColumn {
 }
 
 const certifications: Cert[] = [
-  { name: 'Azure Solution Architect Expert',    level: 'AZ-305'            },
-  { name: 'OCI Cloud Infrastructure Architect', level: 'Associate Level'   },
-  { name: 'OCI Multicloud Architect',           level: 'Professional Level' },
+  { name: "Azure Solutions Architect Expert", level: "AZ-305" },
+  { name: "OCI Cloud Infrastructure Architect", level: "Associate Level" },
+  { name: "OCI Multicloud Architect", level: "Professional Level" },
 ];
 
 const columns: TechColumn[] = [
   {
     sections: [
-      { name: 'Infrastructure', items: ['Azure, OCI', 'Terraform', 'GitHub & Gitea Actions', 'ExpressRoute'] },
+      {
+        name: "Infrastructure",
+        items: [
+          "Azure, OCI",
+          "Terraform",
+          "GitHub & Gitea Actions",
+          "ExpressRoute",
+        ],
+      },
     ],
   },
   {
     sections: [
-      { name: 'Containers', items: ['Kubernetes (OKE/AKS)', 'Azure App Service', 'Docker'] },
+      {
+        name: "Containers",
+        items: ["Kubernetes (OKE/AKS)", "Azure App Service", "Docker"],
+      },
     ],
   },
   {
     sections: [
-      { name: 'Orchestration', items: ['Camunda, Oracle BPM'] },
-      { name: 'Languages',     items: ['GO (In Progress)'] },
+      { name: "Orchestration", items: ["Camunda, Oracle BPM"] },
+      { name: "Languages", items: ["GO (In Progress)"] },
     ],
   },
   {
     sections: [
-      { name: 'Observability', items: ['PowerBI, Tableau', 'Grafana, Cloud-native tools (Metrics, logs and dashboards)'] },
+      {
+        name: "Observability",
+        items: [
+          "PowerBI, Tableau",
+          "Grafana, Cloud-native tools (Metrics, logs and dashboards)",
+        ],
+      },
     ],
   },
 ];
@@ -60,44 +77,48 @@ const columns: TechColumn[] = [
 
 <section class="cs">
   <div class="cs__inner container">
-
     <div class="cs__certs">
       <p class="cs__label">Certifications</p>
       <ul class="cs__cert-list" role="list">
-        {certifications.map((cert) => (
-          <li class="cs__cert-item">
-            <span class="cs__cert-check" aria-hidden="true">
-              <BadgeCheck size={20} aria-hidden="true" />
-            </span>
-            <div class="cs__cert-text">
-              <span class="cs__cert-name">{cert.name}</span>
-              <span class="cs__cert-level">{cert.level}</span>
-            </div>
-          </li>
-        ))}
+        {
+          certifications.map((cert) => (
+            <li class="cs__cert-item">
+              <span class="cs__cert-check" aria-hidden="true">
+                <BadgeCheck size={20} aria-hidden="true" />
+              </span>
+              <div class="cs__cert-text">
+                <span class="cs__cert-name">{cert.name}</span>
+                <span class="cs__cert-level">{cert.level}</span>
+              </div>
+            </li>
+          ))
+        }
       </ul>
     </div>
 
     <div class="cs__stack">
       <p class="cs__label cs__label--muted">Technical Stack</p>
       <div class="cs__stack-grid">
-        {columns.map((col) => (
-          <div class="cs__stack-col">
-            {col.sections.map((section: TechCategory) => (
-              <div class="cs__stack-section">
-                <h3 class="cs__stack-heading">{section.name.toUpperCase()}</h3>
-                <ul class="cs__stack-items" role="list">
-                  {section.items.map((item: string) => (
-                    <li class="cs__stack-item">{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        ))}
+        {
+          columns.map((col) => (
+            <div class="cs__stack-col">
+              {col.sections.map((section: TechCategory) => (
+                <div class="cs__stack-section">
+                  <h3 class="cs__stack-heading">
+                    {section.name.toUpperCase()}
+                  </h3>
+                  <ul class="cs__stack-items" role="list">
+                    {section.items.map((item: string) => (
+                      <li class="cs__stack-item">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ))
+        }
       </div>
     </div>
-
   </div>
 </section>
 

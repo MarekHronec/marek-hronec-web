@@ -260,7 +260,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
   .cs-featured__card {
     background-color: var(--color-surface-container-lowest);
     border-radius: calc(var(--radius-md) - 2px);
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-sm);
     padding: var(--space-8);
     display: flex;
     flex-direction: column;
@@ -299,7 +299,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     font-weight: var(--weight-regular);
     letter-spacing: 0.45px;
     text-transform: uppercase;
-    color: rgba(29, 92, 66, 1);       /* darker variant of primary for contrast on mint bg */
+    color: var(--color-primary-dim);   /* darker primary for contrast on mint bg */
     background-color: var(--color-cta-surface);   /* #b1f0ce */
     padding: 2px var(--space-2);
     border-radius: 2px;
@@ -435,17 +435,17 @@ const others     = allStudies.filter((s) => !s.data.featured);
     font-size: var(--text-label-md);
     text-align: center;
     padding: var(--space-2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-diagram-stage-border);
     border-radius: 2px;
-    background-color: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.2);
+    background-color: var(--color-diagram-stage-bg);
+    color: var(--color-diagram-stage-text);
   }
 
   /* Active stages (Ingestion, Viz) — primary green tint */
   .cs-featured__stage--active {
-    border-color: rgba(44, 105, 78, 0.4);
-    background-color: rgba(44, 105, 78, 0.05);
-    color: rgba(163, 226, 192, 1);
+    border-color: var(--color-diagram-stage-active-border);
+    background-color: var(--color-diagram-stage-active-bg);
+    color: var(--color-diagram-stage-active-text);
   }
 
   .cs-featured__diagram-caption {
@@ -453,7 +453,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     font-size: var(--text-label-md);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.2);
+    color: var(--color-diagram-stage-text);
     text-align: right;
   }
 

@@ -6,62 +6,61 @@
  * align-items: stretch keeps both cards the same height regardless of content.
  */
 
-import BookOpen from '../icons/BookOpen.astro';
+import BookOpen from "../icons/BookOpen.astro";
 
 const expertise = [
-  'Cloud Architecture',
-  'Process Orchestration',
-  'Governance & Compliance',
-  'FinOps & Cost Optimization',
-  'Multi-Cloud Strategy',
+  "Cloud Architecture",
+  "Process Orchestration",
+  "Governance & Compliance",
+  "FinOps & Cost Optimization",
+  "Multi-Cloud Strategy",
 ];
 ---
 
 <section class="narrative">
   <div class="narrative__inner container">
-
     <div class="narrative__text">
-
       <h2 class="narrative__heading">
         <BookOpen size={20} class="narrative__icon" aria-hidden="true" />
-        The Narrative
+        How I Work
       </h2>
 
       <div class="narrative__body">
         <p>
-          Over nearly a decade in tech, I've moved through analysis, operations, support, and
-          architecture into cloud-focused design. That journey taught me that strong
-          architecture is not about adding more, but about making the right decisions with
-          clarity.
+          My path into cloud architecture has included analysis, operations,
+          support, and work across business and IT architecture. That mix shapes
+          how I work. I care about the design itself, but also about how it is
+          implemented, operated, maintained, and understood by the teams who
+          work with it.
         </p>
         <p>
-          I believe that architecture is as much about communication as it is about code. My
-          documentation-first approach ensures that stakeholders and engineers remain
-          aligned throughout the lifecycle of a project.
+          I see architecture as both a technical and communication discipline. A
+          good design should be clear enough for teams to understand, challenge,
+          implement, and maintain. My documentation-first approach helps keep
+          teams, owners, and stakeholders aligned. It reduces information silos,
+          makes decisions easier to trace, and helps control risk and cost.
         </p>
       </div>
-
     </div>
 
     <aside class="narrative__expertise">
-
       <p class="narrative__expertise-label">Core Expertise</p>
 
       <ul class="narrative__expertise-list" role="list">
-        {expertise.map((item) => (
-          <li class="narrative__expertise-item">
-            <span class="narrative__expertise-dot" aria-hidden="true"></span>
-            {item.toUpperCase()}
-          </li>
-        ))}
+        {
+          expertise.map((item) => (
+            <li class="narrative__expertise-item">
+              <span class="narrative__expertise-dot" aria-hidden="true" />
+              {item.toUpperCase()}
+            </li>
+          ))
+        }
       </ul>
 
       <p class="narrative__expertise-footer">
         "Complexity is the enemy of reliability."
       </p>
-
     </aside>
-
   </div>
 </section>
 
@@ -181,7 +180,9 @@ const expertise = [
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-style: italic;
-    color: var(--color-on-dark-dim);   /* Change A: raised from 0.40 → 0.60 for WCAG AA */
+    color: var(
+      --color-on-dark-dim
+    ); /* Change A: raised from 0.40 → 0.60 for WCAG AA */
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: var(--space-4);
   }

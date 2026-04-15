@@ -120,15 +120,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 </div>
 
 <style>
-  /* ── Sidebar shell ───────────────────────────────────────────────
-     Figma: aside-sidenavbar-3 — 20% width, cool near-white bg
-  ─────────────────────────────────────────────────────────────────── */
   /* Sidebar shell — stretches full height of parent for background fill */
   .kb-sidebar {
     width: 220px;
     flex-shrink: 0;
-    background-color: rgba(250, 250, 250, 1);
-    border-right: 1px solid rgba(228, 228, 231, 0.5);
+    background-color: var(--color-surface-container-lowest);
   }
 
   /* Inner wrapper — this is what actually sticks while content scrolls */
@@ -163,7 +159,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(113, 113, 122, 1);
+    color: var(--color-kb-text);
   }
 
   .kb-sidebar__group-sub {
@@ -171,7 +167,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     font-size: var(--text-label-md);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
-    color: rgba(161, 161, 170, 1);
+    color: var(--color-kb-text-muted);
   }
 
   .kb-sidebar__nav {
@@ -190,7 +186,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(113, 113, 122, 1);
+    color: var(--color-kb-text);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-standard);
     border-right: 4px solid transparent;
@@ -201,11 +197,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     opacity: 1;
   }
 
-  /* Active state — Figma: green tint bg, 4px primary right border */
+  /* Active state — green tint bg, 4px primary right border */
   .kb-sidebar__item--active {
-    background-color: rgba(236, 253, 245, 1);
-    color: rgba(6, 95, 70, 1);
-    border-right-color: rgba(6, 95, 70, 1);
+    background-color: var(--color-level-advanced-bg);
+    color: var(--color-level-advanced-text);
+    border-right-color: var(--color-level-advanced-text);
   }
 
   .kb-sidebar__item svg {
@@ -230,7 +226,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(161, 161, 170, 1);
+    color: var(--color-kb-text-muted);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-standard);
   }
@@ -315,7 +311,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(50, 50, 50, 0.4);
+    background: var(--color-overlay);
   }
 
   /* Slide-up panel */
@@ -384,7 +380,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(161, 161, 170, 1);
+    color: var(--color-kb-text-muted);
   }
 
   .kb-mobile-sheet__item {
@@ -405,7 +401,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   }
 
   .kb-mobile-sheet__item--active {
-    background-color: rgba(236, 253, 245, 0.6);
+    background-color: var(--color-level-advanced-bg-dim);
   }
 
   .kb-mobile-sheet__subnav {
@@ -421,7 +417,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     font-weight: var(--weight-medium);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: rgba(161, 161, 170, 1);
+    color: var(--color-kb-text-muted);
     text-decoration: none;
   }
 

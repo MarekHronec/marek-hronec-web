@@ -138,6 +138,41 @@
   /* CTA banner surface — mint green */
   --color-cta-surface: #b1f0ce;
 
+  /* KB interface neutrals — cool-gray scale for sidebar, outline, and article chrome.
+     These are intentionally cool-toned to distinguish KB UI chrome from content text. */
+  --color-kb-text:       rgba(113, 113, 122, 1);   /* section labels, nav items, TOC links */
+  --color-kb-text-muted: rgba(161, 161, 170, 1);   /* breadcrumbs, count labels, sub-items */
+
+  /* Article level badge colors — shared by ArticleCard and article detail page */
+  --color-level-beginner-bg:         rgba(220, 252, 231, 1);
+  --color-level-beginner-text:       rgba(22, 101, 52, 1);
+  --color-level-intermediate-bg:     rgba(254, 249, 195, 1);
+  --color-level-intermediate-text:   rgba(113, 63, 18, 1);
+  --color-level-advanced-bg:         rgba(236, 253, 245, 1);
+  --color-level-advanced-bg-dim:     rgba(236, 253, 245, 0.6);   /* mobile sheet active — 60% */
+  --color-level-advanced-text:       rgba(6, 95, 70, 1);
+
+  /* Prose callout — warning variant (destructive red-tinted palette) */
+  --color-callout-warning-bg:     rgba(254, 137, 131, 0.1);
+  --color-callout-warning-accent: rgba(159, 64, 61, 1);
+
+  /* Code syntax highlight — inside inverse-surface (dark) code blocks only */
+  --color-code-accent: rgba(52, 211, 153, 1);
+
+  /* Diagram panel stage labels — on inverse-surface dark panels */
+  --color-diagram-stage-border:        rgba(255, 255, 255, 0.10);
+  --color-diagram-stage-bg:            rgba(255, 255, 255, 0.05);
+  --color-diagram-stage-text:          rgba(255, 255, 255, 0.20);
+  --color-diagram-stage-active-border: rgba(44, 105, 78, 0.40);
+  --color-diagram-stage-active-bg:     rgba(44, 105, 78, 0.05);
+  --color-diagram-stage-active-text:   rgba(163, 226, 192, 1);
+
+  /* Modal/sheet overlay backdrop */
+  --color-overlay: rgba(50, 50, 50, 0.4);
+
+  /* Small shadow — tighter than --shadow-card, for white cards inside tonal trays */
+  --shadow-sm: 0px 1px 2px rgba(50, 50, 50, 0.12);
+
   /* ---------- Gradients ---------- */
 
   --gradient-cta: linear-gradient(145deg, var(--color-primary), var(--color-primary-dim));

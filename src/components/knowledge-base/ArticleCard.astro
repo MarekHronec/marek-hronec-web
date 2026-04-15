@@ -80,18 +80,18 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
 
   /* Each level gets its own color pair for quick visual scanning */
   .article-card__badge--beginner {
-    background-color: rgba(220, 252, 231, 1);
-    color: rgba(22, 101, 52, 1);
+    background-color: var(--color-level-beginner-bg);
+    color: var(--color-level-beginner-text);
   }
 
   .article-card__badge--intermediate {
-    background-color: rgba(254, 249, 195, 1);
-    color: rgba(113, 63, 18, 1);
+    background-color: var(--color-level-intermediate-bg);
+    color: var(--color-level-intermediate-text);
   }
 
   .article-card__badge--advanced {
-    background-color: rgba(236, 253, 245, 1);
-    color: rgba(6, 95, 70, 1);
+    background-color: var(--color-level-advanced-bg);
+    color: var(--color-level-advanced-text);
   }
 
   .article-card__category {
@@ -133,7 +133,7 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
     gap: var(--space-2);
     font-family: var(--font-body);
     font-size: var(--text-label-md);
-    color: rgba(161, 161, 170, 1);
+    color: var(--color-kb-text-muted);
   }
 
   .article-card__meta-dot {
