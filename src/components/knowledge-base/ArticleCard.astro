@@ -1,4 +1,6 @@
 ---
+import TagBadge from '../shared/TagBadge.astro';
+
 interface Props {
   slug: string;
   title: string;
@@ -15,32 +17,43 @@ const { slug, title, category, excerpt, date, readTime, level, tags } = Astro.pr
 const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[level];
 
 const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/knowledge-base/${slug}`;
 ---
 
-<a class="article-card" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/knowledge-base/${slug}`}>
+<article class="article-card">
 
   <div class="article-card__header">
-    <span class:list={['article-card__badge', `article-card__badge--${level}`]}>{levelLabel}</span>
-    <p class="article-card__category">{category.toUpperCase()}</p>
+    <div class="article-card__header-left">
+      <span class:list={['article-card__badge', `article-card__badge--${level}`]}>{levelLabel}</span>
+      <p class="article-card__category">{category.toUpperCase()}</p>
+    </div>
+    <div class="article-card__meta">
+      <span>{dateStr}</span>
+      <span class="article-card__meta-dot" aria-hidden="true">·</span>
+      <span>{readTime} min read</span>
+    </div>
   </div>
 
   <h2 class="article-card__title">{title}</h2>
   <p class="article-card__excerpt">{excerpt}</p>
 
   <footer class="article-card__footer">
-    <div class="article-card__meta">
-      <span>{dateStr}</span>
-      <span class="article-card__meta-dot" aria-hidden="true">·</span>
-      <span>{readTime} min read</span>
-    </div>
     <ul class="article-card__tags" role="list">
       {tags.slice(0, 2).map((tag) => (
-        <li class="article-card__tag">{tag}</li>
+        <li><TagBadge label={tag} /></li>
       ))}
     </ul>
+    <a class="article-card__link" href={href} aria-label={`Read article: ${title}`}>
+      Read More
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
   </footer>
 
-</a>
+</article>
 
 <style>
   .article-card {
@@ -50,35 +63,40 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
     padding: var(--space-6);
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-md);
-    text-decoration: none;
-    color: inherit;
-    transition: background-color var(--duration-fast) var(--ease-standard);
     width: 100%;
     height: 100%;
+    transition: background-color var(--duration-fast) var(--ease-standard);
   }
 
   .article-card:hover {
     background-color: var(--color-surface-container);
-    opacity: 1;
   }
 
   .article-card__header {
     display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .article-card__header-left {
+    display: flex;
     align-items: center;
     gap: var(--space-3);
+    flex-shrink: 0;
   }
 
   .article-card__badge {
     font-family: var(--font-body);
-    font-size: 0.625rem;
+    font-size: var(--text-label-sm);
     font-weight: var(--weight-bold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 2px var(--space-2);
     border-radius: 2px;
+    white-space: nowrap;
   }
 
-  /* Each level gets its own color pair for quick visual scanning */
   .article-card__badge--beginner {
     background-color: var(--color-level-beginner-bg);
     color: var(--color-level-beginner-text);
@@ -102,6 +120,21 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
     color: var(--color-primary);
   }
 
+  .article-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-kb-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .article-card__meta-dot {
+    opacity: 0.5;
+  }
+
   .article-card__title {
     font-family: var(--font-display);
     font-size: var(--text-title-lg);
@@ -121,40 +154,34 @@ const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric
 
   .article-card__footer {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: var(--space-4);
     margin-top: var(--space-2);
-  }
-
-  .article-card__meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    color: var(--color-kb-text-muted);
-  }
-
-  .article-card__meta-dot {
-    opacity: 0.5;
   }
 
   .article-card__tags {
     display: flex;
     gap: var(--space-1);
     flex-wrap: wrap;
-    justify-content: flex-end;
   }
 
-  .article-card__tag {
-    font-family: var(--font-body);
+  .article-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-display);
     font-size: var(--text-label-md);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-on-surface-muted);
-    background-color: var(--color-secondary-container);
-    padding: 2px var(--space-2);
-    border-radius: 2px;
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .article-card__link:hover {
+    color: var(--color-primary);
+    opacity: 1;
   }
 </style>

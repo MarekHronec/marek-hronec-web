@@ -230,9 +230,10 @@ Modern frameworks default to shipping JavaScript. Astro defaults to shipping non
 
 **Decision.** Zero client-side JavaScript by default. All `.astro` components are server-only. Interactive features are implemented with the minimum JavaScript necessary:
 
-1. **Hamburger menu** (`Header.astro`) — 10-line inline script toggling ARIA attributes and a CSS class. No library.
+1. **Hamburger menu** (`Header.astro`) — toggles ARIA attributes and a CSS class. No library.
 2. **Article TOC scroll-spy** (`ArticleOutline.astro`) — IntersectionObserver watching heading elements; toggles a CSS class. Present only on article pages.
 3. **KB filter** (`knowledge-base/index.astro`) — IIFE that reads URL params and shows/hides card wrappers. No library.
+4. **Experience expand/collapse** (`ExperienceTimeline.astro`) — toggles `aria-expanded` and a CSS class to reveal additional bullet points per entry. No library.
 
 **Consequences.**  
 Every page delivers meaningful content with zero JavaScript download and zero hydration latency. The three small scripts that do ship are inlined in their host components, so they incur no additional network round-trips. If a component genuinely needs client-side interactivity in the future, Astro's `client:*` directives can hydrate it without changing the architecture.
@@ -259,3 +260,139 @@ Several UI elements require icons (certifications, tech stack categories, contac
 
 **Consequences.**  
 Changing an icon requires editing one file. The props interface is consistent across all icons. TypeScript catches incorrect prop usage at build time. The custom `BpmMerge` icon (two bezier-connected nodes converging to one output) has a single definition that renders at 14px in the sidebar and any other size as needed.
+
+---
+
+## ADR-012: Shared Components Directory — `src/components/shared/`
+
+**Status:** Accepted  
+**Date:** 2025-04-15
+
+**Context.**  
+The tag badge visual pattern (neutral gray chip, uppercase label, 2px border-radius) was duplicated in `CaseStudyCard.astro` and `ArticleCard.astro` as separate `.cs-card__tag` and `.article-card__tag` CSS classes with identical values. When the `/credentials` page required the same badge for domain labels, a third copy would have been created.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Continue duplicating per-component | No import overhead; component stays self-contained | Three definitions to keep in sync; token drift risk |
+| Inline the style in a base CSS file | Single CSS rule | Cannot be composed into arbitrary component trees as an Astro element |
+| Extract to `src/components/shared/TagBadge.astro` | Single definition; typed props; importable anywhere | Adds import line to every using component |
+
+**Decision.** `TagBadge.astro` extracted to `src/components/shared/`. The `shared/` directory exists for domain-agnostic components used across more than one page domain.
+
+**Consequences.**  
+A single `label: string` prop drives the badge. Any future change to tag styling (colour, font size, radius) is made in one file. `CaseStudyCard`, `ArticleCard`, and `credentials.astro` all import the same component. The `shared/` directory is now the established location for future cross-domain UI primitives.
+
+---
+
+## ADR-013: Credentials Page — Not Linked From Navigation
+
+**Status:** Accepted  
+**Date:** 2025-04-15
+
+**Context.**  
+A full certification registry page (`/credentials`) was added to list all professional certifications with issuer, year, domain tag, and verification links. The question was where to expose it in the site navigation.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Add to main nav | Maximum discoverability | Main nav already has the correct four items (About, Case Studies, Knowledge Base, Contact); adding a sub-page breaks the information architecture |
+| Add to footer | Moderate discoverability | Footer links are for secondary pages (privacy, etc.); credentials is content, not infrastructure |
+| Link only from the About certifications card | Contextually correct; the credentials page expands on content already on the About page | Requires a user to reach the About page first |
+
+**Decision.** `/credentials` is linked exclusively from the "View all certifications" text link at the bottom of the certifications card in `CertsStackSection.astro`. The link is not present in `Header.astro` or `Footer.astro`.
+
+**Consequences.**  
+The main navigation stays clean and focused. Users who care about certifications find the link in the most contextually relevant place. The page is still crawlable by search engines via the static sitemap.
+
+---
+
+## ADR-014: ArticleCard Layout — Aligned With CaseStudyCard Pattern
+
+**Status:** Accepted  
+**Date:** 2025-04-15
+
+**Context.**  
+`ArticleCard.astro` had a different internal layout from `CaseStudyCard.astro`. The article card had date and read-time in the footer alongside tags. Case study cards had tags bottom-left and an arrow link bottom-right. This inconsistency was visible when navigating between the two sections.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Keep divergent layouts | Each card is optimised for its content type | Two different interaction patterns across pages; harder to maintain as one evolves |
+| Align article card layout to case study card | Consistent card grammar across the site; single pattern to learn | Article card loses the prominent date/read-time position in the footer |
+
+**Decision.** `ArticleCard.astro` restructured to match `CaseStudyCard.astro`: level badge and category label top-left, date and read time top-right, title and excerpt in the body, tags bottom-left, "Read More →" arrow link bottom-right. The card root changed from `<a>` to `<article>` with an explicit link in the footer.
+
+**Consequences.**  
+Users see the same card grammar across Case Studies and Knowledge Base. Date and read time moved to the header row, making them visible at a glance without scrolling to the footer. The `<a>`-root pattern was replaced with `<article>` + explicit link — a more semantically correct structure that allows future non-link elements inside the card without nesting interactive elements.
+
+---
+
+## ADR-015: WCAG AA Compliance — Opacity and Colour Fixes
+
+**Status:** Accepted  
+**Date:** 2025-04-15
+
+**Context.**  
+A Lighthouse accessibility audit identified four WCAG AA contrast failures:
+1. `.narrative__expertise-footer` (quote text on dark card) — effective contrast 2.3:1; failed AA
+2. `aside.narrative__expertise` (expertise list items on dark card) — failed AA
+3. `.cta-banner__body` — body text on mint-green background failed AA
+4. `div.cta-banner` — related to above
+
+**Decision.** Four targeted fixes:
+1. `--color-on-dark-dim` raised from `rgba(244,241,240,0.40)` to `0.60` — composited contrast on `#0e0e0e` is now 6.6:1 (AA ✓)
+2. `--color-on-dark-muted` set to `rgba(244,241,240,0.65)` — 7.6:1 (AA ✓)
+3. `.cta-banner__body` colour changed from `rgba(29,92,66,0.8)` to `var(--color-primary-dim)` (fully opaque `#1e5d43`) — 6.0:1 on mint background (AA ✓)
+4. New tokens added to `tokens.css` for all values so they are reusable, documented, and not hardcoded inline
+
+**Consequences.**  
+All text elements pass WCAG AA (4.5:1 for normal text). The opacity adjustments are imperceptible in the rendered UI — the change from 0.40 to 0.60 reads as the same de-emphasised secondary text. Semantic tokens (`--color-on-dark-dim`, `--color-on-dark-muted`) are now available for any future dark-surface component.
+
+---
+
+## ADR-016: Footer Mobile Padding — Scoped With CSS `:has()`
+
+**Status:** Accepted  
+**Date:** 2025-04-15
+
+**Context.**  
+The Knowledge Base listing and article pages render a fixed bottom bar (`kb-mobile-bar`) on mobile for category navigation. Without additional padding, this bar overlaps the footer. The initial fix added bottom padding to the footer unconditionally on mobile, which increased footer height on every page.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Duplicate the footer for KB pages | Guaranteed isolation | Violates the single-component principle; two footers to maintain |
+| Add a CSS class to `<body>` on KB pages | Straightforward selector | Requires JS or Astro prop threading from every KB page through BaseLayout |
+| CSS `:has()` relational selector | Pure CSS; no prop threading; no JS; targets the exact condition | `:has()` is relatively new; supported Chrome 105+, Firefox 121+, Safari 15.4+ |
+
+**Decision.** `body:has(.kb-mobile-bar) .footer` selector scopes the extra padding to pages that contain the KB mobile bar element. No changes to BaseLayout, no JS, no additional props.
+
+**Consequences.**  
+Footer height is unchanged on all pages except KB listing and article detail (mobile only). The `:has()` browser support covers all evergreen browsers as of 2024. The pattern is self-documenting — the selector reads as "footer inside a body that contains the KB bar."
+
+---
+
+## ADR-017: CTA Banner Surface — `#dce8e3` over `#b1f0ce`
+
+**Status:** Accepted  
+**Date:** 2025-04-16
+
+**Context.**  
+The CTA banner section on the About page uses a mint-green background (`--color-cta-surface`). The original value `#b1f0ce` is a saturated mint that reads as bright and playful — inconsistent with the premium, restrained editorial tone of the design system.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Keep `#b1f0ce` | Higher tonal contrast against page background | Too saturated; fights the warm-neutral palette; inconsistent with the "muted, sophisticated" aesthetic |
+| `#dce8e3` (desaturated sage green) | Harmonises with the warm surface palette; feels premium rather than playful | Slightly lower contrast with the page background |
+
+**Decision.** `--color-cta-surface` changed to `#dce8e3` — a desaturated sage that reads as a subtle tonal accent rather than a colour statement.
+
+**Consequences.**  
+The CTA section feels visually consistent with the surface tier system rather than standing out as a decorative block. Text colours on the banner (`--color-primary` for the heading, `--color-primary-dim` for the body) maintain WCAG AA contrast ratios on the new background. The button (`--color-primary` background) still reads clearly against the sage surface.

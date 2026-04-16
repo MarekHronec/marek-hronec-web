@@ -55,7 +55,7 @@
   .contact-hero__content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-5);
     flex: 1;
     padding-top: var(--space-4);
   }
@@ -63,8 +63,8 @@
   .contact-hero__label {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
-    font-weight: var(--weight-regular);
-    letter-spacing: 0.1em;
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--color-primary);
   }
@@ -87,10 +87,9 @@
   .contact-hero__body {
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
-    line-height: 1.625;
+    line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
     max-width: 42ch;
-    margin-top: var(--space-4);
   }
 
   .contact-hero__aside {
@@ -129,7 +128,7 @@
   .contact-hero__availability-value {
     display: block;
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: var(--text-body-lg);
     font-weight: var(--weight-medium);
     color: var(--color-on-surface);
     line-height: var(--leading-snug);

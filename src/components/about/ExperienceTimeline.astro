@@ -1,25 +1,44 @@
 ---
+interface Bullet {
+  label: string;
+  text: string;
+}
+
 interface ExperienceEntry {
   client: string;
   title: string;
   subtitle: string;
   description: string;
+  bullets?: Bullet[];
 }
 
 const entries: ExperienceEntry[] = [
   {
     client: 'Slovak Government',
     title: 'Cloud Architect',
-    subtitle: 'Public sector / Government cloud',
+    subtitle: 'Public Sector / Government Cloud',
     description:
-      "Worked as a Cloud Architect on public-sector cloud initiatives, helping shape secure and scalable government cloud capabilities, governance, and adoption models. Contributed to the EuroCloud initiative as part of Slovakia's representation in an EU-level collaboration framework.",
+      "As part of a dedicated team in the Department of Architecture (Business, Application, and Technological), I contributed significantly to shaping the Slovak Republic's national cloud strategy. My primary focus was on the technological aspects of public cloud platforms (OCI and Azure), where I played a key role in:",
+    bullets: [
+      { label: 'Cloud Strategy & Governance', text: 'Collaborated on defining high-level architecture and governance frameworks for secure, scalable cloud adoption across the public sector.' },
+      { label: 'Architectural Committee (ARB)', text: 'Served as a member of the Architectural Committee, overseeing and approving changes and new initiatives in government IT architecture. Participated in decision-making processes and contributed to the alignment of projects with national architectural standards.' },
+      { label: 'Technology Leadership', text: 'Took the lead on initiatives such as cloud platform cleanups, security enhancements, and providing consulting support for government agencies.' },
+      { label: 'EuroCloud Initiative', text: "Represented Slovakia as part of the team contributing to the EU-level collaboration on a unified European cloud framework." },
+      { label: 'IoT & BPM Innovation', text: 'Worked on the national Smart Data Hub IoT platform and contributed to the orchestration of life events in government through BPM solutions.' },
+      { label: 'Mentorship & Education', text: 'Advocated for and helped implement ArchiMate certification and the ESI program for Azure education. Mentored colleagues, conducted cloud training sessions, and introduced JIRA and Confluence to establish a structured knowledge-sharing environment.' },
+      { label: 'Community Engagement', text: 'Participated in major cloud events and served as a mentor at hackathons, fostering innovation and collaboration.' },
+    ],
   },
   {
     client: 'Enterprise Operations',
     title: 'Operations, Analysis & Process Architecture',
     subtitle: 'Enterprise IT / Operations',
     description:
-      'Built experience across analysis, operations, support, and architecture, with a strong focus on process optimisation, BPM platforms, and cloud transformation.',
+      'Gained diverse experience across analysis, operations, support, and architecture, contributing to transformative projects in energy, automotive, and IT consulting sectors. Key highlights include:',
+    bullets: [
+      { label: 'Energy Sector', text: 'Managed operations and supplier relationships for a major energy company, overseeing critical systems and processes to ensure smooth operations. Led and oversaw the migration from Oracle BPM to Camunda BPM, taking responsibility for reverse engineering, process optimization, and environment setup in Azure. These efforts delivered significant cost savings on licenses, development, and consultations, while balancing responsibilities across analysis, engineering, and governance.' },
+      { label: 'Automotive Sector', text: 'Worked as an analyst and Scrum Master on a recommendation engine for personalized car features, leveraging data analysis platforms, machine learning, modular architecture, and micro frontends. While primarily focused on analysis and team facilitation, I also contributed to architectural discussions and FinOps optimizations, achieving substantial savings in cloud environments. Collaborated with a multidisciplinary team of data analysts, senior developers, and product owners to deliver innovative solutions.' },
+    ],
   },
 ];
 ---
@@ -41,6 +60,42 @@ const entries: ExperienceEntry[] = [
             <h3 class="experience__title">{entry.title}</h3>
             <p class="experience__subtitle">{entry.subtitle}</p>
             <p class="experience__body">{entry.description}</p>
+            {entry.bullets && (
+              <div class="experience__bullets-wrapper">
+                <ul class="experience__bullets" role="list">
+                  {entry.bullets.slice(0, 1).map((b) => (
+                    <li class="experience__bullet">
+                      <span class="experience__bullet-dot" aria-hidden="true" />
+                      <span>
+                        <span class="experience__bullet-label">{b.label}: </span>
+                        {b.text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {entry.bullets.length > 1 && (
+                  <>
+                    <ul class="experience__bullets experience__bullets--extra" role="list" aria-hidden="true">
+                      {entry.bullets.slice(1).map((b) => (
+                        <li class="experience__bullet">
+                          <span class="experience__bullet-dot" aria-hidden="true" />
+                          <span>
+                            <span class="experience__bullet-label">{b.label}: </span>
+                            {b.text}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    <button class="experience__expand" aria-expanded="false">
+                      <span class="experience__expand-label">Show more</span>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" class="experience__expand-icon">
+                        <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </article>
       ))}
@@ -142,4 +197,86 @@ const entries: ExperienceEntry[] = [
     max-width: 68ch;
     margin-top: var(--space-2);
   }
+
+  .experience__bullets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    max-width: 68ch;
+  }
+
+  .experience__bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .experience__bullet-dot {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 0.5em; /* optical alignment with first line of text */
+  }
+
+  .experience__bullet-label {
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  .experience__bullets--extra {
+    display: none;
+    margin-top: var(--space-3);
+  }
+
+  .experience__bullets--extra.is-open {
+    display: flex;
+  }
+
+  .experience__expand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .experience__expand:hover {
+    opacity: 0.75;
+  }
+
+  .experience__expand-icon {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .experience__expand[aria-expanded="true"] .experience__expand-icon {
+    transform: rotate(180deg);
+  }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.experience__expand').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const extra = btn.previousElementSibling as HTMLElement;
+      btn.setAttribute('aria-expanded', String(!expanded));
+      extra.classList.toggle('is-open', !expanded);
+      extra.setAttribute('aria-hidden', String(expanded));
+      btn.querySelector('.experience__expand-label')!.textContent = expanded ? 'Show more' : 'Show less';
+    });
+  });
+</script>

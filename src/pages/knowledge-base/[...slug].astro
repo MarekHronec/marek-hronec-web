@@ -309,9 +309,9 @@ const categoryLabel = category.toUpperCase();
     max-width: 68ch;
   }
 
-  /* Intro paragraph (first <p>) — slightly larger for a strong opening */
+  /* Intro paragraph (first <p>) — one step up from body-lg for a strong opening */
   .prose :global(p:first-child) {
-    font-size: 1.125rem;
+    font-size: var(--text-title-md);
     line-height: 1.625;
     color: var(--color-on-surface-muted);
   }

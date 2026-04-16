@@ -8,6 +8,8 @@
 
 import BadgeCheck from "../icons/BadgeCheck.astro";
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 interface Cert {
   name: string;
   level: string;
@@ -29,8 +31,8 @@ interface TechColumn {
 
 const certifications: Cert[] = [
   { name: "Azure Solutions Architect Expert", level: "AZ-305" },
-  { name: "OCI Cloud Infrastructure Architect", level: "Associate Level" },
-  { name: "OCI Multicloud Architect", level: "Professional Level" },
+  { name: "Oracle Cloud Infrastructure Architect", level: "Associate Level" },
+  { name: "Oracle Multicloud Architect", level: "Professional Level" },
 ];
 
 const columns: TechColumn[] = [
@@ -39,10 +41,12 @@ const columns: TechColumn[] = [
       {
         name: "Infrastructure",
         items: [
-          "Azure, OCI",
+          "Microsoft Azure",
+          "Azure ExpressRoute",
+          "Oracle Cloud (OCI)",
+          "GitHub",
+          "GitHub Actions",
           "Terraform",
-          "GitHub & Gitea Actions",
-          "ExpressRoute",
         ],
       },
     ],
@@ -51,24 +55,24 @@ const columns: TechColumn[] = [
     sections: [
       {
         name: "Containers",
-        items: ["Kubernetes (OKE/AKS)", "Azure App Service", "Docker"],
+        items: ["Kubernetes", "Azure App Service", "Docker"],
       },
-    ],
-  },
-  {
-    sections: [
-      { name: "Orchestration", items: ["Camunda, Oracle BPM"] },
-      { name: "Languages", items: ["GO (In Progress)"] },
+      { name: "Orchestration", items: ["Camunda BPM", "Oracle BPM"] },
     ],
   },
   {
     sections: [
       {
         name: "Observability",
-        items: [
-          "PowerBI, Tableau",
-          "Grafana, Cloud-native tools (Metrics, logs and dashboards)",
-        ],
+        items: ["Power BI", "Tableau", "Grafana", "Cloud-native tools"],
+      },
+    ],
+  },
+  {
+    sections: [
+      {
+        name: "Modeling",
+        items: ["Sparx EA", "BiZZdesign", "Archi", "BPMN Modelers", "draw.io"],
       },
     ],
   },
@@ -94,10 +98,28 @@ const columns: TechColumn[] = [
           ))
         }
       </ul>
+
+      <a class="cs__certs-link" href={`${base}/credentials`}>
+        View all certifications
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M2 6h8M7 3l3 3-3 3"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
     </div>
 
     <div class="cs__stack">
-      <p class="cs__label cs__label--muted">Technical Stack</p>
+      <p class="cs__label">Technical Stack</p>
       <div class="cs__stack-grid">
         {
           columns.map((col) => (
@@ -148,6 +170,8 @@ const columns: TechColumn[] = [
     background-color: var(--color-surface-container);
     border-radius: var(--radius-md);
     padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
   }
 
   .cs__stack {
@@ -164,10 +188,6 @@ const columns: TechColumn[] = [
     text-transform: uppercase;
     color: var(--color-on-surface);
     margin-bottom: var(--space-4);
-  }
-
-  .cs__label--muted {
-    color: var(--color-on-surface-muted);
   }
 
   .cs__cert-list {
@@ -191,7 +211,7 @@ const columns: TechColumn[] = [
   .cs__cert-text {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: var(--space-1);
   }
 
   .cs__cert-name {
@@ -211,19 +231,22 @@ const columns: TechColumn[] = [
   .cs__stack-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-5);
+    column-gap: var(--space-5);
+    row-gap: var(--space-5);
   }
 
   @media (min-width: 640px) {
     .cs__stack-grid {
       grid-template-columns: repeat(3, 1fr);
+      column-gap: var(--space-5);
     }
   }
 
   @media (min-width: 1024px) {
     .cs__stack-grid {
       grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-4);
+      column-gap: var(--space-5);
+      row-gap: var(--space-4);
     }
   }
 
@@ -255,5 +278,24 @@ const columns: TechColumn[] = [
     font-size: var(--text-body-md);
     color: var(--color-on-surface-muted);
     line-height: var(--leading-snug);
+  }
+
+  .cs__certs-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: auto;
+    padding-top: var(--space-5);
+    align-self: flex-end;
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .cs__certs-link:hover {
+    opacity: 0.75;
   }
 </style>

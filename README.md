@@ -12,7 +12,7 @@ This site serves two audiences: those evaluating technical background at a glanc
 
 The design philosophy — "The Architectural Monograph" — treats the site as a curated technical journal rather than a product landing page. Layout is Swiss-grid inspired, typography is editorial, and visual weight comes from tonal layering rather than decoration.
 
-The technical approach is equally intentional. Astro's static output mode means every page is pre-rendered HTML delivered directly from a CDN edge. Content Collections validate every article's frontmatter at build time using Zod schemas, eliminating the class of runtime errors that come from malformed markdown. Zero client-side JavaScript is shipped by default — the only script tag in production is the hamburger menu toggle.
+The technical approach is equally intentional. Astro's static output mode means every page is pre-rendered HTML delivered directly from a CDN edge. Content Collections validate every article's frontmatter at build time using Zod schemas, eliminating the class of runtime errors that come from malformed markdown. Zero client-side JavaScript is shipped by default — the only scripts in production are the hamburger menu toggle and the article TOC scroll-spy (present only on article pages).
 
 | | |
 |---|---|
@@ -56,11 +56,12 @@ BaseLayout
 │   ├── index.astro           → HeroSection, NarrativeSection, CertsStackSection,
 │   │                            ExperienceTimeline, CtaBanner
 │   ├── case-studies/
-│   │   ├── index.astro       → CaseStudyCard[], CaseStudyMetrics
+│   │   ├── index.astro       → CaseStudyCard[] (uses TagBadge), CaseStudyMetrics
 │   │   └── [slug].astro      → CaseStudyMetrics, prose body
 │   ├── knowledge-base/
-│   │   ├── index.astro       → CategorySidebar, ArticleCard[]
+│   │   ├── index.astro       → CategorySidebar, ArticleCard[] (uses TagBadge)
 │   │   └── [...slug].astro   → CategorySidebar, ArticleOutline (TOC), prose body
+│   ├── credentials.astro     → certification registry with domain TagBadges
 │   └── contact.astro         → ContactHero, ContactChannels, ContactServices
 └── Footer
 ```
@@ -83,7 +84,8 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full technical deep-div
     │   ├── contact/        # ContactHero, ContactChannels, ContactServices
     │   ├── icons/          # Standalone SVG icon components
     │   ├── knowledge-base/ # CategorySidebar, ArticleCard, ArticleOutline
-    │   └── layout/         # Header, Footer
+    │   ├── layout/         # Header, Footer
+    │   └── shared/         # TagBadge — domain-agnostic components used across pages
     ├── content/
     │   ├── case-studies/   # *.md — validated by caseStudies Zod schema
     │   └── knowledge-base/ # **/*.md — validated by knowledgeBase Zod schema
@@ -108,6 +110,8 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full technical deep-div
 | `/knowledge-base` | `src/pages/knowledge-base/index.astro` |
 | `/knowledge-base/:slug` | `src/pages/knowledge-base/[...slug].astro` |
 | `/contact` | `src/pages/contact.astro` |
+| `/credentials` | `src/pages/credentials.astro` |
+| `/404` | `src/pages/404.astro` |
 
 ---
 

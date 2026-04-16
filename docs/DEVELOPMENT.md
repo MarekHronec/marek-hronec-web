@@ -75,10 +75,12 @@ src/components/
 ├── contact/        ← used only on contact.astro
 ├── icons/          ← standalone SVG icon components, used anywhere
 ├── knowledge-base/ ← used on KB listing and article detail pages
-└── layout/         ← Header, Footer — shared across all pages
+├── layout/         ← Header, Footer — shared across all pages
+└── shared/         ← domain-agnostic components used across multiple page domains
+    └── TagBadge.astro  ← neutral tag chip; used by CaseStudyCard, ArticleCard, credentials
 ```
 
-A component that is used on more than one page and doesn't belong to a domain (e.g. a shared utility component) would go in `src/components/shared/`. Currently no such components exist.
+Components that belong to a single domain stay in their domain folder. A component is moved to `shared/` only when it is used by two or more unrelated domains. `TagBadge.astro` is the first shared component: the identical tag chip pattern appeared independently in Case Studies, Knowledge Base, and the Credentials page.
 
 ### Component size limit
 

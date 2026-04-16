@@ -13,11 +13,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         >
       </h1>
       <p class="hero__body">
-        I’m Marek Hronec, a cloud architect focused on practical,
-        well-documented systems. I work across architecture, governance, and
-        delivery, turning complex requirements into designs that teams can build
-        and operate. My approach is simple: think clearly, document well, and
-        avoid unnecessary complexity.
+        I’m Marek Hronec, a Cloud Architect turning complex needs into
+        practical, scalable designs. I focus on clarity, thorough documentation,
+        and simplicity to ensure teams can build and operate with ease.
       </p>
     </div>
 
@@ -52,8 +50,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   @media (min-width: 768px) {
     .hero__inner {
-      /* narrower photo column wastes less vertical height */
-      grid-template-columns: 1fr 260px;
+      grid-template-columns: 1fr 340px;
       gap: var(--space-8);
       align-items: start;
     }
@@ -61,7 +58,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   @media (min-width: 1024px) {
     .hero__inner {
-      grid-template-columns: 1fr 300px;
+      grid-template-columns: 1fr 420px;
     }
   }
 
@@ -144,7 +141,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: 60% center;
     display: block;
   }
 </style>

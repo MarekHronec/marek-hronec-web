@@ -82,9 +82,8 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   ├── about/                # Components exclusive to the About/Landing page
     │   │   ├── HeroSection.astro
     │   │   ├── NarrativeSection.astro
-    │   │   ├── CertsStackSection.astro
+    │   │   ├── CertsStackSection.astro   # Certifications list + tech stack grid, links to /credentials
     │   │   ├── ExperienceTimeline.astro
-    │   │   ├── TechStackGrid.astro
     │   │   └── CtaBanner.astro
     │   ├── case-studies/         # Shared between listing and detail pages
     │   │   ├── CaseStudyCard.astro
@@ -107,9 +106,11 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── ArticleCard.astro
     │   │   ├── ArticleOutline.astro  # Floating TOC with scroll-spy
     │   │   └── CategorySidebar.astro
-    │   └── layout/
-    │       ├── Header.astro      # Sticky glassmorphism nav
-    │       └── Footer.astro
+    │   ├── layout/
+    │   │   ├── Header.astro      # Sticky glassmorphism nav
+    │   │   └── Footer.astro
+    │   └── shared/               # Domain-agnostic reusable components
+    │       └── TagBadge.astro    # Neutral tag chip — used by CaseStudyCard, ArticleCard, credentials
     ├── content/
     │   ├── case-studies/         # One .md per case study
     │   │   ├── hyper-scale-observability.md
@@ -132,6 +133,7 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── index.astro
     │   │   └── [...slug].astro
     │   ├── contact.astro
+    │   ├── credentials.astro     # Full certification registry — linked from About page only
     │   └── 404.astro
     ├── styles/
     │   ├── tokens.css            # All CSS custom properties — single source of truth
@@ -143,12 +145,12 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
 
 ## 4. Component Architecture
 
-All components are `.astro` files — server-only, rendered to static HTML at build time. No React, Vue, or Svelte components exist. The only client-side script in the entire build is the 10-line hamburger menu toggle in `Header.astro`.
+All components are `.astro` files — server-only, rendered to static HTML at build time. No React, Vue, or Svelte components exist. Client-side scripts are minimal and scoped to specific components.
 
 ```
 BaseLayout.astro
 ├── Header.astro
-│   └── [inline <script>]  ← only JS in production
+│   └── [inline <script>]  ← hamburger toggle
 │
 ├── <slot />
 │   │
@@ -157,28 +159,36 @@ BaseLayout.astro
 │   │   ├── NarrativeSection.astro
 │   │   │   └── BookOpen.astro (icon)
 │   │   ├── CertsStackSection.astro
-│   │   │   └── BadgeCheck.astro (icon, ×3)
+│   │   │   ├── BadgeCheck.astro (icon, ×3)
+│   │   │   └── → links to /credentials
 │   │   ├── ExperienceTimeline.astro
+│   │   │   └── [inline <script>]  ← expand/collapse extra bullets
 │   │   └── CtaBanner.astro
 │   │
 │   ├── case-studies/index.astro (/case-studies)
 │   │   └── CaseStudyCard.astro (×n)
+│   │       ├── TagBadge.astro (shared, ×n)
 │   │       └── CaseStudyMetrics.astro
 │   │
 │   ├── case-studies/[slug].astro (/case-studies/:slug)
 │   │   └── CaseStudyMetrics.astro
 │   │
 │   ├── knowledge-base/index.astro (/knowledge-base)
+│   │   ├── [inline <script>]  ← URL-param category/tag filter
 │   │   ├── CategorySidebar.astro
 │   │   │   ├── Cloud.astro (icon, ×2)
 │   │   │   ├── Workflow.astro (icon)
 │   │   │   └── BpmMerge.astro (icon)
 │   │   └── ArticleCard.astro (×n)
+│   │       └── TagBadge.astro (shared, ×n)
 │   │
 │   ├── knowledge-base/[...slug].astro (/knowledge-base/:slug)
 │   │   ├── CategorySidebar.astro
 │   │   └── ArticleOutline.astro (TOC, desktop only)
 │   │       └── [inline <script>]  ← IntersectionObserver scroll-spy
+│   │
+│   ├── credentials.astro (/credentials)
+│   │   └── TagBadge.astro (shared, domain labels per cert)
 │   │
 │   └── contact.astro (/contact)
 │       ├── ContactHero.astro
@@ -267,6 +277,7 @@ All routes are statically generated at build time. Dynamic routes use `getStatic
 | `/knowledge-base` | `src/pages/knowledge-base/index.astro` | No | Listing with sidebar, filterable by category/tag |
 | `/knowledge-base/:slug` | `src/pages/knowledge-base/[...slug].astro` | Yes | `[...slug]` catch-all handles nested paths |
 | `/contact` | `src/pages/contact.astro` | No | Contact channels and services |
+| `/credentials` | `src/pages/credentials.astro` | No | Full certification registry — linked from About certifications card only; not in nav or footer |
 | `/404` | `src/pages/404.astro` | No | Custom not-found page |
 
 The knowledge base uses a rest parameter (`[...slug]`) rather than a simple `[slug]` because article IDs include the subdirectory path — for example, `azure/azure-landing-zones`. A single-segment slug would fail to match these paths. The catch-all collects the full path as the slug and matches it against content entry IDs.
@@ -300,11 +311,23 @@ All CSS custom properties are defined in `src/styles/tokens.css` and imported gl
 | `--color-outline-variant` | `rgba(50,50,50,0.15)` | Ghost borders (felt, not seen) |
 | `--color-warm-gray` | `rgba(179,178,177,1)` | Hairline dividers, arrows |
 | `--color-meta-label` | `rgba(123,122,122,1)` | Metadata label text |
-| `--color-cta-surface` | `#b1f0ce` | CTA banner background |
+| `--color-cta-surface` | `#dce8e3` | CTA banner background |
 | `--color-on-cta` | `rgba(225,255,236,1)` | Text on primary-coloured banner |
 | `--glass-bg` | `rgba(252,249,248,0.80)` | Header and TOC glass surface |
 | `--glass-blur` | `blur(24px)` | Header and TOC backdrop filter |
 | `--gradient-cta` | `linear-gradient(145deg, primary, primary-dim)` | Primary buttons |
+| `--color-on-dark-muted` | `rgba(244,241,240,0.65)` | Body text on inverse-surface (dark card) — WCAG AA 7.6:1 |
+| `--color-on-dark-dim` | `rgba(244,241,240,0.60)` | De-emphasised text on inverse-surface — WCAG AA 6.6:1 |
+| `--color-kb-text` | `rgba(113,113,122,1)` | KB chrome: sidebar labels, TOC links, nav items |
+| `--color-kb-text-muted` | `rgba(161,161,170,1)` | KB chrome: breadcrumbs, count labels, sub-items |
+| `--color-level-beginner-bg/text` | mint green pair | Article level badge — beginner |
+| `--color-level-intermediate-bg/text` | warm yellow pair | Article level badge — intermediate |
+| `--color-level-advanced-bg/text` | light mint pair | Article level badge — advanced |
+| `--color-callout-warning-bg/accent` | red-tinted pair | Warning callout block in KB articles |
+| `--color-code-accent` | `rgba(52,211,153,1)` | Syntax highlight colour inside dark code blocks |
+| `--color-diagram-stage-*` | 6 tokens | Case study diagram stage boxes (inactive + active variants) |
+| `--color-overlay` | `rgba(50,50,50,0.4)` | KB mobile sidebar sheet backdrop |
+| `--shadow-sm` | `0px 1px 2px rgba(50,50,50,0.12)` | Small card shadow — white cards inside tonal trays |
 
 **Typography**
 
@@ -408,9 +431,9 @@ The build output is entirely static: HTML, CSS, and one small JavaScript file fo
 
 ## 9. Performance and Constraints
 
-**Zero JS by default.** Every `.astro` component is server-only. The only JavaScript in the production build is the hamburger toggle in `Header.astro` (10 lines, no dependencies) and the IntersectionObserver scroll-spy in `ArticleOutline.astro` (present only on article detail pages). There is no JavaScript framework, no hydration, no module graph.
+**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the category/tag filter IIFE in `knowledge-base/index.astro` (KB listing only), and the expand/collapse handler in `ExperienceTimeline.astro`. There is no JavaScript framework, no hydration, no module graph.
 
-**Static pre-rendering.** All 11 pages are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
+**Static pre-rendering.** All pages — 6 static routes plus one per content entry (3 case studies + 3 KB articles = 12 total for current content) — are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
 
 **Font loading.** Google Fonts is loaded via `<link rel="preconnect">` hints to `fonts.googleapis.com` and `fonts.gstatic.com`, established in `BaseLayout.astro`. The `display=swap` parameter in the font URL ensures body text renders immediately in the fallback font while the custom fonts load — no flash of invisible text.
 
