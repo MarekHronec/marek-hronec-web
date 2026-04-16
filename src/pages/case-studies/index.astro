@@ -25,11 +25,11 @@ const others     = allStudies.filter((s) => !s.data.featured);
 
       <div class="cs-hero__content">
         <p class="cs-hero__label">Principal Cloud Architect</p>
-        <h1 class="cs-hero__heading">Case Studies.</h1>
+        <h1 class="cs-hero__heading">Case Studies<span class="cs-hero__period">.</span></h1>
         <p class="cs-hero__subtitle">
-          Elite-level digital infrastructure strategy. I transform architectural
-          complexity into scalable, cost-efficient, and resilient systems for
-          global enterprises.
+           Exploring real-world challenges and innovative solutions, these projects showcase my 
+           ability to design and deliver cloud architectures that drive efficiency, scalability, 
+           and resilience.
         </p>
       </div>
 
@@ -234,6 +234,10 @@ const others     = allStudies.filter((s) => !s.data.featured);
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
     color: var(--color-on-surface);
+  }
+
+  .cs-hero__period {
+    color: var(--color-meta-label);
   }
 
   /* Wider max-width than .hero__body because the subtitle here runs longer */

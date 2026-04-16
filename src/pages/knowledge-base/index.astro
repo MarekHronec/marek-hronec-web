@@ -30,7 +30,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
         <!-- Page header -->
         <header class="kb-header">
           <p class="kb-header__label">Knowledge Base</p>
-          <h1 class="kb-header__title">Technical Notes.</h1>
+          <h1 class="kb-header__title">Technical Notes<span class="kb-header__period">.</span></h1>
           <p class="kb-header__subtitle">
             In-depth architecture patterns, implementation guides, and
             operational constraints for cloud-native systems.
@@ -147,6 +147,10 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
     color: var(--color-on-surface);
+  }
+
+  .kb-header__period {
+    color: var(--color-meta-label);
   }
 
   .kb-header__subtitle {
