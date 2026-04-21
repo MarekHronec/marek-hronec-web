@@ -24,7 +24,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
     <div class="cs-hero__inner container">
 
       <div class="cs-hero__content">
-        <p class="cs-hero__label">Principal Cloud Architect</p>
+        <p class="cs-hero__label">Proven Cloud Solutions</p>
         <h1 class="cs-hero__heading">Case Studies<span class="cs-hero__period">.</span></h1>
         <p class="cs-hero__subtitle">
            Exploring real-world challenges and innovative solutions, these projects showcase my 
@@ -44,123 +44,73 @@ const others     = allStudies.filter((s) => !s.data.featured);
         <div class="cs-featured__tray">
           <article class="cs-featured__card">
 
-            <!-- Left panel -->
-            <div class="cs-featured__left">
+            <!-- Content row: grid on desktop, column on mobile -->
+            <div class="cs-featured__content-row">
 
-              <span class="cs-featured__chip">Featured Project</span>
-
-              <h2 class="cs-featured__title">{featured.data.title}</h2>
-
-              <div class="cs-featured__meta">
-                <div class="cs-featured__meta-item">
-                  <span class="cs-featured__meta-label">Client</span>
-                  <span class="cs-featured__meta-value">{featured.data.client}</span>
-                </div>
-                <div class="cs-featured__meta-item">
-                  <span class="cs-featured__meta-label">Timeline</span>
-                  <span class="cs-featured__meta-value">{featured.data.duration}</span>
-                </div>
-              </div>
-
-              <!-- Problem + Outcome narrative blocks -->
-              <div class="cs-featured__narrative">
-
-                <div class="cs-featured__narrative-block">
-                  <h3 class="cs-featured__narrative-heading">
-                    <!-- Circle-i: problem/info icon -->
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
-                      <path d="M7 6v3.5M7 4.25v.5" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round"/>
-                    </svg>
-                    The Problem
-                  </h3>
-                  <p class="cs-featured__narrative-body">
-                    Monitoring stack failed at 400+ microservices. Telemetry costs
-                    outpaced revenue growth while latency spikes remained undetected
-                    until customer impact.
-                  </p>
-                </div>
-
-                <div class="cs-featured__narrative-block">
-                  <h3 class="cs-featured__narrative-heading">
-                    <!-- Circle-check: outcome/success icon -->
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
-                      <path d="M4.5 7l2 2 3-3.5" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    The Outcome
-                  </h3>
-                  <CaseStudyMetrics metrics={featured.data.metrics} />
-                </div>
-
-              </div>
-
-            </div>
-
-            <!-- Right panel -->
-            <div class="cs-featured__right">
-
-              <!-- Diagram panel — replace src with a real architecture image when ready -->
-              <div class="cs-featured__diagram" aria-label="Telemetry flow diagram">
-                <!-- Swappable image — replace src to update the visual -->
+              <!-- Diagram — shows first on mobile, top-right on desktop -->
+              <div class="cs-featured__diagram" aria-label="Government cloud governance model diagram">
                 <img
                   class="cs-featured__diagram-img"
-                  src="/images/case-study-featured.jpg"
-                  alt="Hyper-scale telemetry architecture diagram"
+                  src="/images/case_study_01.webp"
+                  alt="Government cloud governance architecture model"
                 />
-                <div class="cs-featured__diagram-overlay">
-                  <div class="cs-featured__diagram-stages">
-                    <span class="cs-featured__stage cs-featured__stage--active">Ingestion</span>
-                    <span class="cs-featured__stage">Processing</span>
-                    <span class="cs-featured__stage">Storage</span>
-                    <span class="cs-featured__stage cs-featured__stage--active">Viz</span>
+              </div>
+
+              <!-- Left panel — shows second on mobile, left column on desktop -->
+              <div class="cs-featured__left">
+
+                <span class="cs-featured__chip">Featured Project</span>
+
+                <h2 class="cs-featured__title">{featured.data.title}</h2>
+
+                <div class="cs-featured__meta">
+                  <div class="cs-featured__meta-item">
+                    <span class="cs-featured__meta-label">Context</span>
+                    <span class="cs-featured__meta-value">{featured.data.context}</span>
                   </div>
-                  <p class="cs-featured__diagram-caption">Fig. 01: Telemetry Flow</p>
-                </div>
-              </div>
-
-              <div class="cs-featured__bottom-row">
-
-                <!-- Key Tradeoffs card -->
-                <div class="cs-featured__tradeoffs">
-                  <h4 class="cs-featured__tradeoffs-heading">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <!-- Central post -->
-                      <line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                      <!-- Horizontal beam -->
-                      <line x1="1" y1="4" x2="13" y2="4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                      <!-- Left pan strings -->
-                      <line x1="2.5" y1="4" x2="2.5" y2="7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
-                      <!-- Left pan arc -->
-                      <path d="M1 7 Q2.5 9.5 4 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" fill="none"/>
-                      <!-- Right pan strings -->
-                      <line x1="11.5" y1="4" x2="11.5" y2="8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
-                      <!-- Right pan arc (slightly lower = unbalanced) -->
-                      <path d="M10 8 Q11.5 10.5 13 8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" fill="none"/>
-                      <!-- Base -->
-                      <line x1="5" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                    </svg>
-                    Key Tradeoffs
-                  </h4>
-                  <ul class="cs-featured__tradeoffs-list">
-                    <li>Accepted 5s lag for 40% cost reduction.</li>
-                    <li>Sampled tracing for healthy traffic.</li>
-                  </ul>
+                  <div class="cs-featured__meta-item">
+                    <span class="cs-featured__meta-label">Role</span>
+                    <span class="cs-featured__meta-value">{featured.data.role}</span>
+                  </div>
                 </div>
 
-                <div class="cs-featured__report-col">
-                  <a class="cs-featured__report-link" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/case-studies/${featured.id}`}>
-                    View Full Report
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                      <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
+                <div class="cs-featured__narrative">
+
+                  <div class="cs-featured__narrative-block">
+                    <h3 class="cs-featured__narrative-heading">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
+                        <path d="M7 6v3.5M7 4.25v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      The Problem
+                    </h3>
+                    <p class="cs-featured__narrative-body">
+                      Public-sector cloud adoption is not only an infrastructure problem. It requires a governed model for service selection, onboarding, identity, network boundaries, cost control and operational responsibility.
+                    </p>
+                  </div>
+
+                  <div class="cs-featured__narrative-block">
+                    <h3 class="cs-featured__narrative-heading">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
+                        <path d="M4.5 7l2 2 3-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      The Outcome
+                    </h3>
+                    <CaseStudyMetrics metrics={featured.data.metrics} />
+                  </div>
+
                 </div>
 
               </div>
+
+              <!-- CTA — shows last on mobile, bottom-right on desktop -->
+              <a class="cs-featured__report-btn" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/case-studies/${featured.id}`}>
+                View Full Report
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
 
             </div>
 
@@ -189,8 +139,7 @@ const others     = allStudies.filter((s) => !s.data.featured);
 </BaseLayout>
 
 <script>
-  /* Hide diagram image on load error so the dark background shows through */
-  document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
+document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     ?.addEventListener('error', function () { this.style.display = 'none'; });
 </script>
 
@@ -253,29 +202,62 @@ const others     = allStudies.filter((s) => !s.data.featured);
     padding-block: 0 var(--space-5);
   }
 
-  /* Outer tray — surface-container-low with 4px inset padding */
   .cs-featured__tray {
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-md);
     padding: 4px;
   }
 
-  /* White card with ambient shadow — sits inside the tray */
   .cs-featured__card {
     background-color: var(--color-surface-container-lowest);
     border-radius: calc(var(--radius-md) - 2px);
     box-shadow: var(--shadow-sm);
-    padding: var(--space-8);
+    padding: var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
   @media (min-width: 768px) {
     .cs-featured__card {
-      flex-direction: row;
-      align-items: flex-start;
-      gap: var(--space-8);
+      padding: var(--space-8);
+    }
+  }
+
+  /* Mobile: single column, source order = diagram → left → tradeoffs → btn */
+  .cs-featured__content-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* Desktop: 2-col grid — left panel spans all rows, right items stack */
+  @media (min-width: 768px) {
+    .cs-featured__content-row {
+      display: grid;
+      grid-template-columns: 38% 1fr;
+      grid-template-rows: 1fr auto;
+      column-gap: var(--space-8);
+      row-gap: var(--space-4);
+    }
+
+    .cs-featured__left {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+
+    .cs-featured__diagram {
+      grid-column: 2;
+      grid-row: 1;
+      height: 100%;
+      min-height: 183px;
+    }
+
+    .cs-featured__report-btn {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: end;
+      align-self: center;
     }
   }
 
@@ -284,27 +266,20 @@ const others     = allStudies.filter((s) => !s.data.featured);
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    width: 100%;
   }
 
-  @media (min-width: 768px) {
-    .cs-featured__left {
-      width: 38%;
-      flex-shrink: 0;
-    }
-  }
-
-  /* display: inline-flex → chip is only as wide as its text content */
   .cs-featured__chip {
     display: inline-flex;
-    align-self: flex-start;           /* prevents stretch to full parent width */
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--space-2);
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-regular);
-    letter-spacing: 0.45px;
+    letter-spacing: 0.045em;
     text-transform: uppercase;
-    color: var(--color-primary-dim);   /* darker primary for contrast on mint bg */
-    background-color: var(--color-cta-surface);   /* #b1f0ce */
+    color: var(--color-primary-dim);
+    background-color: var(--color-cta-surface);
     padding: 2px var(--space-2);
     border-radius: 2px;
   }
@@ -318,11 +293,11 @@ const others     = allStudies.filter((s) => !s.data.featured);
     line-height: var(--leading-snug);
   }
 
-  /* Hairline borders top+bottom — 10% warm-gray opacity, barely visible */
   .cs-featured__meta {
     display: flex;
-    gap: var(--space-10);             /* generous gap between CLIENT and TIMELINE */
-    padding-block: var(--space-4);
+    gap: var(--space-8);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
     border-top: 1px solid var(--color-warm-gray-10);
     border-bottom: 1px solid var(--color-warm-gray-10);
   }
@@ -330,40 +305,39 @@ const others     = allStudies.filter((s) => !s.data.featured);
   .cs-featured__meta-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
 
   .cs-featured__meta-label {
     font-family: var(--font-body);
-    font-size: var(--text-label-md);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-regular);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-meta-label);
+    letter-spacing: 0.06em;
+    color: var(--color-on-surface-muted);
   }
 
   .cs-featured__meta-value {
     font-family: var(--font-display);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
+    line-height: var(--leading-snug);
   }
 
-  /* Problem + Outcome blocks */
   .cs-featured__narrative {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    padding-top: var(--space-2);
   }
 
   .cs-featured__narrative-block {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+    padding-block: var(--space-3);
   }
 
-  /* "The Problem" / "The Outcome" headings with inline icon */
   .cs-featured__narrative-heading {
     font-family: var(--font-display);
     font-size: var(--text-body-md);
@@ -386,26 +360,21 @@ const others     = allStudies.filter((s) => !s.data.featured);
     color: var(--color-on-surface-muted);
   }
 
-  /* ── Right panel ────────────────────────────────────────────── */
-  .cs-featured__right {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    flex: 1;
-  }
-
-  /* Dark diagram panel — position: relative so the overlay stage labels sit on top.
-     When a real architecture diagram image is dropped in, it fills the dark bg. */
+  /* ── Diagram ────────────────────────────────────────────────── */
   .cs-featured__diagram {
     background-color: var(--color-inverse-surface);
     border-radius: 2px;
     position: relative;
-    min-height: 300px;
+    min-height: 180px;
     overflow: hidden;
-    flex: 1;
   }
 
-  /* Image covers the dark panel; JS hides it on load error so the dark bg shows */
+  @media (max-width: 767px) {
+    .cs-featured__diagram {
+      max-height: 220px;
+    }
+  }
+
   .cs-featured__diagram-img {
     position: absolute;
     inset: 0;
@@ -413,126 +382,46 @@ const others     = allStudies.filter((s) => !s.data.featured);
     height: 100%;
     object-fit: cover;
     object-position: center;
-    opacity: 0.6;                      /* dim so overlay labels stay readable */
   }
 
-  /* Overlay — always on top of the image */
-  .cs-featured__diagram-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;         /* stages sit at the bottom of the panel */
-    gap: var(--space-3);
-    padding: var(--space-6);
-  }
 
-  /* 4 pipeline stage boxes */
-  .cs-featured__diagram-stages {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-2);
-  }
 
-  .cs-featured__stage {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    text-align: center;
-    padding: var(--space-2);
-    border: 1px solid var(--color-diagram-stage-border);
-    border-radius: 2px;
-    background-color: var(--color-diagram-stage-bg);
-    color: var(--color-diagram-stage-text);
-  }
-
-  /* Active stages (Ingestion, Viz) — primary green tint */
-  .cs-featured__stage--active {
-    border-color: var(--color-diagram-stage-active-border);
-    background-color: var(--color-diagram-stage-active-bg);
-    color: var(--color-diagram-stage-active-text);
-  }
-
-  .cs-featured__diagram-caption {
-    font-family: var(--font-mono);
-    font-size: var(--text-label-md);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-diagram-stage-text);
-    text-align: right;
-  }
-
-  /* Bottom row — flex row so tradeoffs card and report link are side by side, not stacked */
-  .cs-featured__bottom-row {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    gap: var(--space-4);
-  }
-
-  /* Tradeoffs card — surface-container bg, grows to fill left half */
-  .cs-featured__tradeoffs {
-    flex: 1;
-    background-color: var(--color-surface-container);
-    border-radius: 2px;
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .cs-featured__tradeoffs-heading {
-    font-family: var(--font-display);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    color: var(--color-on-surface);
-    display: flex;
-    align-items: center;
-    gap: var(--space-1);
-  }
-
-  .cs-featured__tradeoffs-heading svg {
-    color: var(--color-primary);
-    flex-shrink: 0;
-  }
-
-  .cs-featured__tradeoffs-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding-left: var(--space-4);
-    list-style: disc;
-  }
-
-  .cs-featured__tradeoffs-list li {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-  }
-
-  /* Report link — no flex:1 so it sits naturally to the right of the tradeoffs card */
-  .cs-featured__report-col {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    align-self: flex-end;
-    flex-shrink: 0;
-  }
-
-  /* "View Full Report →" */
-  .cs-featured__report-link {
+  /* ── CTA button ─────────────────────────────────────────────── */
+  .cs-featured__report-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1);
-    font-family: var(--font-display);
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
     font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0;
+    background: transparent;
     color: var(--color-primary);
-    transition: opacity var(--duration-fast) var(--ease-standard);
+    border: 1px solid var(--color-primary-container);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-height: 44px;
+    transition: transform var(--duration-fast) var(--ease-standard),
+                opacity var(--duration-fast) var(--ease-standard);
   }
 
-  .cs-featured__report-link:hover {
-    opacity: 0.75;
+  .cs-featured__report-btn:hover {
+    background-color: var(--color-cta-surface);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 539px) {
+    .cs-featured__report-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .cs-featured__card {
+      padding: var(--space-4);
+    }
   }
 
   /* ── Secondary cards grid ───────────────────────────────────────

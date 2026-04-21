@@ -1,107 +1,261 @@
 ---
-/**
- * Case Study detail page — /case-studies/[slug]
- *
- * Layout:
- *   ┌─ Article header ───────────────────────────────────────────────┐
- *   │  Category label  |  Title  |  Client, Duration, Industry       │
- *   │  Tags row                                                       │
- *   │  Metrics bar                                                    │
- *   └────────────────────────────────────────────────────────────────┘
- *   ┌─ Body ─────────────────────────────────────────────────────────┐
- *   │  Rendered markdown — prose styles applied via .prose class      │
- *   └────────────────────────────────────────────────────────────────┘
- *
- * Uses the same surface/spacing tokens as every other page so
- * the header and footer match the about page exactly.
- */
-
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CaseStudyMetrics from '../../components/case-studies/CaseStudyMetrics.astro';
+import TagBadge from '../../components/shared/TagBadge.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('caseStudies');
-  return entries.map((entry) => ({
+  const sorted = [...entries].sort((a, b) => {
+    if (a.data.featured && !b.data.featured) return -1;
+    if (!a.data.featured && b.data.featured) return 1;
+    return a.data.title.localeCompare(b.data.title);
+  });
+  return sorted.map((entry, index) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: { entry, caseStudyNumber: String(index + 1).padStart(2, '0') },
   }));
 }
 
-const { entry } = Astro.props;
-const { title, client, industry, duration, tags, metrics, excerpt } = entry.data;
+const { entry, caseStudyNumber } = Astro.props;
+const {
+  title, context, industry, role, tags, metrics, excerpt,
+  heroImage, titleHighlight,
+  platform, focus, principles, outcomes,
+} = entry.data;
+
+const titleBefore = titleHighlight ? title.slice(0, title.indexOf(titleHighlight)) : title;
+const titleAfter  = titleHighlight ? title.slice(title.indexOf(titleHighlight) + (titleHighlight?.length ?? 0)) : '';
 const { Content } = await render(entry);
+
+const visibleTags = tags.slice(0, 3);
+const hiddenCount = tags.length - visibleTags.length;
 ---
 
 <BaseLayout title={title} description={excerpt}>
 
-  <!-- ── Article header ─────────────────────────────────────────── -->
-  <header class="cs-detail-header">
-    <div class="cs-detail-header__inner container">
+  <!-- ── Hero ─────────────────────────────────────────────────────── -->
+  <section class="cs-hero">
+    <div class="container">
+      <div class="cs-hero__grid">
 
-      <!-- Industry / category label -->
-      <p class="cs-detail-header__category">{industry}</p>
+        <!-- Left: eyebrow, title, excerpt, meta grid, metric chips -->
+        <div class="cs-hero__left">
 
-      <!-- Main title -->
-      <h1 class="cs-detail-header__title">{title}</h1>
+          <p class="cs-hero__eyebrow">Case Study {caseStudyNumber}</p>
 
-      <!-- Meta row: client, duration, industry badges -->
-      <div class="cs-detail-header__meta">
-        <div class="cs-detail-header__meta-item">
-          <span class="cs-detail-header__meta-label">Client</span>
-          <span class="cs-detail-header__meta-value">{client}</span>
+          <h1 class="cs-hero__title">
+            {titleBefore}<span class="cs-hero__title-accent">{titleHighlight}</span>{titleAfter}
+          </h1>
+
+          {excerpt && <p class="cs-hero__excerpt">{excerpt}</p>}
+
+          <!-- 2×2 meta grid -->
+          <div class="cs-meta-grid">
+
+            <div class="cs-meta-card">
+              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 21h18M9 8h1m5 0h1M9 12h1m5 0h1M9 16h1m5 0h1M3 7l9-4 9 4M4 21V7M20 21V7"/>
+              </svg>
+              <span class="cs-meta-card__label">Context</span>
+              <span class="cs-meta-card__value">{context}</span>
+            </div>
+
+            <div class="cs-meta-card">
+              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              </svg>
+              <span class="cs-meta-card__label">Role</span>
+              <span class="cs-meta-card__value">{role}</span>
+            </div>
+
+            <div class="cs-meta-card">
+              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/>
+                <path d="M7 7h.01"/>
+              </svg>
+              <span class="cs-meta-card__label">Industry</span>
+              <span class="cs-meta-card__value">{industry}</span>
+            </div>
+
+            <div class="cs-meta-card">
+              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+              </svg>
+              <span class="cs-meta-card__label">Platform</span>
+              <span class="cs-meta-card__value">{platform ?? '—'}</span>
+            </div>
+
+          </div>
+
+          <!-- Metric chips from frontmatter -->
+          <div class="cs-chips">
+            {metrics.map((m) => (
+              <div class="cs-chip">
+                <span class="cs-chip__value">{m.value}</span>
+                <span class="cs-chip__label">{m.label}</span>
+              </div>
+            ))}
+          </div>
+
         </div>
-        <div class="cs-detail-header__meta-item">
-          <span class="cs-detail-header__meta-label">Duration</span>
-          <span class="cs-detail-header__meta-value">{duration}</span>
-        </div>
-        <div class="cs-detail-header__meta-item">
-          <span class="cs-detail-header__meta-label">Industry</span>
-          <span class="cs-detail-header__meta-value">{industry}</span>
-        </div>
+
+        <!-- Right: illustration -->
+        {heroImage && (
+          <div class="cs-hero__right">
+            <div class="cs-hero__image-frame">
+              <img
+                class="cs-hero__img"
+                src={heroImage}
+                alt=""
+                loading="eager"
+              />
+            </div>
+          </div>
+        )}
+
       </div>
-
-      <!-- Tags -->
-      <ul class="cs-detail-header__tags" role="list">
-        {tags.map((tag) => (
-          <li class="cs-detail-header__tag">{tag}</li>
-        ))}
-      </ul>
-
-      <!-- Metrics bar -->
-      <div class="cs-detail-header__metrics">
-        <CaseStudyMetrics metrics={metrics} />
-      </div>
-
     </div>
-  </header>
+  </section>
 
-  <!-- ── Article body ───────────────────────────────────────────── -->
-  <article class="cs-detail-body">
-    <div class="cs-detail-body__inner container">
-      <div class="prose">
-        <Content />
+  <!-- ── Body: prose + sidebar ─────────────────────────────────────── -->
+  <div class="cs-body">
+    <div class="container">
+      <div class="cs-body__grid">
+
+        <!-- Main prose content -->
+        <article class="cs-body__main">
+          <div class="prose">
+            <Content />
+          </div>
+        </article>
+
+        <!-- Right sidebar -->
+        <aside class="cs-body__sidebar">
+
+          <!-- At a Glance -->
+          <div class="cs-sidebar-card">
+            <h3 class="cs-sidebar-card__heading">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              At a Glance
+            </h3>
+            <dl class="cs-glance">
+              {focus && (
+                <div class="cs-glance__item">
+                  <dt>Focus</dt>
+                  <dd>{focus}</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+
+          <!-- Core Principles -->
+          {principles && principles.length > 0 && (
+            <div class="cs-sidebar-card">
+              <h3 class="cs-sidebar-card__heading">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                Core Principles
+              </h3>
+              <ul class="cs-principles" role="list">
+                {principles.map((p) => (
+                  <li class="cs-principles__item">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <!-- Key Outcomes -->
+          {outcomes && outcomes.length > 0 && (
+            <div class="cs-sidebar-card">
+              <h3 class="cs-sidebar-card__heading">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                Key Outcomes
+              </h3>
+              <ul class="cs-outcomes" role="list">
+                {outcomes.map((o) => (
+                  <li class="cs-outcomes__item">
+                    <span class="cs-outcomes__title">{o.title}</span>
+                    <span class="cs-outcomes__desc">{o.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <!-- Tags -->
+          <div class="cs-sidebar-card">
+            <h3 class="cs-sidebar-card__heading">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+              </svg>
+              Tags
+            </h3>
+            <div class="cs-sidebar-tags">
+              {tags.map((tag) => <TagBadge label={tag} />)}
+            </div>
+          </div>
+
+        </aside>
       </div>
     </div>
-  </article>
+  </div>
+
+  <!-- ── Disclaimer ────────────────────────────────────────────────── -->
+  <div class="cs-disclaimer">
+    <div class="cs-disclaimer__inner container">
+      <p class="cs-disclaimer__text">
+        Some case studies are anonymized to respect confidentiality, security and contractual
+        obligations. They focus on my role, architectural reasoning and lessons learned rather
+        than disclosing client-sensitive implementation details.
+      </p>
+    </div>
+  </div>
 
 </BaseLayout>
 
 <style>
-  /* ── Header section ───────────────────────────────────────────── */
-  .cs-detail-header {
+  /* ── Hero ──────────────────────────────────────────────────────── */
+  .cs-hero {
     padding-block: var(--space-8) var(--space-6);
-    border-bottom: 1px solid var(--color-outline-variant);
   }
 
-  .cs-detail-header__inner {
+  .cs-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .cs-hero__grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: var(--space-8);
+    }
+  }
+
+  /* On mobile, image comes second (below left column) — source order handles this */
+
+  .cs-hero__left {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
   }
 
-  /* Industry label — uppercase primary green */
-  .cs-detail-header__category {
+  .cs-hero__eyebrow {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
@@ -110,81 +264,170 @@ const { Content } = await render(entry);
     color: var(--color-primary);
   }
 
-  /* Title — large display heading */
-  .cs-detail-header__title {
+  .cs-hero__title {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 4vw, var(--text-headline-md));
+    font-size: clamp(2rem, 4.5vw, var(--text-display-md));
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+  }
+
+  .cs-hero__title-accent {
+    color: var(--color-primary);
+  }
+
+  .cs-hero__excerpt {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 52ch;
+  }
+
+  /* ── Meta grid ─────────────────────────────────────────────────── */
+  .cs-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 640px) {
+    .cs-meta-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cs-meta-card {
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cs-meta-card__icon {
+    color: var(--color-on-surface-muted);
+    margin-bottom: 2px;
+  }
+
+  .cs-meta-card__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-regular);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-on-surface-muted);
+  }
+
+  .cs-meta-card__value {
+    font-family: var(--font-display);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
     line-height: var(--leading-snug);
   }
 
-  /* Meta grid — three items side by side */
-  .cs-detail-header__meta {
+  .cs-meta-card__tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-6);
-    padding-block: var(--space-4);
-    border-top: 1px solid var(--color-warm-gray-10);
-    border-bottom: 1px solid var(--color-warm-gray-10);
+    gap: var(--space-1);
+    margin-top: 2px;
   }
 
-  .cs-detail-header__meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .cs-detail-header__meta-label {
+  .cs-meta-card__more {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+    align-self: center;
+  }
+
+  /* ── Metric chips ──────────────────────────────────────────────── */
+  .cs-chips {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .cs-chip {
+    flex: 1;
+    min-width: 110px;
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    border-left: 2px solid var(--color-primary);
+  }
+
+  .cs-chip__value {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .cs-chip__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
+    letter-spacing: 0.05em;
     color: var(--color-on-surface-muted);
   }
 
-  .cs-detail-header__meta-value {
-    font-family: var(--font-display);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    color: var(--color-on-surface);
-  }
-
-  /* Tags */
-  .cs-detail-header__tags {
+  /* ── Hero image ────────────────────────────────────────────────── */
+  .cs-hero__right {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
+    align-items: flex-start;
   }
 
-  .cs-detail-header__tag {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-on-surface);
-    background-color: var(--color-secondary-container);
-    padding: 2px var(--space-2);
-    border-radius: 2px;
+  .cs-hero__image-frame {
+    width: 100%;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
   }
 
-  .cs-detail-header__metrics {
-    padding-top: var(--space-2);
+  .cs-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
   }
 
-  /* ── Body ─────────────────────────────────────────────────────── */
-  .cs-detail-body {
-    padding-block: var(--space-8) var(--space-10);
+  /* ── Body: main + sidebar ──────────────────────────────────────── */
+  .cs-body {
+    padding-block: var(--space-6) var(--space-10);
   }
 
-  /* Prose — readable measure, generous line-height */
+  .cs-body__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .cs-body__grid {
+      grid-template-columns: 1fr 260px;
+      gap: var(--space-8);
+    }
+
+    .cs-body__sidebar {
+      position: sticky;
+      top: calc(4rem + var(--space-5));
+    }
+  }
+
+  /* ── Prose ─────────────────────────────────────────────────────── */
   .prose {
-    max-width: var(--container-content);
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   .prose :global(h2) {
@@ -193,7 +436,7 @@ const { Content } = await render(entry);
     font-weight: var(--weight-bold);
     color: var(--color-on-surface);
     letter-spacing: var(--tracking-tight);
-    margin-top: var(--space-6);
+    margin-top: var(--space-8);
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -209,12 +452,12 @@ const { Content } = await render(entry);
     font-size: var(--text-title-md);
     font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
-    margin-top: var(--space-4);
+    margin-top: var(--space-5);
   }
 
   .prose :global(p) {
     font-size: var(--text-body-lg);
-    line-height: var(--leading-relaxed);
+    line-height: 1.7;
     color: var(--color-on-surface-muted);
   }
 
@@ -231,13 +474,162 @@ const { Content } = await render(entry);
 
   .prose :global(li) {
     font-size: var(--text-body-lg);
+    line-height: 1.7;
+    color: var(--color-on-surface-muted);
+  }
+
+  .prose :global(strong) {
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-primary);
+    background-color: var(--color-surface-container-low);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--space-5) var(--space-6);
+    margin: 0;
+  }
+
+  .prose :global(blockquote p) {
+    color: var(--color-on-surface);
+    font-size: var(--text-body-md);
+  }
+
+  /* ── Sidebar cards ─────────────────────────────────────────────── */
+  .cs-body__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-sidebar-card {
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-sm);
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .cs-sidebar-card__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    margin-bottom: var(--space-4);
+  }
+
+  .cs-sidebar-card__heading svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  /* At a Glance dl */
+  .cs-glance {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-glance__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-glance__item dt {
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-regular);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary);
+  }
+
+  .cs-glance__item dd {
+    font-family: var(--font-display);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  /* Core Principles list */
+  .cs-principles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cs-principles__item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface-muted);
+  }
+
+  .cs-principles__item svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Key Outcomes list */
+  .cs-outcomes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-outcomes__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-outcomes__title {
+    font-family: var(--font-display);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  .cs-outcomes__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
     line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
   }
 
-  /* Strong inside prose — charcoal, not black */
-  .prose :global(strong) {
-    font-weight: var(--weight-semibold);
-    color: var(--color-on-surface);
+  /* Sidebar tags */
+  .cs-sidebar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* ── Disclaimer ─────────────────────────────────────────────────── */
+  .cs-disclaimer {
+    padding-block: 0 var(--space-8);
+  }
+
+  .cs-disclaimer__inner {
+    max-width: var(--container-content);
+  }
+
+  .cs-disclaimer__text {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    opacity: 0.7;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-warm-gray-10);
   }
 </style>

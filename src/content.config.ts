@@ -19,9 +19,9 @@ const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.md', base: 'src/content/case-studies' }),
   schema: z.object({
     title: z.string(),
-    client: z.string(),
+    context: z.string(),
     industry: z.string(),
-    duration: z.string(),
+    role: z.string(),
     tags: z.array(z.string()),
     featured: z.boolean().default(false),
     metrics: z.array(z.object({
@@ -29,6 +29,17 @@ const caseStudies = defineCollection({
       value: z.string(),
     })),
     excerpt: z.string(),
+    heroImage: z.string().optional(),
+    heroCaption: z.string().optional(),
+    heroVersion: z.string().optional(),
+    titleHighlight: z.string().optional(),
+    platform: z.string().optional(),
+    focus: z.string().optional(),
+    principles: z.array(z.string()).optional(),
+    outcomes: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+    })).optional(),
   }),
 });
 

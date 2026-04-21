@@ -140,7 +140,7 @@ All icons in `src/components/icons/` accept this interface:
 interface Props {
   size?: number;
   class?: string;
-  'aria-hidden'?: boolean | string;
+  'aria-hidden'?: boolean | 'true' | 'false';
 }
 ```
 

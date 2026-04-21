@@ -88,20 +88,25 @@ excerpt: "An Azure landing zone provides the standardised foundation for all clo
 
 **Loader:** `glob({ pattern: '**/*.md', base: 'src/content/case-studies' })`
 
-Every file in `src/content/case-studies/` must have this frontmatter:
+Every file in `src/content/case-studies/` must have this frontmatter (optional fields marked):
 
 ```yaml
 ---
 title: ""
-client: ""
+context: ""
 industry: ""
-duration: ""
+role: ""
 tags: []
 featured: false
 metrics:
   - label: ""
     value: ""
 excerpt: ""
+# Optional fields:
+# heroImage: "/images/case_study_01_detail.webp"
+# heroCaption: ""
+# heroVersion: ""
+# titleHighlight: ""
 ---
 ```
 
@@ -110,43 +115,49 @@ excerpt: ""
 | Field | Type | Required | Constraints | Description |
 |---|---|---|---|---|
 | `title` | string | Yes | — | Full engagement title |
-| `client` | string | Yes | — | Client name as it appears on the card and detail page |
-| `industry` | string | Yes | — | Industry sector (used as the category label on secondary cards) |
-| `duration` | string | Yes | Human-readable | Engagement length, e.g. `"6 Months"` or `"18 Months"`. Displayed in the meta row. |
-| `tags` | string[] | Yes | At least 1 recommended | Technology and domain tags shown on secondary cards (first 2) |
+| `context` | string | Yes | — | Client or organisational context shown in the meta band on the detail page |
+| `industry` | string | Yes | — | Industry sector shown in the meta band and as the category label on secondary cards |
+| `role` | string | Yes | — | Architect's role on the engagement, shown in the meta band |
+| `tags` | string[] | Yes | At least 1 recommended | Technology and domain tags shown on secondary cards (first 2) and on the detail page |
 | `featured` | boolean | Yes | Exactly one entry should be `true` | The featured study receives the large card treatment on the listing page |
-| `metrics` | `{label, value}[]` | Yes | At least 1, typically 2–3 | Key outcome numbers rendered in the metrics bar. `value` is the large number; `label` is the descriptor. |
-| `excerpt` | string | Yes | ≤160 characters recommended | One-sentence outcome summary |
+| `metrics` | `{label, value}[]` | Yes | At least 1, typically 2 | Key outcome figures rendered in the metrics bar on both the listing and detail pages |
+| `excerpt` | string | Yes | ≤160 characters recommended | One-sentence outcome summary used in cards and page meta description |
+| `heroImage` | string | No | Path relative to `public/` | Hero image shown in the info/image panel on the detail page |
+| `heroCaption` | string | No | — | Caption for the hero image (stored for future use, not currently rendered) |
+| `heroVersion` | string | No | — | Version label for the diagram (stored for future use, not currently rendered) |
+| `titleHighlight` | string | No | Must be an exact substring of `title` | Portion of the title rendered in `--color-primary` green on the detail page header |
 
 ### Metrics guidance
 
-Metrics should be concrete, quantified outcomes:
+Metrics can be quantified outcomes or descriptive labels:
 ```yaml
 metrics:
-  - label: "MTTD Reduction"
-    value: "99.9%"
-  - label: "Annual OpEx"
-    value: "-$2.4M"
+  - label: "Adoption Model"
+    value: "Governed"
+  - label: "Architecture"
+    value: "Cloud-Native"
 ```
 
-`value` renders large and bold. Keep it short (a number, percentage, or formatted figure). `label` renders in small all-caps below the value.
+`value` renders large and bold. `label` renders in small all-caps below the value. Keep `value` short — one word, a number, or a short phrase.
 
 ### Example
 
 ```yaml
 ---
-title: "Hyper-Scale Observability for FinTech Ecosystems"
-client: "Global Payments"
-industry: "FinTech"
-duration: "6 Months"
-tags: ["Observability", "Kubernetes", "Grafana", "OpenTelemetry"]
+title: "Cloud Adoption Through Effective Governance in the Public Sector"
+context: "Slovak Public Administration"
+industry: "Government / Public Sector"
+role: "Cloud Architecture & Governance"
+tags: ["Cloud Governance", "Microsoft Azure", "Public Sector", "FinOps", "Security"]
 featured: true
 metrics:
-  - label: "MTTD Reduction"
-    value: "99.9%"
-  - label: "Annual OpEx"
-    value: "-$2.4M"
-excerpt: "Rebuilt the telemetry foundation for a global payments processor running 400+ microservices."
+  - label: "Adoption Model"
+    value: "Governed"
+  - label: "Architecture"
+    value: "Cloud-Native"
+excerpt: "Public-sector cloud adoption is not only an infrastructure problem. It requires a governed model for service selection, onboarding, identity, network boundaries, cost control and operational responsibility."
+heroImage: "/images/case_study_01_detail.webp"
+titleHighlight: "Effective Governance"
 ---
 ```
 
@@ -183,12 +194,11 @@ src/content/knowledge-base/
 ├── azure/
 │   ├── azure-landing-zones.md
 │   └── event-driven-serverless-patterns.md
-├── devops/
-│   └── gitops-with-argocd.md
-├── networking/         ← create when first article is ready
-├── identity/
-└── ...
+└── devops/
+    └── gitops-with-argocd.md
 ```
+
+New category subdirectories (networking/, identity/, etc.) should be created when the first article for that category is added.
 
 Subdirectory names should match the `category` value in the frontmatter. This is a human-organisation convention — the glob loader picks up all `.md` files regardless of which subdirectory they are in. The `category` frontmatter field is the authoritative classification.
 
@@ -200,16 +210,21 @@ Knowledge base articles: `kebab-case.md`. Use lowercase, hyphens, no underscores
 - `zero-trust-network-access.md`
 
 Case studies: `kebab-case.md`. The filename becomes part of the URL slug.
-- `hyper-scale-observability.md` → `/case-studies/hyper-scale-observability`
+- `effective-governance-public-sector.md` → `/case-studies/effective-governance-public-sector`
 
 ### Image handling
 
-Content images belong in `public/images/content/`. Reference them in Markdown as:
+All static images live in `public/images/`. Reference them in Markdown or frontmatter as:
 ```markdown
-![Alt text](/images/content/filename.png)
+![Alt text](/images/filename.webp)
 ```
 
-For case study architecture diagrams: `public/images/case-study-<slug>.jpg`. The featured case study card references `/images/case-study-featured.jpg` — place the diagram image at that path to display it in the dark diagram panel on the listing page.
+Current image conventions:
+- **Profile photo:** `public/images/profile.webp` — used in the About page hero
+- **Featured case study listing diagram:** `public/images/case_study_01.webp` — displayed in the dark diagram panel on the case studies listing page
+- **Case study detail hero:** `public/images/case_study_01_detail.webp` — referenced via `heroImage` frontmatter on the case study `.md` file
+
+Prefer `.webp` format for new images. Use descriptive, kebab-case filenames.
 
 ---
 
@@ -322,9 +337,9 @@ Standard `##` Markdown headings work fine for all other sections within a case s
    ```yaml
    ---
    title: "Zero-Trust Network Segmentation for a Regulated Enterprise"
-   client: "European Bank"
+   context: "European Bank"
    industry: "Financial Services"
-   duration: "9 Months"
+   role: "Network Architecture & Security"
    tags: ["Zero Trust", "Azure", "Networking", "NSG"]
    featured: false
    metrics:
@@ -336,7 +351,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
    ---
    ```
 
-   If this should be the new featured study, set `featured: true` and change the previous featured study to `featured: false`.
+   If this should be the new featured study, set `featured: true` and change the previous featured study to `featured: false`. Optionally add `heroImage`, `titleHighlight`, and other optional fields.
 
 3. **Write the body.** Structure: problem → architecture decision → implementation → outcome. Use the inline HTML format for "The Problem" and "The Outcome" headings if you want icon decoration.
 

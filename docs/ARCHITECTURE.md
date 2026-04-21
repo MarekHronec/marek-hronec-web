@@ -76,7 +76,7 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
 ├── public/                       # Static assets served at root
 │   ├── favicon.svg
 │   ├── favicon.ico
-│   └── og-default.png            # Default Open Graph image
+│   └── images/                   # Static images: profile photo, case study diagrams
 └── src/
     ├── components/
     │   ├── about/                # Components exclusive to the About/Landing page
@@ -113,7 +113,7 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │       └── TagBadge.astro    # Neutral tag chip — used by CaseStudyCard, ArticleCard, credentials
     ├── content/
     │   ├── case-studies/         # One .md per case study
-    │   │   ├── hyper-scale-observability.md
+    │   │   ├── effective-governance-public-sector.md
     │   │   ├── refactoring-monolithic-identity.md
     │   │   └── automated-compliance-engines.md
     │   └── knowledge-base/       # Subdirectories map to categories
@@ -207,9 +207,9 @@ All SVG icons live in `src/components/icons/` as standalone `.astro` components.
 
 ```ts
 interface Props {
-  size?: number;       // render size in px (default: 24)
-  class?: string;      // CSS class for additional styling
-  'aria-hidden'?: boolean | string;
+  size?: number;                        // render size in px (default: 24)
+  class?: string;                       // CSS class for additional styling
+  'aria-hidden'?: boolean | 'true' | 'false';
 }
 ```
 
@@ -252,16 +252,20 @@ Articles are organised into subdirectories matching the `category` value. The gl
 
 | Field | Type | Required | Description | Example |
 |---|---|---|---|---|
-| `title` | `string` | Yes | Engagement title | `"Hyper-Scale Observability for FinTech Ecosystems"` |
-| `client` | `string` | Yes | Client name | `"Global Payments"` |
-| `industry` | `string` | Yes | Industry sector | `"FinTech"` |
-| `duration` | `string` | Yes | Engagement length | `"6 Months"` |
-| `tags` | `string[]` | Yes | Technology and domain tags | `["Observability", "Kubernetes"]` |
+| `title` | `string` | Yes | Engagement title | `"Cloud Adoption Through Effective Governance in the Public Sector"` |
+| `context` | `string` | Yes | Client or organisational context | `"Slovak Public Administration"` |
+| `industry` | `string` | Yes | Industry sector shown in the meta band | `"Government / Public Sector"` |
+| `role` | `string` | Yes | Architect's role on the engagement | `"Cloud Architecture & Governance"` |
+| `tags` | `string[]` | Yes | Technology and domain tags | `["Cloud Governance", "Microsoft Azure"]` |
 | `featured` | `boolean` | Yes (default: false) | Marks the primary featured card | `true` |
-| `metrics` | `{label, value}[]` | Yes | Outcome metrics for the metrics bar | `[{label: "MTTD Reduction", value: "99.9%"}]` |
-| `excerpt` | `string` | Yes | One-sentence summary | `"Rebuilt the telemetry foundation..."` |
+| `metrics` | `{label, value}[]` | Yes | Outcome metrics for the metrics bar | `[{label: "Adoption Model", value: "Governed"}]` |
+| `excerpt` | `string` | Yes | One-sentence summary (≤160 characters) | `"Public-sector cloud adoption..."` |
+| `heroImage` | `string` | No | Path to hero image for the detail page | `"/images/case_study_01_detail.webp"` |
+| `heroCaption` | `string` | No | Caption for the hero image (not currently rendered) | `"Governance as navigational aid"` |
+| `heroVersion` | `string` | No | Version label for the diagram (not currently rendered) | `"V2.4"` |
+| `titleHighlight` | `string` | No | Substring of `title` to render in `--color-primary` green | `"Effective Governance"` |
 
-Only one case study should have `featured: true`. The featured study receives dedicated treatment on the listing page (large card with diagram panel and tradeoffs summary); all others render as `CaseStudyCard` components.
+Only one case study should have `featured: true`. The featured study receives dedicated treatment on the listing page (large card with diagram panel); all others render as `CaseStudyCard` components.
 
 ---
 
