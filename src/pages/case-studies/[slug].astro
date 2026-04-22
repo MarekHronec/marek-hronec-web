@@ -34,8 +34,6 @@ const {
 const titleBefore = titleHighlight ? title.slice(0, title.indexOf(titleHighlight)) : title;
 const titleAfter  = titleHighlight ? title.slice(title.indexOf(titleHighlight) + (titleHighlight?.length ?? 0)) : '';
 const { Content } = await render(entry);
-
-const visibleTags = tags.slice(0, 3);
 ---
 
 <BaseLayout title={title} description={excerpt}>

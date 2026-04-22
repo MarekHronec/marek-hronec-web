@@ -40,12 +40,12 @@ const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/knowledge-base/${sl
 
   <footer class="article-card__footer">
     <ul class="article-card__tags" role="list">
-      {tags.slice(0, 2).map((tag) => (
+      {tags.map((tag) => (
         <li><TagBadge label={tag} /></li>
       ))}
     </ul>
     <a class="article-card__link" href={href} aria-label={`Read article: ${title}`}>
-      Read More
+      Read Article
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
         <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5"
               stroke-linecap="round" stroke-linejoin="round"/>

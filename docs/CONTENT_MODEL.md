@@ -65,7 +65,7 @@ excerpt: ""
 |---|---|---|---|---|
 | `title` | string | Yes | — | Full article title as it appears in the card and article header |
 | `category` | enum | Yes | One of 8 values | Controls sidebar navigation and filtering. See taxonomy. |
-| `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. Shown on article card (first 2) and used for `?tag=` filtering. |
+| `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. All tags shown on article card. Used for filter chip display and article detail header. |
 | `date` | Date | Yes | ISO 8601 string, coerced to Date | Publication date. Articles are sorted newest-first on the listing page. |
 | `readTime` | number | Yes | Integer, minutes | Estimated reading time. Displayed in the article card and article header. |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | Controls the colour-coded level badge on the article card and article header. |
@@ -170,21 +170,25 @@ titleHighlight: "Effective Governance"
 
 The `category` field in knowledge base articles must be one of these exact string values:
 
-| Value | Display label | Topics |
-|---|---|---|
-| `azure` | Azure | Azure architecture, Landing Zones, Azure services, Microsoft cloud patterns |
-| `networking` | Networking | VNet design, ExpressRoute, hybrid connectivity, network segmentation |
-| `identity` | Identity | Entra ID, RBAC, Zero Trust, conditional access, managed identities |
-| `security` | Security | Posture management, Microsoft Defender, compliance frameworks, threat protection |
-| `finops` | FinOps | Cloud cost optimisation, tagging strategies, showback/chargeback models |
-| `gcp` | GCP | Google Cloud Platform architecture, services, and patterns |
-| `devops` | DevOps | CI/CD pipelines, GitOps, platform engineering, Infrastructure as Code |
-| `bpm` | BPM | Business Process Management, Camunda, Oracle BPM, workflow orchestration |
+| Value | Display label | Topics | Filter group |
+|---|---|---|---|
+| `azure` | Azure | Azure architecture, Landing Zones, Azure services, Microsoft cloud patterns | Platform |
+| `oci` | OCI | Oracle Cloud Infrastructure architecture, services, and patterns | Platform |
+| `networking` | Networking | VNet design, ExpressRoute, hybrid connectivity, network segmentation | Topic |
+| `identity` | Identity | Entra ID, RBAC, Zero Trust, conditional access, managed identities | Topic |
+| `security` | Security | Posture management, Microsoft Defender, compliance frameworks, threat protection | Topic |
+| `finops` | FinOps | Cloud cost optimisation, tagging strategies, showback/chargeback models | Topic |
+| `gcp` | GCP | Google Cloud Platform architecture, services, and patterns | Platform |
+| `devops` | DevOps | CI/CD pipelines, GitOps, platform engineering, Infrastructure as Code | Topic |
+| `bpm` | BPM | Business Process Management, Camunda, Oracle BPM, workflow orchestration | Topic |
 
-The `CategorySidebar` component hard-codes this taxonomy for the navigation tree. Adding a new category requires:
+The **Filter group** column maps to the KB listing page filter panel. Platform categories (`azure`, `oci`, `gcp`) appear under the **Platforms** group; topic categories appear under **Topics**. Articles whose category is a platform value (e.g. `azure`) also surface under topics if their tags match a topic (e.g. tag `Networking` → Networking filter).
+
+Adding a new category requires:
 1. Adding the `category` value to the Zod enum in `src/content.config.ts`
 2. Creating the subdirectory `src/content/knowledge-base/<new-category>/`
-3. Adding the new category entry to `CategorySidebar.astro`
+3. Adding filter buttons to `CategorySidebar.astro` in the correct group (Platforms or Topics), following the `data-filter-group` / `data-filter-value` attribute pattern used by existing buttons
+4. If it is a topic category, adding its mapping to the `TOPIC_CATS` set and `LABELS.topic` object in `src/pages/knowledge-base/index.astro`
 
 ---
 
@@ -196,7 +200,10 @@ The `CategorySidebar` component hard-codes this taxonomy for the navigation tree
 src/content/knowledge-base/
 ├── azure/
 │   ├── azure-landing-zones.md
+│   ├── cloud-resource-naming-conventions.md
 │   └── event-driven-serverless-patterns.md
+├── bpm/
+│   └── introduction-to-bpm-solutions.md
 └── devops/
     └── gitops-with-argocd.md
 ```
@@ -315,7 +322,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
 
    | Field | Constraint |
    |---|---|
-   | `category` | Must be one of: `azure \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
+   | `category` | Must be one of: `azure \| oci \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
    | `level` | Must be one of: `beginner \| intermediate \| advanced` |
    | `date` | Must be a valid date string, e.g. `2025-06-01` |
    | `readTime` | Must be a plain number — not a string like `"9 min"` |
@@ -330,10 +337,23 @@ To add a category not in the list above:
 
 1. **Extend the enum** in [src/content.config.ts](../src/content.config.ts):
    ```ts
-   category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'your-new-category']),
+   category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'your-new-category']),
    ```
-2. **Add it to the sidebar** in `src/components/knowledge-base/CategorySidebar.astro` — follow the existing pattern for the other categories.
-3. **Create the subdirectory** and drop your `.md` file in:
+2. **Add filter buttons** in `src/components/knowledge-base/CategorySidebar.astro`. Find either the Platforms or Topics `<ul>` and add a new `<li>` following the existing pattern:
+   ```html
+   <li>
+     <button class="kb-filter__btn" data-filter-group="topic" data-filter-value="your-new-category" aria-pressed="false">
+       <span>Your Category</span><span class="kb-filter__count"></span>
+     </button>
+   </li>
+   ```
+   Add the same button to the mobile sheet `<ul>` (same structure, add `kb-mobile-sheet__btn` to the class list).
+3. **Register the label** in the `LABELS.topic` object inside the `<script>` block of `src/pages/knowledge-base/index.astro`:
+   ```ts
+   topic: { ..., 'your-new-category': 'Your Category' }
+   ```
+4. **Add to `TOPIC_CATS`** if it is a topic (non-platform) category — in the same `<script>` block, `const TOPIC_CATS = new Set([..., 'your-new-category'])`.
+5. **Create the subdirectory** and drop your `.md` file in:
    ```
    src/content/knowledge-base/your-new-category/first-article.md
    ```
@@ -448,11 +468,25 @@ category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp'
 
 **File 2 — `src/components/knowledge-base/CategorySidebar.astro`**
 
-Find the `categories` array near the top of the file. It looks like:
-```ts
-{ id: 'azure', label: 'Azure', ... },
+Find either the **Platforms** or **Topics** `<ul class="kb-filter__options">` block. Add a new `<li>` following this pattern:
+
+```html
+<li>
+  <button class="kb-filter__btn" data-filter-group="topic" data-filter-value="your-category" aria-pressed="false">
+    <span>Your Category</span><span class="kb-filter__count"></span>
+  </button>
+</li>
 ```
-Add a new entry in the same format for your new category. The `id` must match exactly what you added to the enum above.
+
+Repeat the same `<li>` inside the matching group in the **mobile sheet** section further down in the same file (add `kb-mobile-sheet__btn` to the class list for mobile).
+
+**File 3 — `src/pages/knowledge-base/index.astro` (script block)**
+
+Add the display label to `LABELS.topic` and the value to `TOPIC_CATS` (if it's a topic, not a platform):
+```ts
+const TOPIC_CATS = new Set(['networking', ..., 'your-category']);
+const LABELS = { ..., topic: { ..., 'your-category': 'Your Category' } };
+```
 
 Then create the folder `src/content/knowledge-base/your-category/` and drop your `.md` files in.
 

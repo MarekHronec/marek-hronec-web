@@ -119,7 +119,10 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   └── knowledge-base/       # Subdirectories map to categories
     │       ├── azure/
     │       │   ├── azure-landing-zones.md
+    │       │   ├── cloud-resource-naming-conventions.md
     │       │   └── event-driven-serverless-patterns.md
+    │       ├── bpm/
+    │       │   └── introduction-to-bpm-solutions.md
     │       └── devops/
     │           └── gitops-with-argocd.md
     ├── layouts/
@@ -176,11 +179,9 @@ BaseLayout.astro
 │   │   └── CaseStudyMetrics.astro
 │   │
 │   ├── knowledge-base/index.astro (/knowledge-base)
-│   │   ├── [inline <script>]  ← URL-param category/tag filter
-│   │   ├── CategorySidebar.astro
-│   │   │   ├── Cloud.astro (icon, ×2)
-│   │   │   ├── Workflow.astro (icon)
-│   │   │   └── BpmMerge.astro (icon)
+│   │   ├── [inline <script>]  ← multi-select platform/topic filter, sort, URL state (?platforms=&topics=&sort=)
+│   │   ├── CategorySidebar.astro    ← filter panel (Platform + Topics groups); no icon imports
+│   │   │   └── [inline <script>]  ← mobile sheet open/close
 │   │   └── ArticleCard.astro (×n)
 │   │       └── TagBadge.astro (shared, ×n)
 │   │
@@ -240,6 +241,7 @@ Content is managed through Astro Content Collections. Collection definitions and
 | Category value | Display label | Description |
 |---|---|---|
 | `azure` | Azure | Azure-specific architecture, services, and patterns |
+| `oci` | OCI | Oracle Cloud Infrastructure architecture and services |
 | `networking` | Networking | VNet, ExpressRoute, hybrid connectivity |
 | `identity` | Identity | Entra ID, RBAC, Zero Trust |
 | `security` | Security | Posture management, compliance, threat protection |
@@ -284,7 +286,7 @@ All routes are statically generated at build time. Dynamic routes use `getStatic
 | `/` | `src/pages/index.astro` | No | About / landing page |
 | `/case-studies` | `src/pages/case-studies/index.astro` | No | Listing with featured + secondary cards |
 | `/case-studies/:slug` | `src/pages/case-studies/[slug].astro` | Yes | Slug = content entry ID |
-| `/knowledge-base` | `src/pages/knowledge-base/index.astro` | No | Listing with sidebar, filterable by category/tag |
+| `/knowledge-base` | `src/pages/knowledge-base/index.astro` | No | Listing with multi-select filter panel (platforms + topics), sort, and URL state |
 | `/knowledge-base/:slug` | `src/pages/knowledge-base/[...slug].astro` | Yes | `[...slug]` catch-all handles nested paths |
 | `/contact` | `src/pages/contact.astro` | No | Contact channels and services |
 | `/credentials` | `src/pages/credentials.astro` | No | Full certification registry — linked from About certifications card only; not in nav or footer |
@@ -441,9 +443,9 @@ The build output is entirely static: HTML, CSS, and one small JavaScript file fo
 
 ## 9. Performance and Constraints
 
-**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the category/tag filter IIFE in `knowledge-base/index.astro` (KB listing only), and the expand/collapse handler in `ExperienceTimeline.astro`. There is no JavaScript framework, no hydration, no module graph.
+**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the multi-select filter + sort + URL-state IIFE in `knowledge-base/index.astro` (KB listing only), the mobile sheet open/close script in `CategorySidebar.astro` (KB pages only), and the expand/collapse handler in `ExperienceTimeline.astro`. There is no JavaScript framework, no hydration, no module graph.
 
-**Static pre-rendering.** All pages — 6 static routes plus one per content entry (3 case studies + 3 KB articles = 12 total for current content) — are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
+**Static pre-rendering.** All pages — 6 static routes plus one per content entry (3 case studies + 5 KB articles = 14 total for current content) — are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
 
 **Font loading.** Google Fonts is loaded via `<link rel="preconnect">` hints to `fonts.googleapis.com` and `fonts.gstatic.com`, established in `BaseLayout.astro`. The `display=swap` parameter in the font URL ensures body text renders immediately in the fallback font while the custom fonts load — no flash of invisible text.
 

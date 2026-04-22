@@ -422,3 +422,30 @@ Technical notes are more complex than narrative content, so KB categories use lo
 
 **Consequences.**  
 Read time values stay accurate automatically as articles are edited. Adding a new article requires no manual read-time entry. Per-category WPM values can be tuned in a single config object (`READ_SPEED` in `src/utils/readTime.ts`) without touching any content files or page components. The manual override path is preserved for edge cases.
+
+---
+
+## ADR-019: KB Filter — Multi-Select Panel over Category Link Sidebar
+
+**Status:** Accepted  
+**Date:** 2026-04-22
+
+**Context.**  
+The original Knowledge Base listing used a link-based sidebar (`CategorySidebar.astro`) where each click navigated to a new URL (`?category=azure`), replacing the active filter entirely. This made it impossible to combine filters (e.g. "show Azure articles about Networking"). The sidebar also conflated platforms and topics into a single flat list.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Keep link-based sidebar | Simple; works without JS | Single active filter at a time; navigation-based (full page reload for each filter change) |
+| Multi-select checkboxes | Standard form pattern | More visual weight; requires state management |
+| Multi-select toggle buttons | Keyboard accessible; visual active state clear; consistent with editorial aesthetic | Requires JS for filter logic |
+
+**Decision.** Replace the link sidebar with a toggle-button filter panel. Two named groups — **Platforms** (Azure, OCI) and **Topics** (Networking, Identity, Security, FinOps, Landing Zones, DevOps, BPM) — use `aria-pressed` toggle buttons. Filter logic is OR within a group, AND across groups. Active filter chips are rendered in a toolbar above the article list. Sort control (Latest first / Oldest first / Title A–Z) added to the toolbar. URL state preserved via `?platforms=&topics=&sort=` query params.
+
+Category data derivation: platform is mapped from the article's `category` field (`azure` → platform `azure`); topics are derived from both the `category` field (for topic-category articles like `devops`, `bpm`) and from specific tags (`Networking`, `Landing Zones`, etc.).
+
+**Consequences.**  
+Users can now combine filters — e.g. select Azure (platform) + Networking (topic) to see Azure networking articles only. Dynamic counts on each filter button reflect matching articles given the other group's active selection. Filter and sort state survive browser back/forward navigation. The mobile experience uses the existing bottom-sheet pattern, updated with the same filter groups. `CategorySidebar.astro` is now a pure HTML scaffold with no icon dependencies; all filter logic lives in `knowledge-base/index.astro`.
+
+A known CSS limitation: the `select:hover ~ chevron` sibling selector turns the sort chevron primary green only when hovering over the select text itself, not the chevron — because `<select>` cannot contain children and the chevron is a sibling, not a descendant. Acceptable at this scale.

@@ -224,6 +224,7 @@ Base styles target mobile viewports. Larger viewports are progressively enhanced
 - Never use default blue links — use `--color-primary`
 - Never add inline styles to template HTML
 - Never add Tailwind or any CSS framework
+- Never apply `letter-spacing` to a `<select>` element with `appearance: none` — Chrome sizes the select box from raw text width (without letter-spacing), so the trailing space is clipped and the last character(s) are cut off. Use `letter-spacing: normal` on styled selects; apply tracking to sibling `<span>` labels instead.
 
 ---
 

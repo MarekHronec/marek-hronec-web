@@ -1,134 +1,140 @@
 ---
-import Cloud from '../icons/Cloud.astro';
-import Workflow from '../icons/Workflow.astro';
-import BpmMerge from '../icons/BpmMerge.astro';
-
-interface Props {
-  currentCategory?: string;
-}
-
-const { currentCategory } = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+// Filter panel for Knowledge Base listing + article detail pages.
+// Filter state, counts, and active styling are managed by JS in index.astro.
+// This component only renders the HTML scaffolding.
 ---
 
-<aside class="kb-sidebar">
-  <div class="kb-sidebar__sticky">
+<aside class="kb-filter">
+  <div class="kb-filter__sticky">
 
-  <!-- Infrastructure group -->
-  <div class="kb-sidebar__group">
-    <div class="kb-sidebar__group-header">
-      <p class="kb-sidebar__group-label">Infrastructure</p>
-      <p class="kb-sidebar__group-sub">Technical Documentation</p>
+    <header class="kb-filter__header">
+      <p class="kb-filter__eyebrow">Knowledge Base</p>
+      <h2 class="kb-filter__title">Filter Articles</h2>
+    </header>
+
+    <div class="kb-filter__group">
+      <p class="kb-filter__group-label">Platforms</p>
+      <ul class="kb-filter__options" role="list">
+        <li>
+          <button class="kb-filter__btn" data-filter-group="platform" data-filter-value="azure" aria-pressed="false">
+            <span>Azure</span><span class="kb-filter__count"></span>
+          </button>
+        </li>
+        <li>
+          <button class="kb-filter__btn" data-filter-group="platform" data-filter-value="oci" aria-pressed="false">
+            <span>OCI</span><span class="kb-filter__count"></span>
+          </button>
+        </li>
+      </ul>
     </div>
 
-    <!-- Azure with sub-items -->
-    <nav class="kb-sidebar__nav" aria-label="Knowledge Base categories">
-      <a
-        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'azure' }]}
-        href={`${base}/knowledge-base?category=azure`}
-      >
-        <Cloud size={14} aria-hidden="true" />
-        Azure
-      </a>
-
-      <!-- Azure sub-items — always visible -->
-      <ul class="kb-sidebar__subnav">
-        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Networking`}>Networking</a></li>
-        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Identity`}>Identity</a></li>
-        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Security`}>Security</a></li>
-        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=FinOps`}>FinOps</a></li>
-        <li><a class="kb-sidebar__subitem" href={`${base}/knowledge-base?category=azure&tag=Landing+Zones`}>Landing Zones</a></li>
+    <div class="kb-filter__group">
+      <p class="kb-filter__group-label">Topics</p>
+      <ul class="kb-filter__options" role="list">
+        {[
+          ['networking',    'Networking'],
+          ['identity',      'Identity'],
+          ['security',      'Security'],
+          ['finops',        'FinOps'],
+          ['landing-zones', 'Landing Zones'],
+          ['devops',        'DevOps'],
+          ['bpm',           'BPM'],
+        ].map(([value, label]) => (
+          <li>
+            <button class="kb-filter__btn" data-filter-group="topic" data-filter-value={value} aria-pressed="false">
+              <span>{label}</span><span class="kb-filter__count"></span>
+            </button>
+          </li>
+        ))}
       </ul>
+    </div>
 
-      <!-- OCI -->
-      <a
-        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'oci' }]}
-        href={`${base}/knowledge-base?category=oci`}
-      >
-        <Cloud size={14} aria-hidden="true" />
-        OCI
-      </a>
+    <button class="kb-filter__clear" id="kb-clear-filters" hidden>
+      Clear filters
+    </button>
 
-      <!-- DevOps -->
-      <a
-        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'devops' }]}
-        href={`${base}/knowledge-base?category=devops`}
-      >
-        <Workflow size={14} aria-hidden="true" />
-        DevOps
-      </a>
-
-      <!-- BPM -->
-      <a
-        class:list={['kb-sidebar__item', { 'kb-sidebar__item--active': currentCategory === 'bpm' }]}
-        href={`${base}/knowledge-base?category=bpm`}
-      >
-        <BpmMerge size={14} aria-hidden="true" />
-        BPM
-      </a>
-    </nav>
   </div>
-
-  </div><!-- /.kb-sidebar__sticky -->
 </aside>
 
-<!-- ── Mobile bottom category bar (hidden on desktop) ───────────── -->
+<!-- ── Mobile filter bar (fixed at bottom on mobile) ─────────────── -->
 <div class="kb-mobile-bar">
-  <button class="kb-mobile-bar__trigger" id="kb-mobile-trigger" aria-expanded="false" aria-controls="kb-mobile-sheet">
+  <button
+    class="kb-mobile-bar__trigger"
+    id="kb-mobile-trigger"
+    aria-expanded="false"
+    aria-controls="kb-mobile-sheet"
+  >
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path d="M2 4.5h12M2 8h8M2 11.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
-    Browse Categories
+    Filter Articles
+    <span class="kb-mobile-bar__badge" id="kb-mobile-badge" hidden></span>
     <svg class="kb-mobile-bar__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
       <path d="M2 8l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
 </div>
 
-<!-- Bottom sheet overlay -->
+<!-- ── Mobile sheet overlay ──────────────────────────────────────── -->
 <div class="kb-sheet-overlay" id="kb-sheet-overlay" aria-hidden="true">
-  <div class="kb-mobile-sheet" id="kb-mobile-sheet" role="dialog" aria-label="Browse categories">
+  <div class="kb-mobile-sheet" id="kb-mobile-sheet" role="dialog" aria-label="Filter articles">
     <div class="kb-mobile-sheet__handle"></div>
     <div class="kb-mobile-sheet__head">
-      <p class="kb-mobile-sheet__title">Categories</p>
-      <button class="kb-mobile-sheet__close" id="kb-sheet-close" aria-label="Close categories">
+      <p class="kb-mobile-sheet__title">Filter Articles</p>
+      <button class="kb-mobile-sheet__close" id="kb-sheet-close" aria-label="Close filters">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
     </div>
-    <nav class="kb-mobile-sheet__nav">
-      <p class="kb-mobile-sheet__group">Infrastructure · Technical Documentation</p>
-      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'azure' }]}
-         href={`${base}/knowledge-base?category=azure`}>Azure</a>
-      <div class="kb-mobile-sheet__subnav">
-        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Networking`}>Networking</a>
-        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Identity`}>Identity</a>
-        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Security`}>Security</a>
-        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=FinOps`}>FinOps</a>
-        <a class="kb-mobile-sheet__subitem" href={`${base}/knowledge-base?category=azure&tag=Landing+Zones`}>Landing Zones</a>
-      </div>
-      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'oci' }]}
-         href={`${base}/knowledge-base?category=oci`}>OCI</a>
-      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'devops' }]}
-         href={`${base}/knowledge-base?category=devops`}>DevOps</a>
-      <a class:list={['kb-mobile-sheet__item', { 'kb-mobile-sheet__item--active': currentCategory === 'bpm' }]}
-         href={`${base}/knowledge-base?category=bpm`}>BPM</a>
-      <a class="kb-mobile-sheet__item" href={`${base}/knowledge-base`}>All Articles</a>
-    </nav>
+    <div class="kb-mobile-sheet__nav">
+      <p class="kb-mobile-sheet__group-label">Platforms</p>
+      <ul class="kb-mobile-sheet__options" role="list">
+        <li>
+          <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group="platform" data-filter-value="azure" aria-pressed="false">
+            <span>Azure</span><span class="kb-filter__count"></span>
+          </button>
+        </li>
+        <li>
+          <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group="platform" data-filter-value="oci" aria-pressed="false">
+            <span>OCI</span><span class="kb-filter__count"></span>
+          </button>
+        </li>
+      </ul>
+      <p class="kb-mobile-sheet__group-label">Topics</p>
+      <ul class="kb-mobile-sheet__options" role="list">
+        {[
+          ['networking',    'Networking'],
+          ['identity',      'Identity'],
+          ['security',      'Security'],
+          ['finops',        'FinOps'],
+          ['landing-zones', 'Landing Zones'],
+          ['devops',        'DevOps'],
+          ['bpm',           'BPM'],
+        ].map(([value, label]) => (
+          <li>
+            <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group="topic" data-filter-value={value} aria-pressed="false">
+              <span>{label}</span><span class="kb-filter__count"></span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <button class="kb-mobile-sheet__clear" id="kb-mobile-clear" hidden>
+        Clear all filters
+      </button>
+    </div>
   </div>
 </div>
 
 <style>
-  /* Sidebar shell — stretches full height of parent for background fill */
-  .kb-sidebar {
-    width: 220px;
+  /* ── Desktop filter panel ──────────────────────────────────────── */
+  .kb-filter {
+    width: 240px;
     flex-shrink: 0;
     background-color: var(--color-surface-container-lowest);
   }
 
-  /* Inner wrapper — this is what actually sticks while content scrolls */
-  .kb-sidebar__sticky {
+  .kb-filter__sticky {
     position: sticky;
     top: 64px;
     max-height: calc(100vh - 64px);
@@ -136,112 +142,122 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     padding: var(--space-6) 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
-  .kb-sidebar__group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  /* "INFRASTRUCTURE" + "Technical Documentation" */
-  .kb-sidebar__group-header {
-    padding: 0 var(--space-5) var(--space-4);
+  .kb-filter__header {
+    padding: 0 var(--space-5);
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
   }
 
-  .kb-sidebar__group-label {
+  .kb-filter__eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .kb-filter__title {
     font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+
+  .kb-filter__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .kb-filter__group-label {
+    padding: 0 var(--space-5) var(--space-1);
+    font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--color-kb-text);
-  }
-
-  .kb-sidebar__group-sub {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
     color: var(--color-kb-text-muted);
   }
 
-  .kb-sidebar__nav {
+  .kb-filter__options {
     display: flex;
     flex-direction: column;
-  }
-
-  /* Category row — Figma: link-12 / link-29 */
-  .kb-sidebar__item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-5);
-    font-family: var(--font-display);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-kb-text);
-    text-decoration: none;
-    transition: color var(--duration-fast) var(--ease-standard);
-    border-right: 4px solid transparent;
-  }
-
-  .kb-sidebar__item:hover {
-    color: var(--color-primary);
-    opacity: 1;
-  }
-
-  /* Active state — green tint bg, 4px primary right border */
-  .kb-sidebar__item--active {
-    background-color: var(--color-level-advanced-bg);
-    color: var(--color-level-advanced-text);
-    border-right-color: var(--color-level-advanced-text);
-  }
-
-  .kb-sidebar__item svg {
-    flex-shrink: 0;
-    color: inherit;
-  }
-
-  /* Sub-items — Figma: submenu-azure-17, 10px muted */
-  .kb-sidebar__subnav {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-1) 0 var(--space-2);
     list-style: none;
   }
 
-  .kb-sidebar__subitem {
-    display: block;
-    padding: var(--space-2) var(--space-5) var(--space-2) calc(var(--space-5) + 26px);
+  /* Shared filter button — desktop panel */
+  .kb-filter__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-2) var(--space-5);
     font-family: var(--font-body);
-    font-size: 0.625rem;          /* Figma: 10px */
-    font-weight: var(--weight-bold);
-    letter-spacing: 0.1em;
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    color: var(--color-kb-text);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    border-right: 3px solid transparent;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-filter__btn:hover {
+    color: var(--color-primary);
+    background-color: var(--color-level-advanced-bg-dim);
+  }
+
+  .kb-filter__btn[aria-pressed="true"] {
+    color: var(--color-level-advanced-text);
+    background-color: var(--color-level-advanced-bg);
+    border-right-color: var(--color-level-advanced-text);
+  }
+
+  .kb-filter__count {
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
     color: var(--color-kb-text-muted);
-    text-decoration: none;
-    transition: color var(--duration-fast) var(--ease-standard);
+    min-width: 1.5em;
+    text-align: right;
   }
 
-  .kb-sidebar__subitem:hover {
-    color: var(--color-primary);
-    opacity: 1;
+  .kb-filter__btn[aria-pressed="true"] .kb-filter__count {
+    color: var(--color-level-advanced-text);
+    opacity: 0.75;
   }
 
-  .kb-sidebar__subitem--active {
+  .kb-filter__clear {
+    margin: 0 var(--space-5);
+    padding: var(--space-2) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
     color: var(--color-primary);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-filter__clear:hover {
+    opacity: 0.7;
   }
 
   /* ── Mobile bottom bar ──────────────────────────────────────────
-     Hidden on desktop; fixed at viewport bottom on mobile.
+     Hidden on desktop, fixed at bottom on mobile.
   ─────────────────────────────────────────────────────────────────── */
   .kb-mobile-bar {
     display: none;
@@ -285,6 +301,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     flex-shrink: 0;
   }
 
+  .kb-mobile-bar__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 var(--space-1);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-full);
+    font-size: 0.625rem;
+    font-weight: var(--weight-bold);
+    line-height: 1;
+  }
+
   .kb-mobile-bar__chevron {
     margin-left: auto;
     color: var(--color-on-surface-muted);
@@ -295,7 +326,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     transform: rotate(180deg);
   }
 
-  /* ── Sheet overlay (backdrop + panel) ──────────────────────────── */
+  /* ── Sheet overlay ──────────────────────────────────────────────── */
   .kb-sheet-overlay {
     display: none;
     position: fixed;
@@ -314,7 +345,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     background: var(--color-overlay);
   }
 
-  /* Slide-up panel */
   .kb-mobile-sheet {
     position: absolute;
     bottom: 0;
@@ -322,7 +352,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     right: 0;
     background: var(--color-surface);
     border-radius: var(--radius-md) var(--radius-md) 0 0;
-    max-height: 75vh;
+    max-height: 80vh;
     overflow-y: auto;
     transform: translateY(100%);
     transition: transform var(--duration-normal) var(--ease-standard);
@@ -374,8 +404,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     padding: 0 0 var(--space-8);
   }
 
-  .kb-mobile-sheet__group {
-    padding: var(--space-2) var(--space-5);
+  .kb-mobile-sheet__group-label {
+    padding: var(--space-3) var(--space-5) var(--space-1);
+    font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
@@ -383,91 +414,66 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     color: var(--color-kb-text-muted);
   }
 
-  .kb-mobile-sheet__item {
-    display: block;
-    padding: var(--space-3) var(--space-5);
-    font-family: var(--font-display);
-    font-size: var(--text-body-md);
-    font-weight: var(--weight-bold);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-on-surface-muted);
-    text-decoration: none;
-  }
-
-  .kb-mobile-sheet__item:hover,
-  .kb-mobile-sheet__item--active {
-    color: var(--color-primary);
-  }
-
-  .kb-mobile-sheet__item--active {
-    background-color: var(--color-level-advanced-bg-dim);
-  }
-
-  .kb-mobile-sheet__subnav {
+  .kb-mobile-sheet__options {
     display: flex;
     flex-direction: column;
-    padding-bottom: var(--space-1);
+    list-style: none;
   }
 
-  .kb-mobile-sheet__subitem {
-    display: block;
-    padding: var(--space-2) var(--space-5) var(--space-2) calc(var(--space-5) + 1.25rem);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-kb-text-muted);
-    text-decoration: none;
+  /* Override desktop panel styles for mobile sheet buttons */
+  .kb-mobile-sheet__btn {
+    border-right: none;
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-body-md);
+    letter-spacing: 0.04em;
   }
 
-  .kb-mobile-sheet__subitem:hover,
-  .kb-mobile-sheet__subitem--active {
+  .kb-mobile-sheet__btn[aria-pressed="true"] {
+    border-right: none;
+  }
+
+  .kb-mobile-sheet__clear {
+    margin: var(--space-4) var(--space-5) 0;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
     color: var(--color-primary);
+    background: var(--color-surface-container-low);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-align: center;
+    width: calc(100% - var(--space-5) * 2);
   }
 </style>
 
 <script>
+  /* ── Mobile sheet open/close ──────────────────────────────────── */
   const trigger = document.getElementById('kb-mobile-trigger') as HTMLButtonElement | null;
   const overlay = document.getElementById('kb-sheet-overlay') as HTMLElement | null;
   const closeBtn = document.getElementById('kb-sheet-close') as HTMLButtonElement | null;
 
   function openSheet() {
     overlay?.classList.add('kb-sheet-overlay--open');
+    overlay?.removeAttribute('aria-hidden');
     trigger?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   }
 
   function closeSheet() {
     overlay?.classList.remove('kb-sheet-overlay--open');
+    overlay?.setAttribute('aria-hidden', 'true');
     trigger?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
 
-  trigger?.addEventListener('click', () => {
-    trigger.getAttribute('aria-expanded') === 'true' ? closeSheet() : openSheet();
-  });
+  trigger?.addEventListener('click', () =>
+    trigger.getAttribute('aria-expanded') === 'true' ? closeSheet() : openSheet()
+  );
 
   closeBtn?.addEventListener('click', closeSheet);
 
-  // Tap backdrop to close
   overlay?.addEventListener('click', (e) => {
     if (e.target === overlay) closeSheet();
   });
-
-  // Sync sheet active state from URL params (KB index page)
-  const params = new URLSearchParams(window.location.search);
-  const activeCategory = params.get('category');
-  const activeTag = params.get('tag');
-  if (activeCategory || activeTag) {
-    document.querySelectorAll<HTMLAnchorElement>('.kb-mobile-sheet__item').forEach((link) => {
-      const p = new URLSearchParams(link.getAttribute('href')?.split('?')[1] ?? '');
-      link.classList.toggle('kb-mobile-sheet__item--active', p.get('category') === activeCategory && !activeTag);
-    });
-    document.querySelectorAll<HTMLAnchorElement>('.kb-mobile-sheet__subitem').forEach((link) => {
-      const p = new URLSearchParams(link.getAttribute('href')?.split('?')[1] ?? '');
-      link.classList.toggle('kb-mobile-sheet__subitem--active',
-        p.get('category') === activeCategory && p.get('tag') === activeTag);
-    });
-  }
 </script>

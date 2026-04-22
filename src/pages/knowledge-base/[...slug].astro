@@ -39,7 +39,7 @@ const categoryLabel = category.toUpperCase();
 <BaseLayout title={title} description={excerpt}>
   <div class="kb-page">
 
-    <CategorySidebar currentCategory={category} />
+    <CategorySidebar />
 
     <!-- Main content area -->
     <div class="kb-main">
@@ -361,6 +361,43 @@ const categoryLabel = category.toUpperCase();
   .prose :global(strong) {
     font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
+  }
+
+  /* Tables */
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-md);
+    background-color: var(--color-surface-container-lowest);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .prose :global(thead) {
+    background-color: var(--color-surface-container);
+  }
+
+  .prose :global(th) {
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    text-align: left;
+  }
+
+  .prose :global(td) {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    border-top: 1px solid var(--color-surface-container-high);
+  }
+
+  .prose :global(tbody tr:hover td) {
+    background-color: var(--color-surface-container-low);
   }
 
   /* Code blocks — inverse-surface dark bg for high contrast */

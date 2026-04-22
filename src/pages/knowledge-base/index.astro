@@ -1,10 +1,4 @@
 ---
-/*
- * Knowledge Base listing — /knowledge-base
- * Sidebar (220px) + article card grid (flex:1).
- * align-items:stretch on kb-page keeps the sidebar bg full-height — no border needed.
- */
-
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleCard from '../../components/knowledge-base/ArticleCard.astro';
@@ -13,8 +7,42 @@ import { kbReadTime } from '../../utils/readTime';
 
 const articles = await getCollection('knowledgeBase');
 
-/* Sort newest first */
+/* Sort newest first (default) */
 const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+/* ── Platform / topic derivation ─────────────────────────────────
+   Platform: articles whose category is a cloud platform (azure, oci, gcp)
+   Topics:   derived from category (for topic-category articles)
+             + from tags (Networking, Identity, Security, FinOps, Landing Zones)
+──────────────────────────────────────────────────────────────── */
+const PLATFORM_CATS = new Set(['azure', 'oci', 'gcp']);
+const TOPIC_CATS = new Set(['networking', 'identity', 'security', 'finops', 'devops', 'bpm']);
+const TAG_TO_TOPIC: Record<string, string> = {
+  'Networking':    'networking',
+  'Identity':      'identity',
+  'Security':      'security',
+  'FinOps':        'finops',
+  'Landing Zones': 'landing-zones',
+  'DevOps':        'devops',
+  'BPM':           'bpm',
+};
+
+function getArticlePlatforms(article: typeof sorted[0]): string {
+  return PLATFORM_CATS.has(article.data.category) ? article.data.category : '';
+}
+
+function getArticleTopics(article: typeof sorted[0]): string {
+  const topics = new Set<string>();
+  const cat = article.data.category;
+  if (TOPIC_CATS.has(cat)) topics.add(cat);
+  for (const tag of article.data.tags) {
+    const mapped = TAG_TO_TOPIC[tag];
+    if (mapped) topics.add(mapped);
+  }
+  return Array.from(topics).join(',');
+}
+
+const totalCount = sorted.length;
 ---
 
 <BaseLayout
@@ -38,14 +66,39 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
           </p>
         </header>
 
-        <!-- Article grid -->
+        <!-- Toolbar: article count + active filter chips + sort -->
+        <div class="kb-toolbar">
+          <p class="kb-toolbar__count">
+            <span id="kb-article-count">{totalCount}</span>
+            <span id="kb-article-count-label">{totalCount === 1 ? 'article' : 'articles'}</span>
+          </p>
+          <div class="kb-toolbar__chips" id="kb-chips" hidden></div>
+          <div class="kb-toolbar__sort">
+            <span class="kb-toolbar__sort-prefix" aria-hidden="true">Sort</span>
+            <div class="kb-sort-wrap">
+              <label class="visually-hidden" for="kb-sort">Sort by</label>
+              <select id="kb-sort" class="kb-sort">
+                <option value="latest">Latest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="title">Title A–Z</option>
+              </select>
+              <svg class="kb-sort-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article list -->
         {sorted.length > 0 ? (
-          <div class="kb-grid" id="kb-grid">
+          <div class="kb-list" id="kb-grid">
             {sorted.map((article) => (
               <div
                 class="kb-card-wrapper"
-                data-article-category={article.data.category}
-                data-article-tags={article.data.tags.join(',')}
+                data-platforms={getArticlePlatforms(article)}
+                data-topics={getArticleTopics(article)}
+                data-date={article.data.date.toISOString()}
+                data-title={article.data.title}
               >
                 <ArticleCard
                   slug={article.id}
@@ -63,8 +116,9 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
         ) : (
           <p class="kb-empty">No articles published yet.</p>
         )}
-        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty">
-          No articles found for this filter.
+
+        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" style="display:none">
+          No articles match the selected filters.
         </p>
 
       </div>
@@ -74,9 +128,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 </BaseLayout>
 
 <style>
-  /* ── Two-column layout ───────────────────────────────────────────
-     Sidebar + content stretch to fill #main-content (flex:1 in global)
-  ─────────────────────────────────────────────────────────────────── */
+  /* ── Two-column layout ──────────────────────────────────────────── */
   .kb-page {
     display: flex;
     align-items: stretch;
@@ -87,22 +139,21 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     margin-inline: auto;
   }
 
-  /* Hide sidebar on mobile — not enough space */
-  .kb-page :global(.kb-sidebar) {
+  /* Hide filter panel on mobile */
+  .kb-page :global(.kb-filter) {
     display: none;
   }
 
   @media (min-width: 768px) {
-    .kb-page :global(.kb-sidebar) {
+    .kb-page :global(.kb-filter) {
       display: block;
     }
   }
 
-  /* Content panel — fills remaining width */
+  /* Content panel */
   .kb-content {
     flex: 1;
     min-width: 0;
-    /* extra bottom padding on mobile so fixed bar doesn't cover cards */
     padding: var(--space-6) var(--space-5) calc(var(--space-10) + 4rem);
   }
 
@@ -121,10 +172,10 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
   .kb-content__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
-  /* ── Page header ─────────────────────────────────────────────── */
+  /* ── Page header ──────────────────────────────────────────────── */
   .kb-header {
     display: flex;
     flex-direction: column;
@@ -161,21 +212,106 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     max-width: 52ch;
   }
 
-  /* ── Article grid ────────────────────────────────────────────── */
-  .kb-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-    width: 100%;
+  /* ── Toolbar ──────────────────────────────────────────────────── */
+  .kb-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    min-height: 2rem;
   }
 
-  @media (min-width: 640px) {
-    .kb-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .kb-toolbar__count {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-kb-text-muted);
+    white-space: nowrap;
+    display: flex;
+    gap: 0.3em;
   }
 
-  /* Card wrappers must stretch so cards fill equal row height */
+  .kb-toolbar__chips {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+  }
+
+  .kb-toolbar__sort {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .kb-toolbar__sort-prefix {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-kb-text-muted);
+    user-select: none;
+  }
+
+  /* Flex row: [select text] [chevron] — no overlap, no clipping */
+  .kb-sort-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .kb-sort {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: normal; /* letter-spacing on <select> clips last char in Chrome — keep normal */
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: var(--space-1) 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-sort:hover,
+  .kb-sort:focus-visible {
+    color: var(--color-primary);
+  }
+
+  .kb-sort:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .kb-sort-chevron {
+    pointer-events: none;
+    flex-shrink: 0;
+    color: var(--color-kb-text-muted);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-sort:hover ~ .kb-sort-chevron {
+    color: var(--color-primary);
+  }
+
+  /* ── Article list (single column) ────────────────────────────── */
+  .kb-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
   .kb-card-wrapper {
     display: flex;
   }
@@ -186,57 +322,237 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     padding: var(--space-8) 0;
   }
 
-  /* Hidden by default; shown by script when a filter returns no results */
-  .kb-empty--filtered {
-    display: none;
+  /* ── Chip styles (dynamically rendered by JS) ─────────────────── */
+  :global(.kb-chip) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 3px var(--space-3);
+    background: var(--color-level-advanced-bg);
+    color: var(--color-level-advanced-text);
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+    white-space: nowrap;
+  }
+
+  :global(.kb-chip:hover) {
+    background: var(--color-primary-container);
+  }
+
+  /* visually-hidden utility for accessible labels */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>
 
 <script>
   (function () {
-    const params = new URLSearchParams(window.location.search);
-    const activeCategory = params.get('category');
-    const activeTag = params.get('tag');
+    'use strict';
 
-    /* ── Filter article cards ──────────────────────────────────── */
-    const wrappers = document.querySelectorAll<HTMLElement>('[data-article-category]');
-    let visibleCount = 0;
+    /* ── Label maps ─────────────────────────────────────────────── */
+    const LABELS: Record<string, Record<string, string>> = {
+      platform: { azure: 'Azure', oci: 'OCI', gcp: 'GCP' },
+      topic: {
+        networking: 'Networking', identity: 'Identity', security: 'Security',
+        finops: 'FinOps', 'landing-zones': 'Landing Zones', devops: 'DevOps', bpm: 'BPM',
+      },
+    };
 
-    wrappers.forEach((wrapper) => {
-      const cardCategory = wrapper.getAttribute('data-article-category') ?? '';
-      const cardTags = (wrapper.getAttribute('data-article-tags') ?? '')
-        .split(',')
-        .map((t) => t.trim());
+    /* ── State ──────────────────────────────────────────────────── */
+    const activePlatforms = new Set<string>();
+    const activeTopics = new Set<string>();
+    let activeSort = 'latest';
 
-      let show = true;
-      if (activeCategory && cardCategory !== activeCategory) show = false;
-      if (activeTag && !cardTags.includes(activeTag)) show = false;
-
-      wrapper.style.display = show ? '' : 'none';
-      if (show) visibleCount++;
-    });
-
-    /* Empty-state message */
+    /* ── DOM refs ───────────────────────────────────────────────── */
+    const grid = document.getElementById('kb-grid');
+    const countEl = document.getElementById('kb-article-count');
+    const countLabelEl = document.getElementById('kb-article-count-label');
+    const chipsEl = document.getElementById('kb-chips') as HTMLElement | null;
+    const clearBtn = document.getElementById('kb-clear-filters');
+    const mobileClearBtn = document.getElementById('kb-mobile-clear');
+    const sortEl = document.getElementById('kb-sort') as HTMLSelectElement | null;
     const emptyEl = document.getElementById('kb-filter-empty');
-    if (emptyEl) {
-      emptyEl.style.display = (activeCategory || activeTag) && visibleCount === 0 ? 'block' : '';
+    const mobileBadge = document.getElementById('kb-mobile-badge');
+
+    /* All article wrappers — order matches server-rendered (newest first) */
+    const wrappers = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-platforms]')
+    );
+
+    /* ── Init from URL ──────────────────────────────────────────── */
+    const params = new URLSearchParams(window.location.search);
+    (params.get('platforms') ?? '').split(',').filter(Boolean).forEach(v => activePlatforms.add(v));
+    (params.get('topics') ?? '').split(',').filter(Boolean).forEach(v => activeTopics.add(v));
+    activeSort = params.get('sort') ?? 'latest';
+    if (sortEl) sortEl.value = activeSort;
+
+    /* ── Helpers ────────────────────────────────────────────────── */
+    function getPlatforms(w: HTMLElement): string[] {
+      return (w.dataset.platforms ?? '').split(',').filter(Boolean);
+    }
+    function getTopics(w: HTMLElement): string[] {
+      return (w.dataset.topics ?? '').split(',').filter(Boolean);
     }
 
-    /* ── Sync sidebar active state ─────────────────────────────── */
-    /* Main category links */
-    document.querySelectorAll<HTMLAnchorElement>('.kb-sidebar__item').forEach((link) => {
-      const href = link.getAttribute('href') ?? '';
-      const p = new URLSearchParams(href.split('?')[1] ?? '');
-      const isActive = p.get('category') === activeCategory && p.get('tag') === activeTag;
-      link.classList.toggle('kb-sidebar__item--active', isActive);
+    function matchesFilter(w: HTMLElement): boolean {
+      const platOk = activePlatforms.size === 0 || getPlatforms(w).some(p => activePlatforms.has(p));
+      const topicOk = activeTopics.size === 0 || getTopics(w).some(t => activeTopics.has(t));
+      return platOk && topicOk;
+    }
+
+    /* Count for a single filter button, respecting the OTHER group's active filters */
+    function countForBtn(group: string, value: string): number {
+      return wrappers.filter(w => {
+        if (group === 'platform') {
+          const platMatch = getPlatforms(w).includes(value);
+          const topicMatch = activeTopics.size === 0 || getTopics(w).some(t => activeTopics.has(t));
+          return platMatch && topicMatch;
+        } else {
+          const topicMatch = getTopics(w).includes(value);
+          const platMatch = activePlatforms.size === 0 || getPlatforms(w).some(p => activePlatforms.has(p));
+          return topicMatch && platMatch;
+        }
+      }).length;
+    }
+
+    function sortFn(a: HTMLElement, b: HTMLElement): number {
+      if (activeSort === 'oldest') return (a.dataset.date ?? '').localeCompare(b.dataset.date ?? '');
+      if (activeSort === 'title')  return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '');
+      return (b.dataset.date ?? '').localeCompare(a.dataset.date ?? ''); /* latest (default) */
+    }
+
+    /* ── Apply filter + sort ────────────────────────────────────── */
+    function apply() {
+      const visible = wrappers.filter(matchesFilter);
+      const hidden  = wrappers.filter(w => !matchesFilter(w));
+
+      visible.sort(sortFn);
+
+      /* Re-order DOM: visible (sorted) first, hidden last */
+      if (grid) {
+        [...visible, ...hidden].forEach(w => grid.appendChild(w));
+      }
+
+      visible.forEach(w => (w.style.display = ''));
+      hidden.forEach(w  => (w.style.display = 'none'));
+
+      /* Article count */
+      const n = visible.length;
+      if (countEl) countEl.textContent = String(n);
+      if (countLabelEl) countLabelEl.textContent = n === 1 ? 'article' : 'articles';
+
+      /* Filter button active states + counts */
+      document.querySelectorAll<HTMLElement>('[data-filter-group]').forEach(btn => {
+        const group = btn.dataset.filterGroup ?? '';
+        const value = btn.dataset.filterValue ?? '';
+        const isActive = group === 'platform' ? activePlatforms.has(value) : activeTopics.has(value);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        const countSpan = btn.querySelector('.kb-filter__count');
+        if (countSpan) {
+          const c = countForBtn(group, value);
+          countSpan.textContent = c > 0 ? `[${c}]` : '';
+        }
+      });
+
+      /* Mobile active-filter badge */
+      const totalActive = activePlatforms.size + activeTopics.size;
+      if (mobileBadge) {
+        mobileBadge.textContent = String(totalActive);
+        mobileBadge.hidden = totalActive === 0;
+      }
+
+      /* Clear buttons */
+      const hasFilters = activePlatforms.size > 0 || activeTopics.size > 0;
+      clearBtn?.toggleAttribute('hidden', !hasFilters);
+      mobileClearBtn?.toggleAttribute('hidden', !hasFilters);
+
+      /* Chips */
+      updateChips();
+
+      /* URL state */
+      updateURL();
+
+      /* Empty state */
+      if (emptyEl) {
+        emptyEl.style.display = (hasFilters && n === 0) ? 'block' : 'none';
+      }
+    }
+
+    /* ── Chips ──────────────────────────────────────────────────── */
+    function updateChips() {
+      if (!chipsEl) return;
+      chipsEl.innerHTML = '';
+      const chips = [
+        ...[...activePlatforms].map(v => ({ group: 'platform', value: v })),
+        ...[...activeTopics].map(v  => ({ group: 'topic',    value: v })),
+      ];
+      chips.forEach(({ group, value }) => {
+        const label = LABELS[group]?.[value] ?? value;
+        const btn = document.createElement('button');
+        btn.className = 'kb-chip';
+        btn.setAttribute('aria-label', `Remove filter: ${label}`);
+        btn.innerHTML = `${label} <span aria-hidden="true">×</span>`;
+        btn.addEventListener('click', () => {
+          if (group === 'platform') activePlatforms.delete(value);
+          else activeTopics.delete(value);
+          apply();
+        });
+        chipsEl.appendChild(btn);
+      });
+      chipsEl.hidden = chips.length === 0;
+    }
+
+    /* ── URL state ──────────────────────────────────────────────── */
+    function updateURL() {
+      const p = new URLSearchParams();
+      if (activePlatforms.size > 0) p.set('platforms', [...activePlatforms].join(','));
+      if (activeTopics.size > 0)    p.set('topics',    [...activeTopics].join(','));
+      if (activeSort !== 'latest')  p.set('sort',      activeSort);
+      const qs = p.toString();
+      history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+    }
+
+    /* ── Event bindings ─────────────────────────────────────────── */
+    document.querySelectorAll<HTMLElement>('[data-filter-group]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.filterGroup ?? '';
+        const value = btn.dataset.filterValue ?? '';
+        if (group === 'platform') {
+          activePlatforms.has(value) ? activePlatforms.delete(value) : activePlatforms.add(value);
+        } else {
+          activeTopics.has(value) ? activeTopics.delete(value) : activeTopics.add(value);
+        }
+        apply();
+      });
     });
 
-    /* Sub-items */
-    document.querySelectorAll<HTMLAnchorElement>('.kb-sidebar__subitem').forEach((link) => {
-      const href = link.getAttribute('href') ?? '';
-      const p = new URLSearchParams(href.split('?')[1] ?? '');
-      const isActive = p.get('category') === activeCategory && p.get('tag') === activeTag;
-      link.classList.toggle('kb-sidebar__subitem--active', isActive);
+    [clearBtn, mobileClearBtn].forEach(btn => {
+      btn?.addEventListener('click', () => {
+        activePlatforms.clear();
+        activeTopics.clear();
+        apply();
+      });
     });
+
+    sortEl?.addEventListener('change', () => {
+      activeSort = sortEl.value;
+      apply();
+    });
+
+    /* ── Initial render ─────────────────────────────────────────── */
+    apply();
   })();
 </script>
