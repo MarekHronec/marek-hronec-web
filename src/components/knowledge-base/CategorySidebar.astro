@@ -2,6 +2,8 @@
 // Filter panel for Knowledge Base listing + article detail pages.
 // Filter state, counts, and active styling are managed by JS in index.astro.
 // This component only renders the HTML scaffolding.
+import GridAppsIcon from '../icons/GridAppsIcon.astro';
+import FilterResetIcon from '../icons/FilterResetIcon.astro';
 ---
 
 <aside class="kb-filter">
@@ -9,8 +11,22 @@
 
     <header class="kb-filter__header">
       <p class="kb-filter__eyebrow">Knowledge Base</p>
-      <h2 class="kb-filter__title">Filter Articles</h2>
+      <h2 class="kb-filter__title">Topics &amp; Categories</h2>
     </header>
+
+    <div class="kb-filter__top">
+      <button class="kb-filter__all" id="kb-all-articles" aria-pressed="true">
+        <GridAppsIcon size={14} aria-hidden="true" />
+        <span>All Articles</span>
+        <span class="kb-filter__all-count" id="kb-all-count"></span>
+      </button>
+      <button class="kb-filter__clear" id="kb-clear-filters">
+        <FilterResetIcon size={14} aria-hidden="true" />
+        Clear filters
+      </button>
+    </div>
+
+    <div class="kb-filter__sep" role="separator"></div>
 
     <div class="kb-filter__group">
       <p class="kb-filter__group-label">Platforms</p>
@@ -27,6 +43,8 @@
         </li>
       </ul>
     </div>
+
+    <div class="kb-filter__sep" role="separator"></div>
 
     <div class="kb-filter__group">
       <p class="kb-filter__group-label">Topics</p>
@@ -49,9 +67,6 @@
       </ul>
     </div>
 
-    <button class="kb-filter__clear" id="kb-clear-filters" hidden>
-      Clear filters
-    </button>
 
   </div>
 </aside>
@@ -80,7 +95,7 @@
   <div class="kb-mobile-sheet" id="kb-mobile-sheet" role="dialog" aria-label="Filter articles">
     <div class="kb-mobile-sheet__handle"></div>
     <div class="kb-mobile-sheet__head">
-      <p class="kb-mobile-sheet__title">Filter Articles</p>
+      <p class="kb-mobile-sheet__title">Topics &amp; Categories</p>
       <button class="kb-mobile-sheet__close" id="kb-sheet-close" aria-label="Close filters">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -88,6 +103,13 @@
       </button>
     </div>
     <div class="kb-mobile-sheet__nav">
+      <div class="kb-mobile-sheet__top">
+        <button class="kb-mobile-sheet__all" id="kb-mobile-all-articles" aria-pressed="true">
+          <GridAppsIcon size={14} aria-hidden="true" />
+          <span>All Articles</span>
+          <span class="kb-filter__count" id="kb-mobile-all-count"></span>
+        </button>
+      </div>
       <p class="kb-mobile-sheet__group-label">Platforms</p>
       <ul class="kb-mobile-sheet__options" role="list">
         <li>
@@ -119,7 +141,7 @@
           </li>
         ))}
       </ul>
-      <button class="kb-mobile-sheet__clear" id="kb-mobile-clear" hidden>
+      <button class="kb-mobile-sheet__clear" id="kb-mobile-clear">
         Clear all filters
       </button>
     </div>
@@ -149,7 +171,7 @@
     padding: 0 var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: var(--space-3);
   }
 
   .kb-filter__eyebrow {
@@ -158,7 +180,7 @@
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--color-primary);
+    color: var(--color-on-surface-muted);
   }
 
   .kb-filter__title {
@@ -167,6 +189,14 @@
     font-weight: var(--weight-bold);
     color: var(--color-on-surface);
     margin: 0;
+  }
+
+  .kb-filter__sep {
+    height: 1px;
+    background: var(--color-outline-variant);
+    opacity: 0.35;
+    margin: 0 var(--space-5);
+    flex-shrink: 0;
   }
 
   .kb-filter__group {
@@ -237,9 +267,65 @@
     opacity: 0.75;
   }
 
+  /* ── All Articles + Clear filters block ───────────────────────── */
+  .kb-filter__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .kb-filter__all {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-kb-text);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    border-right: 3px solid transparent;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-filter__all:hover {
+    color: var(--color-primary);
+    background-color: var(--color-level-advanced-bg-dim);
+  }
+
+  .kb-filter__all[aria-pressed="true"] {
+    color: var(--color-level-advanced-text);
+    background-color: var(--color-level-advanced-bg);
+    border-right-color: var(--color-level-advanced-text);
+  }
+
+  .kb-filter__all-count {
+    margin-left: auto;
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    color: var(--color-kb-text-muted);
+    min-width: 1.5em;
+    text-align: right;
+  }
+
+  .kb-filter__all[aria-pressed="true"] .kb-filter__all-count {
+    color: var(--color-level-advanced-text);
+    opacity: 0.75;
+  }
+
   .kb-filter__clear {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     margin: 0 var(--space-5);
-    padding: var(--space-2) 0;
+    padding: var(--space-1) 0;
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
@@ -418,6 +504,44 @@
     display: flex;
     flex-direction: column;
     list-style: none;
+  }
+
+  .kb-mobile-sheet__top {
+    padding: var(--space-2) 0 var(--space-1);
+  }
+
+  .kb-mobile-sheet__all {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-kb-text);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-mobile-sheet__all:hover {
+    color: var(--color-primary);
+    background-color: var(--color-level-advanced-bg-dim);
+  }
+
+  .kb-mobile-sheet__all[aria-pressed="true"] {
+    color: var(--color-level-advanced-text);
+    background-color: var(--color-level-advanced-bg);
+  }
+
+  .kb-mobile-sheet__all .kb-filter__count {
+    margin-left: auto;
   }
 
   /* Override desktop panel styles for mobile sheet buttons */

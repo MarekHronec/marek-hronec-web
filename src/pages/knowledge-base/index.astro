@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleCard from '../../components/knowledge-base/ArticleCard.astro';
+import SortIcon from '../../components/icons/SortIcon.astro';
 import { getCollection } from 'astro:content';
 import { kbReadTime } from '../../utils/readTime';
 
@@ -74,7 +75,7 @@ const totalCount = sorted.length;
           </p>
           <div class="kb-toolbar__chips" id="kb-chips" hidden></div>
           <div class="kb-toolbar__sort">
-            <span class="kb-toolbar__sort-prefix" aria-hidden="true">Sort</span>
+            <SortIcon size={14} class="kb-toolbar__sort-icon" aria-hidden="true" />
             <div class="kb-sort-wrap">
               <label class="visually-hidden" for="kb-sort">Sort by</label>
               <select id="kb-sort" class="kb-sort">
@@ -249,14 +250,14 @@ const totalCount = sorted.length;
     gap: var(--space-2);
   }
 
-  .kb-toolbar__sort-prefix {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
+  .kb-toolbar__sort-icon {
     color: var(--color-kb-text-muted);
-    user-select: none;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-toolbar__sort:hover .kb-toolbar__sort-icon {
+    color: var(--color-primary);
   }
 
   /* Flex row: [select text] [chevron] — no overlap, no clipping */
@@ -383,6 +384,10 @@ const totalCount = sorted.length;
     const chipsEl = document.getElementById('kb-chips') as HTMLElement | null;
     const clearBtn = document.getElementById('kb-clear-filters');
     const mobileClearBtn = document.getElementById('kb-mobile-clear');
+    const allArticlesBtn = document.getElementById('kb-all-articles');
+    const allCountEl = document.getElementById('kb-all-count');
+    const mobileAllBtn = document.getElementById('kb-mobile-all-articles');
+    const mobileAllCountEl = document.getElementById('kb-mobile-all-count');
     const sortEl = document.getElementById('kb-sort') as HTMLSelectElement | null;
     const emptyEl = document.getElementById('kb-filter-empty');
     const mobileBadge = document.getElementById('kb-mobile-badge');
@@ -474,10 +479,13 @@ const totalCount = sorted.length;
         mobileBadge.hidden = totalActive === 0;
       }
 
-      /* Clear buttons */
+      /* All Articles button + Clear filters state */
       const hasFilters = activePlatforms.size > 0 || activeTopics.size > 0;
-      clearBtn?.toggleAttribute('hidden', !hasFilters);
-      mobileClearBtn?.toggleAttribute('hidden', !hasFilters);
+      allArticlesBtn?.setAttribute('aria-pressed', hasFilters ? 'false' : 'true');
+      mobileAllBtn?.setAttribute('aria-pressed', hasFilters ? 'false' : 'true');
+      const totalLabel = `[${wrappers.length}]`;
+      if (allCountEl) allCountEl.textContent = totalLabel;
+      if (mobileAllCountEl) mobileAllCountEl.textContent = totalLabel;
 
       /* Chips */
       updateChips();
@@ -539,7 +547,7 @@ const totalCount = sorted.length;
       });
     });
 
-    [clearBtn, mobileClearBtn].forEach(btn => {
+    [clearBtn, mobileClearBtn, allArticlesBtn, mobileAllBtn].forEach(btn => {
       btn?.addEventListener('click', () => {
         activePlatforms.clear();
         activeTopics.clear();
