@@ -1,0 +1,11 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
+}
+const { size = 24, class: className, ...rest } = Astro.props;
+---
+<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={className} {...rest}>
+  <path d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"/>
+</svg>

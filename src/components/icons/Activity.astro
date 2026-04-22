@@ -1,0 +1,11 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
+}
+const { size = 24, class: className, ...rest } = Astro.props;
+---
+<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" class={className} {...rest}>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M9 2a1 1 0 0 1 .949.684L15 17.838l2.051-6.154A1 1 0 0 1 18 11h4a1 1 0 1 1 0 2h-3.279l-2.772 8.316a1 1 0 0 1-1.898 0L9 6.162l-2.051 6.154A1 1 0 0 1 6 13H2a1 1 0 1 1 0-2h3.279L8.051 2.684A1 1 0 0 1 9 2Z"/>
+</svg>

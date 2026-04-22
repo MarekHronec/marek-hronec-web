@@ -2,6 +2,14 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TagBadge from '../../components/shared/TagBadge.astro';
+import Building  from '../../components/icons/Building.astro';
+import Briefcase from '../../components/icons/Briefcase.astro';
+import Factory   from '../../components/icons/Factory.astro';
+import Layers    from '../../components/icons/Layers.astro';
+import ListText  from '../../components/icons/ListText.astro';
+import Shield    from '../../components/icons/Shield.astro';
+import Activity  from '../../components/icons/Activity.astro';
+import Tag       from '../../components/icons/Tag.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('caseStudies');
@@ -52,35 +60,25 @@ const visibleTags = tags.slice(0, 3);
           <div class="cs-meta-grid">
 
             <div class="cs-meta-card">
-              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 21h18M9 8h1m5 0h1M9 12h1m5 0h1M9 16h1m5 0h1M3 7l9-4 9 4M4 21V7M20 21V7"/>
-              </svg>
+              <Building class="cs-meta-card__icon" size={24} aria-hidden="true" />
               <span class="cs-meta-card__label">Context</span>
               <span class="cs-meta-card__value">{context}</span>
             </div>
 
             <div class="cs-meta-card">
-              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="7" width="20" height="14" rx="2"/>
-                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-              </svg>
+              <Briefcase class="cs-meta-card__icon" size={24} aria-hidden="true" />
               <span class="cs-meta-card__label">Role</span>
               <span class="cs-meta-card__value">{role}</span>
             </div>
 
             <div class="cs-meta-card">
-              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/>
-                <path d="M7 7h.01"/>
-              </svg>
+              <Factory class="cs-meta-card__icon" size={24} aria-hidden="true" />
               <span class="cs-meta-card__label">Industry</span>
               <span class="cs-meta-card__value">{industry}</span>
             </div>
 
             <div class="cs-meta-card">
-              <svg class="cs-meta-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-              </svg>
+              <Layers class="cs-meta-card__icon" size={24} aria-hidden="true" />
               <span class="cs-meta-card__label">Platform</span>
               <span class="cs-meta-card__value">{platform ?? '—'}</span>
             </div>
@@ -135,11 +133,7 @@ const visibleTags = tags.slice(0, 3);
           <!-- At a Glance -->
           <div class="cs-sidebar-card">
             <h3 class="cs-sidebar-card__heading">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
-              </svg>
+              <ListText size={20} aria-hidden="true" />
               At a Glance
             </h3>
             <dl class="cs-glance">
@@ -156,9 +150,7 @@ const visibleTags = tags.slice(0, 3);
           {principles && principles.length > 0 && (
             <div class="cs-sidebar-card">
               <h3 class="cs-sidebar-card__heading">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
+                <Shield size={20} aria-hidden="true" />
                 Core Principles
               </h3>
               <ul class="cs-principles" role="list">
@@ -178,9 +170,7 @@ const visibleTags = tags.slice(0, 3);
           {outcomes && outcomes.length > 0 && (
             <div class="cs-sidebar-card">
               <h3 class="cs-sidebar-card__heading">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                </svg>
+                <Activity size={20} aria-hidden="true" />
                 Key Outcomes
               </h3>
               <ul class="cs-outcomes" role="list">
@@ -197,10 +187,7 @@ const visibleTags = tags.slice(0, 3);
           <!-- Tags -->
           <div class="cs-sidebar-card">
             <h3 class="cs-sidebar-card__heading">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-                <line x1="7" y1="7" x2="7.01" y2="7"/>
-              </svg>
+              <Tag size={20} aria-hidden="true" />
               Tags
             </h3>
             <div class="cs-sidebar-tags">
@@ -299,31 +286,32 @@ const visibleTags = tags.slice(0, 3);
   .cs-meta-card {
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-sm);
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-4);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-2);
   }
 
   .cs-meta-card__icon {
     color: var(--color-on-surface-muted);
-    margin-bottom: 2px;
+    margin-bottom: var(--space-1);
+    flex-shrink: 0;
   }
 
   .cs-meta-card__label {
     font-family: var(--font-body);
     font-size: var(--text-label-sm);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-on-surface-muted);
+    color: var(--color-on-surface);
   }
 
   .cs-meta-card__value {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--text-body-md);
-    font-weight: var(--weight-semibold);
-    color: var(--color-on-surface);
+    font-weight: var(--weight-regular);
+    color: var(--color-on-surface-muted);
     line-height: var(--leading-snug);
   }
 

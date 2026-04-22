@@ -11,7 +11,7 @@ metrics:
   - label: "Alert Noise"
     value: "Reduced"
 excerpt: "A multi-subscription Azure environment had accumulated unnecessary spend through oversized compute, orphaned resources, low-value telemetry, and alerting that had become too noisy to drive action."
-heroImage: "-"
+heroImage: "/images/case_study_02_detail.webp"
 heroCaption: "-"
 heroVersion: "-"
 titleHighlight: "-"

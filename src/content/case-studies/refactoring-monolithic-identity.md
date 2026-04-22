@@ -11,7 +11,7 @@ metrics:
   - label: "Platform Ownership"
     value: "Regained"
 excerpt: "A business-critical legacy BPM solution had become difficult to understand, extend and operate. New seasonal requirements had to be delivered quickly, but the existing platform depended on scarce external expertise and created delivery risk."
-heroImage: "-"
+heroImage: "/images/case_study_03_detail.webp"
 heroCaption: "-"
 heroVersion: "-"
 titleHighlight: "-"
