@@ -10,6 +10,9 @@
 6. [Body Content](#6-body-content)
 7. [Adding a New Article](#7-adding-a-new-article)
 8. [Adding a New Case Study](#8-adding-a-new-case-study)
+9. [Quick Reference: Where to Make Common Changes](#9-quick-reference-where-to-make-common-changes)
+10. [Read Time: How It Works and How to Tune It](#10-read-time-how-it-works-and-how-to-tune-it)
+11. [Updating Site Content Outside of Markdown](#11-updating-site-content-outside-of-markdown)
 
 ---
 
@@ -308,7 +311,32 @@ Standard `##` Markdown headings work fine for all other sections within a case s
    ---
    ```
 
+   **Field constraints** — the build fails if any of these are violated:
+
+   | Field | Constraint |
+   |---|---|
+   | `category` | Must be one of: `azure \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
+   | `level` | Must be one of: `beginner \| intermediate \| advanced` |
+   | `date` | Must be a valid date string, e.g. `2025-06-01` |
+   | `readTime` | Must be a plain number — not a string like `"9 min"` |
+   | `excerpt` | Keep under 160 characters |
+   | `tags` | Free-form array of strings — no enum constraint |
+
 3. **Write the body.** Start with `##` headings. The `title` from frontmatter is the `<h1>`.
+
+### Adding a new category
+
+To add a category not in the list above:
+
+1. **Extend the enum** in [src/content.config.ts](../src/content.config.ts):
+   ```ts
+   category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'your-new-category']),
+   ```
+2. **Add it to the sidebar** in `src/components/knowledge-base/CategorySidebar.astro` — follow the existing pattern for the other categories.
+3. **Create the subdirectory** and drop your `.md` file in:
+   ```
+   src/content/knowledge-base/your-new-category/first-article.md
+   ```
 
 4. **Validate:**
    ```sh
@@ -348,13 +376,284 @@ Standard `##` Markdown headings work fine for all other sections within a case s
      - label: "Policy Violations"
        value: "-600/mo"
    excerpt: "Redesigned a 15-year-old flat network into a Zero Trust segmented architecture across 12 Azure regions."
+   heroImage: "/images/case_study_03_detail.webp"
+   heroCaption: "Network segmentation overview"
+   heroVersion: "V1.0"
+   titleHighlight: "Network Segmentation"
+   platform: "Microsoft Azure"
+   focus: "Zero Trust network redesign across 12 Azure regions"
+   principles:
+     - "Least-privilege network access"
+     - "Segment by workload criticality"
+     - "Policy as code"
+   outcomes:
+     - title: "Reduced attack surface"
+       description: "Lateral movement paths eliminated across all segments."
+     - title: "Auditable policy"
+       description: "All NSG rules version-controlled and reviewable."
    ---
    ```
 
-   If this should be the new featured study, set `featured: true` and change the previous featured study to `featured: false`. Optionally add `heroImage`, `titleHighlight`, and other optional fields.
+   **Required fields:** `title`, `context`, `industry`, `role`, `tags`, `featured`, `metrics`, `excerpt`.
+
+   **Field constraints:**
+
+   | Field | Constraint |
+   |---|---|
+   | `excerpt` | Keep under 160 characters |
+   | `featured` | **Only one file may have `featured: true` at a time.** The listing page uses `.find()` — if two files are featured, the second one silently drops to the regular grid and loses the featured card slot. Always set the previous featured study to `false` before marking a new one. |
+   | `heroImage` | Must be a real file path under `public/images/` — a missing image produces no build error but shows a broken image at runtime |
+   | `tags` | Free-form array of strings — no enum constraint |
+
+   **Optional fields** — omit any you don't need; the detail page degrades gracefully:
+   | Field | Purpose |
+   |---|---|
+   | `heroImage` | Path to hero image (e.g. `/images/case_study_03_detail.webp`) |
+   | `heroCaption` | Caption shown below hero image |
+   | `heroVersion` | Version label shown on image frame |
+   | `titleHighlight` | Word or phrase in the title to render in `--color-primary` |
+   | `platform` | Shown in the Platform meta card in the hero |
+   | `focus` | One-line summary shown in the At a Glance sidebar card |
+   | `principles` | Array of strings — rendered as a checklist in the sidebar |
+   | `outcomes` | Array of `{ title, description }` — rendered as outcome cards in the sidebar |
 
 3. **Write the body.** Structure: problem → architecture decision → implementation → outcome. Use the inline HTML format for "The Problem" and "The Outcome" headings if you want icon decoration.
 
 4. **Validate and preview** with `npm run build && npm run preview`.
 
 5. **Commit and push** to `main`.
+
+---
+
+## 9. Quick Reference: Where to Make Common Changes
+
+This section is for non-code edits — exact file and what to look for.
+
+---
+
+### Add a new Knowledge Base category
+
+Two files need to change:
+
+**File 1 — `src/content.config.ts`**
+
+Find this line (it's near the top of the file):
+```ts
+category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm']),
+```
+Add your new category name inside the brackets, comma-separated, in lowercase. Example:
+```ts
+category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'ai']),
+```
+
+**File 2 — `src/components/knowledge-base/CategorySidebar.astro`**
+
+Find the `categories` array near the top of the file. It looks like:
+```ts
+{ id: 'azure', label: 'Azure', ... },
+```
+Add a new entry in the same format for your new category. The `id` must match exactly what you added to the enum above.
+
+Then create the folder `src/content/knowledge-base/your-category/` and drop your `.md` files in.
+
+---
+
+### Replace or add an image (case study hero)
+
+1. **Put the image file** in `public/images/` — this is the folder, not `src/`. Use `.webp` format for best performance.
+2. **Reference it** in the case study frontmatter as `/images/your-filename.webp` (note the leading slash — no `public` in the path).
+
+Example:
+```yaml
+heroImage: "/images/case_study_04_detail.webp"
+```
+
+The image is displayed at a 4:3 aspect ratio in the hero. Landscape images work best.
+
+---
+
+### Change read time on a Knowledge Base article
+
+Open the article's `.md` file in `src/content/knowledge-base/`. In the frontmatter at the top, find:
+```yaml
+readTime: 9
+```
+Change the number. It must be a plain number — no quotes, no "min" suffix.
+
+---
+
+### Change the featured case study
+
+The featured study is the one displayed in the large card at the top of the Case Studies page.
+
+1. Open the **current** featured study's `.md` file in `src/content/case-studies/` and change:
+   ```yaml
+   featured: true
+   ```
+   to:
+   ```yaml
+   featured: false
+   ```
+2. Open the **new** featured study's `.md` file and change its `featured` field to `true`.
+
+Only one file should have `featured: true` at a time.
+
+---
+
+### Change the category of an existing article
+
+Open the article's `.md` file and update the `category` field in the frontmatter to one of the valid values:
+```
+azure | networking | identity | security | finops | gcp | devops | bpm
+```
+The article will automatically move to the new category in the sidebar. The file can stay in its current folder — the folder structure is just for organisation, the `category` field is what the site reads.
+
+---
+
+## 10. Read Time: How It Works and How to Tune It
+
+### How it works
+
+Read time is calculated automatically at build time — no manual entry needed. When `npm run build` runs, Astro reads each article's text, counts the words, divides by the configured reading speed for that category, and bakes the result into the HTML. The visitor never runs any calculation.
+
+If you do set `readTime` manually in an article's frontmatter, that value takes priority and the calculation is skipped for that article.
+
+### Where the config lives
+
+**File:** `src/utils/readTime.ts`
+
+Open it and you will see this object at the top:
+
+```ts
+export const READ_SPEED = {
+  caseStudies: 200,
+  knowledgeBase: {
+    default:    130,
+    azure:      120,
+    networking: 110,
+    identity:   125,
+    security:   120,
+    finops:     150,
+    gcp:        120,
+    devops:     115,
+    bpm:        140,
+  },
+};
+```
+
+All values are **words per minute**. Higher = shorter read time displayed. Lower = longer read time displayed.
+
+- `caseStudies` — applies to all case study articles
+- `knowledgeBase.default` — fallback used when a category has no specific entry
+- Each named key under `knowledgeBase` — overrides the default for that category
+
+### How to tune a category's reading speed
+
+Open `src/utils/readTime.ts` and change the number next to the category name. Example — if networking articles are taking too long:
+```ts
+networking: 110,   // change to e.g. 100 for longer estimates
+```
+Rebuild and the new values appear across all articles in that category.
+
+### How to add read speed for a new category
+
+When you add a new category (see §7 "Adding a new category"), open `src/utils/readTime.ts` and add one line inside `knowledgeBase`:
+```ts
+knowledgeBase: {
+  default:    130,
+  // ... existing entries ...
+  myNewCategory: 125,   // add this line
+},
+```
+If you skip this step, the `default` value (130) is used automatically — nothing breaks.
+
+### How to override read time for a single article
+
+Add `readTime` to the article's frontmatter. The calculated value is ignored when this field is present:
+```yaml
+readTime: 12
+```
+Remove the field to go back to automatic calculation.
+
+---
+
+## 11. Updating Site Content Outside of Markdown
+
+Not everything on the site lives in `.md` files. This section covers the personal and professional content that lives directly in `.astro` component files. Each task below tells you exactly which file to open and what to look for.
+
+---
+
+### Update your contact email or LinkedIn URL
+
+**File:** `src/components/contact/ContactChannels.astro`
+
+Open the file and find the `channels` array near the top. Each entry has a `label`, `value`, and `href`. Change the `value` and `href` for the Email or LinkedIn entry.
+
+---
+
+### Update the availability notice
+
+**File:** `src/components/contact/ContactHero.astro`
+
+Find the text that says something like "Available from Q3 2025" and update the quarter and year.
+
+---
+
+### Update the profile photo
+
+1. Add your new photo to `public/images/` — use `.webp` format for best performance.
+2. **File:** `src/components/about/HeroSection.astro`  
+   Find the `<img>` tag with your profile photo and update the `src` attribute to the new filename.
+
+---
+
+### Update the career narrative text (About page)
+
+**File:** `src/components/about/NarrativeSection.astro`
+
+The long-form text about your background and approach lives here. Edit the paragraph content directly. The green expertise card on the right side of that section is also in this file.
+
+---
+
+### Update the certifications summary (About page — short list)
+
+This is the 3-card certifications section on the About page, not the full registry.
+
+**File:** `src/components/about/CertsStackSection.astro`
+
+Find the `certifications` array near the top. Each entry has `name` and `level`. Add, remove, or edit entries here. The "View all certifications →" link at the bottom always points to `/credentials`.
+
+---
+
+### Update the full certifications registry (/credentials page)
+
+**File:** `src/pages/credentials.astro`
+
+Find the `groups` array near the top of the file. It is divided into groups (Microsoft Azure, Oracle Cloud Infrastructure, General, Legacy). Each certification entry has:
+
+| Field | What it is |
+|---|---|
+| `name` | Certification name |
+| `issuer` | Issuing organisation |
+| `year` | Year obtained |
+| `status` | `active` or `legacy` |
+| `verifyUrl` | Verification URL, or `'#'` if not available yet |
+| `domain` | One of: `Cloud`, `AI`, `DevOps`, `Networking`, `General` |
+
+Add a new entry in the correct group following the existing pattern.
+
+---
+
+### Update the tech stack grid (About page)
+
+**File:** `src/components/about/CertsStackSection.astro`
+
+Find the `columns` array. Each column has a `title` and an `items` list. Add or remove items within the relevant column. The four columns are: Infrastructure, Containers & Orchestration, Observability, and Modeling.
+
+---
+
+### Update the work experience entries (About page)
+
+**File:** `src/components/about/ExperienceTimeline.astro`
+
+Find the `experiences` array near the top. Each entry has `role`, `org`, `period`, `summary`, and `bullets` (the extra detail that expands on click). Edit the relevant entry directly.

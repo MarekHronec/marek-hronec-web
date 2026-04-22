@@ -8,6 +8,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleOutline from '../../components/knowledge-base/ArticleOutline.astro';
+import { kbReadTime } from '../../utils/readTime';
 
 export async function getStaticPaths() {
   const entries = await getCollection('knowledgeBase');
@@ -18,8 +19,9 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, category, date, readTime, level, excerpt } = entry.data;
+const { title, category, date, level, excerpt } = entry.data;
 const { Content, headings } = await render(entry);
+const readTime = kbReadTime(entry.body ?? '', category, entry.data.readTime);
 
 /* Related articles — same category, excluding self */
 const allArticles = await getCollection('knowledgeBase');

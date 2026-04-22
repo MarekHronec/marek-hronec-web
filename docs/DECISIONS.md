@@ -70,7 +70,7 @@ Content (articles, case studies) is authored in Markdown with structured frontma
 **Decision.** Astro Content Collections with Zod schemas defined in `src/content.config.ts`.
 
 **Consequences.**  
-A malformed `category` value or missing `readTime` field causes `astro build` to fail with a clear error message, never a silent mis-render. TypeScript types for content entries are generated automatically. The content repository is the CMS — no external dependency.
+A malformed `category` value causes `astro build` to fail with a clear error message, never a silent mis-render. `readTime` is optional — if omitted, it is calculated automatically at build time from word count using per-category reading speeds defined in `src/utils/readTime.ts`. TypeScript types for content entries are generated automatically. The content repository is the CMS — no external dependency.
 
 ---
 
@@ -396,3 +396,29 @@ The CTA banner section on the About page uses a mint-green background (`--color-
 
 **Consequences.**  
 The CTA section feels visually consistent with the surface tier system rather than standing out as a decorative block. Text colours on the banner (`--color-primary` for the heading, `--color-primary-dim` for the body) maintain WCAG AA contrast ratios on the new background. The button (`--color-primary` background) still reads clearly against the sage surface.
+
+---
+
+## ADR-018: Read Time — Build-Time Calculation over Manual Frontmatter
+
+**Status:** Accepted  
+**Date:** 2026-04-22
+
+**Context.**  
+Knowledge Base articles display a read time estimate ("8 min read") on listing and detail pages. Articles are technical, contain diagrams, and vary significantly in reading complexity by category. The question is how to produce this value.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Manual `readTime` frontmatter field (previous approach) | Exact author control | Goes stale as articles are edited; easy to forget; inconsistent across articles |
+| Client-side calculation on page load | Always reflects current content | Adds JavaScript; runs on every page visit; inconsistent with zero-JS policy |
+| Build-time calculation from word count | Zero runtime cost; always in sync with content; no maintenance | Word count includes markdown syntax (minor overcount); cannot account for subjective complexity |
+| CMS-managed field | Author-friendly UI | No CMS in this stack |
+
+**Decision.** Build-time word-count calculation using per-category words-per-minute (WPM) values defined in `src/utils/readTime.ts`. Manual `readTime` in frontmatter takes priority when present — this preserves the escape hatch for authors who want to override the estimate for a specific article.
+
+Technical notes are more complex than narrative content, so KB categories use lower WPM values than case studies. Networking and DevOps articles (diagram-heavy, command-heavy) use lower WPM than FinOps articles (more conceptual prose). Code blocks are included in the word count because readers work through them too.
+
+**Consequences.**  
+Read time values stay accurate automatically as articles are edited. Adding a new article requires no manual read-time entry. Per-category WPM values can be tuned in a single config object (`READ_SPEED` in `src/utils/readTime.ts`) without touching any content files or page components. The manual override path is preserved for edge cases.

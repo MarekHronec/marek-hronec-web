@@ -9,6 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleCard from '../../components/knowledge-base/ArticleCard.astro';
 import { getCollection } from 'astro:content';
+import { kbReadTime } from '../../utils/readTime';
 
 const articles = await getCollection('knowledgeBase');
 
@@ -52,7 +53,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
                   category={article.data.category}
                   excerpt={article.data.excerpt}
                   date={article.data.date}
-                  readTime={article.data.readTime}
+                  readTime={kbReadTime(article.body ?? '', article.data.category, article.data.readTime)}
                   level={article.data.level}
                   tags={article.data.tags}
                 />

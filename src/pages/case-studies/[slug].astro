@@ -28,7 +28,6 @@ const titleAfter  = titleHighlight ? title.slice(title.indexOf(titleHighlight) +
 const { Content } = await render(entry);
 
 const visibleTags = tags.slice(0, 3);
-const hiddenCount = tags.length - visibleTags.length;
 ---
 
 <BaseLayout title={title} description={excerpt}>

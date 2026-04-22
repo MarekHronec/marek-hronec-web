@@ -57,7 +57,7 @@ The visual design system ("The Architectural Monograph") requires an editorial a
 
 ### Content Collections over `import.meta.glob`
 
-`import.meta.glob` is untyped and provides no frontmatter validation. A malformed category string or missing `readTime` field would silently produce incorrect renders or runtime errors. Content Collections with Zod schemas validate every field at build time, generate TypeScript types for autocomplete, and expose a clean query API (`getCollection`, `render`). The compile-time contract means content errors surface before deployment, not in front of users.
+`import.meta.glob` is untyped and provides no frontmatter validation. A malformed category string would silently produce incorrect renders or runtime errors. Content Collections with Zod schemas validate every field at build time, generate TypeScript types for autocomplete, and expose a clean query API (`getCollection`, `render`). The compile-time contract means content errors surface before deployment, not in front of users.
 
 ### TypeScript strict mode
 
@@ -138,6 +138,8 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     ├── styles/
     │   ├── tokens.css            # All CSS custom properties — single source of truth
     │   └── global.css            # Reset, base typography, layout utilities, focus styles
+    ├── utils/
+    │   └── readTime.ts           # Build-time read time calculation + per-category WPM config
     └── content.config.ts         # Collection definitions and Zod schemas
 ```
 
@@ -229,7 +231,7 @@ Content is managed through Astro Content Collections. Collection definitions and
 | `category` | enum | Yes | One of 8 values (see taxonomy below) | `"azure"` |
 | `tags` | `string[]` | Yes | Keyword tags for filtering | `["Azure", "IaC", "Governance"]` |
 | `date` | `Date` | Yes | Publication date (coerced from string) | `2025-01-08` |
-| `readTime` | `number` | Yes | Estimated read time in minutes | `11` |
+| `readTime` | `number` | No | Read time in minutes — auto-calculated from word count if omitted; manual value takes priority. Speed config in `src/utils/readTime.ts`. | `11` |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | `"advanced"` |
 | `excerpt` | `string` | Yes | One-sentence summary (≤160 characters) | `"An Azure landing zone provides..."` |
 
@@ -261,9 +263,13 @@ Articles are organised into subdirectories matching the `category` value. The gl
 | `metrics` | `{label, value}[]` | Yes | Outcome metrics for the metrics bar | `[{label: "Adoption Model", value: "Governed"}]` |
 | `excerpt` | `string` | Yes | One-sentence summary (≤160 characters) | `"Public-sector cloud adoption..."` |
 | `heroImage` | `string` | No | Path to hero image for the detail page | `"/images/case_study_01_detail.webp"` |
-| `heroCaption` | `string` | No | Caption for the hero image (not currently rendered) | `"Governance as navigational aid"` |
-| `heroVersion` | `string` | No | Version label for the diagram (not currently rendered) | `"V2.4"` |
+| `heroCaption` | `string` | No | Caption for the hero image | `"Governance as navigational aid"` |
+| `heroVersion` | `string` | No | Version label shown on the image frame | `"V2.4"` |
 | `titleHighlight` | `string` | No | Substring of `title` to render in `--color-primary` green | `"Effective Governance"` |
+| `platform` | `string` | No | Technology platforms — shown in the Platform meta card in the hero | `"Microsoft Azure, Oracle Cloud Infrastructure"` |
+| `focus` | `string` | No | One-line engagement focus — shown in the At a Glance sidebar card | `"Governed cloud adoption model and operating framework"` |
+| `principles` | `string[]` | No | Core principles list — rendered as a checklist in the sidebar | `["Central control where it matters"]` |
+| `outcomes` | `{title, description}[]` | No | Key outcomes — rendered as titled cards in the sidebar | `[{title: "Safer adoption", description: "..."}]` |
 
 Only one case study should have `featured: true`. The featured study receives dedicated treatment on the listing page (large card with diagram panel); all others render as `CaseStudyCard` components.
 

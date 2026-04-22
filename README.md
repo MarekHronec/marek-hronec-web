@@ -95,6 +95,8 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full technical deep-div
     ├── styles/
     │   ├── tokens.css        # All CSS custom properties — single source of truth
     │   └── global.css        # Reset, base typography, layout utilities
+    ├── utils/
+    │   └── readTime.ts       # Build-time read time calculation + per-category WPM config
     └── content.config.ts     # Content Collections + Zod schema definitions
 ```
 
