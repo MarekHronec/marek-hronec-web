@@ -345,6 +345,16 @@ const totalCount = sorted.length;
     background: var(--color-primary-container);
   }
 
+  :global(.kb-chip--clear) {
+    background: var(--color-surface-container-high);
+    color: var(--color-on-surface-muted);
+  }
+
+  :global(.kb-chip--clear:hover) {
+    background: var(--color-surface-container-highest, var(--color-outline-variant));
+    color: var(--color-on-surface);
+  }
+
   /* visually-hidden utility for accessible labels */
   .visually-hidden {
     position: absolute;
@@ -382,8 +392,6 @@ const totalCount = sorted.length;
     const countEl = document.getElementById('kb-article-count');
     const countLabelEl = document.getElementById('kb-article-count-label');
     const chipsEl = document.getElementById('kb-chips') as HTMLElement | null;
-    const clearBtn = document.getElementById('kb-clear-filters');
-    const mobileClearBtn = document.getElementById('kb-mobile-clear');
     const allArticlesBtn = document.getElementById('kb-all-articles');
     const allCountEl = document.getElementById('kb-all-count');
     const mobileAllBtn = document.getElementById('kb-mobile-all-articles');
@@ -507,6 +515,20 @@ const totalCount = sorted.length;
         ...[...activePlatforms].map(v => ({ group: 'platform', value: v })),
         ...[...activeTopics].map(v  => ({ group: 'topic',    value: v })),
       ];
+
+      if (chips.length > 0) {
+        const clearAll = document.createElement('button');
+        clearAll.className = 'kb-chip kb-chip--clear';
+        clearAll.setAttribute('aria-label', 'Clear all filters');
+        clearAll.innerHTML = `Clear filters <span aria-hidden="true">×</span>`;
+        clearAll.addEventListener('click', () => {
+          activePlatforms.clear();
+          activeTopics.clear();
+          apply();
+        });
+        chipsEl.appendChild(clearAll);
+      }
+
       chips.forEach(({ group, value }) => {
         const label = LABELS[group]?.[value] ?? value;
         const btn = document.createElement('button');
@@ -547,7 +569,7 @@ const totalCount = sorted.length;
       });
     });
 
-    [clearBtn, mobileClearBtn, allArticlesBtn, mobileAllBtn].forEach(btn => {
+    [allArticlesBtn, mobileAllBtn].forEach(btn => {
       btn?.addEventListener('click', () => {
         activePlatforms.clear();
         activeTopics.clear();
