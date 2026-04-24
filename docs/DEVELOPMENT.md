@@ -42,12 +42,14 @@ The dev server starts at `http://localhost:4321`. Changes to `.astro`, `.ts`, `.
 | Command | What it does |
 |---|---|
 | `npm run dev` | Start the development server at `localhost:4321` |
-| `npm run build` | Build the production site to `dist/` |
+| `npm run build` | Build the production site to `dist/`, then run `npx pagefind --site dist` to generate the full-text search index at `dist/pagefind/` |
 | `npm run preview` | Serve the `dist/` output locally for production verification |
 | `npm run astro` | Access the Astro CLI directly (e.g. `npm run astro check`) |
 | `npx astro check` | Run TypeScript type-checking across all `.astro` files |
 
 Run `npm run build` before every commit that will be merged to `main`. The build is the authoritative test: if it passes, the site will deploy correctly.
+
+> **Search in dev mode.** The Knowledge Base search input renders in `npm run dev` but returns no results — the Pagefind index (`dist/pagefind/`) only exists after a full `npm run build`. Run `npm run build && npm run preview` to test search locally.
 
 ---
 

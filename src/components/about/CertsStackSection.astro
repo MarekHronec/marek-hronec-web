@@ -8,7 +8,7 @@
 
 import BadgeCheck from "../icons/BadgeCheck.astro";
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+import { base } from '../../utils/base';
 
 interface Cert {
   name: string;

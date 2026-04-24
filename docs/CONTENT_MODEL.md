@@ -53,7 +53,7 @@ title: ""
 category: azure          # see taxonomy below for valid values
 tags: []
 date: 2025-01-08
-readTime: 11
+readTime: 11             # optional — omit to calculate automatically
 level: advanced          # beginner | intermediate | advanced
 excerpt: ""
 ---
@@ -67,7 +67,7 @@ excerpt: ""
 | `category` | enum | Yes | One of 8 values | Controls sidebar navigation and filtering. See taxonomy. |
 | `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. All tags shown on article card. Used for filter chip display and article detail header. |
 | `date` | Date | Yes | ISO 8601 string, coerced to Date | Publication date. Articles are sorted newest-first on the listing page. |
-| `readTime` | number | Yes | Integer, minutes | Estimated reading time. Displayed in the article card and article header. |
+| `readTime` | number | No | Integer, minutes | Estimated reading time. If omitted, calculated automatically at build time from word count. Displayed in the article card and article header. |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | Controls the colour-coded level badge on the article card and article header. |
 | `excerpt` | string | Yes | ≤160 characters recommended | One-sentence summary. Appears on the article card and in page meta description. |
 
@@ -325,7 +325,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
    | `category` | Must be one of: `azure \| oci \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
    | `level` | Must be one of: `beginner \| intermediate \| advanced` |
    | `date` | Must be a valid date string, e.g. `2025-06-01` |
-   | `readTime` | Must be a plain number — not a string like `"9 min"` |
+   | `readTime` | Optional. If present, must be a plain number — not a string like `"9 min"`. If omitted, calculated automatically. |
    | `excerpt` | Keep under 160 characters |
    | `tags` | Free-form array of strings — no enum constraint |
 

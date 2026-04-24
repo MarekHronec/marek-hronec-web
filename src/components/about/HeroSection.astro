@@ -1,5 +1,5 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+import { base } from '../../utils/base';
 ---
 
 <section class="hero">
@@ -105,27 +105,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   .hero__photo-wrap {
     width: 100%;
-  }
-
-  .hero__photo-placeholder {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    max-height: 360px;
-  }
-
-  /* Mobile: photo comes first, shorter crop so it doesn't dominate */
-  .hero__photo-wrap {
     order: -1;
   }
 
   .hero__photo-placeholder {
+    width: 100%;
     aspect-ratio: 3 / 2;
+    border-radius: var(--radius-md);
+    overflow: hidden;
     max-height: 200px;
   }
 
-  /* Desktop: restore reading order, full portrait crop */
   @media (min-width: 768px) {
     .hero__photo-wrap {
       order: 0;

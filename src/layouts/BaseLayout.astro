@@ -2,6 +2,7 @@
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import '../styles/global.css';
+import { base } from '../utils/base';
 
 interface Props {
   title: string;
@@ -13,7 +14,7 @@ interface Props {
 const {
   title,
   description = 'Senior Cloud Architect — Azure, OCI. Architecting clarity in the cloud.',
-  ogImage = '/og-default.png',
+  ogImage,
   canonicalURL = Astro.url.href,
 } = Astro.props;
 
@@ -29,8 +30,7 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     <meta name="generator" content={Astro.generator} />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/favicon.svg`} />
-    <link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/favicon.ico`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
 
     <!-- Primary Meta -->
     <title>{fullTitle}</title>
@@ -42,14 +42,14 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${import.meta.env.BASE_URL.replace(/\/$/, '')}${ogImage}`} />
+    {ogImage && <meta property="og:image" content={`${base}${ogImage}`} />}
     <meta property="og:site_name" content={siteName} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${import.meta.env.BASE_URL.replace(/\/$/, '')}${ogImage}`} />
+    {ogImage && <meta name="twitter:image" content={`${base}${ogImage}`} />}
 
     <!-- Fonts: preconnect warms the connection; stylesheet loads as "print"
          (non-blocking) then a script switches it to "all" once downloaded.
@@ -66,6 +66,7 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <Header />
     <main id="main-content">
       <slot />

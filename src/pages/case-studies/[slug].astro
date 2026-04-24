@@ -313,20 +313,6 @@ const { Content } = await render(entry);
     line-height: var(--leading-snug);
   }
 
-  .cs-meta-card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1);
-    margin-top: 2px;
-  }
-
-  .cs-meta-card__more {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    color: var(--color-on-surface-muted);
-    align-self: center;
-  }
-
   /* ── Metric chips ──────────────────────────────────────────────── */
   .cs-chips {
     display: flex;
@@ -442,7 +428,7 @@ const { Content } = await render(entry);
 
   .prose :global(p) {
     font-size: var(--text-body-lg);
-    line-height: 1.7;
+    line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
   }
 
@@ -459,7 +445,7 @@ const { Content } = await render(entry);
 
   .prose :global(li) {
     font-size: var(--text-body-lg);
-    line-height: 1.7;
+    line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
   }
 

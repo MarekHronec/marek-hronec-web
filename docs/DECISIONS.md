@@ -234,9 +234,11 @@ Modern frameworks default to shipping JavaScript. Astro defaults to shipping non
 2. **Article TOC scroll-spy** (`ArticleOutline.astro`) — IntersectionObserver watching heading elements; toggles a CSS class. Present only on article pages.
 3. **KB filter** (`knowledge-base/index.astro`) — IIFE that reads URL params and shows/hides card wrappers. No library.
 4. **Experience expand/collapse** (`ExperienceTimeline.astro`) — toggles `aria-expanded` and a CSS class to reveal additional bullet points per entry. No library.
+5. **CategorySidebar mobile sheet** (`CategorySidebar.astro`) — toggles the bottom-sheet drawer on mobile for filter navigation. No library.
+6. **KBSearch** (`KBSearch.astro`) — `is:inline` IIFE that dynamically imports the Pagefind bundle from `/pagefind/pagefind.js` on first input focus; runs debounced full-text search and renders results. Present only on the Knowledge Base listing page.
 
 **Consequences.**  
-Every page delivers meaningful content with zero JavaScript download and zero hydration latency. The three small scripts that do ship are inlined in their host components, so they incur no additional network round-trips. If a component genuinely needs client-side interactivity in the future, Astro's `client:*` directives can hydrate it without changing the architecture.
+Every page delivers meaningful content with zero JavaScript download and zero hydration latency. The six small scripts that do ship are inlined in their host components, so they incur no additional network round-trips. If a component genuinely needs client-side interactivity in the future, Astro's `client:*` directives can hydrate it without changing the architecture.
 
 ---
 
@@ -449,3 +451,27 @@ Category data derivation: platform is mapped from the article's `category` field
 Users can now combine filters — e.g. select Azure (platform) + Networking (topic) to see Azure networking articles only. Dynamic counts on each filter button reflect matching articles given the other group's active selection. Filter and sort state survive browser back/forward navigation. The mobile experience uses the existing bottom-sheet pattern, updated with the same filter groups. `CategorySidebar.astro` is now a pure HTML scaffold with no icon dependencies; all filter logic lives in `knowledge-base/index.astro`.
 
 A known CSS limitation: the `select:hover ~ chevron` sibling selector turns the sort chevron primary green only when hovering over the select text itself, not the chevron — because `<select>` cannot contain children and the chevron is a sibling, not a descendant. Acceptable at this scale.
+
+---
+
+## ADR-020: Full-Text Search — Pagefind over Client-Side Alternatives
+
+**Status:** Accepted  
+**Date:** 2026-04-24
+
+**Context.**  
+The Knowledge Base listing page needs full-text search so users can find articles by keyword rather than navigating by category alone. The site is static — there is no server to run a search query against.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Algolia / Typesense hosted search | Production-quality relevance; typo tolerance; instant results | External dependency; API key management; cost at any meaningful scale |
+| Fuse.js (client-side fuzzy search) | Zero external dependency; simple JS library | Requires loading the entire content index as JSON on every page visit; no excerpt extraction; no highlighted matched terms |
+| Lunr.js | Mature client-side search | Similar to Fuse.js; larger bundle; index must be built separately |
+| Pagefind | Indexes built HTML at build time; serves as static files alongside the site; ~25 KB JS bundle loaded lazily; returns excerpts with highlighted matches | Index only exists after `npm run build`; not available in dev mode |
+
+**Decision.** Pagefind with a custom UI component (`KBSearch.astro`). The build script (`npm run build`) runs `npx pagefind --site dist` after `astro build` to generate the index in `dist/pagefind/`. Only KB article pages are indexed (via `data-pagefind-body`). The JS bundle is loaded lazily on first input focus to avoid any cost on page load.
+
+**Consequences.**  
+Full-text search works with zero runtime dependency and zero server. The Pagefind bundle (~25 KB) is loaded only when the user focuses the search field — all other visitors pay nothing. Results include excerpts with matched terms highlighted in `<mark>` tags. The index is not available in `npm run dev` mode — developers must run `npm run build && npm run preview` to test search locally. The `is:inline` Astro script directive is required to bypass Vite/Rollup resolution of the `/pagefind/pagefind.js` path, which only exists as a build artifact.

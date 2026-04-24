@@ -6,7 +6,7 @@
  * Glass: surface at 80% opacity + 24px backdrop-blur per DESIGN.md.
  */
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import { base } from '../../utils/base';
 
 const navLinks = [
   { label: 'About',          href: `${base}/` },

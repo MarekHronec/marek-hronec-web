@@ -4,7 +4,7 @@
 <section class="contact-channels">
   <div class="contact-channels__inner container">
 
-    <div class="channel-card channel-card--disabled" aria-label="Email coming soon">
+    <div class="channel-card channel-card--disabled">
       <div class="channel-card__top">
         <span class="channel-card__category">Primary Contact</span>
         <svg class="channel-card__arrow" width="12" height="12" viewBox="0 0 12 12"
@@ -133,9 +133,15 @@
     margin-top: 1px;
   }
 
-  /* location card has no link so the arrow is dimmed */
-  .channel-card--location .channel-card__arrow {
-    opacity: 0.5;
+  .channel-card--disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  /* location and disabled cards have no link so the arrow is dimmed */
+  .channel-card--location .channel-card__arrow,
+  .channel-card--disabled .channel-card__arrow {
+    opacity: 0.4;
   }
 
   .channel-card__bottom {

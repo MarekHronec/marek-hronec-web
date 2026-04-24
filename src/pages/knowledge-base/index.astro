@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleCard from '../../components/knowledge-base/ArticleCard.astro';
 import SortIcon from '../../components/icons/SortIcon.astro';
+import KBSearch from '../../components/knowledge-base/KBSearch.astro';
 import { getCollection } from 'astro:content';
 import { kbReadTime } from '../../utils/readTime';
 
@@ -67,6 +68,9 @@ const totalCount = sorted.length;
           </p>
         </header>
 
+        <!-- Full-text search (Pagefind — index generated at build time) -->
+        <KBSearch />
+
         <!-- Toolbar: article count + active filter chips + sort -->
         <div class="kb-toolbar">
           <p class="kb-toolbar__count">
@@ -118,7 +122,7 @@ const totalCount = sorted.length;
           <p class="kb-empty">No articles published yet.</p>
         )}
 
-        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" style="display:none">
+        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" hidden>
           No articles match the selected filters.
         </p>
 
@@ -237,9 +241,15 @@ const totalCount = sorted.length;
   .kb-toolbar__chips {
     display: flex;
     gap: var(--space-2);
-    flex-wrap: wrap;
     align-items: center;
     flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .kb-toolbar__chips::-webkit-scrollbar {
+    display: none;
   }
 
   .kb-toolbar__sort {
@@ -503,7 +513,7 @@ const totalCount = sorted.length;
 
       /* Empty state */
       if (emptyEl) {
-        emptyEl.style.display = (hasFilters && n === 0) ? 'block' : 'none';
+        emptyEl.hidden = !(hasFilters && n === 0);
       }
     }
 

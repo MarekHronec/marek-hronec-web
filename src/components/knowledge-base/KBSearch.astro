@@ -1,0 +1,312 @@
+---
+/*
+ * KBSearch.astro — Full-text search for the Knowledge Base.
+ *
+ * Powered by Pagefind: a static search index generated at build time by
+ * `npx pagefind --site dist`. The index lives in dist/pagefind/ and is served
+ * as static files alongside the site.
+ *
+ * The pagefind JS bundle (~25 KB) is loaded lazily on first input focus.
+ * Until the user interacts with the search field, zero extra JavaScript or
+ * network requests are made. The feature degrades gracefully in dev mode
+ * (where no index exists) — the input renders but returns no results.
+ *
+ * Only KB article pages are indexed (they carry `data-pagefind-body`).
+ * The listing page, case studies, and all other pages are not indexed.
+ */
+---
+
+<div class="kb-search" id="kb-search" role="search">
+
+  <div class="kb-search__field">
+    <svg class="kb-search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input
+      class="kb-search__input"
+      id="kb-search-input"
+      type="search"
+      placeholder="Search articles, topics, keywords…"
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Search knowledge base"
+    />
+    <button class="kb-search__clear" id="kb-search-clear" aria-label="Clear search" hidden>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M1.5 1.5l9 9M10.5 1.5l-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="kb-search__panel" id="kb-search-panel" hidden>
+    <div id="kb-search-results"></div>
+  </div>
+
+</div>
+
+<script is:inline>
+  /*
+   * is:inline tells Astro to skip bundling — required because /pagefind/pagefind.js
+   * is a build-time artifact, not a node_module. Vite/Rollup cannot resolve it at
+   * build time; the file only exists after `npx pagefind --site dist` runs.
+   * Using is:inline lets the dynamic import execute at runtime when the file exists.
+   */
+  (function () {
+    const input     = document.getElementById('kb-search-input');
+    const panel     = document.getElementById('kb-search-panel');
+    const resultsEl = document.getElementById('kb-search-results');
+    const clearBtn  = document.getElementById('kb-search-clear');
+
+    let pf = null;
+    /* Single in-flight promise shared across concurrent ensureLoaded() calls.
+       Prevents the race where pf is assigned before init() resolves — a second
+       caller would see pf truthy and attempt debouncedSearch on an uninitialised
+       instance. Both callers await the same promise instead. */
+    let pfInit = null;
+
+    async function ensureLoaded() {
+      if (pf) return true;
+      if (!pfInit) {
+        /* Path in a variable prevents the TS language server from attempting
+           module resolution on a build-time artifact that doesn't exist yet. */
+        const url = '/pagefind/pagefind.js';
+        pfInit = import(url).then(function (mod) {
+          return mod.init().then(function () { pf = mod; });
+        });
+      }
+      try {
+        await pfInit;
+        return true;
+      } catch {
+        /* Index not present — normal in dev mode (`npm run dev`).
+           Run `npm run build` once to generate the index. */
+        pfInit = null;
+        return false;
+      }
+    }
+
+    /* Extract the category segment from a pagefind result URL.
+       Article URLs follow the shape: /knowledge-base/{category}/{slug}/ */
+    function categoryFromUrl(url) {
+      return url.split('/').filter(Boolean)[1] ?? '';
+    }
+
+    function renderItems(items) {
+      if (items.length === 0) {
+        resultsEl.innerHTML = '<p class="kb-search__empty">No articles found.</p>';
+      } else {
+        resultsEl.innerHTML = items.map(function (item) {
+          const cat = item.meta.category ?? categoryFromUrl(item.url);
+          return (
+            '<a class="kb-search__item" href="' + item.url + '">' +
+              '<p class="kb-search__item-category">' + cat + '</p>' +
+              '<p class="kb-search__item-title">' + item.meta.title + '</p>' +
+              '<p class="kb-search__item-excerpt">' + item.excerpt + '</p>' +
+            '</a>'
+          );
+        }).join('');
+      }
+      panel.hidden = false;
+    }
+
+    async function runSearch(query) {
+      if (!query.trim()) { panel.hidden = true; return; }
+      const ready = await ensureLoaded();
+      if (!ready) return;
+
+      /* debouncedSearch returns null when a newer call has superseded this one. */
+      const res = await pf.debouncedSearch(query, {}, 300);
+      if (!res) return;
+
+      const items = await Promise.all(res.results.slice(0, 8).map(function (r) { return r.data(); }));
+      renderItems(items);
+    }
+
+    /* Warm up the bundle before the user types — removes perceived latency. */
+    input.addEventListener('focus', function () { ensureLoaded(); });
+
+    input.addEventListener('input', function (e) {
+      const query = e.target.value;
+      clearBtn.hidden = !query;
+      runSearch(query);
+    });
+
+    clearBtn.addEventListener('click', function () {
+      input.value = '';
+      clearBtn.hidden = true;
+      panel.hidden = true;
+      input.focus();
+    });
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        input.value = '';
+        clearBtn.hidden = true;
+        panel.hidden = true;
+      }
+    });
+
+    /* Dismiss results when the user clicks outside the search widget. */
+    document.addEventListener('click', function (e) {
+      if (!document.getElementById('kb-search').contains(e.target)) {
+        panel.hidden = true;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .kb-search {
+    position: relative;
+    width: 100%;
+  }
+
+  /* ── Input field ─────────────────────────────────────────────────── */
+  .kb-search__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .kb-search__icon {
+    position: absolute;
+    left: var(--space-4);
+    color: var(--color-on-surface-muted);
+    pointer-events: none;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-search__input {
+    width: 100%;
+    /* left: space-4 + 16px icon + space-2 gap; right: space-10 for clear button */
+    padding: var(--space-3) var(--space-10) var(--space-3) calc(var(--space-4) + 16px + var(--space-2));
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface);
+    background: var(--color-surface-container-lowest);
+    border-radius: var(--radius-md);
+    /* Use border (not outline) so the focus state is a single line — outline
+       renders outside the box model and stacks with the browser focus ring. */
+    border: 1.5px solid var(--color-outline-variant);
+    outline: none;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* Remove browser-native clear button — we render our own. */
+  .kb-search__input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .kb-search__input:focus {
+    border-color: var(--color-primary);
+    outline: none;
+  }
+
+  .kb-search__field:focus-within .kb-search__icon {
+    color: var(--color-primary);
+  }
+
+  .kb-search__clear {
+    position: absolute;
+    right: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface-container);
+    color: var(--color-on-surface-muted);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-search__clear:hover {
+    background: var(--color-surface-container-high);
+  }
+
+  /* ── Results panel ───────────────────────────────────────────────── */
+  .kb-search__panel {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: var(--color-surface-container-low);
+    border-radius: var(--radius-md);
+    box-shadow: 0px 20px 40px rgba(50, 50, 50, 0.06);
+    border: 1.5px solid var(--color-outline-variant);
+    overflow: hidden;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  /* ── All result content is injected via innerHTML so Astro's scoped
+     attribute (data-astro-cid-xxx) is never added to dynamic elements.
+     Scoping off the static .kb-search__panel parent with :global() ensures
+     these rules compile to .kb-search__panel[data-astro-cid] .child,
+     which matches dynamic descendants correctly. ──────────────────── */
+
+  .kb-search__panel :global(.kb-search__empty) {
+    padding: var(--space-6) var(--space-5);
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface-muted);
+    text-align: center;
+  }
+
+  .kb-search__panel :global(.kb-search__item) {
+    display: block;
+    padding: var(--space-4) var(--space-5);
+    text-decoration: none;
+    color: inherit;
+    background: var(--color-surface-container-lowest);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* Tonal shift between items instead of border lines (per DESIGN.md). */
+  .kb-search__panel :global(.kb-search__item + .kb-search__item) {
+    background: var(--color-surface-container-low);
+  }
+
+  .kb-search__panel :global(.kb-search__item:hover) {
+    background: var(--color-surface-container);
+    opacity: 1;
+  }
+
+  .kb-search__panel :global(.kb-search__item-category) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  .kb-search__panel :global(.kb-search__item-title) {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-2);
+  }
+
+  .kb-search__panel :global(.kb-search__item-excerpt) {
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Pagefind wraps matched terms in <mark> tags — style with primary-container
+     (light teal) to stay on-brand instead of browser-default yellow. */
+  .kb-search__panel :global(mark) {
+    background: var(--color-primary-container);
+    color: var(--color-on-surface);
+    border-radius: 2px;
+    padding: 0 2px;
+    font-style: normal;
+  }
+</style>

@@ -9,6 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleOutline from '../../components/knowledge-base/ArticleOutline.astro';
 import { kbReadTime } from '../../utils/readTime';
+import { base } from '../../utils/base';
 
 export async function getStaticPaths() {
   const entries = await getCollection('knowledgeBase');
@@ -46,18 +47,26 @@ const categoryLabel = category.toUpperCase();
 
       <!-- Breadcrumb -->
       <nav class="kb-breadcrumb" aria-label="Breadcrumb">
-        <a class="kb-breadcrumb__link" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/knowledge-base`}>Knowledge Base</a>
+        <a class="kb-breadcrumb__link" href={`${base}/knowledge-base`}>Knowledge Base</a>
         <span class="kb-breadcrumb__sep" aria-hidden="true">›</span>
-        <a class="kb-breadcrumb__link" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/knowledge-base`}>{categoryLabel}</a>
+        <a class="kb-breadcrumb__link" href={`${base}/knowledge-base`}>{categoryLabel}</a>
         <span class="kb-breadcrumb__sep" aria-hidden="true">›</span>
         <span class="kb-breadcrumb__current">{title}</span>
       </nav>
 
-      <!-- Article content -->
-      <article class="kb-article">
+      <!-- Article content.
+           data-pagefind-body  — marks this element as the indexed content region.
+           Pages without this attribute are not indexed, so only KB articles
+           appear in search results (listing page, case studies, etc. are excluded).
+           data-pagefind-meta  — passes the category value as searchable metadata
+           so result rendering can display it without parsing the URL. -->
+      <article class="kb-article" data-pagefind-body data-pagefind-meta={`category:${category}`}>
 
-        <!-- Article header -->
-        <header class="kb-article__header">
+        <!-- Article header.
+             data-pagefind-ignore — skips level badge and date/readtime text from
+             the full-text index (they add noise), while still allowing the h1's
+             data-pagefind-meta="title" to be extracted as the result title. -->
+        <header class="kb-article__header" data-pagefind-ignore>
 
           <!-- Level badge -->
           <div class="kb-article__badge-row">
@@ -71,8 +80,9 @@ const categoryLabel = category.toUpperCase();
             </span>
           </div>
 
-          <!-- Title -->
-          <h1 class="kb-article__title">{title}</h1>
+          <!-- Title: data-pagefind-meta="title" overrides the <title> tag value
+               (which includes " — Marek Hronec") with the plain article title. -->
+          <h1 class="kb-article__title" data-pagefind-meta="title">{title}</h1>
 
           <!-- Meta: date + read time -->
           <div class="kb-article__meta">
@@ -102,11 +112,13 @@ const categoryLabel = category.toUpperCase();
         <!-- Related articles — same category, up to 2 -->
 
         {related.length > 0 && (
-          <section class="kb-related">
+          /* data-pagefind-ignore="all" — completely excludes related article
+             titles and excerpts from the index so they don't pollute results. */
+          <section class="kb-related" data-pagefind-ignore="all">
             <h3 class="kb-related__heading">Related Notes</h3>
             <div class="kb-related__grid">
               {related.map((article) => (
-                <a class="kb-related__card" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/knowledge-base/${article.id}`}>
+                <a class="kb-related__card" href={`${base}/knowledge-base/${article.id}`}>
                   <span class="kb-related__card-category">{article.data.category.toUpperCase()}</span>
                   <h4 class="kb-related__card-title">{article.data.title}</h4>
                   <p class="kb-related__card-excerpt">{article.data.excerpt}</p>
@@ -141,12 +153,12 @@ const categoryLabel = category.toUpperCase();
   }
 
   /* Hide sidebar on mobile — bottom sheet handles category nav */
-  .kb-page :global(.kb-sidebar) {
+  .kb-page :global(.kb-filter) {
     display: none;
   }
 
   @media (min-width: 768px) {
-    .kb-page :global(.kb-sidebar) {
+    .kb-page :global(.kb-filter) {
       display: block;
     }
   }
@@ -363,14 +375,19 @@ const categoryLabel = category.toUpperCase();
     color: var(--color-on-surface);
   }
 
-  /* Tables */
+  /* Tables — wrapped in .prose-table-scroll by script below */
+  .prose :global(.prose-table-scroll) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-container-lowest);
+  }
+
   .prose :global(table) {
     width: 100%;
     border-collapse: collapse;
     font-size: var(--text-body-md);
-    background-color: var(--color-surface-container-lowest);
-    border-radius: var(--radius-md);
-    overflow: hidden;
+    border-radius: 0;
   }
 
   .prose :global(thead) {
@@ -555,3 +572,12 @@ const categoryLabel = category.toUpperCase();
     color: var(--color-kb-text);
   }
 </style>
+
+<script>
+  document.querySelectorAll('.prose table').forEach(table => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'prose-table-scroll';
+    table.parentNode?.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+</script>

@@ -18,7 +18,6 @@
  * If you omit it, the `default` value is used automatically.
  */
 export const READ_SPEED = {
-  caseStudies: 200,
   knowledgeBase: {
     default:    130,
     azure:      120,
@@ -49,12 +48,3 @@ export function kbReadTime(body: string, category: string, override?: number): n
   return calcReadTime(body, wpm);
 }
 
-/**
- * Returns read time in minutes for a case study.
- * Uses the manual frontmatter value when present, otherwise calculates
- * from word count using READ_SPEED.caseStudies.
- */
-export function csReadTime(body: string, override?: number): number {
-  if (override !== undefined) return override;
-  return calcReadTime(body, READ_SPEED.caseStudies);
-}
