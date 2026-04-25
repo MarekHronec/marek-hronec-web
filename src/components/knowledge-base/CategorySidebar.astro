@@ -9,8 +9,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   <div class="kb-filter__sticky">
 
     <header class="kb-filter__header">
-      <p class="kb-filter__eyebrow">Knowledge Base</p>
-      <h2 class="kb-filter__title">Topics &amp; Categories</h2>
+      <h2 class="kb-filter__title">Filter Articles</h2>
     </header>
 
     <div class="kb-filter__top">
@@ -90,7 +89,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   <div class="kb-mobile-sheet" id="kb-mobile-sheet" role="dialog" aria-label="Filter articles">
     <div class="kb-mobile-sheet__handle"></div>
     <div class="kb-mobile-sheet__head">
-      <p class="kb-mobile-sheet__title">Topics &amp; Categories</p>
+      <p class="kb-mobile-sheet__title">Filter Articles</p>
       <button class="kb-mobile-sheet__close" id="kb-sheet-close" aria-label="Close filters">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -166,15 +165,6 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
     gap: var(--space-3);
   }
 
-  .kb-filter__eyebrow {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-on-surface-muted);
-  }
-
   .kb-filter__title {
     font-family: var(--font-display);
     font-size: var(--text-title-md);
@@ -223,13 +213,11 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: var(--color-on-surface-muted);
     background: transparent;
     cursor: pointer;
     text-align: left;
-    border-right: 3px solid transparent;
+    border-left: 3px solid transparent;
     transition:
       color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
@@ -243,7 +231,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   .kb-filter__btn[aria-pressed="true"] {
     color: var(--color-level-advanced-text);
     background-color: var(--color-level-advanced-bg);
-    border-right-color: var(--color-level-advanced-text);
+    border-left-color: var(--color-level-advanced-text);
   }
 
   .kb-filter__count {
@@ -275,13 +263,11 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: var(--color-on-surface-muted);
     background: transparent;
     cursor: pointer;
     text-align: left;
-    border-right: 3px solid transparent;
+    border-left: 3px solid transparent;
     transition:
       color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
@@ -295,7 +281,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   .kb-filter__all[aria-pressed="true"] {
     color: var(--color-level-advanced-text);
     background-color: var(--color-level-advanced-bg);
-    border-right-color: var(--color-level-advanced-text);
+    border-left-color: var(--color-level-advanced-text);
   }
 
   .kb-filter__all .kb-filter__count {
@@ -466,7 +452,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--color-kb-text-muted);
+    color: var(--color-on-surface);
   }
 
   .kb-mobile-sheet__top {
@@ -480,10 +466,8 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
     width: 100%;
     padding: var(--space-3) var(--space-5);
     font-family: var(--font-body);
-    font-size: var(--text-body-md);
+    font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
     color: var(--color-on-surface-muted);
     background: transparent;
     cursor: pointer;
@@ -509,14 +493,13 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
 
   /* Override desktop panel styles for mobile sheet buttons */
   .kb-mobile-sheet__btn {
-    border-right: none;
+    border-left: none;
     padding: var(--space-3) var(--space-5);
-    font-size: var(--text-body-md);
-    letter-spacing: 0.04em;
+    font-size: var(--text-label-md);
   }
 
   .kb-mobile-sheet__btn[aria-pressed="true"] {
-    border-right: none;
+    border-left: none;
   }
 
 </style>

@@ -59,7 +59,7 @@ const href = `${base}/knowledge-base/${slug}`;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    padding: var(--space-6);
+    padding: var(--space-5);
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-md);
     width: 100%;
@@ -146,8 +146,7 @@ const href = `${base}/knowledge-base/${slug}`;
     transition: color var(--duration-fast) var(--ease-standard);
   }
 
-  .article-card__link:hover {
+  .article-card:hover .article-card__link {
     color: var(--color-primary);
-    opacity: 1;
   }
 </style>

@@ -26,7 +26,7 @@
     <input
       class="kb-search__input"
       id="kb-search-input"
-      type="search"
+      type="text"
       placeholder="Search articles, topics, keywords…"
       autocomplete="off"
       spellcheck="false"
@@ -194,8 +194,8 @@
     transition: border-color var(--duration-fast) var(--ease-standard);
   }
 
-  /* Remove browser-native clear button — we render our own. */
-  .kb-search__input::-webkit-search-cancel-button {
+  /* Suppress Edge's native clear button on text inputs */
+  .kb-search__input::-ms-clear {
     display: none;
   }
 
@@ -206,6 +206,10 @@
 
   .kb-search__field:focus-within .kb-search__icon {
     color: var(--color-primary);
+  }
+
+  .kb-search__clear[hidden] {
+    display: none;
   }
 
   .kb-search__clear {
