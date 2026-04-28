@@ -68,7 +68,7 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <Header />
-    <main id="main-content">
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
     <Footer />
