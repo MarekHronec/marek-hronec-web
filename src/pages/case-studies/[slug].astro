@@ -137,10 +137,10 @@ const { Content } = await render(entry);
 
           <!-- At a Glance -->
           <div class="cs-sidebar-card">
-            <h3 class="cs-sidebar-card__heading">
+            <h2 class="cs-sidebar-card__heading">
               <ListText size={20} aria-hidden="true" />
               At a Glance
-            </h3>
+            </h2>
             <dl class="cs-glance">
               {focus && (
                 <div class="cs-glance__item">
@@ -154,10 +154,10 @@ const { Content } = await render(entry);
           <!-- Core Principles -->
           {principles && principles.length > 0 && (
             <div class="cs-sidebar-card">
-              <h3 class="cs-sidebar-card__heading">
+              <h2 class="cs-sidebar-card__heading">
                 <Shield size={20} aria-hidden="true" />
                 Core Principles
-              </h3>
+              </h2>
               <ul class="cs-principles" role="list">
                 {principles.map((p) => (
                   <li class="cs-principles__item">
@@ -174,10 +174,10 @@ const { Content } = await render(entry);
           <!-- Key Outcomes -->
           {outcomes && outcomes.length > 0 && (
             <div class="cs-sidebar-card">
-              <h3 class="cs-sidebar-card__heading">
+              <h2 class="cs-sidebar-card__heading">
                 <Activity size={20} aria-hidden="true" />
                 Key Outcomes
-              </h3>
+              </h2>
               <ul class="cs-outcomes" role="list">
                 {outcomes.map((o) => (
                   <li class="cs-outcomes__item">
@@ -191,10 +191,10 @@ const { Content } = await render(entry);
 
           <!-- Tags -->
           <div class="cs-sidebar-card">
-            <h3 class="cs-sidebar-card__heading">
+            <h2 class="cs-sidebar-card__heading">
               <Tag size={20} aria-hidden="true" />
               Tags
-            </h3>
+            </h2>
             <div class="cs-sidebar-tags">
               {tags.map((tag) => <TagBadge label={tag} />)}
             </div>

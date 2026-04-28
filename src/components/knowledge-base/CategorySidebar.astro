@@ -510,11 +510,21 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   const overlay = document.getElementById('kb-sheet-overlay') as HTMLElement | null;
   const closeBtn = document.getElementById('kb-sheet-close') as HTMLButtonElement | null;
 
+  const sheet = document.getElementById('kb-mobile-sheet');
+
+  function getFocusable(): HTMLElement[] {
+    if (!sheet) return [];
+    return Array.from(
+      sheet.querySelectorAll<HTMLElement>('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])')
+    );
+  }
+
   function openSheet() {
     overlay?.classList.add('kb-sheet-overlay--open');
     overlay?.removeAttribute('aria-hidden');
     trigger?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
   }
 
   function closeSheet() {
@@ -522,6 +532,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
     overlay?.setAttribute('aria-hidden', 'true');
     trigger?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    trigger?.focus();
   }
 
   trigger?.addEventListener('click', () =>
@@ -532,5 +543,21 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
 
   overlay?.addEventListener('click', (e) => {
     if (e.target === overlay) closeSheet();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay?.classList.contains('kb-sheet-overlay--open')) return;
+    if (e.key === 'Escape') { closeSheet(); return; }
+    if (e.key === 'Tab') {
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
   });
 </script>
