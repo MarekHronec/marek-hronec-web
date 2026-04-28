@@ -31,8 +31,9 @@ const {
   platform, focus, principles, outcomes,
 } = entry.data;
 
-const titleBefore = titleHighlight ? title.slice(0, title.indexOf(titleHighlight)) : title;
-const titleAfter  = titleHighlight ? title.slice(title.indexOf(titleHighlight) + (titleHighlight?.length ?? 0)) : '';
+const hasHighlight = !!titleHighlight && title.includes(titleHighlight);
+const titleBefore  = hasHighlight ? title.slice(0, title.indexOf(titleHighlight!)) : title;
+const titleAfter   = hasHighlight ? title.slice(title.indexOf(titleHighlight!) + titleHighlight!.length) : '';
 const { Content } = await render(entry);
 ---
 
@@ -41,17 +42,22 @@ const { Content } = await render(entry);
   <!-- ── Hero ─────────────────────────────────────────────────────── -->
   <section class="cs-hero">
     <div class="container">
-      <div class="cs-hero__grid">
 
-        <!-- Left: eyebrow, title, excerpt, meta grid, metric chips -->
+      <!-- Full-width: eyebrow + title -->
+      <div class="cs-hero__header">
+        <p class="cs-hero__eyebrow">Case Study {caseStudyNumber}</p>
+        <h1 class="cs-hero__title">
+          {hasHighlight
+            ? <>{titleBefore}<span class="cs-hero__title-accent">{titleHighlight}</span>{titleAfter}</>
+            : titleBefore
+          }
+        </h1>
+      </div>
+
+      <!-- Lower row: excerpt + meta cards + chips (left) | illustration (right) -->
+      <div class="cs-hero__lower">
+
         <div class="cs-hero__left">
-
-          <p class="cs-hero__eyebrow">Case Study {caseStudyNumber}</p>
-
-          <h1 class="cs-hero__title">
-            {titleBefore}<span class="cs-hero__title-accent">{titleHighlight}</span>{titleAfter}
-          </h1>
-
           {excerpt && <p class="cs-hero__excerpt">{excerpt}</p>}
 
           <!-- 2×2 meta grid -->
@@ -95,7 +101,7 @@ const { Content } = await render(entry);
 
         </div>
 
-        <!-- Right: illustration -->
+        <!-- Illustration -->
         {heroImage && (
           <div class="cs-hero__right">
             <div class="cs-hero__image-frame">
@@ -110,6 +116,7 @@ const { Content } = await render(entry);
         )}
 
       </div>
+
     </div>
   </section>
 
@@ -217,21 +224,29 @@ const { Content } = await render(entry);
     padding-block: var(--space-8) var(--space-6);
   }
 
-  .cs-hero__grid {
+  /* Full-width title block — identical rhythm to About / Credentials heroes */
+  .cs-hero__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-5);
+  }
+
+  /* Lower row: meta + chips left, image right */
+  .cs-hero__lower {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
   @media (min-width: 768px) {
-    .cs-hero__grid {
+    .cs-hero__lower {
       grid-template-columns: 1fr 1fr;
-      align-items: start;
+      align-items: stretch;
       gap: var(--space-8);
     }
   }
-
-  /* On mobile, image comes second (below left column) — source order handles this */
 
   .cs-hero__left {
     display: flex;
@@ -250,7 +265,7 @@ const { Content } = await render(entry);
 
   .cs-hero__title {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, var(--text-display-md));
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
@@ -262,7 +277,7 @@ const { Content } = await render(entry);
   }
 
   .cs-hero__excerpt {
-    font-size: var(--text-body-md);
+    font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
     max-width: 52ch;
@@ -351,15 +366,15 @@ const { Content } = await render(entry);
   /* ── Hero image ────────────────────────────────────────────────── */
   .cs-hero__right {
     display: flex;
-    align-items: flex-start;
   }
 
   .cs-hero__image-frame {
     width: 100%;
+    height: 100%;
+    min-height: 280px;
     background-color: var(--color-surface);
     border-radius: var(--radius-md);
     overflow: hidden;
-    aspect-ratio: 4 / 3;
   }
 
   .cs-hero__img {
@@ -372,7 +387,7 @@ const { Content } = await render(entry);
 
   /* ── Body: main + sidebar ──────────────────────────────────────── */
   .cs-body {
-    padding-block: var(--space-6) var(--space-10);
+    padding-block: var(--space-4) var(--space-10);
   }
 
   .cs-body__grid {
@@ -407,15 +422,25 @@ const { Content } = await render(entry);
     font-weight: var(--weight-bold);
     color: var(--color-on-surface);
     letter-spacing: var(--tracking-tight);
-    margin-top: var(--space-8);
+    margin-top: var(--space-5);
     display: flex;
     align-items: center;
     gap: var(--space-3);
   }
 
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
   .prose :global(h2 svg) {
     color: var(--color-primary);
     flex-shrink: 0;
+  }
+
+  .prose :global(h2.prose-role) {
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--space-2);
   }
 
   .prose :global(h3) {
@@ -455,7 +480,7 @@ const { Content } = await render(entry);
   }
 
   .prose :global(blockquote) {
-    border-left: 3px solid var(--color-primary);
+    border-left: 3px solid var(--color-quote-accent);
     background-color: var(--color-surface-container-low);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: var(--space-5) var(--space-6);

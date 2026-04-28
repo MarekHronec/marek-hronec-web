@@ -33,6 +33,11 @@
   --color-on-dark-muted: rgba(244, 241, 240, 0.65);
   --color-on-dark-dim:   rgba(244, 241, 240, 0.60);
 
+  /* Quote accent — muted steel blue, same tonal weight as --color-primary.
+     EXCLUSIVE USE: blockquote left-border only. Never use for links, CTAs,
+     headings, icons, or any other element. One hue, one meaning. */
+  --color-quote-accent: #2e5c7a;
+
   /* Secondary */
   --color-secondary-container: #e4e2e2;
   --color-on-secondary-container: #323232;
