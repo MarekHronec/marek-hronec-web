@@ -64,7 +64,7 @@ excerpt: ""
 | Field | Type | Required | Constraints | Description |
 |---|---|---|---|---|
 | `title` | string | Yes | — | Full article title as it appears in the card and article header |
-| `category` | enum | Yes | One of 8 values | Controls sidebar navigation and filtering. See taxonomy. |
+| `category` | enum | Yes | One of 9 values | Controls sidebar navigation and filtering. See taxonomy. |
 | `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. All tags shown on article card. Used for filter chip display and article detail header. |
 | `date` | Date | Yes | ISO 8601 string, coerced to Date | Publication date. Articles are sorted newest-first on the listing page. |
 | `readTime` | number | No | Integer, minutes | Estimated reading time. If omitted, calculated automatically at build time from word count. Displayed in the article card and article header. |
@@ -288,10 +288,21 @@ Two callout types are available. Because `.md` files cannot import Astro compone
 
 ### Case study section headings
 
-Case study bodies use inline HTML headings for the "The Problem" and "The Outcome" sections, because the detail page applies icon-bearing styles via CSS `:global(h2 svg)`:
+Three special headings in a case study body use inline HTML so the detail page can apply icon-bearing styles and the green "My Role" treatment via CSS `:global(h2 svg)` and `:global(h2.prose-role)`. Icons render at 30×30 (drawn on a 24×24 viewBox).
 
+**My Role** — teal underline via `class="prose-role"`:
 ```html
-<h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>The Problem</h2>
+<h2 class="prose-role"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>My Role</h2>
+```
+
+**The Problem** — info-circle icon:
+```html
+<h2><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>The Problem</h2>
+```
+
+**The Outcome** — check-circle icon:
+```html
+<h2><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>The Outcome</h2>
 ```
 
 Standard `##` Markdown headings work fine for all other sections within a case study.
@@ -459,11 +470,11 @@ Two files need to change:
 
 Find this line (it's near the top of the file):
 ```ts
-category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm']),
+category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm']),
 ```
 Add your new category name inside the brackets, comma-separated, in lowercase. Example:
 ```ts
-category: z.enum(['azure', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'ai']),
+category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'ai']),
 ```
 
 **File 2 — `src/components/knowledge-base/CategorySidebar.astro`**
@@ -538,7 +549,7 @@ Only one file should have `featured: true` at a time.
 
 Open the article's `.md` file and update the `category` field in the frontmatter to one of the valid values:
 ```
-azure | networking | identity | security | finops | gcp | devops | bpm
+azure | oci | networking | identity | security | finops | gcp | devops | bpm
 ```
 The article will automatically move to the new category in the sidebar. The file can stay in its current folder — the folder structure is just for organisation, the `category` field is what the site reads.
 

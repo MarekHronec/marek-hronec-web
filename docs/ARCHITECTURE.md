@@ -92,15 +92,29 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── ContactHero.astro
     │   │   ├── ContactChannels.astro
     │   │   └── ContactServices.astro
-    │   ├── icons/                # Standalone SVG icon components
+    │   ├── icons/                # Standalone SVG icon components (Lucide-based; BpmMerge is custom)
+    │   │   ├── Activity.astro
     │   │   ├── BadgeCheck.astro
     │   │   ├── BookOpen.astro
-    │   │   ├── BpmMerge.astro    # Custom icon — two nodes merging to one
+    │   │   ├── BpmMerge.astro    # Custom — two bezier-connected nodes converging to one output
+    │   │   ├── Briefcase.astro
+    │   │   ├── Building.astro
+    │   │   ├── CheckCircle.astro # Case study "The Outcome" heading icon
     │   │   ├── CircleCheck.astro
     │   │   ├── Cloud.astro
+    │   │   ├── Factory.astro
+    │   │   ├── FilterResetIcon.astro
+    │   │   ├── GridAppsIcon.astro
     │   │   ├── Info.astro
+    │   │   ├── InfoCircle.astro  # Case study "The Problem" heading icon
+    │   │   ├── Layers.astro
+    │   │   ├── ListText.astro
+    │   │   ├── Shield.astro
     │   │   ├── ShieldCheck.astro
+    │   │   ├── SortIcon.astro
+    │   │   ├── Tag.astro
     │   │   ├── Target.astro
+    │   │   ├── UserCircle.astro  # Case study "My Role" heading icon
     │   │   └── Workflow.astro
     │   ├── knowledge-base/
     │   │   ├── ArticleCard.astro
@@ -114,8 +128,8 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     ├── content/
     │   ├── case-studies/         # One .md per case study
     │   │   ├── effective-governance-public-sector.md
-    │   │   ├── refactoring-monolithic-identity.md
-    │   │   └── automated-compliance-engines.md
+    │   │   ├── legacy-bpm-migration-camunda.md
+    │   │   └── azure-finops-observability-optimization.md
     │   └── knowledge-base/       # Subdirectories map to categories
     │       ├── azure/
     │       │   ├── azure-landing-zones.md
@@ -140,7 +154,7 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   └── 404.astro
     ├── styles/
     │   ├── tokens.css            # All CSS custom properties — single source of truth
-    │   └── global.css            # Reset, base typography, layout utilities, focus styles
+    │   └── global.css            # Reset, base typography, layout utilities, focus styles; scroll-padding-top on html
     ├── utils/
     │   ├── base.ts               # BASE_URL normalisation — single import for all internal links
     │   └── readTime.ts           # Build-time read time calculation + per-category WPM config
@@ -172,17 +186,19 @@ BaseLayout.astro
 │   │   └── CtaBanner.astro
 │   │
 │   ├── case-studies/index.astro (/case-studies)
+│   │   ├── CaseStudyMetrics.astro    ← featured card metrics panel
 │   │   └── CaseStudyCard.astro (×n)
-│   │       ├── TagBadge.astro (shared, ×n)
-│   │       └── CaseStudyMetrics.astro
+│   │       └── TagBadge.astro (shared, ×n)
 │   │
 │   ├── case-studies/[slug].astro (/case-studies/:slug)
-│   │   └── CaseStudyMetrics.astro
+│   │   ├── TagBadge.astro (shared)
+│   │   └── [Building, Briefcase, Factory, Layers, ListText, Shield, Activity, Tag] (icons)
 │   │
 │   ├── knowledge-base/index.astro (/knowledge-base)
 │   │   ├── [inline <script>]  ← multi-select platform/topic filter, sort, URL state (?platforms=&topics=&sort=)
-│   │   ├── CategorySidebar.astro    ← filter panel (Platform + Topics groups); no icon imports
-│   │   │   └── [inline <script>]  ← mobile sheet open/close
+│   │   ├── CategorySidebar.astro    ← filter panel (Platform + Topics groups)
+│   │   │   ├── GridAppsIcon.astro (icon)
+│   │   │   └── [inline <script>]  ← mobile sheet: open/close, focus management, ESC, Tab trap
 │   │   └── ArticleCard.astro (×n)
 │   │       └── TagBadge.astro (shared, ×n)
 │   │
@@ -230,7 +246,7 @@ Content is managed through Astro Content Collections. Collection definitions and
 | Field | Type | Required | Description | Example |
 |---|---|---|---|---|
 | `title` | `string` | Yes | Article title | `"Azure Landing Zones: Scalable Cloud Foundations"` |
-| `category` | enum | Yes | One of 8 values (see taxonomy below) | `"azure"` |
+| `category` | enum | Yes | One of 9 values (see taxonomy below) | `"azure"` |
 | `tags` | `string[]` | Yes | Keyword tags for filtering | `["Azure", "IaC", "Governance"]` |
 | `date` | `Date` | Yes | Publication date (coerced from string) | `2025-01-08` |
 | `readTime` | `number` | No | Read time in minutes — auto-calculated from word count if omitted; manual value takes priority. Speed config in `src/utils/readTime.ts`. | `11` |
@@ -323,7 +339,7 @@ All CSS custom properties are defined in `src/styles/tokens.css` and imported gl
 | `--color-secondary-container` | `#e4e2e2` | Tag badges, inline code backgrounds |
 | `--color-outline-variant` | `rgba(50,50,50,0.15)` | Ghost borders (felt, not seen) |
 | `--color-warm-gray` | `rgba(179,178,177,1)` | Hairline dividers, arrows |
-| `--color-meta-label` | `rgba(123,122,122,1)` | Metadata label text |
+| `--color-meta-label` | `rgba(100,100,100,1)` | Metadata label text — raised for WCAG AA (ADR-021) |
 | `--color-cta-surface` | `#dce8e3` | CTA banner background |
 | `--color-on-cta` | `rgba(225,255,236,1)` | Text on primary-coloured banner |
 | `--glass-bg` | `rgba(252,249,248,0.80)` | Header and TOC glass surface |
@@ -332,7 +348,7 @@ All CSS custom properties are defined in `src/styles/tokens.css` and imported gl
 | `--color-on-dark-muted` | `rgba(244,241,240,0.65)` | Body text on inverse-surface (dark card) — WCAG AA 7.6:1 |
 | `--color-on-dark-dim` | `rgba(244,241,240,0.60)` | De-emphasised text on inverse-surface — WCAG AA 6.6:1 |
 | `--color-kb-text` | `rgba(113,113,122,1)` | KB chrome: sidebar labels, TOC links, nav items |
-| `--color-kb-text-muted` | `rgba(161,161,170,1)` | KB chrome: breadcrumbs, count labels, sub-items |
+| `--color-kb-text-muted` | `rgba(107,107,115,1)` | KB chrome: breadcrumbs, count labels, sub-items — raised for WCAG AA (ADR-021) |
 | `--color-level-beginner-bg/text` | mint green pair | Article level badge — beginner |
 | `--color-level-intermediate-bg/text` | warm yellow pair | Article level badge — intermediate |
 | `--color-level-advanced-bg/text` | light mint pair | Article level badge — advanced |
@@ -399,6 +415,10 @@ backdrop-filter: var(--glass-blur);     /* blur(24px) */
 
 This scope is deliberate. Applying glassmorphism broadly reduces its perceptual impact. Restricting it to structural chrome (nav) and navigation aids (TOC) makes it legible without becoming decorative.
 
+### Scroll offset
+
+The sticky header is approximately 4rem tall. `scroll-padding-top: 4.5rem` is set on the `html` element in `global.css` so that fragment-link navigation and programmatic focus do not land under the header — conformant with WCAG 2.4.11.
+
 ### Animation
 
 All transitions use a single easing function:
@@ -445,7 +465,7 @@ The `npm run build` script chains two commands: `astro build` (produces `dist/`)
 
 ## 9. Performance and Constraints
 
-**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the multi-select filter + sort + URL-state IIFE in `knowledge-base/index.astro` (KB listing only), the mobile sheet open/close script in `CategorySidebar.astro` (KB pages only), the expand/collapse handler in `ExperienceTimeline.astro`, and the `KBSearch.astro` inline script (KB listing only). There is no JavaScript framework, no hydration, no module graph.
+**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the multi-select filter + sort + URL-state IIFE in `knowledge-base/index.astro` (KB listing only), the mobile sheet script in `CategorySidebar.astro` (KB pages only — open/close, focus management, ESC key, Tab focus trap), the expand/collapse handler in `ExperienceTimeline.astro`, and the `KBSearch.astro` inline script (KB listing only). There is no JavaScript framework, no hydration, no module graph.
 
 **Pagefind search.** The Knowledge Base listing page includes a full-text search powered by [Pagefind](https://pagefind.app). At build time, `npx pagefind --site dist` crawls all pages carrying `data-pagefind-body` (only KB article detail pages) and outputs a static index to `dist/pagefind/`. At runtime, the ~25 KB Pagefind JS bundle is loaded lazily — only when the user first focuses the search input. Until that moment it contributes zero bytes to initial page load. Only KB article pages are indexed; the listing page, case studies, contact page, and credentials page are excluded. Searching during `npm run dev` is not functional because the index is only generated by `npm run build`.
 

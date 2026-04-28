@@ -155,6 +155,12 @@ import BadgeCheck from '../icons/BadgeCheck.astro';
 
 Always set `aria-hidden="true"` on decorative icons. If an icon is the sole content of an interactive element, provide an `aria-label` on the parent.
 
+### Accessibility conventions
+
+- Heading hierarchy must be unbroken within each landmark. An `<aside>` or `<article>` starts its own outline — use `<h2>` as the first heading inside a landmark, not `<h3>`, unless the landmark is nested inside a section that already has an `<h2>`.
+- All interactive dialogs must manage focus: move focus into the dialog on open, return it to the trigger on close, trap Tab within the dialog, and close on ESC.
+- When a visual column-label row is `aria-hidden`, the corresponding data cells must carry an `aria-label` that includes the column name, so screen readers get context alongside the value.
+
 ### Content queries
 
 Content collections are queried at the page level with `getCollection()`:

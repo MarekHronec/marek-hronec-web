@@ -475,3 +475,58 @@ The Knowledge Base listing page needs full-text search so users can find article
 
 **Consequences.**  
 Full-text search works with zero runtime dependency and zero server. The Pagefind bundle (~25 KB) is loaded only when the user focuses the search field — all other visitors pay nothing. Results include excerpts with matched terms highlighted in `<mark>` tags. The index is not available in `npm run dev` mode — developers must run `npm run build && npm run preview` to test search locally. The `is:inline` Astro script directive is required to bypass Vite/Rollup resolution of the `/pagefind/pagefind.js` path, which only exists as a build artifact.
+
+---
+
+## ADR-021: WCAG 2.2 AA — Token Contrast, Skip Link Target, Diagram Role
+
+**Status:** Accepted  
+**Date:** 2026-04-28
+
+**Context.**  
+A full-site WCAG 2.2 Level AA audit (ARC Toolkit + manual review) identified failures not caught by the earlier Lighthouse pass in ADR-015:
+1. `--color-meta-label` (`rgba(123,122,122,1)`) rendered at 4.05:1 on the warm surface — marginal fail below the required 4.5:1.
+2. `--color-kb-text-muted` (`rgba(161,161,170,1)`) — approximately 2.4:1 on the page surface; used for KB column headers and count labels.
+3. The skip link pointed at `<main id="main-content">` but the element lacked `tabindex="-1"`, making it non-programmatically focusable — the skip link had no effect for keyboard users.
+4. The featured case study diagram `<div>` carried `aria-label` but no `role`, so the accessible name was ignored — a `role="img"` requirement per ARIA spec.
+
+**Decision.** Four targeted fixes:
+1. `--color-meta-label` raised to `rgba(100,100,100,1)` — contrast on `#fcf9f8` is now ~5.4:1 (AA ✓)
+2. `--color-kb-text-muted` raised to `rgba(107,107,115,1)` — contrast now ~5.0:1 (AA ✓)
+3. `tabindex="-1"` added to `<main id="main-content">` in `BaseLayout.astro`
+4. `role="img"` added to the diagram `<div>` in `case-studies/index.astro`
+
+**Consequences.**  
+No visual change on any page — the colour shifts are imperceptible at these values. The skip link now correctly moves focus to the main content area. The diagram div's accessible name is now properly exposed to assistive technologies.
+
+---
+
+## ADR-022: WCAG 2.2 AA — Credentials Table Context, Heading Hierarchy, Scroll Offset, Focus Trap
+
+**Status:** Accepted  
+**Date:** 2026-04-28
+
+**Context.**  
+A structured WCAG 2.2 Level AA audit of the live site identified four issues beyond the contrast and structural failures addressed in ADR-015 and ADR-021:
+1. `/credentials` renders cert data in a CSS grid layout using `<li>` + `<span>` elements. The column label row carries `aria-hidden="true"` (correct, as it duplicates visual information). Screen readers received the data values without any column context, violating 1.3.1 (Info and Relationships) and 4.1.2 (Name, Role, Value).
+2. The case study detail `<aside>` sidebar contained `<h3>` headings with no `<h2>` ancestor in the same landmark — a hierarchy skip violating 2.4.6 (Headings and Labels).
+3. The sticky header (≈4rem) overlaps fragment navigation targets and programmatically focused elements, violating 2.4.11 (Focus Not Obscured, Minimum).
+4. The Knowledge Base mobile filter sheet carried `role="dialog"` and `aria-label` but had no focus management — focus did not move into the dialog on open, did not return to the trigger on close, Tab was not trapped, and ESC had no effect, violating 2.1.1 (Keyboard).
+
+**Options considered:**
+
+| Issue | Option A | Option B | Decision |
+|---|---|---|---|
+| Credentials column context | Convert to `<table>` element | Add `aria-label` to each data `<span>` | B — preserves the responsive CSS grid layout; avoids a structural rewrite |
+| Heading hierarchy | Add visually-hidden `<h2>` before `<h3>`s | Promote `<h3>` to `<h2>` | B — the aside has no `<h2>`, so `<h2>` is the correct level |
+| Sticky header offset | `scroll-padding-top` on `html` | JavaScript scroll adjustment | A — pure CSS, one line, no runtime cost |
+| Focus trap | Add to existing `openSheet`/`closeSheet` | Separate focus manager utility | A — inline, minimal, consistent with the zero-dependency approach |
+
+**Decision.** All four fixes applied:
+- `aria-label="Credential: ..."`, `aria-label="Issuer: ..."`, `aria-label="Issued: ..."` added to the three data spans in each cert row in `credentials.astro`
+- `<h3 class="cs-sidebar-card__heading">` → `<h2>` for all four sidebar headings in `[slug].astro`
+- `scroll-padding-top: 4.5rem` added to the `html` rule in `global.css`
+- `openSheet()` moves focus to `#kb-sheet-close`; `closeSheet()` returns focus to `#kb-mobile-trigger`; ESC listener and Tab focus trap added to `CategorySidebar.astro`
+
+**Consequences.**  
+No visual change on any page. Screen readers on the credentials page now receive column context alongside each data value. The case study sidebar heading structure is correct at `<h2>` level. Keyboard and focus navigation no longer lands under the sticky header. The mobile filter sheet is now a fully conformant ARIA dialog pattern: focus is managed, ESC works, and Tab does not escape the dialog while it is open.
