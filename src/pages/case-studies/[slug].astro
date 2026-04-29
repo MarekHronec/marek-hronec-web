@@ -50,7 +50,7 @@ const { Content } = await render(entry);
           {hasHighlight
             ? <>{titleBefore}<span class="cs-hero__title-accent">{titleHighlight}</span>{titleAfter}</>
             : titleBefore
-          }
+          }<span class="cs-hero__title-period">.</span>
         </h1>
       </div>
 
@@ -144,7 +144,6 @@ const { Content } = await render(entry);
             <dl class="cs-glance">
               {focus && (
                 <div class="cs-glance__item">
-                  <dt>Focus</dt>
                   <dd>{focus}</dd>
                 </div>
               )}
@@ -272,6 +271,10 @@ const { Content } = await render(entry);
     color: var(--color-on-surface);
   }
 
+  .cs-hero__title-period {
+    color: var(--color-meta-label);
+  }
+
   .cs-hero__title-accent {
     color: var(--color-primary);
   }
@@ -397,6 +400,10 @@ const { Content } = await render(entry);
     align-items: start;
   }
 
+  .cs-body__main {
+    min-width: 0;
+  }
+
   @media (min-width: 1024px) {
     .cs-body__grid {
       grid-template-columns: 1fr 260px;
@@ -438,8 +445,8 @@ const { Content } = await render(entry);
   }
 
   .prose :global(h2.prose-role) {
-    color: var(--color-primary);
-    border-bottom: 2px solid var(--color-primary);
+    color: var(--color-on-surface);
+    border-bottom: 2px solid var(--color-on-surface);
     padding-bottom: var(--space-2);
   }
 
@@ -560,7 +567,7 @@ const { Content } = await render(entry);
     font-weight: var(--weight-regular);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-primary);
+    color: var(--color-meta-label);
   }
 
   .cs-glance__item dd {
@@ -589,7 +596,7 @@ const { Content } = await render(entry);
   }
 
   .cs-principles__item svg {
-    color: var(--color-primary);
+    color: var(--color-on-surface);
     flex-shrink: 0;
     margin-top: 2px;
   }

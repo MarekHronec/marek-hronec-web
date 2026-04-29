@@ -149,8 +149,8 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
 
   .kb-filter__sticky {
     position: sticky;
-    top: 64px;
-    max-height: calc(100vh - 64px);
+    top: calc(4rem + 1px);
+    max-height: calc(100vh - calc(4rem + 1px));
     overflow-y: auto;
     padding: var(--space-6) 0;
     display: flex;
@@ -229,9 +229,9 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   }
 
   .kb-filter__btn[aria-pressed="true"] {
-    color: var(--color-level-advanced-text);
-    background-color: var(--color-level-advanced-bg);
-    border-left-color: var(--color-level-advanced-text);
+    color: var(--color-on-surface);
+    font-weight: var(--weight-bold);
+    border-left-color: var(--color-primary);
   }
 
   .kb-filter__count {
@@ -243,8 +243,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   }
 
   .kb-filter__btn[aria-pressed="true"] .kb-filter__count {
-    color: var(--color-level-advanced-text);
-    opacity: 0.75;
+    color: var(--color-on-surface-muted);
   }
 
   /* ── All Articles + Clear filters block ───────────────────────── */
@@ -279,9 +278,9 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   }
 
   .kb-filter__all[aria-pressed="true"] {
-    color: var(--color-level-advanced-text);
-    background-color: var(--color-level-advanced-bg);
-    border-left-color: var(--color-level-advanced-text);
+    color: var(--color-on-surface);
+    font-weight: var(--weight-bold);
+    border-left-color: var(--color-primary);
   }
 
   .kb-filter__all .kb-filter__count {
@@ -289,8 +288,7 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   }
 
   .kb-filter__all[aria-pressed="true"] .kb-filter__count {
-    color: var(--color-level-advanced-text);
-    opacity: 0.75;
+    color: var(--color-on-surface-muted);
   }
 
   /* ── Mobile bottom bar ──────────────────────────────────────────
@@ -483,8 +481,8 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
   }
 
   .kb-mobile-sheet__all[aria-pressed="true"] {
-    color: var(--color-level-advanced-text);
-    background-color: var(--color-level-advanced-bg);
+    color: var(--color-on-surface);
+    font-weight: var(--weight-bold);
   }
 
   .kb-mobile-sheet__all .kb-filter__count {

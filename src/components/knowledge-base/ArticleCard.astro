@@ -1,6 +1,7 @@
 ---
 import TagBadge from '../shared/TagBadge.astro';
 import { base } from '../../utils/base';
+import { sortTagsByPriority } from '../../utils/tagPriority';
 
 interface Props {
   slug: string;
@@ -13,35 +14,68 @@ interface Props {
   tags: string[];
 }
 
-const { slug, title, category, excerpt, date, readTime, level, tags } = Astro.props;
+const { slug, title, excerpt, date, readTime, level, tags } = Astro.props;
 
 const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[level];
 
-const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const MOBILE_MAX = 3;
+const DESKTOP_MAX = 5;
 
+// Level badge always first, then priority-sorted article tags
+const allDisplayTags = [levelLabel, ...sortTagsByPriority(tags)];
+
+// Server renders the mobile-conservative visible set to prevent flash
+const visibleTags   = allDisplayTags.slice(0, MOBILE_MAX);
+const hiddenTags    = allDisplayTags.slice(MOBILE_MAX);
+
+// Indices 0..(DESKTOP_MAX-MOBILE_MAX-1) of hiddenTags are desktop extras (shown in compact on desktop)
+const desktopRevealCount = Math.min(hiddenTags.length, DESKTOP_MAX - MOBILE_MAX);
+
+const mobileHiddenCount  = hiddenTags.length;
+const desktopHiddenCount = Math.max(0, allDisplayTags.length - DESKTOP_MAX);
+
+const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 const href = `${base}/knowledge-base/${slug}`;
 ---
 
 <article class="article-card">
 
-  <div class="article-card__header">
-    <p class="article-card__category">{category.toUpperCase()}</p>
-    <div class="article-card__meta">
-      <span>{dateStr}</span>
-      <span class="article-card__meta-dot" aria-hidden="true">·</span>
-      <span>{readTime} min read</span>
-    </div>
-  </div>
-
   <h2 class="article-card__title">{title}</h2>
+  <div class="article-card__meta">
+    <span>{dateStr}</span>
+    <span class="article-card__meta-dot" aria-hidden="true">·</span>
+    <span>{readTime} min read</span>
+  </div>
   <p class="article-card__excerpt">{excerpt}</p>
 
   <footer class="article-card__footer">
     <ul class="article-card__tags" role="list">
-      <li><TagBadge label={levelLabel} /></li>
-      {tags.map((tag) => (
+
+      {/* Always visible — first MOBILE_MAX tags */}
+      {visibleTags.map(tag => (
         <li><TagBadge label={tag} /></li>
       ))}
+
+      {/* Hidden tags — JS manages visibility based on viewport + expand state */}
+      {hiddenTags.map((tag, i) => (
+        <li class={`tag-hidden${i < desktopRevealCount ? ' tag-desktop' : ''}`}>
+          <TagBadge label={tag} />
+        </li>
+      ))}
+
+      {/* +N expand button — only rendered when there are hidden tags on mobile */}
+      {mobileHiddenCount > 0 && (
+        <li class="tag-more">
+          <button
+            class="tag-more-btn"
+            aria-expanded="false"
+            aria-label={`Show ${mobileHiddenCount} more tags`}
+            data-mobile-hidden={mobileHiddenCount}
+            data-desktop-hidden={desktopHiddenCount}
+          >+{mobileHiddenCount}</button>
+        </li>
+      )}
+
     </ul>
     <a class="article-card__link" href={href} aria-label={`Read article: ${title}`}>
       Read Article
@@ -71,21 +105,6 @@ const href = `${base}/knowledge-base/${slug}`;
     background-color: var(--color-surface-container);
   }
 
-  .article-card__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-4);
-  }
-
-  .article-card__category {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-primary);
-  }
-
   .article-card__meta {
     display: flex;
     align-items: center;
@@ -94,7 +113,6 @@ const href = `${base}/knowledge-base/${slug}`;
     font-size: var(--text-label-md);
     color: var(--color-kb-text-muted);
     white-space: nowrap;
-    flex-shrink: 0;
   }
 
   .article-card__meta-dot {
@@ -132,6 +150,41 @@ const href = `${base}/knowledge-base/${slug}`;
     flex-wrap: wrap;
   }
 
+  /* Hidden until JS reveals (desktop extras or expand) */
+  .tag-hidden {
+    display: none;
+  }
+
+  /* +N button — same visual as TagBadge but interactive */
+  .tag-more-btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-regular);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
+    background-color: var(--color-secondary-container);
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard);
+  }
+
+  .tag-more-btn:hover {
+    background-color: var(--color-surface-container);
+    color: var(--color-on-surface);
+  }
+
+  .tag-more-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   .article-card__link {
     display: inline-flex;
     align-items: center;
@@ -150,3 +203,70 @@ const href = `${base}/knowledge-base/${slug}`;
     color: var(--color-primary);
   }
 </style>
+
+<script>
+  (function initTagExpansion() {
+    const BREAKPOINT = 640;
+
+    function initCard(tagsEl: HTMLElement) {
+      const hiddenItems = Array.from(tagsEl.querySelectorAll<HTMLElement>('.tag-hidden, .tag-desktop'));
+      const moreItem    = tagsEl.querySelector<HTMLElement>('.tag-more');
+      const moreBtn     = tagsEl.querySelector<HTMLButtonElement>('.tag-more-btn');
+
+      if (!moreBtn || !moreItem) return;
+
+      // Assign to const so TypeScript trusts non-null inside closures
+      const btn  = moreBtn;
+      const more = moreItem;
+
+      const mobileHidden  = parseInt(btn.dataset.mobileHidden  ?? '0', 10);
+      const desktopHidden = parseInt(btn.dataset.desktopHidden ?? '0', 10);
+      let expanded = false;
+
+      function isMobile(): boolean {
+        return !window.matchMedia(`(min-width: ${BREAKPOINT}px)`).matches;
+      }
+
+      function applyCompact() {
+        const mobile      = isMobile();
+        const hiddenCount = mobile ? mobileHidden : desktopHidden;
+
+        hiddenItems.forEach(item => {
+          // Desktop extras (tag-desktop): visible on desktop compact, hidden on mobile compact
+          const isDesktopExtra = item.classList.contains('tag-desktop');
+          item.classList.toggle('tag-hidden', mobile || !isDesktopExtra);
+        });
+
+        if (hiddenCount > 0) {
+          more.hidden = false;
+          btn.textContent = `+${hiddenCount}`;
+          btn.setAttribute('aria-label', `Show ${hiddenCount} more tags`);
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          more.hidden = true;
+        }
+      }
+
+      function applyExpanded() {
+        hiddenItems.forEach(item => item.classList.remove('tag-hidden'));
+        more.hidden = false;
+        btn.textContent = '−';
+        btn.setAttribute('aria-label', 'Hide additional tags');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      btn.addEventListener('click', () => {
+        expanded = !expanded;
+        expanded ? applyExpanded() : applyCompact();
+      });
+
+      // Re-evaluate compact state on breakpoint change (without disturbing user-expanded state)
+      window.matchMedia(`(min-width: ${BREAKPOINT}px)`)
+        .addEventListener('change', () => { if (!expanded) applyCompact(); });
+
+      applyCompact();
+    }
+
+    document.querySelectorAll<HTMLElement>('.article-card__tags').forEach(initCard);
+  })();
+</script>

@@ -126,6 +126,8 @@ const totalCount = sorted.length;
           No articles match the selected filters.
         </p>
 
+        <nav class="kb-pagination" id="kb-pagination" aria-label="Article pagination" hidden></nav>
+
       </div>
     </div>
 
@@ -377,6 +379,126 @@ const totalCount = sorted.length;
     white-space: nowrap;
     border: 0;
   }
+
+  /* ── Pagination ─────────────────────────────────────────────────
+     All children are JS-created so they don't carry the Astro scoped
+     data attribute — :global() is required for every rule here.
+  ─────────────────────────────────────────────────────────────── */
+  :global(.kb-pagination) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding-top: var(--space-8);
+  }
+
+  /* Prev / Next */
+  :global(.kb-page-nav) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 2rem;
+    padding: 0 var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface-muted);
+    background: transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  :global(.kb-page-nav:hover:not(:disabled)) {
+    color: var(--color-on-surface);
+  }
+
+  :global(.kb-page-nav:disabled) {
+    opacity: 0.25;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  :global(.kb-page-nav:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Page number buttons container */
+  :global(.kb-pagination__pages) {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  /* Individual page number */
+  :global(.kb-page-num) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 var(--space-1);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    color: var(--color-on-surface-muted);
+    background: transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  :global(.kb-page-num:hover) {
+    color: var(--color-on-surface);
+    background: var(--color-surface-container-low);
+  }
+
+  :global(.kb-page-num[aria-current="page"]) {
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    background: var(--color-surface-container);
+  }
+
+  :global(.kb-page-num:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Ellipsis */
+  :global(.kb-page-ellipsis) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Mobile compact: "2 / 5" */
+  :global(.kb-pagination__compact) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+    letter-spacing: 0.04em;
+  }
+
+  @media (min-width: 480px) {
+    :global(.kb-pagination__compact) { display: none; }
+  }
+
+  @media (max-width: 479px) {
+    :global(.kb-pagination__pages) { display: none; }
+  }
 </style>
 
 <script>
@@ -392,10 +514,14 @@ const totalCount = sorted.length;
       },
     };
 
+    /* ── Constants ──────────────────────────────────────────────── */
+    const PAGE_SIZE = 15;
+
     /* ── State ──────────────────────────────────────────────────── */
     const activePlatforms = new Set<string>();
     const activeTopics = new Set<string>();
     let activeSort = 'latest';
+    let currentPage = 1;
 
     /* ── DOM refs ───────────────────────────────────────────────── */
     const grid = document.getElementById('kb-grid');
@@ -409,6 +535,7 @@ const totalCount = sorted.length;
     const sortEl = document.getElementById('kb-sort') as HTMLSelectElement | null;
     const emptyEl = document.getElementById('kb-filter-empty');
     const mobileBadge = document.getElementById('kb-mobile-badge');
+    const paginationEl = document.getElementById('kb-pagination') as HTMLElement | null;
 
     /* All article wrappers — order matches server-rendered (newest first) */
     const wrappers = Array.from(
@@ -421,6 +548,7 @@ const totalCount = sorted.length;
     (params.get('topics') ?? '').split(',').filter(Boolean).forEach(v => activeTopics.add(v));
     activeSort = params.get('sort') ?? 'latest';
     if (sortEl) sortEl.value = activeSort;
+    currentPage = parseInt(params.get('page') ?? '1', 10) || 1;
 
     /* ── Helpers ────────────────────────────────────────────────── */
     function getPlatforms(w: HTMLElement): string[] {
@@ -457,6 +585,113 @@ const totalCount = sorted.length;
       return (b.dataset.date ?? '').localeCompare(a.dataset.date ?? ''); /* latest (default) */
     }
 
+    /* ── Scroll helper ──────────────────────────────────────────── */
+    function scrollToArticles(): void {
+      const toolbar = document.querySelector<HTMLElement>('.kb-toolbar');
+      if (toolbar) {
+        toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    /* ── Page range ─────────────────────────────────────────────── */
+    function getPageRange(current: number, total: number): (number | '...')[] {
+      if (total <= 7) {
+        return Array.from({ length: total }, (_, i) => i + 1);
+      }
+
+      const rangeSet = new Set<number>();
+      rangeSet.add(1);
+      rangeSet.add(total);
+      for (let i = current - 1; i <= current + 1; i++) {
+        if (i >= 1 && i <= total) rangeSet.add(i);
+      }
+
+      const sorted = Array.from(rangeSet).sort((a, b) => a - b);
+      const result: (number | '...')[] = [];
+      for (let i = 0; i < sorted.length; i++) {
+        if (i > 0 && sorted[i] - sorted[i - 1] > 1) {
+          result.push('...');
+        }
+        result.push(sorted[i]);
+      }
+      return result;
+    }
+
+    /* ── Render pagination ──────────────────────────────────────── */
+    function renderPagination(totalPages: number, current: number): void {
+      if (!paginationEl) return;
+
+      if (totalPages <= 1) {
+        paginationEl.hidden = true;
+        paginationEl.innerHTML = '';
+        return;
+      }
+
+      paginationEl.hidden = false;
+      paginationEl.innerHTML = '';
+
+      /* Prev button */
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'kb-page-nav';
+      prevBtn.setAttribute('aria-label', 'Go to previous page');
+      prevBtn.disabled = current === 1;
+      prevBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Prev`;
+      prevBtn.addEventListener('click', () => {
+        currentPage = current - 1;
+        apply();
+        scrollToArticles();
+      });
+      paginationEl.appendChild(prevBtn);
+
+      /* Compact "X / Y" for small screens */
+      const compactSpan = document.createElement('span');
+      compactSpan.className = 'kb-pagination__compact';
+      compactSpan.setAttribute('aria-hidden', 'true');
+      compactSpan.textContent = `${current} / ${totalPages}`;
+      paginationEl.appendChild(compactSpan);
+
+      /* Pages */
+      const pagesDiv = document.createElement('div');
+      pagesDiv.className = 'kb-pagination__pages';
+
+      getPageRange(current, totalPages).forEach(item => {
+        if (item === '...') {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'kb-page-ellipsis';
+          ellipsis.setAttribute('aria-hidden', 'true');
+          ellipsis.textContent = '…';
+          pagesDiv.appendChild(ellipsis);
+        } else {
+          const pageBtn = document.createElement('button');
+          pageBtn.className = 'kb-page-num';
+          pageBtn.setAttribute('aria-label', `Go to page ${item}`);
+          if (item === current) pageBtn.setAttribute('aria-current', 'page');
+          pageBtn.textContent = String(item);
+          pageBtn.addEventListener('click', () => {
+            currentPage = item as number;
+            apply();
+            scrollToArticles();
+          });
+          pagesDiv.appendChild(pageBtn);
+        }
+      });
+
+      paginationEl.appendChild(pagesDiv);
+
+      /* Next button */
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'kb-page-nav';
+      nextBtn.setAttribute('aria-label', 'Go to next page');
+      nextBtn.disabled = current === totalPages;
+      nextBtn.innerHTML = `Next <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      nextBtn.addEventListener('click', () => {
+        currentPage = current + 1;
+        apply();
+        scrollToArticles();
+      });
+      paginationEl.appendChild(nextBtn);
+    }
+
     /* ── Apply filter + sort ────────────────────────────────────── */
     function apply() {
       const visible = wrappers.filter(matchesFilter);
@@ -464,12 +699,18 @@ const totalCount = sorted.length;
 
       visible.sort(sortFn);
 
+      /* Pagination calculations */
+      const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+      const startIdx = (currentPage - 1) * PAGE_SIZE;
+      const pageSlice = new Set(visible.slice(startIdx, startIdx + PAGE_SIZE));
+
       /* Re-order DOM: visible (sorted) first, hidden last */
       if (grid) {
         [...visible, ...hidden].forEach(w => grid.appendChild(w));
       }
 
-      visible.forEach(w => (w.style.display = ''));
+      visible.forEach(w => { w.style.display = pageSlice.has(w) ? '' : 'none'; });
       hidden.forEach(w  => (w.style.display = 'none'));
 
       /* Article count */
@@ -508,6 +749,9 @@ const totalCount = sorted.length;
       /* Chips */
       updateChips();
 
+      /* Pagination */
+      renderPagination(totalPages, currentPage);
+
       /* URL state */
       updateURL();
 
@@ -534,6 +778,7 @@ const totalCount = sorted.length;
         clearAll.addEventListener('click', () => {
           activePlatforms.clear();
           activeTopics.clear();
+          currentPage = 1;
           apply();
         });
         chipsEl.appendChild(clearAll);
@@ -548,6 +793,7 @@ const totalCount = sorted.length;
         btn.addEventListener('click', () => {
           if (group === 'platform') activePlatforms.delete(value);
           else activeTopics.delete(value);
+          currentPage = 1;
           apply();
         });
         chipsEl.appendChild(btn);
@@ -561,6 +807,7 @@ const totalCount = sorted.length;
       if (activePlatforms.size > 0) p.set('platforms', [...activePlatforms].join(','));
       if (activeTopics.size > 0)    p.set('topics',    [...activeTopics].join(','));
       if (activeSort !== 'latest')  p.set('sort',      activeSort);
+      if (currentPage > 1)          p.set('page',      String(currentPage));
       const qs = p.toString();
       history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
     }
@@ -575,6 +822,7 @@ const totalCount = sorted.length;
         } else {
           activeTopics.has(value) ? activeTopics.delete(value) : activeTopics.add(value);
         }
+        currentPage = 1;
         apply();
       });
     });
@@ -583,12 +831,14 @@ const totalCount = sorted.length;
       btn?.addEventListener('click', () => {
         activePlatforms.clear();
         activeTopics.clear();
+        currentPage = 1;
         apply();
       });
     });
 
     sortEl?.addEventListener('change', () => {
       activeSort = sortEl.value;
+      currentPage = 1;
       apply();
     });
 
