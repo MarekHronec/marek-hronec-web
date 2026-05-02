@@ -1,7 +1,7 @@
 ---
 title: "How to Learn Azure and OCI Without Chasing Expiring Certifications"
 category: multicloud
-tags: ["Azure", "OCI", "Learning", "Certifications", "Skills", "Training"]
+tags: ["Azure", "OCI", "Learning", "Certifications", "Training"]
 date: 2026-04-30
 readTime: 11
 level: beginner

@@ -1,7 +1,7 @@
 ---
 title: "Shared Responsibility — For People Who Stopped Believing the Marketing"
 category: multicloud
-tags: ["Azure", "OCI", "Security", "Shared Responsibility", "Compliance", "Reliability"]
+tags: ["Azure", "OCI", "Security", "Shared Responsibility", "Compliance"]
 date: 2026-04-30
 readTime: 12
 level: beginner

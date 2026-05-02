@@ -1,7 +1,7 @@
 ---
 title: "Hub-and-Spoke, Virtual WAN, and DRG — Three Topology Choices, Two Clouds, One Conversation"
 category: networking
-tags: ["Azure", "OCI", "Networking", "Hub-Spoke", "Virtual WAN", "DRG", "Topology"]
+tags: ["Azure", "OCI", "Networking", "Hub-Spoke", "Virtual WAN"]
 date: 2026-04-30
 readTime: 13
 level: intermediate

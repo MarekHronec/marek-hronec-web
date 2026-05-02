@@ -1,7 +1,7 @@
 ---
 title: "Hybrid Connectivity — ExpressRoute, FastConnect, VPN, and the Reality Behind the Glossy Diagrams"
 category: networking
-tags: ["Azure", "OCI", "Networking", "ExpressRoute", "FastConnect", "VPN", "Hybrid"]
+tags: ["Azure", "OCI", "Networking", "ExpressRoute", "FastConnect"]
 date: 2026-04-30
 readTime: 12
 level: intermediate

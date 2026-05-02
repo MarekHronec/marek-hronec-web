@@ -1,7 +1,7 @@
 ---
 title: "IaaS, PaaS, and SaaS Without the Marketing Layer"
 category: multicloud
-tags: ["IaaS", "PaaS", "SaaS", "Vendor Lock-in", "Cloud Adoption", "Azure", "OCI"]
+tags: ["Azure", "OCI", "IaaS", "PaaS", "SaaS"]
 date: 2026-04-30
 readTime: 12
 level: intermediate

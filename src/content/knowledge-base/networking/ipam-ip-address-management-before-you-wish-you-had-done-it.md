@@ -1,7 +1,7 @@
 ---
 title: "IPAM — IP Address Management Before You Wish You Had Done It"
 category: networking
-tags: ["Azure", "OCI", "Networking", "IPAM", "VNet", "VCN", "CIDR"]
+tags: ["Azure", "OCI", "Networking", "IPAM", "CIDR"]
 date: 2026-04-30
 readTime: 11
 level: intermediate

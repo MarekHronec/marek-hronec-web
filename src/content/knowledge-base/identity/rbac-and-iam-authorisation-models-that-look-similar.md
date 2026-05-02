@@ -1,7 +1,7 @@
 ---
 title: "RBAC and IAM — Authorisation Models That Look Similar and Are Not"
 category: identity
-tags: ["Azure", "OCI", "RBAC", "IAM", "Identity", "Security", "Least Privilege"]
+tags: ["Azure", "OCI", "RBAC", "IAM", "Least Privilege"]
 date: 2026-04-30
 readTime: 13
 level: intermediate

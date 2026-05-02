@@ -1,7 +1,7 @@
 ---
 title: "Address Plans — Designing IP Space for Three Clouds and a Future You Cannot See"
 category: networking
-tags: ["Azure", "OCI", "Networking", "Address Planning", "CIDR", "Architecture"]
+tags: ["Azure", "OCI", "Networking", "Address Planning", "CIDR"]
 date: 2026-04-30
 readTime: 15
 level: intermediate

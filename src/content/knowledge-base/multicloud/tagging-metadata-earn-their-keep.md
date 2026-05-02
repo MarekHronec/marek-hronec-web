@@ -1,7 +1,7 @@
 ---
 title: "Tagging and Metadata That Actually Earn Their Keep"
 category: multicloud
-tags: ["Azure", "OCI", "Tagging", "FinOps", "Governance", "Cost Allocation"]
+tags: ["Azure", "OCI", "Tagging", "FinOps", "Governance"]
 date: 2026-04-30
 readTime: 12
 level: beginner

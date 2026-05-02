@@ -1,7 +1,7 @@
 ---
 title: "Cloud Support — What You Are Actually Paying For"
 category: finops
-tags: ["Azure", "OCI", "Support", "Operations", "Incident Response"]
+tags: ["Azure", "OCI", "Support", "SLA", "Operations"]
 date: 2026-04-30
 readTime: 14
 level: intermediate

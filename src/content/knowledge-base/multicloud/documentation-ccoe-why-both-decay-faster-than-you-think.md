@@ -1,7 +1,7 @@
 ---
 title: "Documentation, the CCoE, and Why Both Decay Faster Than You Think"
 category: multicloud
-tags: ["Azure", "OCI", "Documentation", "CCoE", "Cloud Center of Excellence", "Knowledge Management"]
+tags: ["Azure", "OCI", "Documentation", "CCoE", "Knowledge Management"]
 date: 2026-04-30
 readTime: 11
 level: intermediate

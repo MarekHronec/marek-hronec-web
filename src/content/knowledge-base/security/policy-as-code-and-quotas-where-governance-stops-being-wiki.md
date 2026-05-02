@@ -1,7 +1,7 @@
 ---
 title: "Policy as Code and Quotas — Where Governance Stops Being a Wiki Page"
 category: security
-tags: ["Azure", "OCI", "Policy as Code", "Governance", "EPAC", "Quotas", "Compliance"]
+tags: ["Azure", "OCI", "Policy as Code", "Governance", "Compliance"]
 date: 2026-04-30
 readTime: 13
 level: intermediate

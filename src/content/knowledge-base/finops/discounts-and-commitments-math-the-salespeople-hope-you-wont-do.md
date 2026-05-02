@@ -1,7 +1,7 @@
 ---
 title: "Discounts and Commitments — The Math the Salespeople Hope You Will Not Do"
 category: finops
-tags: ["Azure", "OCI", "FinOps", "Reservations", "Savings Plans", "Universal Credits", "Cost Optimization"]
+tags: ["Azure", "OCI", "FinOps", "Reservations", "Cost Optimization"]
 date: 2026-04-30
 readTime: 12
 level: intermediate

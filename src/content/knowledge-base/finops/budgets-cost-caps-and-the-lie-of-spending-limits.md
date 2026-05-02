@@ -1,7 +1,7 @@
 ---
 title: "Budgets, Cost Caps, and the Illusion of 'Spending Limits'"
 category: finops
-tags: ["Azure", "OCI", "FinOps", "Budgets", "Cost Management", "Cost Control"]
+tags: ["Azure", "OCI", "FinOps", "Budgets", "Cost Management"]
 date: 2026-04-30
 readTime: 13
 level: intermediate

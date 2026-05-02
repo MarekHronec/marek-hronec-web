@@ -1,7 +1,7 @@
 ---
 title: "GitOps at Scale with Argo CD and Multi-Cluster Kubernetes"
 category: devops
-tags: ["GitOps", "Argo CD", "Kubernetes", "CI/CD", "Helm"]
+tags: ["GitOps", "Argo CD", "Kubernetes", "CI/CD", "Progressive Delivery"]
 date: 2024-11-15
 readTime: 9
 level: intermediate
@@ -94,7 +94,7 @@ spec:
 
 Argo CD's health status surfaces drift in real time. Integrate with your alerting stack by exposing the `argocd_app_sync_status` Prometheus metric and alerting on `OutOfSync` states persisting beyond your SLA threshold.
 
-## Cross-Platform Factor
+## Multicloud factor
 
 Argo CD is not the only GitOps implementation, and the platform context determines which tool fits best.
 

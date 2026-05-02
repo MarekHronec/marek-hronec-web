@@ -2,12 +2,33 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategorySidebar from '../../components/knowledge-base/CategorySidebar.astro';
 import ArticleCard from '../../components/knowledge-base/ArticleCard.astro';
+import KnowledgeCanvas from '../../components/knowledge-base/KnowledgeCanvas.astro';
 import SortIcon from '../../components/icons/SortIcon.astro';
 import KBSearch from '../../components/knowledge-base/KBSearch.astro';
 import { getCollection } from 'astro:content';
 import { kbReadTime } from '../../utils/readTime';
+import { edges, validateEdges } from '../../data/knowledge-graph';
+import type { CanvasNode } from '../../scripts/canvas';
 
 const articles = await getCollection('knowledgeBase');
+
+// ── Build-time graph validation ───────────────────────────────────────────
+// Throws during `npm run build` if any edge references a slug that does not exist.
+const allSlugs = new Set(articles.map(a => a.id));
+validateEdges(allSlugs);
+
+// ── Canvas node data (exclude BPM — separate canvas planned) ─────────────
+const canvasNodes: CanvasNode[] = articles
+  .filter(a => a.data.category !== 'bpm')
+  .map(a => ({
+    id: a.id,
+    label: a.data.title,
+    category: a.data.category,
+    level: a.data.level,
+    excerpt: a.data.excerpt,
+    url: `/knowledge-base/${a.id}`,
+    tags: a.data.tags,
+  }));
 
 /* Sort newest first (default) */
 const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -71,13 +92,33 @@ const totalCount = sorted.length;
         <!-- Full-text search (Pagefind — index generated at build time) -->
         <KBSearch />
 
-        <!-- Toolbar: article count + active filter chips + sort -->
+        <!-- Toolbar: article count + active filter chips + view toggle + sort -->
         <div class="kb-toolbar">
           <p class="kb-toolbar__count">
             <span id="kb-article-count">{totalCount}</span>
             <span id="kb-article-count-label">{totalCount === 1 ? 'article' : 'articles'}</span>
           </p>
           <div class="kb-toolbar__chips" id="kb-chips" hidden></div>
+
+          <!-- View toggle — desktop only (hidden on mobile via CSS) -->
+          <div class="kb-view-toggle" aria-label="View mode" role="group">
+            <button id="kb-view-list" class="kb-view-toggle__btn kb-view-toggle__btn--active" aria-pressed="true">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M1 2.5h12M1 7h12M1 11.5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              List View
+            </button>
+            <button id="kb-view-map" class="kb-view-toggle__btn" aria-pressed="false">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="4" r="2" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="3" cy="12" r="2" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="13" cy="12" r="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 6v2M6.3 10.7L4.4 10M9.7 10.7l1.9-.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              Canvas View
+            </button>
+          </div>
+
           <div class="kb-toolbar__sort">
             <SortIcon size={14} class="kb-toolbar__sort-icon" aria-hidden="true" />
             <div class="kb-sort-wrap">
@@ -94,40 +135,47 @@ const totalCount = sorted.length;
           </div>
         </div>
 
-        <!-- Article list -->
-        {sorted.length > 0 ? (
-          <div class="kb-list" id="kb-grid">
-            {sorted.map((article) => (
-              <div
-                class="kb-card-wrapper"
-                data-platforms={getArticlePlatforms(article)}
-                data-topics={getArticleTopics(article)}
-                data-level={article.data.level}
-                data-date={article.data.date.toISOString()}
-                data-title={article.data.title}
-              >
-                <ArticleCard
-                  slug={article.id}
-                  title={article.data.title}
-                  category={article.data.category}
-                  excerpt={article.data.excerpt}
-                  date={article.data.date}
-                  readTime={kbReadTime(article.body ?? '', article.data.category, article.data.readTime)}
-                  level={article.data.level}
-                  tags={article.data.tags}
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p class="kb-empty">No articles published yet.</p>
-        )}
+        <!-- List view — hidden as a unit when map view is active -->
+        <div id="kb-list-body">
 
-        <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" hidden>
-          No articles match the selected filters.
-        </p>
+          {sorted.length > 0 ? (
+            <div class="kb-list" id="kb-grid">
+              {sorted.map((article) => (
+                <div
+                  class="kb-card-wrapper"
+                  data-platforms={getArticlePlatforms(article)}
+                  data-topics={getArticleTopics(article)}
+                  data-level={article.data.level}
+                  data-date={article.data.date.toISOString()}
+                  data-title={article.data.title}
+                >
+                  <ArticleCard
+                    slug={article.id}
+                    title={article.data.title}
+                    category={article.data.category}
+                    excerpt={article.data.excerpt}
+                    date={article.data.date}
+                    readTime={kbReadTime(article.body ?? '', article.data.category, article.data.readTime)}
+                    level={article.data.level}
+                    tags={article.data.tags}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p class="kb-empty">No articles published yet.</p>
+          )}
 
-        <nav class="kb-pagination" id="kb-pagination" aria-label="Article pagination" hidden></nav>
+          <p class="kb-empty kb-empty--filtered" id="kb-filter-empty" hidden>
+            No articles match the selected filters.
+          </p>
+
+          <nav class="kb-pagination" id="kb-pagination" aria-label="Article pagination" hidden></nav>
+
+        </div>
+
+        <!-- Learning Map canvas — shown when user switches to map view, replaces list body -->
+        <KnowledgeCanvas nodes={canvasNodes} edges={edges} />
 
       </div>
     </div>
@@ -255,8 +303,54 @@ const totalCount = sorted.length;
     display: none;
   }
 
-  .kb-toolbar__sort {
+  /* ── View toggle (desktop only) ──────────────────────────────────── */
+  .kb-view-toggle {
+    display: none; /* hidden on mobile — canvas view not available */
+    align-items: center;
+    gap: 2px;
     margin-left: auto;
+    flex-shrink: 0;
+    background: var(--color-surface-container);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .kb-view-toggle {
+      display: flex;
+    }
+  }
+
+  .kb-view-toggle__btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 28px;
+    padding: 0 var(--space-3);
+    border-radius: calc(var(--radius-sm) - 2px);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-view-toggle__btn:hover {
+    color: var(--color-on-surface);
+  }
+
+  .kb-view-toggle__btn--active {
+    background: var(--color-surface-container-lowest);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .kb-toolbar__sort {
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -793,5 +887,55 @@ const totalCount = sorted.length;
 
     /* ── Initial render ─────────────────────────────────────────── */
     apply();
+  })();
+</script>
+
+<script>
+  /* ── View toggle: List ↔ Map ─────────────────────────────────────────────
+     Toggles #kb-list-body (single container) vs #kb-canvas-wrapper.
+     Persists in sessionStorage. Canvas initialises lazily on first activation.
+  ──────────────────────────────────────────────────────────────────────── */
+  (function () {
+    const SESSION_KEY = 'kb-view';
+
+    const listBtn    = document.getElementById('kb-view-list')      as HTMLButtonElement | null;
+    const mapBtn     = document.getElementById('kb-view-map')       as HTMLButtonElement | null;
+    const listBody   = document.getElementById('kb-list-body')      as HTMLElement | null;
+    const canvasWrap = document.getElementById('kb-canvas-wrapper') as HTMLElement | null;
+
+    function setToggleState(view: 'list' | 'map') {
+      const isMap = view === 'map';
+      listBtn?.setAttribute('aria-pressed', isMap ? 'false' : 'true');
+      listBtn?.classList.toggle('kb-view-toggle__btn--active', !isMap);
+      mapBtn?.setAttribute('aria-pressed', isMap ? 'true' : 'false');
+      mapBtn?.classList.toggle('kb-view-toggle__btn--active', isMap);
+    }
+
+    function activateList() {
+      if (listBody)   listBody.hidden   = false;
+      if (canvasWrap) canvasWrap.hidden = true;
+      setToggleState('list');
+      sessionStorage.setItem(SESSION_KEY, 'list');
+    }
+
+    function activateMap() {
+      if (listBody)   listBody.hidden   = true;
+      if (canvasWrap) {
+        canvasWrap.hidden = false;
+        // Fire once — KnowledgeCanvas.astro listens with { once: true }
+        if (!canvasWrap.dataset.initialised) {
+          canvasWrap.dispatchEvent(new CustomEvent('kb:canvas-activate'));
+          canvasWrap.dataset.initialised = '1';
+        }
+      }
+      setToggleState('map');
+      sessionStorage.setItem(SESSION_KEY, 'map');
+    }
+
+    listBtn?.addEventListener('click', activateList);
+    mapBtn?.addEventListener('click', activateMap);
+
+    // Restore previous view on page load
+    if (sessionStorage.getItem(SESSION_KEY) === 'map') activateMap();
   })();
 </script>

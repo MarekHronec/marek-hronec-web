@@ -1,7 +1,7 @@
 ---
 title: "Status Pages, Service Health, and the Things They Will Not Show You"
 category: devops
-tags: ["Azure", "OCI", "Service Health", "Operations", "Incident Response", "Observability"]
+tags: ["Azure", "OCI", "Service Health", "Incident Response", "Observability"]
 date: 2026-04-30
 readTime: 9
 level: beginner

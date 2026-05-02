@@ -1,7 +1,7 @@
 ---
 title: "Regions, Zones, Availability Domains — Where Your Data Actually Lives"
 category: multicloud
-tags: ["Azure", "OCI", "Regions", "Availability Zones", "Data Residency", "Resilience"]
+tags: ["Azure", "OCI", "Regions", "Availability Zones", "Data Residency"]
 date: 2026-04-30
 readTime: 13
 level: beginner

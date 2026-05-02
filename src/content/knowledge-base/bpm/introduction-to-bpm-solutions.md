@@ -1,7 +1,7 @@
 ---
 title: "Introduction to BPM Solutions: Camunda, Activiti and Kogito"
 category: bpm
-tags: ["BPM", "Camunda", "Activiti", "Kogito", "BPMN", "Process Automation"]
+tags: ["BPM", "BPMN", "Camunda", "Activiti", "Kogito"]
 date: 2025-03-12
 updated: 2026-05-02
 readTime: 10

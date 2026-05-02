@@ -1,7 +1,7 @@
 ---
 title: "Tenant, Subscription, Management Group, Compartment — and What Actually Owns the Bill"
 category: multicloud
-tags: ["Azure", "OCI", "Governance", "Landing Zones", "Billing", "Tenancy"]
+tags: ["Azure", "OCI", "Governance", "Landing Zones", "Billing"]
 date: 2026-04-30
 readTime: 13
 level: beginner

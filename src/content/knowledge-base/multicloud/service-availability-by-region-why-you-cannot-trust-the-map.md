@@ -1,7 +1,7 @@
 ---
 title: "Service Availability by Region — Why You Cannot Trust the Map"
 category: multicloud
-tags: ["Azure", "OCI", "Service Availability", "Cloud Adoption", "Governance", "Region Selection"]
+tags: ["Azure", "OCI", "Service Availability", "Governance", "Region Selection"]
 date: 2026-04-30
 readTime: 10
 level: beginner

@@ -1,7 +1,7 @@
 ---
 title: "Naming Conventions That Survive Both Azure and OCI"
 category: multicloud
-tags: ["Azure", "OCI", "Naming", "Governance", "IaC", "Terraform", "Bicep"]
+tags: ["Azure", "OCI", "Naming", "Governance", "IaC"]
 date: 2026-04-30
 readTime: 11
 level: beginner

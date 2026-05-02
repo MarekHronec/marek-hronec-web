@@ -1,7 +1,7 @@
 ---
 title: "Source of Truth — Where Does Your Cloud Actually Live?"
 category: devops
-tags: ["Azure", "OCI", "IaC", "CMDB", "Configuration Management", "GitOps"]
+tags: ["Azure", "OCI", "IaC", "CMDB", "GitOps"]
 date: 2026-04-30
 readTime: 11
 level: intermediate

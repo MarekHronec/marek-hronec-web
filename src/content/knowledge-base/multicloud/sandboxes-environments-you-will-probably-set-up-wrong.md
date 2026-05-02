@@ -1,7 +1,7 @@
 ---
 title: "Sandboxes — The Environments You Will Probably Set Up Wrong the First Time"
 category: multicloud
-tags: ["Azure", "OCI", "Sandbox", "Governance", "Cost Control", "Landing Zones"]
+tags: ["Azure", "OCI", "Sandbox", "Governance", "Cost Control"]
 date: 2026-04-30
 readTime: 11
 level: beginner

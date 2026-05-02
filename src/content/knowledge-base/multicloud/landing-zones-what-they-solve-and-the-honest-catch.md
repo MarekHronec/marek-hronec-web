@@ -1,7 +1,7 @@
 ---
 title: "Landing Zones — What They Actually Solve, and the Honest Catch"
 category: multicloud
-tags: ["Azure", "OCI", "Landing Zones", "CAF", "CIS Benchmark", "Terraform", "Bicep"]
+tags: ["Azure", "OCI", "Landing Zones", "Governance", "CAF"]
 date: 2026-04-30
 readTime: 14
 level: intermediate
