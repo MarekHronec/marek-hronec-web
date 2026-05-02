@@ -12,7 +12,7 @@ This site serves two audiences: those evaluating technical background at a glanc
 
 The design philosophy — "The Architectural Monograph" — treats the site as a curated technical journal rather than a product landing page. Layout is Swiss-grid inspired, typography is editorial, and visual weight comes from tonal layering rather than decoration.
 
-The technical approach is equally intentional. Astro's static output mode means every page is pre-rendered HTML delivered directly from a CDN edge. Content Collections validate every article's frontmatter at build time using Zod schemas, eliminating the class of runtime errors that come from malformed markdown. Zero client-side JavaScript is shipped by default — each interactive feature ships the minimum script needed: hamburger menu toggle, article TOC scroll-spy, Knowledge Base filter and mobile sheet, experience expand/collapse, and the Pagefind search loader (present only on the Knowledge Base listing page, loaded lazily on first interaction).
+The technical approach is equally intentional. Astro's static output mode means every page is pre-rendered HTML delivered directly from a CDN edge. Content Collections validate every article's frontmatter at build time using Zod schemas, eliminating the class of runtime errors that come from malformed markdown. Zero client-side JavaScript is shipped by default — each interactive feature ships the minimum script needed: hamburger menu toggle, article TOC scroll-spy, Knowledge Base filter and mobile sheet, experience expand/collapse, the Pagefind search loader, and the Knowledge Map canvas (Cytoscape.js + atom indicator — lazily imported only when the Map view is opened on the KB listing page).
 
 | | |
 |---|---|
@@ -30,6 +30,7 @@ The technical approach is equally intentional. Astro's static output mode means 
 | Content | Markdown + Zod via Content Collections | — | Compile-time frontmatter validation with no CMS dependency. [→](docs/DECISIONS.md#adr-003-content--astro-content-collections-over-importmetaglob) |
 | Fonts | Google Fonts CDN | — | Manrope (display), Inter (body), JetBrains Mono (code) — three fonts, three content roles. [→](docs/DECISIONS.md#adr-009-typography--manrope--inter--jetbrains-mono) |
 | Search | Pagefind (static index) | 1.5.x | Full-text search; index built at build time from rendered HTML; ~25 KB bundle loaded lazily on first interaction. [→](docs/DECISIONS.md#adr-020-full-text-search--pagefind-over-client-side-alternatives) |
+| Graph | Cytoscape.js + cytoscape-dagre + cytoscape-node-html-label | 3.33 / 2.5 / 2.0 | Knowledge Map canvas on the KB listing page — lazy-loaded (~200 KB) only when the Map view is opened. [→](docs/DECISIONS.md#adr-023-knowledge-map-canvas) |
 | Sitemap | @astrojs/sitemap | 3.7.2 | Automatic sitemap generation on every build. |
 | Deployment | GitHub Actions + GitHub Pages | — | Zero-cost static hosting on a custom domain; push to `main` deploys. [→](docs/DECISIONS.md#adr-007-deployment--github-pages-over-vercel-and-netlify) |
 
@@ -60,7 +61,7 @@ BaseLayout
 │   │   ├── index.astro       → CaseStudyCard[] (uses TagBadge), CaseStudyMetrics
 │   │   └── [slug].astro      → CaseStudyMetrics, prose body
 │   ├── knowledge-base/
-│   │   ├── index.astro       → KBSearch, CategorySidebar, ArticleCard[] (uses TagBadge)
+│   │   ├── index.astro       → KBSearch, CategorySidebar, KnowledgeCanvas (lazy), ArticleCard[] (uses TagBadge)
 │   │   └── [...slug].astro   → CategorySidebar, ArticleOutline (TOC), prose body
 │   ├── credentials.astro     → certification registry with domain TagBadges
 │   └── contact.astro         → ContactHero, ContactChannels, ContactServices
@@ -96,8 +97,13 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full technical deep-div
     ├── styles/
     │   ├── tokens.css        # All CSS custom properties — single source of truth
     │   └── global.css        # Reset, base typography, layout utilities
+    ├── data/
+    │   └── knowledge-graph.ts  # KB Learning Map — edge definitions and build-time slug validation
+    ├── scripts/
+    │   └── canvas.ts           # Cytoscape.js init, node labels, detail panel, atom indicator (lazy)
     ├── utils/
-    │   └── readTime.ts       # Build-time read time calculation + per-category WPM config
+    │   ├── base.ts             # BASE_URL normalisation — single import for all internal links
+    │   └── readTime.ts         # Build-time read time calculation + per-category WPM config
     └── content.config.ts     # Content Collections + Zod schema definitions
 ```
 

@@ -451,3 +451,214 @@ const LABELS = {
 ```
 
 That is all. The toggle logic, `matchesFilter`, `countForBtn`, chip generation, URL serialisation, and "Clear all" handler all iterate over `activeFilters` generically — no further changes are needed in any of those functions.
+
+---
+
+## 10. Knowledge Map Canvas
+
+The Knowledge Base listing page (`/knowledge-base`) includes a **Learning Map** tab — an interactive graph visualisation of all articles and the recommended learning paths between them. This section covers the architecture and everything an author or developer needs to manage it.
+
+### Architecture overview
+
+The canvas is a lazily-loaded Astro island. Cytoscape.js (~200 KB including the dagre layout plugin) is only fetched when the user activates the Map tab for the first time.
+
+```
+knowledge-base/index.astro
+  └── KnowledgeCanvas.astro          ← HTML wrapper; serialises node/edge data into data-* attributes
+      └── <script>                   ← listens for 'kb:canvas-activate' CustomEvent, then:
+          └── dynamic import canvas.ts  ← initialises Cytoscape; fires once per page load
+
+src/scripts/canvas.ts                ← Cytoscape init, node HTML templates, detail panel, atom indicator
+src/data/knowledge-graph.ts          ← edge definitions; build-time slug validation
+```
+
+**Data flow at build time:**
+1. `index.astro` queries all `knowledgeBase` content entries via `getCollection()`
+2. Each entry is mapped to a `CanvasNode` object: `{ id, label, category, level, excerpt, url, tags }`
+3. Edges are imported from `knowledge-graph.ts` and validated against the live slug set — unknown slugs abort the build
+4. Both arrays are JSON-serialised into `data-nodes` and `data-edges` attributes on the `#kb-canvas-wrapper` div
+5. At runtime, `canvas.ts` reads these attributes and passes them to Cytoscape
+
+**Activation flow at runtime:**
+1. User clicks "Map" in the view toggle
+2. `index.astro` dispatches `new CustomEvent('kb:canvas-activate')` on `#kb-canvas-wrapper`
+3. The `<script>` in `KnowledgeCanvas.astro` handles the event `{ once: true }` — fires exactly once per page load
+4. `canvas.ts` is dynamically imported; `initCanvas()` is called with the three element IDs (`'kb-canvas-wrapper'`, `'kb-canvas'`, `'kbc-panel'`)
+
+---
+
+### Managing connections
+
+All edges are defined in `src/data/knowledge-graph.ts` in the `edges` array.
+
+**Edge types:**
+
+| Type | Visual | Meaning |
+|---|---|---|
+| `path` | Solid teal arrow, orthogonal routing | Recommended reading order — follow this to progress through a learning track |
+| `related` | Dashed grey line, orthogonal routing | Conceptual link — articles share context but are not sequential |
+
+**Adding a connection:**
+
+```ts
+// src/data/knowledge-graph.ts — add to the edges array:
+{ from: 'category/article-slug', to: 'category/other-article-slug', type: 'path' },
+```
+
+Slugs use the full Astro content collection ID: `folder/filename-without-extension`. For example, `src/content/knowledge-base/azure/azure-landing-zones.md` → slug `azure/azure-landing-zones`.
+
+**Removing a connection:** delete the object from the `edges` array.
+
+**Changing edge type:** change `type: 'path'` to `type: 'related'` or vice versa.
+
+**Build-time validation:** `validateEdges()` is called from `knowledge-base/index.astro` at build time. It compares every slug in `edges` against all article slugs from `getCollection()`. An unknown slug aborts the build:
+
+```
+Knowledge graph — unknown slugs (check filenames match exactly):
+  · azure/old-article-name
+```
+
+This means renaming an article file requires updating `knowledge-graph.ts` — the build enforces the contract.
+
+---
+
+### Entry nodes (START HERE badge)
+
+The canvas automatically identifies entry nodes — articles with no incoming `path` edges:
+
+```ts
+const pathTargets = new Set(edgeList.filter(e => e.type === 'path').map(e => e.to));
+const entryIds    = new Set(nodes.filter(n => !pathTargets.has(n.id)).map(n => n.id));
+```
+
+Any article that is never the *target* of a `path` edge receives the **START HERE** badge. `related` edges do not affect entry status. To promote an article to a learning-track entry point, remove all `path` edges that point to it.
+
+---
+
+### Tweakable settings
+
+All constants live at module level in `src/scripts/canvas.ts`.
+
+**Zoom**
+
+```ts
+// Cytoscape config object inside initCanvas():
+wheelSensitivity: 4,   // Mouse-wheel zoom speed (Cytoscape default: 1 — higher is faster)
+```
+
+**Zoom button step** — both zoom button listeners use `* 1.3` / `/ 1.3`. Replace `1.3` in both to change the step (e.g. `1.2` for a smaller increment).
+
+**Layout spacing**
+
+```ts
+// dagre layout options:
+nodeSep: 60,   // Horizontal gap between nodes in the same rank (px)
+rankSep: 100,  // Vertical gap between ranks/rows (px)
+padding: 56,   // Canvas edge padding — extra top space reserved for START HERE badges (px)
+```
+
+**Node card dimensions**
+
+```ts
+// Cytoscape node style:
+'width': 200,   // Card width (px) — must match .kbc-node width in KnowledgeCanvas.astro global CSS
+'height': 72,   // Card height (px) — must match .kbc-node height
+```
+
+If you change either value, update the matching `.kbc-node { width: ...; height: ...; }` rule in the `<style is:global>` block of `KnowledgeCanvas.astro`.
+
+**Category border colours**
+
+```ts
+const CATEGORY_BORDER: Record<string, string> = {
+  azure:      '#2a5298',
+  oci:        '#b34700',
+  multicloud: '#2c694e',
+  networking: '#4e2a84',
+  identity:   '#6b4d00',
+  security:   '#7a2424',
+  finops:     '#23522f',
+  devops:     '#253268',
+  bpm:        '#4a1d7a',
+  default:    '#5f5f5f',   // fallback for any unrecognised category
+};
+```
+
+Each category has a unique border tint on its node card. To add support for a new category, add its key here. The `default` fallback applies automatically to any `category` value not in the map.
+
+**Edge colours** — in the Cytoscape style array inside `initCanvas()`:
+
+```ts
+// Path edges:
+'line-color': '#2c694e',          // = --color-primary (teal)
+'target-arrow-color': '#2c694e',
+
+// Related edges:
+'line-color': '#b3b2b1',          // neutral grey
+```
+
+**Difficulty chip labels**
+
+```ts
+const LEVEL_LABELS: Record<string, string> = {
+  beginner:     'Foundations',
+  intermediate: 'Practitioner',
+  advanced:     'Expert',
+};
+```
+
+These appear on the chip inside each node card and as the first tag in the detail panel. Change values here to rename them globally.
+
+---
+
+### Atom click indicator settings
+
+The atom (sonar ping → orbiting electrons) is configured by these module-level constants:
+
+| Constant | Default | What it controls |
+|---|---|---|
+| `ATOM_HALF` | `35` | Half the container size in px — container is `ATOM_HALF * 2 = 70 px` |
+| `ATOM_HOLD_MS` | `4000` | How long (ms) to hold the mouse button before orbit rings appear |
+| `ORBIT_A` | `26` | Semi-major axis of electron orbits — horizontal reach in px |
+| `ORBIT_B` | `9` | Semi-minor axis — controls how flat the orbits are |
+
+The three orbit rings are defined in the `ORBITS` array:
+
+```ts
+const ORBITS = [
+  { angle:  0, period: 1.8 },   // First ring — 0° tilt,  1.8 s per electron revolution
+  { angle: 60, period: 2.4 },   // Second ring — 60° tilt, 2.4 s per revolution
+  { angle:-60, period: 2.0 },   // Third ring — −60° tilt, 2.0 s per revolution
+] as const;
+```
+
+- Decrease `period` to speed up individual electrons.
+- Change `angle` to reorient a ring.
+- Add or remove objects to change the number of orbit rings (add a matching `nth-child` stagger rule in `KnowledgeCanvas.astro` if adding rings).
+
+**Release animation durations** — inside `spawnAtom()`, in the `frame()` function:
+
+```ts
+const duration = atomActivated ? 380 : 200;
+//                               ↑        ↑
+//               hold release (ms)   tap release (ms)
+```
+
+---
+
+### CSS class reference
+
+The atom indicator and node label elements are appended to the DOM by Cytoscape outside the Astro component's scope, so their styles must be in the `<style is:global>` block of `KnowledgeCanvas.astro`.
+
+| Class | Where | Notes |
+|---|---|---|
+| `.kbc-atom` | Atom container div | `position: absolute` on `#kb-canvas`; `z-index: 100` |
+| `.kbc-atom--active` | State class on `.kbc-atom` | Added by JS after `ATOM_HOLD_MS`; triggers ring/electron fade-in |
+| `.kbc-atom__nucleus` | Green dot at centre | `::after` pseudo-element provides the sonar ping ring |
+| `.kbc-atom__ring` | Elliptical orbit ring | `--ring-angle` CSS variable set per-element by JS; drives `transform: rotate()` |
+| `.kbc-atom__electron` | Dot on each ring | Position set each frame by rAF via parametric ellipse maths |
+| `.kbc-node` | Node card container | Dimensions must match Cytoscape node width/height |
+| `.kbc-node__start` | "START HERE" badge | `position: absolute; top: -26px` — overflows node top edge |
+| `.kbc-node__title` | Article title text | 2-line clamp via `-webkit-line-clamp: 2` |
+| `.kbc-node__chip` | Difficulty chip | Colour set via `--level` modifier classes |
+| `.kbc-panel` | Detail panel aside | `position: absolute; top/right` — floats over canvas |

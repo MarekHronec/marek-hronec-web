@@ -530,3 +530,61 @@ A structured WCAG 2.2 Level AA audit of the live site identified four issues bey
 
 **Consequences.**  
 No visual change on any page. Screen readers on the credentials page now receive column context alongside each data value. The case study sidebar heading structure is correct at `<h2>` level. Keyboard and focus navigation no longer lands under the sticky header. The mobile filter sheet is now a fully conformant ARIA dialog pattern: focus is managed, ESC works, and Tab does not escape the dialog while it is open.
+
+---
+
+## ADR-023: Knowledge Map Canvas — Cytoscape.js over D3 and Custom SVG
+
+**Status:** Accepted  
+**Date:** 2026-05-02
+
+**Context.**  
+The Knowledge Base listing page needs an optional "Learning Map" view that renders all articles as nodes in a directed graph, with two edge types: recommended reading-order paths (solid arrows) and conceptual relations (dashed lines). The graph must lay out hierarchically (top-to-bottom learning tracks), support pan/zoom, and render rich HTML node cards (title + difficulty chip + START HERE badge) rather than flat text labels. The feature must not affect page-load performance for users who never open the Map view.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Custom SVG with D3-force | Full control; no runtime dependency | Force layout produces organic cluster graphs, not hierarchical learning tracks; manual edge routing, pan/zoom, and hit-testing require significant custom code |
+| D3 + dagre-d3 | Hierarchical layout; D3 ecosystem | dagre-d3 is largely unmaintained; no built-in HTML node labels; pan/zoom requires separate D3 zoom layer; still substantial custom wiring |
+| Cytoscape.js + cytoscape-dagre + cytoscape-node-html-label | Production-grade graph library; dagre hierarchical layout built in; HTML labels via plugin; pan/zoom/select built in; declarative style sheets | ~200 KB bundle; `@types/cytoscape` does not fully model all extension APIs (requires `as unknown` casts) |
+| React Flow | Excellent DX; built-in node types | Requires React runtime; incompatible with zero-JS Astro architecture |
+
+**Decision.** Cytoscape.js 3.33 with cytoscape-dagre (hierarchical layout) and cytoscape-node-html-label (rich node templates). The entire bundle is dynamically imported (`import()`) only when the user activates the Map tab for the first time — zero cost on initial page load.
+
+**Implementation notes:**
+- Cytoscape's `.use()` static method lacks TypeScript declarations; registered via `(cytoscape as unknown as { use: ... }).use(plugin)`.
+- Node HTML labels are injected outside the Astro component scope, so their CSS must be `<style is:global>`.
+- The `active-bg-opacity: 0` core style suppresses Cytoscape's default gray click indicator (replaced by a custom atom animation).
+- `round-taxi` curve style provides orthogonal routing with rounded corners — matching the design system aesthetic better than bezier or straight taxi edges.
+- The `display: flex` on `.kbc-panel` overrides the browser's default `display: none` for `[hidden]` — restored with `.kbc-panel[hidden] { display: none }`.
+- All data (nodes, edges) is serialised into `data-*` attributes at Astro build time and parsed at runtime, keeping the component interface clean and the Cytoscape bundle entirely out of the SSR path.
+
+**Consequences.**  
+Users who never open the Map view download zero additional JavaScript. Users who do open it receive the full interactive graph after a single dynamic import. The dagre layout renders clean top-to-bottom learning tracks automatically without manual node positioning. Build-time validation in `knowledge-graph.ts` (`validateEdges()`) ensures graph edges never reference non-existent articles. The TypeScript casts required for the Cytoscape plugin API are contained to three lines in `canvas.ts` and documented.
+
+---
+
+## ADR-024: Atom Click Indicator — rAF + CSS Transition over Pure CSS Animation
+
+**Status:** Accepted  
+**Date:** 2026-05-02
+
+**Context.**  
+The canvas needed a custom click indicator to replace Cytoscape's default gray `active-bg` circle. Several approaches were attempted.
+
+**Options considered:**
+
+| Option | Outcome |
+|---|---|
+| CSS keyframe ripple | Simple; but the two-phase behaviour (ping → atom) requires JS state |
+| SVG overlay with rAF | Failed — Cytoscape's `stopPropagation()` on `mousedown` blocked event listeners on the canvas element; SVG appended to the wrapper was occluded by Cytoscape's canvas layers (z-index 4) |
+| CSS blob with `border-radius` morphing | Worked; div appended to `canvasEl` (proven z-index 100) avoids the layer occlusion issue; but required separate hold/release class switching with an abrupt square flash on transition |
+| Atom: rAF electron positions + CSS transition rings | Selected; JS places electrons each frame via parametric ellipse maths; CSS transitions handle the two-phase appearance (ping ring → orbit rings) cleanly |
+
+**Decision.** rAF loop for per-frame electron positions; CSS custom property `--ring-angle` per ring element so JS passes the tilt angle while CSS owns the full `transform` (enabling `scale` animation in the transition). Two-phase behaviour: sonar ping via `::after` animation for 0–4 s; class `kbc-atom--active` added after 4 s triggers ring/electron fade-in via CSS transitions.
+
+**Key constraint:** elements must be appended to `canvasEl` (the Cytoscape mount point), not to the wrapper, to sit above Cytoscape's canvas layers.
+
+**Consequences.**  
+The interaction provides a distinct, branded indicator with zero library dependency. Ping-to-atom continuity is achieved through CSS transitions on `scale` and `opacity` rather than matched sizes, so the animation is robust to timing variability. Quick taps (< 4 s) get a 200 ms fade; held interactions get a 380 ms scale-dissolve. The rAF loop is tied to the atom's lifetime and stops automatically when the container is removed from the DOM.

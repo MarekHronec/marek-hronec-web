@@ -92,20 +92,42 @@
       return url.split('/').filter(Boolean)[1] ?? '';
     }
 
+    function safeUrl(url) {
+      return (typeof url === 'string' && url.startsWith('/')) ? url : '#';
+    }
+
     function renderItems(items) {
+      resultsEl.innerHTML = '';
       if (items.length === 0) {
-        resultsEl.innerHTML = '<p class="kb-search__empty">No articles found.</p>';
+        const empty = document.createElement('p');
+        empty.className = 'kb-search__empty';
+        empty.textContent = 'No articles found.';
+        resultsEl.append(empty);
       } else {
-        resultsEl.innerHTML = items.map(function (item) {
+        items.forEach(function (item) {
           const cat = item.meta.category ?? categoryFromUrl(item.url);
-          return (
-            '<a class="kb-search__item" href="' + item.url + '">' +
-              '<p class="kb-search__item-category">' + cat + '</p>' +
-              '<p class="kb-search__item-title">' + item.meta.title + '</p>' +
-              '<p class="kb-search__item-excerpt">' + item.excerpt + '</p>' +
-            '</a>'
-          );
-        }).join('');
+
+          const a = document.createElement('a');
+          a.className = 'kb-search__item';
+          a.href = safeUrl(item.url);
+
+          const catEl = document.createElement('p');
+          catEl.className = 'kb-search__item-category';
+          catEl.textContent = cat;
+
+          const titleEl = document.createElement('p');
+          titleEl.className = 'kb-search__item-title';
+          titleEl.textContent = item.meta.title;
+
+          const excerptEl = document.createElement('p');
+          excerptEl.className = 'kb-search__item-excerpt';
+          /* Pagefind-generated excerpt contains intentional <mark> highlight tags —
+             trusted build-time content from our own articles, not user input. */
+          excerptEl.innerHTML = item.excerpt;
+
+          a.append(catEl, titleEl, excerptEl);
+          resultsEl.append(a);
+        });
       }
       panel.hidden = false;
     }

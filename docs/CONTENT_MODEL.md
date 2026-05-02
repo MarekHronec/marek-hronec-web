@@ -64,7 +64,7 @@ excerpt: ""
 | Field | Type | Required | Constraints | Description |
 |---|---|---|---|---|
 | `title` | string | Yes | — | Full article title as it appears in the card and article header |
-| `category` | enum | Yes | One of 9 values | Controls sidebar navigation and filtering. See taxonomy. |
+| `category` | enum | Yes | One of 10 values | Controls sidebar navigation and filtering. See taxonomy. |
 | `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. All tags shown on article card. Used for filter chip display and article detail header. |
 | `date` | Date | Yes | ISO 8601 string, coerced to Date | Publication date. Articles are sorted newest-first on the listing page. |
 | `readTime` | number | No | Integer, minutes | Estimated reading time. If omitted, calculated automatically at build time from word count. Displayed in the article card and article header. |
@@ -174,6 +174,7 @@ The `category` field in knowledge base articles must be one of these exact strin
 |---|---|---|---|
 | `azure` | Azure | Azure architecture, Landing Zones, Azure services, Microsoft cloud patterns | Platform |
 | `oci` | OCI | Oracle Cloud Infrastructure architecture, services, and patterns | Platform |
+| `multicloud` | Multicloud | Cross-cloud architecture, Azure + OCI comparisons, cloud-agnostic patterns and fundamentals | Platform |
 | `networking` | Networking | VNet design, ExpressRoute, hybrid connectivity, network segmentation | Topic |
 | `identity` | Identity | Entra ID, RBAC, Zero Trust, conditional access, managed identities | Topic |
 | `security` | Security | Posture management, Microsoft Defender, compliance frameworks, threat protection | Topic |
@@ -182,13 +183,15 @@ The `category` field in knowledge base articles must be one of these exact strin
 | `devops` | DevOps | CI/CD pipelines, GitOps, platform engineering, Infrastructure as Code | Topic |
 | `bpm` | BPM | Business Process Management, Camunda, Oracle BPM, workflow orchestration | Topic |
 
-The **Filter group** column maps to the KB listing page filter panel. Platform categories (`azure`, `oci`, `gcp`) appear under the **Platforms** group; topic categories appear under **Topics**. Articles whose category is a platform value (e.g. `azure`) also surface under topics if their tags match a topic (e.g. tag `Networking` → Networking filter).
+The **Filter group** column maps to the KB listing page filter panel. Platform categories (`azure`, `oci`, `gcp`, `multicloud`) appear under the **Platforms** group; topic categories appear under **Topics**. Articles whose category is a platform value (e.g. `azure`) also surface under topics if their tags match a topic (e.g. tag `Networking` → Networking filter).
 
 Adding a new category requires:
 1. Adding the `category` value to the Zod enum in `src/content.config.ts`
 2. Creating the subdirectory `src/content/knowledge-base/<new-category>/`
-3. Adding filter buttons to `CategorySidebar.astro` in the correct group (Platforms or Topics), following the `data-filter-group` / `data-filter-value` attribute pattern used by existing buttons
+3. Adding the item to the `filterGroups` array in `CategorySidebar.astro` — no raw HTML needed; both desktop and mobile filter panels update automatically
 4. If it is a topic category, adding its mapping to the `TOPIC_CATS` set and `LABELS.topic` object in `src/pages/knowledge-base/index.astro`
+
+The full 8-step procedure is in [DEVELOPMENT.md §9](DEVELOPMENT.md#9-knowledge-base-filter-system).
 
 ---
 
@@ -199,16 +202,33 @@ Adding a new category requires:
 ```
 src/content/knowledge-base/
 ├── azure/
-│   ├── azure-landing-zones.md
-│   ├── cloud-resource-naming-conventions.md
-│   └── event-driven-serverless-patterns.md
+│   └── azure-landing-zones.md
 ├── bpm/
 │   └── introduction-to-bpm-solutions.md
-└── devops/
-    └── gitops-with-argocd.md
+├── devops/
+│   ├── gitops-with-argocd.md
+│   ├── source-of-truth-where-does-your-cloud-actually-live.md
+│   └── status-pages-service-health-things-they-wont-show.md
+├── finops/
+│   ├── budgets-cost-caps-and-the-lie-of-spending-limits.md
+│   ├── cloud-support-what-you-are-actually-paying-for.md
+│   └── discounts-and-commitments-math-the-salespeople-hope-you-wont-do.md
+├── identity/
+│   └── rbac-and-iam-authorisation-models-that-look-similar.md
+├── multicloud/       ← largest category; cloud-agnostic foundations + Azure/OCI comparisons
+│   ├── how-to-learn-azure-and-oci-without-stale-lists.md
+│   ├── iaas-paas-saas-without-marketing-layer.md
+│   └── … (10 articles)
+├── networking/
+│   ├── address-plans-designing-ip-space-for-three-clouds.md
+│   ├── hub-and-spoke-virtual-wan-and-drg-three-topology-choices.md
+│   ├── hybrid-connectivity-expressroute-fastconnect-vpn-reality.md
+│   └── ipam-ip-address-management-before-you-wish-you-had-done-it.md
+└── security/
+    └── policy-as-code-and-quotas-where-governance-stops-being-wiki.md
 ```
 
-New category subdirectories (networking/, identity/, etc.) should be created when the first article for that category is added.
+New category subdirectories should be created when the first article for that category is added.
 
 Subdirectory names should match the `category` value in the frontmatter. This is a human-organisation convention — the glob loader picks up all `.md` files regardless of which subdirectory they are in. The `category` frontmatter field is the authoritative classification.
 
@@ -333,7 +353,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
 
    | Field | Constraint |
    |---|---|
-   | `category` | Must be one of: `azure \| oci \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
+   | `category` | Must be one of: `azure \| oci \| multicloud \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
    | `level` | Must be one of: `beginner \| intermediate \| advanced` |
    | `date` | Must be a valid date string, e.g. `2025-06-01` |
    | `readTime` | Optional. If present, must be a plain number — not a string like `"9 min"`. If omitted, calculated automatically. |
@@ -342,32 +362,19 @@ Standard `##` Markdown headings work fine for all other sections within a case s
 
 3. **Write the body.** Start with `##` headings. The `title` from frontmatter is the `<h1>`.
 
+4. **Add to the Learning Map (optional).** If the article should appear on the Knowledge Map canvas, register it as a node in `src/data/knowledge-graph.ts`. The graph data includes edges (connections between articles) — `type: 'path'` for sequential learning paths, `type: 'related'` for supplementary connections. See [DEVELOPMENT.md §10](DEVELOPMENT.md#10-knowledge-map-canvas) for the full admin guide.
+
 ### Adding a new category
 
-To add a category not in the list above:
+The full 8-step procedure is in [DEVELOPMENT.md §9](DEVELOPMENT.md#9-knowledge-base-filter-system). Quick summary:
 
-1. **Extend the enum** in [src/content.config.ts](../src/content.config.ts):
-   ```ts
-   category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'your-new-category']),
-   ```
-2. **Add filter buttons** in `src/components/knowledge-base/CategorySidebar.astro`. Find either the Platforms or Topics `<ul>` and add a new `<li>` following the existing pattern:
-   ```html
-   <li>
-     <button class="kb-filter__btn" data-filter-group="topic" data-filter-value="your-new-category" aria-pressed="false">
-       <span>Your Category</span><span class="kb-filter__count"></span>
-     </button>
-   </li>
-   ```
-   Add the same button to the mobile sheet `<ul>` (same structure, add `kb-mobile-sheet__btn` to the class list).
-3. **Register the label** in the `LABELS.topic` object inside the `<script>` block of `src/pages/knowledge-base/index.astro`:
-   ```ts
-   topic: { ..., 'your-new-category': 'Your Category' }
-   ```
-4. **Add to `TOPIC_CATS`** if it is a topic (non-platform) category — in the same `<script>` block, `const TOPIC_CATS = new Set([..., 'your-new-category'])`.
-5. **Create the subdirectory** and drop your `.md` file in:
-   ```
-   src/content/knowledge-base/your-new-category/first-article.md
-   ```
+1. **Extend the enum** in `src/content.config.ts`
+2. **Add the item** to the correct group in the `filterGroups` array in `CategorySidebar.astro` (both desktop and mobile update automatically — no HTML changes needed)
+3. **Add a `data-*` attribute** to the card wrapper div in `knowledge-base/index.astro` (only if adding a new *group*, not just a new value to an existing group)
+4. **Register the label** in `LABELS.topic` or `LABELS.platform` and add to `TOPIC_CATS` or `PLATFORM_CATS` in `knowledge-base/index.astro`
+5. **Create the subdirectory** and add your `.md` file
+
+See [DEVELOPMENT.md §9](DEVELOPMENT.md#9-knowledge-base-filter-system) for the exact code snippets at each step.
 
 4. **Validate:**
    ```sh
@@ -464,36 +471,26 @@ This section is for non-code edits — exact file and what to look for.
 
 ### Add a new Knowledge Base category
 
-Two files need to change:
+The full 8-step procedure is in [DEVELOPMENT.md §9](DEVELOPMENT.md#9-knowledge-base-filter-system). Quick reference:
 
 **File 1 — `src/content.config.ts`**
 
-Find this line (it's near the top of the file):
+Find the category enum near the top and add the new value:
 ```ts
-category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm']),
-```
-Add your new category name inside the brackets, comma-separated, in lowercase. Example:
-```ts
-category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'ai']),
+category: z.enum(['azure', 'oci', 'multicloud', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'your-category']),
 ```
 
 **File 2 — `src/components/knowledge-base/CategorySidebar.astro`**
 
-Find either the **Platforms** or **Topics** `<ul class="kb-filter__options">` block. Add a new `<li>` following this pattern:
-
-```html
-<li>
-  <button class="kb-filter__btn" data-filter-group="topic" data-filter-value="your-category" aria-pressed="false">
-    <span>Your Category</span><span class="kb-filter__count"></span>
-  </button>
-</li>
+Find the `filterGroups` array near the top. Add a new entry to the `items` array inside the correct group (Platforms or Topics):
+```ts
+{ value: 'your-category', label: 'Your Category' }
 ```
-
-Repeat the same `<li>` inside the matching group in the **mobile sheet** section further down in the same file (add `kb-mobile-sheet__btn` to the class list for mobile).
+Desktop and mobile filter panels both update automatically — no HTML changes needed.
 
 **File 3 — `src/pages/knowledge-base/index.astro` (script block)**
 
-Add the display label to `LABELS.topic` and the value to `TOPIC_CATS` (if it's a topic, not a platform):
+Add the display label to `LABELS.topic` (or `LABELS.platform`) and the value to `TOPIC_CATS` (or `PLATFORM_CATS`):
 ```ts
 const TOPIC_CATS = new Set(['networking', ..., 'your-category']);
 const LABELS = { ..., topic: { ..., 'your-category': 'Your Category' } };
@@ -549,7 +546,7 @@ Only one file should have `featured: true` at a time.
 
 Open the article's `.md` file and update the `category` field in the frontmatter to one of the valid values:
 ```
-azure | oci | networking | identity | security | finops | gcp | devops | bpm
+azure | oci | multicloud | networking | identity | security | finops | gcp | devops | bpm
 ```
 The article will automatically move to the new category in the sidebar. The file can stay in its current folder — the folder structure is just for organisation, the `category` field is what the site reads.
 
@@ -571,7 +568,6 @@ Open it and you will see this object at the top:
 
 ```ts
 export const READ_SPEED = {
-  caseStudies: 200,
   knowledgeBase: {
     default:    130,
     azure:      120,
@@ -588,9 +584,10 @@ export const READ_SPEED = {
 
 All values are **words per minute**. Higher = shorter read time displayed. Lower = longer read time displayed.
 
-- `caseStudies` — applies to all case study articles
-- `knowledgeBase.default` — fallback used when a category has no specific entry
+- `knowledgeBase.default` — fallback used when a category has no specific entry (e.g. `oci`, `multicloud`)
 - Each named key under `knowledgeBase` — overrides the default for that category
+
+Case study read time is not configurable — case studies use the manual `readTime` frontmatter field if present, otherwise fall back to a fixed 200 WPM default calculated inline.
 
 ### How to tune a category's reading speed
 

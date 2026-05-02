@@ -241,12 +241,12 @@ const { nodes, edges } = Astro.props;
   }
 
   .kbc-legend__item--path::before {
-    background: #2c694e;
+    background: var(--color-primary);
   }
 
   .kbc-legend__item--related::before {
     background: repeating-linear-gradient(
-      90deg, #b3b2b1 0, #b3b2b1 5px, transparent 5px, transparent 9px
+      90deg, var(--color-warm-gray) 0, var(--color-warm-gray) 5px, transparent 5px, transparent 9px
     );
   }
 </style>
@@ -315,7 +315,7 @@ const { nodes, edges } = Astro.props;
     white-space: nowrap;
     flex-shrink: 0;
     background: rgba(95, 95, 95, 0.10);
-    color: #6b6b6b;
+    color: var(--color-on-surface-muted);
   }
 
   /* Atom click indicator */

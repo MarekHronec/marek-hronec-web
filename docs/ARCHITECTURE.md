@@ -119,7 +119,8 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   ├── knowledge-base/
     │   │   ├── ArticleCard.astro
     │   │   ├── ArticleOutline.astro  # Floating TOC with scroll-spy
-    │   │   └── CategorySidebar.astro
+    │   │   ├── CategorySidebar.astro
+    │   │   └── KnowledgeCanvas.astro # Learning Map canvas wrapper; lazy-loads canvas.ts on activation
     │   ├── layout/
     │   │   ├── Header.astro      # Sticky glassmorphism nav
     │   │   └── Footer.astro
@@ -130,15 +131,15 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── effective-governance-public-sector.md
     │   │   ├── legacy-bpm-migration-camunda.md
     │   │   └── azure-finops-observability-optimization.md
-    │   └── knowledge-base/       # Subdirectories map to categories
+    │   └── knowledge-base/       # Subdirectories map to categories (8 subdirs, 25 articles)
     │       ├── azure/
-    │       │   ├── azure-landing-zones.md
-    │       │   ├── cloud-resource-naming-conventions.md
-    │       │   └── event-driven-serverless-patterns.md
     │       ├── bpm/
-    │       │   └── introduction-to-bpm-solutions.md
-    │       └── devops/
-    │           └── gitops-with-argocd.md
+    │       ├── devops/
+    │       ├── finops/
+    │       ├── identity/
+    │       ├── multicloud/   # largest category — cloud-agnostic foundations + Azure/OCI comparisons
+    │       ├── networking/
+    │       └── security/
     ├── layouts/
     │   └── BaseLayout.astro      # HTML shell, SEO meta, Open Graph, font loading
     ├── pages/                    # File-based routes
@@ -152,6 +153,10 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   ├── contact.astro
     │   ├── credentials.astro     # Full certification registry — linked from About page only
     │   └── 404.astro
+    ├── data/
+    │   └── knowledge-graph.ts    # KB Learning Map — edge definitions and build-time slug validation
+    ├── scripts/
+    │   └── canvas.ts             # Cytoscape.js init, node HTML labels, detail panel, atom indicator (lazy)
     ├── styles/
     │   ├── tokens.css            # All CSS custom properties — single source of truth
     │   └── global.css            # Reset, base typography, layout utilities, focus styles; scroll-padding-top on html
@@ -199,6 +204,8 @@ BaseLayout.astro
 │   │   ├── CategorySidebar.astro    ← data-driven filter panel (Platforms, Topics, Difficulty groups)
 │   │   │   ├── GridAppsIcon.astro (icon)
 │   │   │   └── [inline <script>]  ← mobile sheet: open/close, focus management, ESC, Tab trap
+│   │   ├── KnowledgeCanvas.astro    ← Learning Map; lazy-loads canvas.ts on first activation
+│   │   │   └── [<script>]  ← waits for 'kb:canvas-activate' CustomEvent → dynamic import canvas.ts
 │   │   └── ArticleCard.astro (×n)
 │   │       └── TagBadge.astro (shared, ×n)
 │   │
@@ -246,7 +253,7 @@ Content is managed through Astro Content Collections. Collection definitions and
 | Field | Type | Required | Description | Example |
 |---|---|---|---|---|
 | `title` | `string` | Yes | Article title | `"Azure Landing Zones: Scalable Cloud Foundations"` |
-| `category` | enum | Yes | One of 9 values (see taxonomy below) | `"azure"` |
+| `category` | enum | Yes | One of 10 values (see taxonomy below) | `"azure"` |
 | `tags` | `string[]` | Yes | Keyword tags for filtering | `["Azure", "IaC", "Governance"]` |
 | `date` | `Date` | Yes | Publication date (coerced from string) | `2025-01-08` |
 | `readTime` | `number` | No | Read time in minutes — auto-calculated from word count if omitted; manual value takes priority. Speed config in `src/utils/readTime.ts`. | `11` |
@@ -255,17 +262,18 @@ Content is managed through Astro Content Collections. Collection definitions and
 
 **Category taxonomy:**
 
-| Category value | Display label | Description |
-|---|---|---|
-| `azure` | Azure | Azure-specific architecture, services, and patterns |
-| `oci` | OCI | Oracle Cloud Infrastructure architecture and services |
-| `networking` | Networking | VNet, ExpressRoute, hybrid connectivity |
-| `identity` | Identity | Entra ID, RBAC, Zero Trust |
-| `security` | Security | Posture management, compliance, threat protection |
-| `finops` | FinOps | Cost optimisation, tagging, showback models |
-| `gcp` | GCP | Google Cloud Platform topics |
-| `devops` | DevOps | CI/CD, GitOps, platform engineering |
-| `bpm` | BPM | Business Process Management, Camunda, Oracle BPM |
+| Category value | Display label | Filter group | Description |
+|---|---|---|---|
+| `azure` | Azure | Platform | Azure-specific architecture, services, and patterns |
+| `oci` | OCI | Platform | Oracle Cloud Infrastructure architecture and services |
+| `multicloud` | Multicloud | Platform | Cross-cloud architecture, Azure/OCI comparisons, cloud-agnostic patterns and fundamentals |
+| `networking` | Networking | Topic | VNet, ExpressRoute, hybrid connectivity |
+| `identity` | Identity | Topic | Entra ID, RBAC, Zero Trust |
+| `security` | Security | Topic | Posture management, compliance, threat protection |
+| `finops` | FinOps | Topic | Cost optimisation, tagging, showback models |
+| `gcp` | GCP | Platform | Google Cloud Platform topics |
+| `devops` | DevOps | Topic | CI/CD, GitOps, platform engineering |
+| `bpm` | BPM | Topic | Business Process Management, Camunda, Oracle BPM |
 
 Articles are organised into subdirectories matching the `category` value. The glob loader pattern `**/*.md` picks up all files recursively, so directory structure is for human organisation only — the `category` frontmatter field is the authoritative classification.
 
@@ -465,11 +473,11 @@ The `npm run build` script chains two commands: `astro build` (produces `dist/`)
 
 ## 9. Performance and Constraints
 
-**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the multi-select filter + sort + URL-state IIFE in `knowledge-base/index.astro` (KB listing only), the mobile sheet script in `CategorySidebar.astro` (KB pages only — open/close, focus management, ESC key, Tab focus trap), the expand/collapse handler in `ExperienceTimeline.astro`, and the `KBSearch.astro` inline script (KB listing only). There is no JavaScript framework, no hydration, no module graph.
+**Zero JS by default.** Every `.astro` component is server-only. The JavaScript in the production build is minimal and scoped: the hamburger toggle in `Header.astro`, the IntersectionObserver scroll-spy in `ArticleOutline.astro` (article pages only), the multi-select filter + sort + URL-state IIFE in `knowledge-base/index.astro` (KB listing only), the mobile sheet script in `CategorySidebar.astro` (KB pages only — open/close, focus management, ESC key, Tab focus trap), the expand/collapse handler in `ExperienceTimeline.astro`, the `KBSearch.astro` inline script (KB listing only), and `canvas.ts` (KB listing only — lazily imported via dynamic `import()` on first Map tab activation; bundles Cytoscape.js and cytoscape-dagre, ~200 KB, zero cost until the Map view is opened). There is no JavaScript framework, no hydration, no module graph.
 
 **Pagefind search.** The Knowledge Base listing page includes a full-text search powered by [Pagefind](https://pagefind.app). At build time, `npx pagefind --site dist` crawls all pages carrying `data-pagefind-body` (only KB article detail pages) and outputs a static index to `dist/pagefind/`. At runtime, the ~25 KB Pagefind JS bundle is loaded lazily — only when the user first focuses the search input. Until that moment it contributes zero bytes to initial page load. Only KB article pages are indexed; the listing page, case studies, contact page, and credentials page are excluded. Searching during `npm run dev` is not functional because the index is only generated by `npm run build`.
 
-**Static pre-rendering.** All pages — 6 static routes plus one per content entry (3 case studies + 5 KB articles = 14 total for current content) — are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
+**Static pre-rendering.** All pages — 6 static routes plus one per content entry (3 case studies + 25 KB articles = 34 total for current content) — are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
 
 **Font loading.** Google Fonts is loaded via `<link rel="preconnect">` hints to `fonts.googleapis.com` and `fonts.gstatic.com`, established in `BaseLayout.astro`. The `display=swap` parameter in the font URL ensures body text renders immediately in the fallback font while the custom fonts load — no flash of invisible text.
 
