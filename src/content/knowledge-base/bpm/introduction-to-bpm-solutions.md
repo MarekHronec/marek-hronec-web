@@ -3,13 +3,15 @@ title: "Introduction to BPM Solutions: Camunda, Activiti and Kogito"
 category: bpm
 tags: ["BPM", "Camunda", "Activiti", "Kogito", "BPMN", "Process Automation"]
 date: 2025-03-12
+updated: 2026-05-02
+readTime: 10
 level: beginner
 excerpt: "A practical introduction to modern BPM engines. What they solve, how they differ, and how to choose between Camunda, Activiti and Kogito for your organisation."
 ---
 
 Business Process Management (BPM) platforms execute the workflows that coordinate systems, people and decisions across an organisation. When a mortgage application moves through review, approval, document collection and disbursement — a BPM engine is typically the thing that knows where each case is and what happens next.
 
-This article introduces the three most widely used open-source BPM engines — Camunda, Activiti and Kogito — and explains what each one is best suited for.
+This article introduces three well-known BPM and business automation runtimes — Camunda, Activiti and Kogito — and explains what each one is best suited for.
 
 ## What a BPM Engine Actually Does
 
@@ -38,11 +40,23 @@ The key BPMN elements:
 | Message event | Circle with envelope | Send or receive a message |
 | Timer event | Circle with clock | Wait for a time condition |
 
-A process model in BPMN is an executable specification. The same diagram that the business analyst draws is what the engine runs — closing the gap between business intent and technical implementation.
+A BPMN model can become an executable specification, but only when the technical details are added: service task bindings, variables, error handling, message correlation, user-task forms and deployment configuration. The business diagram and the executable model should stay close, but they are rarely identical without engineering work.
+
+<div class="callout-tip">
+  <div class="callout-tip__icon" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
+    </svg>
+  </div>
+  <div class="callout-tip__content">
+    <p class="callout-tip__label">Process Design Pro Tip</p>
+    <p>Keep business logic out of service task delegates. Service tasks should call application services, not implement business rules themselves. A BPMN model littered with implementation details becomes hard to change and impossible for non-engineers to reason about. The test: if you removed the BPM engine, the business logic in your service layer should still work independently.</p>
+  </div>
+</div>
 
 ## Camunda
 
-Camunda is the most widely adopted BPM platform for Java-based enterprise systems. It comes in two main variants: **Camunda 7** (embeddable, battle-tested) and **Camunda 8** (cloud-native, based on Zeebe).
+Camunda is one of the most widely adopted BPM platforms for Java-based enterprise systems. It comes in two main variants: **Camunda 7** (embeddable, battle-tested, now legacy) and **Camunda 8** (cloud-native, based on Zeebe).
 
 ### Camunda 7
 
@@ -53,7 +67,8 @@ Camunda 7 is embedded directly into a Java or Spring Boot application. The engin
 <dependency>
     <groupId>org.camunda.bpm.springboot</groupId>
     <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-    <version>7.21.0</version>
+    <!-- Pin the current Camunda 7 LTS / enterprise-supported version used by your organisation -->
+    <version>7.24.0</version>
 </dependency>
 ```
 
@@ -62,6 +77,8 @@ Key characteristics:
 - **Database-backed state** — process instances persist in a relational database (PostgreSQL, MySQL, H2 for development)
 - **REST API and web apps** — Cockpit (monitoring), Tasklist (human tasks) and Admin are bundled
 - **Strong Spring Boot integration** — service tasks map directly to Spring beans
+
+**Important context:** Camunda 7 is now a legacy-but-supported platform. Camunda 7.24 is the final feature release. Community Edition no longer receives security or maintenance updates after October 2025, while Enterprise Edition remains supported through 2030. That means Camunda 7 is still a valid choice for existing enterprise estates and migrations, but it should not be presented as the default starting point for every new greenfield project.
 
 Camunda 7 is the right choice when you need a mature, well-documented engine with predictable behaviour and are comfortable with a Java-centric stack.
 
@@ -73,13 +90,13 @@ Key differences from Camunda 7:
 - **No shared relational database** — state lives in Zeebe's own distributed store
 - **gRPC-based client** — services connect via Zeebe client SDKs (Java, .NET, Go, Node)
 - **Designed for high throughput** — suitable for millions of process instances
-- **Self-managed or SaaS** — can be deployed on Kubernetes or used as Camunda Platform SaaS
+- **Self-managed or SaaS** — Camunda 8 can run as a self-managed Kubernetes deployment or as Camunda 8 SaaS. For production use, check the current Camunda licensing model before choosing the self-managed route.
 
 Camunda 8 suits new projects that expect high volume, are building cloud-native, or want to leverage the managed SaaS offering.
 
 ## Activiti
 
-Activiti is the project that Camunda was originally forked from. It is maintained by Alfresco and remains a capable, lightweight BPM engine.
+Activiti is historically important because Camunda originally forked from it. It remains a lightweight, open-source BPMN engine maintained in the Alfresco ecosystem, but its documentation depth, commercial ecosystem and enterprise momentum are smaller than Camunda's.
 
 ```java
 // Starting a process instance in Activiti
@@ -98,11 +115,11 @@ Key characteristics:
 - **Activiti Cloud** — the cloud-native variant, built on Spring Cloud and Kubernetes
 - **Smaller ecosystem** — fewer commercial extensions and less community documentation than Camunda
 
-Activiti is a reasonable choice for teams that want a lean BPM engine without the full Camunda surface area, or for projects already deep in the Alfresco Content Services stack.
+Activiti can be a reasonable choice for teams that want a lean BPM engine without the full Camunda surface area, or for projects already deep in the Alfresco Content Services stack — but verify current project activity, documentation depth and maintenance posture before choosing it for a new strategic platform.
 
 ## Kogito
 
-Kogito is the newest of the three. It is a cloud-native business automation platform from Red Hat, built on Quarkus and designed around the idea that process, decision and rules logic should compile to lightweight, self-contained services.
+Kogito is different from the other two. It is less a traditional central BPM engine and more a cloud-native business automation toolkit/runtime — built around processes, decisions and rules — from the KIE/Drools/jBPM ecosystem, designed for Quarkus and Kubernetes-native deployments.
 
 ```java
 // In Kogito, a process automatically generates a REST API
@@ -113,7 +130,7 @@ Kogito is the newest of the three. It is a cloud-native business automation plat
 
 Key characteristics:
 - **Quarkus-first** — designed for fast startup, low memory, and GraalVM native compilation
-- **Serverless-friendly** — a Kogito process compiles to a microservice that starts in milliseconds
+- **Serverless-friendly** — Kogito services can be built on Quarkus for fast startup, low memory usage and event-driven deployment patterns
 - **Generates REST APIs automatically** — each process model becomes an API endpoint without manual wiring
 - **Decision Model Notation (DMN)** — first-class support for DMN alongside BPMN
 - **Kubernetes-native** — integrates with Knative for event-driven scaling
@@ -122,21 +139,24 @@ Kogito's main trade-off: it is younger, and the ecosystem is narrower. The tooli
 
 ## Comparison Summary
 
+The important distinction is not only technical. It is also strategic: Camunda 7 is mature but legacy, Camunda 8 is the strategic Camunda direction, Activiti is lightweight but narrower, and Kogito fits best when the organisation already wants the KIE / Quarkus / OpenShift ecosystem.
+
 | | Camunda 7 | Camunda 8 / Zeebe | Activiti | Kogito |
 |---|---|---|---|---|
-| Runtime model | Embedded / shared | Distributed cluster | Embedded / cloud | Microservice per process |
-| State storage | RDBMS | Distributed log | RDBMS | External store |
-| Java framework | Spring Boot | Spring / any | Spring Boot | Quarkus |
-| Maturity | High | Medium | High | Medium |
-| Throughput | Medium | Very high | Medium | Medium |
-| Best for | Enterprise Java | High-volume cloud | Lightweight embed | Cloud-native / serverless |
-| SaaS option | Yes (Platform SaaS) | Yes (Platform SaaS) | No | No |
+| Runtime model | Embedded / shared engine | Distributed orchestration cluster | Embedded / cloud-native components | Process/rule services |
+| State storage | Relational database | Zeebe state / distributed log architecture | Relational database | Runtime-specific persistence |
+| Primary stack | Java / Spring Boot | Polyglot clients, Kubernetes-oriented | Java / Spring Boot | Quarkus / Java / Kubernetes |
+| Maturity | Very high, but legacy | High and strategic | Mature core, smaller ecosystem | Younger / narrower ecosystem |
+| Throughput | Medium to high | Very high | Medium | Depends on architecture |
+| Best for | Existing Java BPM estates, migrations, embedded workflow | New cloud-native orchestration, high-volume processes, SaaS | Lightweight BPMN embedding, Alfresco-adjacent use cases | Quarkus/OpenShift-native process and decision services |
+| SaaS option | No native Camunda 7 SaaS path | Yes | No mainstream native SaaS | No mainstream native SaaS |
+| Licensing posture | Community EOL; Enterprise supported | Production license required | Apache/open-source | Open-source / KIE ecosystem |
 
 ## Choosing the Right Engine
 
 A few practical decision rules:
 
-**Choose Camunda 7** if you are building or migrating a Java-based enterprise application and want the most battle-tested option with the richest ecosystem, documentation and tooling.
+**Choose Camunda 7** if you are maintaining, extending, or migrating an existing Java-based BPM estate and want the most battle-tested embedded-engine model with mature documentation and tooling.
 
 **Choose Camunda 8** if you are starting a new project, expect high process volumes, are deploying to Kubernetes, or want to use the SaaS offering to avoid operational overhead.
 
@@ -144,9 +164,9 @@ A few practical decision rules:
 
 **Choose Kogito** if you are running a Red Hat stack, building on Quarkus, targeting Kubernetes-native deployments, or want processes to compile to independent microservices with auto-generated APIs.
 
-## Getting Started with Camunda 7 (Practical)
+## Getting Started with the Classic Embedded Model
 
-For most teams encountering BPM for the first time, Camunda 7 with Spring Boot is the smoothest entry point. A minimal working process:
+For learning the classic embedded BPM model, Camunda 7 with Spring Boot remains one of the clearest examples. For new production projects, treat it as a learning path or an existing-estate pattern, not as the automatic greenfield default.
 
 1. Add the Spring Boot starter dependency
 2. Place a `.bpmn` file in `src/main/resources`
@@ -168,8 +188,38 @@ public class SendConfirmationEmailDelegate implements JavaDelegate {
 
 In the BPMN, the service task references `${sendConfirmationEmail}`. Camunda resolves it from the Spring context at runtime. This tight integration between process model and Spring beans is what makes Camunda 7 productive for Java teams.
 
-## Summary
+<div class="callout-warning">
+  <div class="callout-warning__icon" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
+    </svg>
+  </div>
+  <div class="callout-warning__content">
+    <p class="callout-warning__label">Common Pitfall</p>
+    <p>The most common BPM migration headache is inheriting an estate where delegates contain business logic, variables are untyped, and the database holds years of completed instances that slow every query. Technical debt accumulates in direct proportion to how much logic was embedded in the engine rather than kept in application services. Starting on Camunda 7 today means accepting that a migration path will be needed sooner or later — design with that migration in mind from day one.</p>
+  </div>
+</div>
 
-BPM engines make long-running, stateful processes explicit, observable and manageable. Of the three platforms covered here, Camunda 7 is the safest starting point for most enterprise Java teams. Camunda 8 is the path for cloud-native, high-volume deployments. Activiti suits lightweight or Alfresco-adjacent use cases. Kogito is the choice when Quarkus and Kubernetes-native compilation are the priority.
+## Engine Portability
 
-The technology choice matters less than the discipline: model your processes in BPMN, understand the engine's state machine, and keep your business logic in the engine rather than scattered across application code.
+BPMN 2.0 is a standard, but the engines are not interchangeable in practice.
+
+**What is portable:** the BPMN diagram itself — the `.bpmn` XML file — can generally be imported into another compliant engine. The model structure travels reasonably well.
+
+**What is not portable:** expression languages (Camunda 7 uses JUEL/Groovy, Zeebe and Kogito use FEEL), task delegate bindings (Camunda 7 `JavaDelegate`, Zeebe job workers, and Kogito work items are different APIs entirely), variable serialization, built-in form rendering, and multi-instance loop mechanics.
+
+A migration between engines is primarily a re-implementation of the integration layer, not a conversion of the model. The model is somewhat portable; the glue code is not.
+
+The practical implication: choose an engine based on ecosystem fit and long-term strategic direction, not on an assumption that you can switch later without significant re-engineering.
+
+## Closing Checklist
+
+- Model processes in BPMN 2.0 and keep the model readable by the business — it is your primary documentation artefact and should not require an engineer to decode.
+- Keep business logic in application services, not in BPMN task delegates. The engine orchestrates; services execute.
+- For Camunda 7: appropriate for existing estates or Enterprise Edition programmes. Community Edition no longer receives security patches after October 2025; do not start new greenfield production deployments on it.
+- For Camunda 8: confirm current licensing requirements before committing to self-managed production use. The SaaS route offloads operational overhead but has its own cost and data-residency considerations.
+- For Activiti: suitable for lightweight embedding or Alfresco-adjacent projects. Verify current community activity and maintenance posture before adopting for a new project.
+- For Kogito: strongest fit when the organisation already runs Quarkus, OpenShift or Red Hat middleware. Evaluate ecosystem maturity for your specific process complexity.
+- Do not model everything as a BPM process. Short-lived, synchronous operations do not benefit from process state management. BPM overhead is justified for long-running, stateful, multi-step workflows that need auditability and resumption.
+- Decide on an expression language early — JUEL, FEEL, and Groovy are not interchangeable across engines. Changing mid-project is expensive.
+- Test process resumption explicitly. Stateful engines survive restarts; your test suite should prove that a process interrupted at any state resumes correctly.

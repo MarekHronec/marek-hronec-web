@@ -195,8 +195,8 @@ BaseLayout.astro
 │   │   └── [Building, Briefcase, Factory, Layers, ListText, Shield, Activity, Tag] (icons)
 │   │
 │   ├── knowledge-base/index.astro (/knowledge-base)
-│   │   ├── [inline <script>]  ← multi-select platform/topic filter, sort, URL state (?platforms=&topics=&sort=)
-│   │   ├── CategorySidebar.astro    ← filter panel (Platform + Topics groups)
+│   │   ├── [inline <script>]  ← multi-select filter (platform/topic/level), sort, pagination, URL state
+│   │   ├── CategorySidebar.astro    ← data-driven filter panel (Platforms, Topics, Difficulty groups)
 │   │   │   ├── GridAppsIcon.astro (icon)
 │   │   │   └── [inline <script>]  ← mobile sheet: open/close, focus management, ESC, Tab trap
 │   │   └── ArticleCard.astro (×n)

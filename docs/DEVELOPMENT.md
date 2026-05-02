@@ -10,6 +10,7 @@
 6. [CSS Conventions](#6-css-conventions)
 7. [Build and Preview](#7-build-and-preview)
 8. [Deployment](#8-deployment)
+9. [Knowledge Base Filter System](#9-knowledge-base-filter-system)
 
 ---
 
@@ -276,3 +277,177 @@ Feature branches follow the pattern `feature/<kebab-case-name>`. No direct commi
 1. `npm run build` passes locally
 2. `npm run preview` confirms the changes look correct
 3. `npx astro check` reports no TypeScript errors
+
+---
+
+## 9. Knowledge Base Filter System
+
+The KB listing page (`/knowledge-base`) supports multi-select filtering across three groups: **Platforms**, **Topics**, and **Difficulty**. This section explains how the system works and how to extend it.
+
+### Architecture overview
+
+The filter engine is driven by four data structures. Three live in `CategorySidebar.astro`; the other three are in the `<script>` block of `knowledge-base/index.astro`.
+
+**`filterGroups` — `CategorySidebar.astro` frontmatter**
+
+The single source of truth for what filter groups and values are displayed. Both the desktop sidebar and the mobile bottom sheet iterate over this array — adding a group or a value means editing this array only; no HTML changes are needed.
+
+```js
+const filterGroups = [
+  { heading: 'Platforms', group: 'platform', items: [
+    { value: 'azure', label: 'Azure' }, ...
+  ]},
+  { heading: 'Topics',    group: 'topic',    items: [...] },
+  { heading: 'Difficulty', group: 'level',   items: [...] },
+];
+```
+
+**`activeFilters` — `index.astro` script**
+
+One `Record<string, Set<string>>` keyed by group name. Every operation — toggle, clear, count, chip list, URL serialise — iterates over this generically. Adding a new group requires one entry here.
+
+```js
+const activeFilters = {
+  platform: new Set(),
+  topic:    new Set(),
+  level:    new Set(),
+};
+```
+
+**`articleValues` — `index.astro` script**
+
+Maps each group name to a function that reads the corresponding `data-*` attribute(s) from a card wrapper element. This is how the filter engine compares a card against a group's active selection.
+
+```js
+const articleValues = {
+  platform: w => w.dataset.platforms.split(',').filter(Boolean),
+  topic:    w => w.dataset.topics.split(',').filter(Boolean),
+  level:    w => (w.dataset.level ? [w.dataset.level] : []),
+};
+```
+
+**`URL_PARAMS` and `LABELS` — `index.astro` script**
+
+`URL_PARAMS` maps group keys to their URL query parameter names. `LABELS` maps group keys to display-name lookup objects (used for chip labels and `aria-label` text).
+
+### Filter evaluation rules
+
+- Selections **within** a group are ORed: "Azure" + "OCI" shows articles tagged with either.
+- Selections **across** groups are ANDed: "Azure" (Platform) + "Foundations" (Difficulty) shows only Azure beginner articles.
+- An article missing a group's data attribute is **excluded** when that group has an active filter, and **included** when it has none.
+- The `[n]` counts next to each button show how many articles would match if that button were the only selection in its group, given current selections in all other groups.
+
+---
+
+### How to add a value to an existing group
+
+Example: add **GCP** to the Platforms group.
+
+**1. `CategorySidebar.astro` — `filterGroups`**
+
+Add one object to the `platform` group's `items` array:
+
+```js
+{ value: 'gcp', label: 'GCP' },
+```
+
+**2. `index.astro` — `PLATFORM_CATS` (Astro frontmatter)**
+
+Add `'gcp'` to the set so GCP-category articles get the `data-platforms` attribute set:
+
+```js
+const PLATFORM_CATS = new Set(['azure', 'oci', 'gcp', 'multicloud']);
+```
+
+`'gcp'` is already in `LABELS.platform`. No other changes needed.
+
+---
+
+### How to add a new filter group
+
+Example: add a **Format** group with values `guide` and `reference`.
+
+**Step 1 — Content schema** (`src/content.config.ts`)
+
+Add the field to the `knowledgeBase` Zod schema. Mark it optional so existing articles without the field still build:
+
+```ts
+format: z.enum(['guide', 'reference']).optional(),
+```
+
+**Step 2 — Article frontmatter**
+
+Add `format: guide` (or `reference`) to the articles you want classified. Articles without the field are included in unfiltered results and excluded only when the Format filter is active.
+
+**Step 3 — Card wrapper data attribute** (`index.astro` — HTML template)
+
+Add a `data-format` attribute to the `kb-card-wrapper` div, alongside the existing `data-platforms`, `data-topics`, and `data-level`:
+
+```astro
+data-format={article.data.format ?? ''}
+```
+
+**Step 4 — `filterGroups`** (`CategorySidebar.astro` frontmatter)
+
+Add the group entry. Both desktop and mobile update automatically:
+
+```js
+{
+  heading: 'Format',
+  group: 'format',
+  items: [
+    { value: 'guide',     label: 'Guide' },
+    { value: 'reference', label: 'Reference' },
+  ],
+},
+```
+
+**Step 5 — `activeFilters`** (`index.astro` script)
+
+Add the new group's Set:
+
+```js
+const activeFilters = {
+  platform: new Set(),
+  topic:    new Set(),
+  level:    new Set(),
+  format:   new Set(),   // ← add
+};
+```
+
+**Step 6 — `articleValues`** (`index.astro` script)
+
+Add the accessor. Single-value fields return a one-element array; absent fields return empty (no match):
+
+```js
+const articleValues = {
+  ...
+  format: w => (w.dataset.format ? [w.dataset.format] : []),  // ← add
+};
+```
+
+**Step 7 — `URL_PARAMS`** (`index.astro` script)
+
+Add the URL query parameter name:
+
+```js
+const URL_PARAMS = {
+  platform: 'platforms',
+  topic:    'topics',
+  level:    'level',
+  format:   'format',   // ← add
+};
+```
+
+**Step 8 — `LABELS`** (`index.astro` script)
+
+Add display labels for chip rendering and `aria-label` text:
+
+```js
+const LABELS = {
+  ...,
+  format: { guide: 'Guide', reference: 'Reference' },  // ← add
+};
+```
+
+That is all. The toggle logic, `matchesFilter`, `countForBtn`, chip generation, URL serialisation, and "Clear all" handler all iterate over `activeFilters` generically — no further changes are needed in any of those functions.

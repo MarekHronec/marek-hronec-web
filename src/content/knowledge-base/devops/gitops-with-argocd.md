@@ -93,3 +93,24 @@ spec:
 ## Drift Detection and Alerting
 
 Argo CD's health status surfaces drift in real time. Integrate with your alerting stack by exposing the `argocd_app_sync_status` Prometheus metric and alerting on `OutOfSync` states persisting beyond your SLA threshold.
+
+## Cross-Platform Factor
+
+Argo CD is not the only GitOps implementation, and the platform context determines which tool fits best.
+
+**Azure / AKS:** Microsoft supports Flux v2 natively through the Azure GitOps extension for AKS and Arc-enabled Kubernetes. Flux is a CNCF graduated project and reduces operational overhead for organisations standardising on Azure-managed services — you do not run Argo CD as a separate operational concern. For teams that specifically want Argo CD's UI, ApplicationSet fleet management, and Argo Rollouts integration, self-managed Argo CD on AKS is a well-trodden path. Both are production-grade choices; the decision is mainly about managed service preference versus ecosystem features.
+
+**OCI / OKE:** OCI DevOps Service provides pipeline-driven deployment to OKE with rollback capability, but it is not a GitOps engine in the Argo CD sense — it does not implement continuous reconciliation against a declared Git state. For pure GitOps on OCI, self-managed Argo CD on OKE works as it does on any Kubernetes cluster. The operational overhead of running the Argo CD control plane is yours.
+
+**Flux vs Argo CD:** Argo CD has a richer UI, ApplicationSet for fleet management, and native integration with Argo Rollouts. Flux is more modular — separate controllers for image automation, Helm releases, and kustomization — and has deeper Azure Arc integration. For multi-cluster fleets where fleet-wide rollout control matters, Argo CD's ApplicationSet and cluster generator are generally the easier path. For Azure-centric estates that want managed tooling, Flux with the Azure GitOps extension reduces the operational surface.
+
+## Closing Checklist
+
+- Separate application manifests from application source code. Deployment state and development history should not share the same repository.
+- Use ApplicationSet for fleet management. Individual Application objects per cluster do not scale; ApplicationSet with a cluster generator does.
+- Gate production sync behind a manual approval step. Automated sync with pruning on production without a promotion gate will delete resources on branch merges.
+- Pair Argo CD with Argo Rollouts for progressive delivery. Canary and blue-green strategies belong in the delivery pipeline, not in ad-hoc deployment scripts.
+- Alert on `argocd_app_sync_status` showing `OutOfSync` states persisting beyond your SLA threshold. Drift that is not surfaced is drift that accumulates.
+- Document the promotion model explicitly: which branches correspond to which environments, what triggers a sync, and what a rollback looks like. GitOps makes rollback easy only when the promotion model is well-defined before an incident.
+- For Azure / AKS: evaluate the native Flux GitOps extension before adding self-managed Argo CD. For teams that need Argo CD's UI and ApplicationSet ecosystem, self-managed Argo CD on AKS is straightforward.
+- For OCI / OKE: self-managed Argo CD works as on any Kubernetes cluster. OCI DevOps Service provides pipeline-driven deployment but is not a continuous reconciliation engine — it does not replace GitOps if continuous reconciliation is a requirement.

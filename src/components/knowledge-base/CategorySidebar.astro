@@ -3,6 +3,40 @@
 // Filter state, counts, and active styling are managed by JS in index.astro.
 // This component only renders the HTML scaffolding.
 import GridAppsIcon from '../icons/GridAppsIcon.astro';
+
+const filterGroups = [
+  {
+    heading: 'Platforms',
+    group: 'platform',
+    items: [
+      { value: 'azure',      label: 'Azure' },
+      { value: 'oci',        label: 'OCI' },
+      { value: 'multicloud', label: 'Multicloud' },
+    ],
+  },
+  {
+    heading: 'Topics',
+    group: 'topic',
+    items: [
+      { value: 'networking',    label: 'Networking' },
+      { value: 'identity',      label: 'Identity' },
+      { value: 'security',      label: 'Security' },
+      { value: 'finops',        label: 'FinOps' },
+      { value: 'landing-zones', label: 'Landing Zones' },
+      { value: 'devops',        label: 'DevOps' },
+      { value: 'bpm',           label: 'BPM' },
+    ],
+  },
+  {
+    heading: 'Difficulty',
+    group: 'level',
+    items: [
+      { value: 'beginner',      label: 'Foundations' },
+      { value: 'intermediate',  label: 'Practitioner' },
+      { value: 'advanced',      label: 'Expert' },
+    ],
+  },
+];
 ---
 
 <aside class="kb-filter">
@@ -20,47 +54,23 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
       </button>
     </div>
 
-    <div class="kb-filter__sep" role="separator"></div>
-
-    <div class="kb-filter__group">
-      <p class="kb-filter__group-label">Platforms</p>
-      <ul class="kb-filter__options" role="list">
-        <li>
-          <button class="kb-filter__btn" data-filter-group="platform" data-filter-value="azure" aria-pressed="false">
-            <span>Azure</span><span class="kb-filter__count"></span>
-          </button>
-        </li>
-        <li>
-          <button class="kb-filter__btn" data-filter-group="platform" data-filter-value="oci" aria-pressed="false">
-            <span>OCI</span><span class="kb-filter__count"></span>
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <div class="kb-filter__sep" role="separator"></div>
-
-    <div class="kb-filter__group">
-      <p class="kb-filter__group-label">Topics</p>
-      <ul class="kb-filter__options" role="list">
-        {[
-          ['networking',    'Networking'],
-          ['identity',      'Identity'],
-          ['security',      'Security'],
-          ['finops',        'FinOps'],
-          ['landing-zones', 'Landing Zones'],
-          ['devops',        'DevOps'],
-          ['bpm',           'BPM'],
-        ].map(([value, label]) => (
-          <li>
-            <button class="kb-filter__btn" data-filter-group="topic" data-filter-value={value} aria-pressed="false">
-              <span>{label}</span><span class="kb-filter__count"></span>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-
+    {filterGroups.map(({ heading, group, items }) => (
+      <>
+        <div class="kb-filter__sep" role="separator"></div>
+        <div class="kb-filter__group">
+          <p class="kb-filter__group-label">{heading}</p>
+          <ul class="kb-filter__options" role="list">
+            {items.map(({ value, label }) => (
+              <li>
+                <button class="kb-filter__btn" data-filter-group={group} data-filter-value={value} aria-pressed="false">
+                  <span>{label}</span><span class="kb-filter__count"></span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </>
+    ))}
 
   </div>
 </aside>
@@ -104,37 +114,20 @@ import GridAppsIcon from '../icons/GridAppsIcon.astro';
           <span class="kb-filter__count" id="kb-mobile-all-count"></span>
         </button>
       </div>
-      <p class="kb-mobile-sheet__group-label">Platforms</p>
-      <ul class="kb-filter__options" role="list">
-        <li>
-          <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group="platform" data-filter-value="azure" aria-pressed="false">
-            <span>Azure</span><span class="kb-filter__count"></span>
-          </button>
-        </li>
-        <li>
-          <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group="platform" data-filter-value="oci" aria-pressed="false">
-            <span>OCI</span><span class="kb-filter__count"></span>
-          </button>
-        </li>
-      </ul>
-      <p class="kb-mobile-sheet__group-label">Topics</p>
-      <ul class="kb-filter__options" role="list">
-        {[
-          ['networking',    'Networking'],
-          ['identity',      'Identity'],
-          ['security',      'Security'],
-          ['finops',        'FinOps'],
-          ['landing-zones', 'Landing Zones'],
-          ['devops',        'DevOps'],
-          ['bpm',           'BPM'],
-        ].map(([value, label]) => (
-          <li>
-            <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group="topic" data-filter-value={value} aria-pressed="false">
-              <span>{label}</span><span class="kb-filter__count"></span>
-            </button>
-          </li>
-        ))}
-      </ul>
+      {filterGroups.map(({ heading, group, items }) => (
+        <>
+          <p class="kb-mobile-sheet__group-label">{heading}</p>
+          <ul class="kb-filter__options" role="list">
+            {items.map(({ value, label }) => (
+              <li>
+                <button class="kb-filter__btn kb-mobile-sheet__btn" data-filter-group={group} data-filter-value={value} aria-pressed="false">
+                  <span>{label}</span><span class="kb-filter__count"></span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
     </div>
   </div>
 </div>

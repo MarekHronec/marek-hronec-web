@@ -17,7 +17,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
    Topics:   derived from category (for topic-category articles)
              + from tags (Networking, Identity, Security, FinOps, Landing Zones)
 ──────────────────────────────────────────────────────────────── */
-const PLATFORM_CATS = new Set(['azure', 'oci', 'gcp']);
+const PLATFORM_CATS = new Set(['azure', 'oci', 'gcp', 'multicloud']);
 const TOPIC_CATS = new Set(['networking', 'identity', 'security', 'finops', 'devops', 'bpm']);
 const TAG_TO_TOPIC: Record<string, string> = {
   'Networking':    'networking',
@@ -102,6 +102,7 @@ const totalCount = sorted.length;
                 class="kb-card-wrapper"
                 data-platforms={getArticlePlatforms(article)}
                 data-topics={getArticleTopics(article)}
+                data-level={article.data.level}
                 data-date={article.data.date.toISOString()}
                 data-title={article.data.title}
               >
@@ -507,111 +508,108 @@ const totalCount = sorted.length;
 
     /* ── Label maps ─────────────────────────────────────────────── */
     const LABELS: Record<string, Record<string, string>> = {
-      platform: { azure: 'Azure', oci: 'OCI', gcp: 'GCP' },
+      platform: { azure: 'Azure', oci: 'OCI', gcp: 'GCP', multicloud: 'Multicloud' },
       topic: {
         networking: 'Networking', identity: 'Identity', security: 'Security',
         finops: 'FinOps', 'landing-zones': 'Landing Zones', devops: 'DevOps', bpm: 'BPM',
       },
+      level: { beginner: 'Foundations', intermediate: 'Practitioner', advanced: 'Expert' },
+    };
+
+    /* URL param name per group */
+    const URL_PARAMS: Record<string, string> = {
+      platform: 'platforms',
+      topic:    'topics',
+      level:    'level',
     };
 
     /* ── Constants ──────────────────────────────────────────────── */
     const PAGE_SIZE = 15;
 
     /* ── State ──────────────────────────────────────────────────── */
-    const activePlatforms = new Set<string>();
-    const activeTopics = new Set<string>();
+    /* One Record of Sets keyed by group name. Every operation (toggle,
+       clear, count, chips, URL) iterates this generically — adding a
+       group requires one entry here, not changes across 12 functions. */
+    const activeFilters: Record<string, Set<string>> = {
+      platform: new Set<string>(),
+      topic:    new Set<string>(),
+      level:    new Set<string>(),
+    };
     let activeSort = 'latest';
     let currentPage = 1;
 
     /* ── DOM refs ───────────────────────────────────────────────── */
-    const grid = document.getElementById('kb-grid');
-    const countEl = document.getElementById('kb-article-count');
-    const countLabelEl = document.getElementById('kb-article-count-label');
-    const chipsEl = document.getElementById('kb-chips') as HTMLElement | null;
-    const allArticlesBtn = document.getElementById('kb-all-articles');
-    const allCountEl = document.getElementById('kb-all-count');
-    const mobileAllBtn = document.getElementById('kb-mobile-all-articles');
+    const grid          = document.getElementById('kb-grid');
+    const countEl       = document.getElementById('kb-article-count');
+    const countLabelEl  = document.getElementById('kb-article-count-label');
+    const chipsEl       = document.getElementById('kb-chips') as HTMLElement | null;
+    const allArticlesBtn  = document.getElementById('kb-all-articles');
+    const allCountEl      = document.getElementById('kb-all-count');
+    const mobileAllBtn    = document.getElementById('kb-mobile-all-articles');
     const mobileAllCountEl = document.getElementById('kb-mobile-all-count');
-    const sortEl = document.getElementById('kb-sort') as HTMLSelectElement | null;
-    const emptyEl = document.getElementById('kb-filter-empty');
-    const mobileBadge = document.getElementById('kb-mobile-badge');
-    const paginationEl = document.getElementById('kb-pagination') as HTMLElement | null;
+    const sortEl        = document.getElementById('kb-sort') as HTMLSelectElement | null;
+    const emptyEl       = document.getElementById('kb-filter-empty');
+    const mobileBadge   = document.getElementById('kb-mobile-badge');
+    const paginationEl  = document.getElementById('kb-pagination') as HTMLElement | null;
 
-    /* All article wrappers — order matches server-rendered (newest first) */
-    const wrappers = Array.from(
-      document.querySelectorAll<HTMLElement>('[data-platforms]')
-    );
+    const wrappers = Array.from(document.querySelectorAll<HTMLElement>('[data-platforms]'));
+
+    /* ── Article value accessors per group ──────────────────────── */
+    const articleValues: Record<string, (w: HTMLElement) => string[]> = {
+      platform: w => (w.dataset.platforms ?? '').split(',').filter(Boolean),
+      topic:    w => (w.dataset.topics    ?? '').split(',').filter(Boolean),
+      level:    w => (w.dataset.level ? [w.dataset.level] : []),
+    };
 
     /* ── Init from URL ──────────────────────────────────────────── */
     const params = new URLSearchParams(window.location.search);
-    (params.get('platforms') ?? '').split(',').filter(Boolean).forEach(v => activePlatforms.add(v));
-    (params.get('topics') ?? '').split(',').filter(Boolean).forEach(v => activeTopics.add(v));
+    Object.entries(URL_PARAMS).forEach(([group, param]) => {
+      (params.get(param) ?? '').split(',').filter(Boolean).forEach(v => activeFilters[group].add(v));
+    });
     activeSort = params.get('sort') ?? 'latest';
     if (sortEl) sortEl.value = activeSort;
     currentPage = parseInt(params.get('page') ?? '1', 10) || 1;
 
-    /* ── Helpers ────────────────────────────────────────────────── */
-    function getPlatforms(w: HTMLElement): string[] {
-      return (w.dataset.platforms ?? '').split(',').filter(Boolean);
-    }
-    function getTopics(w: HTMLElement): string[] {
-      return (w.dataset.topics ?? '').split(',').filter(Boolean);
-    }
-
+    /* ── Filter logic ───────────────────────────────────────────── */
     function matchesFilter(w: HTMLElement): boolean {
-      const platOk = activePlatforms.size === 0 || getPlatforms(w).some(p => activePlatforms.has(p));
-      const topicOk = activeTopics.size === 0 || getTopics(w).some(t => activeTopics.has(t));
-      return platOk && topicOk;
+      return Object.entries(activeFilters).every(([g, active]) =>
+        active.size === 0 || articleValues[g](w).some(v => active.has(v))
+      );
     }
 
-    /* Count for a single filter button, respecting the OTHER group's active filters */
+    /* Count articles matching all groups, treating `group` as if only `value` is selected */
     function countForBtn(group: string, value: string): number {
-      return wrappers.filter(w => {
-        if (group === 'platform') {
-          const platMatch = getPlatforms(w).includes(value);
-          const topicMatch = activeTopics.size === 0 || getTopics(w).some(t => activeTopics.has(t));
-          return platMatch && topicMatch;
-        } else {
-          const topicMatch = getTopics(w).includes(value);
-          const platMatch = activePlatforms.size === 0 || getPlatforms(w).some(p => activePlatforms.has(p));
-          return topicMatch && platMatch;
-        }
-      }).length;
+      return wrappers.filter(w =>
+        Object.entries(activeFilters).every(([g, active]) =>
+          g === group
+            ? articleValues[g](w).includes(value)
+            : active.size === 0 || articleValues[g](w).some(v => active.has(v))
+        )
+      ).length;
     }
 
     function sortFn(a: HTMLElement, b: HTMLElement): number {
-      if (activeSort === 'oldest') return (a.dataset.date ?? '').localeCompare(b.dataset.date ?? '');
+      if (activeSort === 'oldest') return (a.dataset.date  ?? '').localeCompare(b.dataset.date  ?? '');
       if (activeSort === 'title')  return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '');
-      return (b.dataset.date ?? '').localeCompare(a.dataset.date ?? ''); /* latest (default) */
+      return (b.dataset.date ?? '').localeCompare(a.dataset.date ?? '');
     }
 
     /* ── Scroll helper ──────────────────────────────────────────── */
     function scrollToArticles(): void {
-      const toolbar = document.querySelector<HTMLElement>('.kb-toolbar');
-      if (toolbar) {
-        toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      document.querySelector<HTMLElement>('.kb-toolbar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     /* ── Page range ─────────────────────────────────────────────── */
     function getPageRange(current: number, total: number): (number | '...')[] {
-      if (total <= 7) {
-        return Array.from({ length: total }, (_, i) => i + 1);
-      }
-
-      const rangeSet = new Set<number>();
-      rangeSet.add(1);
-      rangeSet.add(total);
+      if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+      const rangeSet = new Set([1, total]);
       for (let i = current - 1; i <= current + 1; i++) {
         if (i >= 1 && i <= total) rangeSet.add(i);
       }
-
       const sorted = Array.from(rangeSet).sort((a, b) => a - b);
       const result: (number | '...')[] = [];
       for (let i = 0; i < sorted.length; i++) {
-        if (i > 0 && sorted[i] - sorted[i - 1] > 1) {
-          result.push('...');
-        }
+        if (i > 0 && sorted[i] - sorted[i - 1] > 1) result.push('...');
         result.push(sorted[i]);
       }
       return result;
@@ -620,75 +618,52 @@ const totalCount = sorted.length;
     /* ── Render pagination ──────────────────────────────────────── */
     function renderPagination(totalPages: number, current: number): void {
       if (!paginationEl) return;
-
-      if (totalPages <= 1) {
-        paginationEl.hidden = true;
-        paginationEl.innerHTML = '';
-        return;
-      }
+      if (totalPages <= 1) { paginationEl.hidden = true; paginationEl.innerHTML = ''; return; }
 
       paginationEl.hidden = false;
       paginationEl.innerHTML = '';
 
-      /* Prev button */
       const prevBtn = document.createElement('button');
       prevBtn.className = 'kb-page-nav';
       prevBtn.setAttribute('aria-label', 'Go to previous page');
       prevBtn.disabled = current === 1;
       prevBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Prev`;
-      prevBtn.addEventListener('click', () => {
-        currentPage = current - 1;
-        apply();
-        scrollToArticles();
-      });
+      prevBtn.addEventListener('click', () => { currentPage = current - 1; apply(); scrollToArticles(); });
       paginationEl.appendChild(prevBtn);
 
-      /* Compact "X / Y" for small screens */
       const compactSpan = document.createElement('span');
       compactSpan.className = 'kb-pagination__compact';
       compactSpan.setAttribute('aria-hidden', 'true');
       compactSpan.textContent = `${current} / ${totalPages}`;
       paginationEl.appendChild(compactSpan);
 
-      /* Pages */
       const pagesDiv = document.createElement('div');
       pagesDiv.className = 'kb-pagination__pages';
-
       getPageRange(current, totalPages).forEach(item => {
         if (item === '...') {
-          const ellipsis = document.createElement('span');
-          ellipsis.className = 'kb-page-ellipsis';
-          ellipsis.setAttribute('aria-hidden', 'true');
-          ellipsis.textContent = '…';
-          pagesDiv.appendChild(ellipsis);
+          const el = document.createElement('span');
+          el.className = 'kb-page-ellipsis';
+          el.setAttribute('aria-hidden', 'true');
+          el.textContent = '…';
+          pagesDiv.appendChild(el);
         } else {
           const pageBtn = document.createElement('button');
           pageBtn.className = 'kb-page-num';
           pageBtn.setAttribute('aria-label', `Go to page ${item}`);
           if (item === current) pageBtn.setAttribute('aria-current', 'page');
           pageBtn.textContent = String(item);
-          pageBtn.addEventListener('click', () => {
-            currentPage = item as number;
-            apply();
-            scrollToArticles();
-          });
+          pageBtn.addEventListener('click', () => { currentPage = item as number; apply(); scrollToArticles(); });
           pagesDiv.appendChild(pageBtn);
         }
       });
-
       paginationEl.appendChild(pagesDiv);
 
-      /* Next button */
       const nextBtn = document.createElement('button');
       nextBtn.className = 'kb-page-nav';
       nextBtn.setAttribute('aria-label', 'Go to next page');
       nextBtn.disabled = current === totalPages;
       nextBtn.innerHTML = `Next <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-      nextBtn.addEventListener('click', () => {
-        currentPage = current + 1;
-        apply();
-        scrollToArticles();
-      });
+      nextBtn.addEventListener('click', () => { currentPage = current + 1; apply(); scrollToArticles(); });
       paginationEl.appendChild(nextBtn);
     }
 
@@ -699,31 +674,23 @@ const totalCount = sorted.length;
 
       visible.sort(sortFn);
 
-      /* Pagination calculations */
       const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
       if (currentPage > totalPages) currentPage = totalPages;
       const startIdx = (currentPage - 1) * PAGE_SIZE;
       const pageSlice = new Set(visible.slice(startIdx, startIdx + PAGE_SIZE));
 
-      /* Re-order DOM: visible (sorted) first, hidden last */
-      if (grid) {
-        [...visible, ...hidden].forEach(w => grid.appendChild(w));
-      }
-
+      if (grid) [...visible, ...hidden].forEach(w => grid.appendChild(w));
       visible.forEach(w => { w.style.display = pageSlice.has(w) ? '' : 'none'; });
       hidden.forEach(w  => (w.style.display = 'none'));
 
-      /* Article count */
       const n = visible.length;
       if (countEl) countEl.textContent = String(n);
       if (countLabelEl) countLabelEl.textContent = n === 1 ? 'article' : 'articles';
 
-      /* Filter button active states + counts */
       document.querySelectorAll<HTMLElement>('[data-filter-group]').forEach(btn => {
         const group = btn.dataset.filterGroup ?? '';
         const value = btn.dataset.filterValue ?? '';
-        const isActive = group === 'platform' ? activePlatforms.has(value) : activeTopics.has(value);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', (activeFilters[group]?.has(value) ?? false) ? 'true' : 'false');
         const countSpan = btn.querySelector('.kb-filter__count');
         if (countSpan) {
           const c = countForBtn(group, value);
@@ -731,44 +698,29 @@ const totalCount = sorted.length;
         }
       });
 
-      /* Mobile active-filter badge */
-      const totalActive = activePlatforms.size + activeTopics.size;
-      if (mobileBadge) {
-        mobileBadge.textContent = String(totalActive);
-        mobileBadge.hidden = totalActive === 0;
-      }
+      const totalActive = Object.values(activeFilters).reduce((n, s) => n + s.size, 0);
+      if (mobileBadge) { mobileBadge.textContent = String(totalActive); mobileBadge.hidden = totalActive === 0; }
 
-      /* All Articles button + Clear filters state */
-      const hasFilters = activePlatforms.size > 0 || activeTopics.size > 0;
+      const hasFilters = Object.values(activeFilters).some(s => s.size > 0);
       allArticlesBtn?.setAttribute('aria-pressed', hasFilters ? 'false' : 'true');
       mobileAllBtn?.setAttribute('aria-pressed', hasFilters ? 'false' : 'true');
       const totalLabel = `[${wrappers.length}]`;
       if (allCountEl) allCountEl.textContent = totalLabel;
       if (mobileAllCountEl) mobileAllCountEl.textContent = totalLabel;
 
-      /* Chips */
       updateChips();
-
-      /* Pagination */
       renderPagination(totalPages, currentPage);
-
-      /* URL state */
       updateURL();
-
-      /* Empty state */
-      if (emptyEl) {
-        emptyEl.hidden = !(hasFilters && n === 0);
-      }
+      if (emptyEl) emptyEl.hidden = !(hasFilters && n === 0);
     }
 
     /* ── Chips ──────────────────────────────────────────────────── */
     function updateChips() {
       if (!chipsEl) return;
       chipsEl.innerHTML = '';
-      const chips = [
-        ...[...activePlatforms].map(v => ({ group: 'platform', value: v })),
-        ...[...activeTopics].map(v  => ({ group: 'topic',    value: v })),
-      ];
+      const chips = Object.entries(activeFilters).flatMap(([group, active]) =>
+        [...active].map(value => ({ group, value }))
+      );
 
       if (chips.length > 0) {
         const clearAll = document.createElement('button');
@@ -776,8 +728,7 @@ const totalCount = sorted.length;
         clearAll.setAttribute('aria-label', 'Clear all filters');
         clearAll.innerHTML = `Clear filters <span aria-hidden="true">×</span>`;
         clearAll.addEventListener('click', () => {
-          activePlatforms.clear();
-          activeTopics.clear();
+          Object.values(activeFilters).forEach(s => s.clear());
           currentPage = 1;
           apply();
         });
@@ -791,8 +742,7 @@ const totalCount = sorted.length;
         btn.setAttribute('aria-label', `Remove filter: ${label}`);
         btn.innerHTML = `${label} <span aria-hidden="true">×</span>`;
         btn.addEventListener('click', () => {
-          if (group === 'platform') activePlatforms.delete(value);
-          else activeTopics.delete(value);
+          activeFilters[group]?.delete(value);
           currentPage = 1;
           apply();
         });
@@ -804,10 +754,12 @@ const totalCount = sorted.length;
     /* ── URL state ──────────────────────────────────────────────── */
     function updateURL() {
       const p = new URLSearchParams();
-      if (activePlatforms.size > 0) p.set('platforms', [...activePlatforms].join(','));
-      if (activeTopics.size > 0)    p.set('topics',    [...activeTopics].join(','));
-      if (activeSort !== 'latest')  p.set('sort',      activeSort);
-      if (currentPage > 1)          p.set('page',      String(currentPage));
+      Object.entries(URL_PARAMS).forEach(([group, param]) => {
+        const active = activeFilters[group];
+        if (active.size > 0) p.set(param, [...active].join(','));
+      });
+      if (activeSort !== 'latest') p.set('sort', activeSort);
+      if (currentPage > 1)        p.set('page', String(currentPage));
       const qs = p.toString();
       history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
     }
@@ -817,11 +769,9 @@ const totalCount = sorted.length;
       btn.addEventListener('click', () => {
         const group = btn.dataset.filterGroup ?? '';
         const value = btn.dataset.filterValue ?? '';
-        if (group === 'platform') {
-          activePlatforms.has(value) ? activePlatforms.delete(value) : activePlatforms.add(value);
-        } else {
-          activeTopics.has(value) ? activeTopics.delete(value) : activeTopics.add(value);
-        }
+        const active = activeFilters[group];
+        if (!active) return;
+        active.has(value) ? active.delete(value) : active.add(value);
         currentPage = 1;
         apply();
       });
@@ -829,8 +779,7 @@ const totalCount = sorted.length;
 
     [allArticlesBtn, mobileAllBtn].forEach(btn => {
       btn?.addEventListener('click', () => {
-        activePlatforms.clear();
-        activeTopics.clear();
+        Object.values(activeFilters).forEach(s => s.clear());
         currentPage = 1;
         apply();
       });

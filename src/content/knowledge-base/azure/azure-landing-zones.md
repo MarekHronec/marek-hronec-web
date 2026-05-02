@@ -5,33 +5,21 @@ tags: ["Azure", "Landing Zones", "Cloud Adoption Framework", "Governance", "IaC"
 date: 2025-01-08
 readTime: 11
 level: advanced
-excerpt: "An Azure landing zone provides the standardized foundation for all cloud adoption. Learn the architecture, design areas, platform vs. application zones, and the right deployment approach for your organization."
+excerpt: "An Azure landing zone provides the standardised foundation for all cloud adoption. Learn the architecture, design areas, platform vs. application zones, and the right deployment approach for your organisation."
 ---
 
-An Azure landing zone is the standardized and recommended approach for all organizations utilizing Azure. It provides a consistent way to set up and manage your Azure environment at scale, ensuring alignment with key requirements for security, compliance, and operational efficiency through platform and application landing zones. Every landing zone is built on a well-architected foundation aligned with core design principles across eight design areas.
+An Azure landing zone is the standardised and recommended approach for all organisations adopting Azure at scale. It provides a consistent way to set up and manage an Azure environment, ensuring alignment with key requirements for security, compliance, and operational efficiency through platform and application landing zones. Every landing zone is built on a well-architected foundation aligned with core design principles across eight design areas.
 
 ## Architecture Overview
 
-An Azure landing zone architecture is scalable and modular to meet various deployment needs. Repeatable infrastructure allows you to apply configurations and controls to every subscription consistently. Modules make it easy to deploy and modify specific components as requirements evolve.
+An Azure landing zone architecture is scalable and modular. Repeatable infrastructure allows configurations and controls to be applied consistently to every subscription. Modules make it straightforward to deploy and modify specific components as requirements evolve.
 
-The reference architecture centers on a management group hierarchy that organizes subscriptions by purpose:
+The reference architecture centres on a management group hierarchy that organises subscriptions by purpose:
 
 - **Platform management group** — hosts shared services: identity, connectivity, and management subscriptions
 - **Landing Zones management group** — hosts application landing zones, split into Corp and Online sub-groups
 - **Sandboxes management group** — isolated environments for experimentation without policy inheritance
 - **Decommissioned management group** — subscriptions staged for removal
-
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Treat the reference architecture as a starting point, not a fixed template. Azure landing zones are designed to be tailored — adjust the management group hierarchy, policy assignments, and network topology to reflect your organization's governance model before you deploy anything.</p>
-  </div>
-</div>
 
 ## Platform vs. Application Landing Zones
 
@@ -49,13 +37,26 @@ Application landing zones inherit Azure Policy definitions from parent managemen
 
 ## Application Landing Zone Management Approaches
 
-There are three models for managing application landing zones. Choose based on your organization's maturity and team structure:
+There are three models for managing application landing zones. In practice, most organisations use a combination — central management for regulated workloads and application-team management for product engineering workloads is the typical split. Design the management group hierarchy to support this mix without merging governance boundaries.
 
 | Approach | Who manages | Best for |
 |---|---|---|
 | **Central team** | Central IT owns and operates the landing zone end-to-end | Regulated industries, high-compliance workloads |
 | **Application team** | Platform team delegates the zone; app team self-manages | Product teams with DevOps maturity |
 | **Shared** | Central IT manages the platform (e.g. AKS), app team manages workloads on top | Shared PaaS platforms across multiple teams |
+
+## The Eight Design Areas
+
+Every Azure landing zone decision maps to one of eight design areas. Decisions in each area are interdependent — changes in one often constrain options in another.
+
+1. **Azure billing and Microsoft Entra tenant** — enrolment hierarchy, tenant structure, EA/MCA agreement
+2. **Identity and access management** — Entra ID, RBAC boundaries, Privileged Identity Management
+3. **Management group and subscription organisation** — hierarchy depth, policy inheritance, subscription scale limits
+4. **Network topology and connectivity** — hub-spoke vs. Virtual WAN, ExpressRoute, DNS, private endpoints
+5. **Security** — Microsoft Defender for Cloud, policy baselines, threat detection
+6. **Management** — Log Analytics, monitoring strategy, update management, backup
+7. **Governance** — Azure Policy, Blueprints (deprecated), regulatory compliance initiatives
+8. **Platform automation and DevOps** — IaC toolchain, pipeline strategy, subscription vending automation
 
 <div class="callout-tip">
   <div class="callout-tip__icon" aria-hidden="true">
@@ -65,36 +66,24 @@ There are three models for managing application landing zones. Choose based on y
   </div>
   <div class="callout-tip__content">
     <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>In practice, most enterprises use a hybrid: central management for regulated workloads, application-team management for product engineering workloads. Model your management group hierarchy to support both without merging governance boundaries.</p>
+    <p>Treat the reference architecture as a starting point, not a fixed template. Azure landing zones are designed to be tailored — adjust the management group hierarchy, policy assignments, and network topology to reflect your organisation's governance model before deploying anything. The eight design areas are interdependent; resolve billing and IAM first, then network topology, then governance — changes in those three areas constrain everything else.</p>
   </div>
 </div>
 
-## The Eight Design Areas
-
-Every Azure landing zone decision maps to one of eight design areas. Decisions in each area are interdependent — changes in one often constrain options in another.
-
-1. **Azure billing and Microsoft Entra tenant** — enrollment hierarchy, tenant structure, EA/MCA agreement
-2. **Identity and access management** — Entra ID, RBAC boundaries, Privileged Identity Management
-3. **Management group and subscription organization** — hierarchy depth, policy inheritance, subscription scale limits
-4. **Network topology and connectivity** — hub-spoke vs. Virtual WAN, ExpressRoute, DNS, private endpoints
-5. **Security** — Microsoft Defender for Cloud, policy baselines, threat detection
-6. **Management** — Log Analytics, monitoring strategy, update management, backup
-7. **Governance** — Azure Policy, Blueprints (deprecated), regulatory compliance initiatives
-8. **Platform automation and DevOps** — IaC toolchain, pipeline strategy, subscription vending automation
-
 ## AI Workloads in Landing Zones
 
-A frequently asked question is whether AI workloads require a dedicated AI landing zone. They do not. Azure landing zone design areas — particularly identity and access management, network topology, security, and governance — are already sufficient to host AI workloads.
+A frequently asked question is whether AI workloads require a dedicated AI landing zone. They do not. The eight design areas — particularly identity and access management, network topology, security, and governance — are already sufficient to host AI workloads.
 
-From the platform perspective, AI services (Azure OpenAI, Azure Machine Learning, Cognitive Services) are workloads deployed into application landing zone subscriptions like any other service. The governance controls, private endpoint policies, and network isolation patterns applied to standard workloads apply equally to AI workloads.
+AI services (Azure OpenAI, Azure Machine Learning, Cognitive Services) are workloads deployed into application landing zone subscriptions like any other service. The governance controls, private endpoint policies, and network isolation patterns applied to standard workloads apply equally to AI workloads.
 
 ## Deploying Your Landing Zone
 
-Microsoft recommends the Infrastructure-as-Code accelerator as the primary deployment path:
+Microsoft recommends the Infrastructure-as-Code accelerator as the primary deployment path. Deploying via the portal accelerator creates resources that are difficult to bring under IaC management retroactively — if the estate is expected to grow beyond a handful of subscriptions, invest in IaC from day one.
 
 ```bicep
 // Azure Verified Module — Platform Landing Zone (Bicep)
-module alz 'br/public:avm/ptn/lz/sub-vending:0.2.0' = {
+// Pin to the current AVM release; verify the module index at aka.ms/avm/moduleindex before deploying.
+module alz 'br/public:avm/ptn/lz/sub-vending:<pin-current-version>' = {
   name: 'appLandingZone'
   params: {
     subscriptionAliasEnabled: true
@@ -110,21 +99,9 @@ module alz 'br/public:avm/ptn/lz/sub-vending:0.2.0' = {
 
 The three deployment options in order of recommendation:
 
-1. **IaC Accelerator (Bicep or Terraform)** — recommended for all organizations with any IaC capability
+1. **IaC Accelerator (Bicep or Terraform)** — recommended for all organisations with any IaC capability
 2. **Azure Verified Modules standalone** — use AVM modules directly outside the accelerator for custom pipelines
-3. **Portal accelerator** — suitable for organizations without IaC expertise, but limits future automation
-
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Critical Constraint</p>
-    <p>Deploying via the portal accelerator creates resources that are difficult to bring under IaC management retroactively. If you anticipate scaling beyond 10 subscriptions, invest in IaC from day one — retrofitting state into Terraform or Bicep after a manual deployment is a significant operational cost.</p>
-  </div>
-</div>
+3. **Portal accelerator** — suitable for organisations without IaC expertise, but limits future automation
 
 ## Subscription Vending
 
@@ -155,7 +132,7 @@ az pipelines run \
   </div>
   <div class="callout-warning__content">
     <p class="callout-warning__label">Operational Warning</p>
-    <p>Never allow workload teams to create their own subscriptions and link them to management groups manually. Without vending automation, subscriptions land in the wrong management group, miss policy assignments, and require remediation that grows in cost with every ungoverned subscription added.</p>
+    <p>Never allow workload teams to create their own subscriptions and link them to management groups manually. Without vending automation, subscriptions land in the wrong management group, miss policy assignments, and require remediation that grows in cost with every ungoverned subscription added. The automation is not optional at scale — it is the only way to keep policy coverage complete.</p>
   </div>
 </div>
 
@@ -169,3 +146,22 @@ Azure Policy is the enforcement engine for landing zones. Policies are assigned 
 - **Modify** — remediate tags, SKUs, or configurations on existing resources
 
 The Azure landing zone IaC accelerator includes a curated set of policy initiatives aligned to frameworks including CIS, NIST SP 800-53, PCI-DSS, and ISO 27001.
+
+## Multicloud factor
+
+OCI has its own landing zone framework — the OCI Landing Zone (also known as the OCI CIS Landing Zone) — that provides a comparable baseline: compartment hierarchy, IAM policies, VCN configuration, and security posture aligned with CIS benchmarks. The structural differences are significant.
+
+Where Azure uses management groups plus subscriptions, OCI uses compartments. Where Azure uses Azure Policy deny and DINE assignments, OCI uses Security Zones and IAM policies. Where Microsoft Defender for Cloud provides the security posture management layer, OCI Cloud Guard fills the equivalent role. The intent of each layer is the same; the mechanism differs enough that a design built for one cloud does not transfer directly to the other.
+
+For multicloud estates running both, the two landing zone frameworks need to be designed in parallel with shared intent but different implementations. The workload taxonomy from the naming and tagging articles applies directly here — the same `<bu>-<workload>-<env>` pattern, the same tag schema, and the same identity federation model should span both clouds, while the subscription and compartment hierarchy is cloud-specific. Document the mapping between the two frameworks in an architecture decision record before either side starts deploying.
+
+## Closing Checklist
+
+- Define the management group hierarchy before deploying anything. Decisions here constrain subscription placement, policy inheritance, and network topology for the lifetime of the estate — they are among the hardest to change post-deployment.
+- Separate platform landing zones (identity, connectivity, management) from application landing zones from the start. Platform teams own the former; workload teams own the latter.
+- Choose IaC (Bicep or Terraform accelerator) as the deployment path from day one. Portal deployments create resources that are difficult to bring under IaC retroactively; retrofitting state after a manual deployment is a significant operational cost.
+- Implement subscription vending automation before the estate grows beyond a handful of subscriptions. Manual subscription creation without vending produces ungoverned subscriptions that accumulate governance debt faster than they can be remediated.
+- Assign Azure Policy at the management group level, not at individual subscriptions. Baseline policies — deny, audit, DINE, modify — should be inherited automatically, not applied by workload teams.
+- Use all three management approaches where appropriate: central for regulated workloads, application-team for product engineering, shared for PaaS platforms. Design the management group hierarchy to support this mix without merging governance boundaries.
+- For AI workloads, there is no separate AI landing zone requirement. AI services are application workloads deployed into standard application landing zone subscriptions, subject to the same governance controls as any other workload.
+- Review the eight design areas before making irreversible decisions. Billing hierarchy, IAM boundaries, and network topology are the three areas that cost the most to restructure after the fact.
