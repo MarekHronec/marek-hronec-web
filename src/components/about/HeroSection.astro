@@ -114,6 +114,7 @@ import { base } from '../../utils/base';
     border-radius: var(--radius-md);
     overflow: hidden;
     max-height: 200px;
+    background-color: var(--color-surface-container-low);
   }
 
   @media (min-width: 768px) {
@@ -133,5 +134,12 @@ import { base } from '../../utils/base';
     object-fit: cover;
     object-position: 60% center;
     display: block;
+    color: transparent;
+    animation: img-appear 0.35s var(--ease-standard) both;
+  }
+
+  @keyframes img-appear {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 </style>

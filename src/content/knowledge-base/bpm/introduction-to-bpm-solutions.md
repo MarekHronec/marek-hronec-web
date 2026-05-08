@@ -7,6 +7,23 @@ updated: 2026-05-02
 readTime: 10
 level: beginner
 excerpt: "A practical introduction to modern BPM engines. What they solve, how they differ, and how to choose between Camunda, Activiti and Kogito for your organisation."
+references:
+  - title: "Camunda 8 documentation"
+    url: "https://docs.camunda.io/docs/"
+    description: "Official documentation for Camunda 8, covering BPMN modelling, Zeebe engine, Tasklist, and deployment patterns for cloud and self-managed environments."
+    domain: "docs.camunda.io"
+  - title: "BPMN 2.0 specification — Object Management Group"
+    url: "https://www.omg.org/spec/BPMN/2.0/"
+    description: "The formal OMG specification for Business Process Model and Notation 2.0, the standard that underpins Camunda, Activiti, Kogito, and Flowable process definitions."
+    domain: "omg.org"
+  - title: "Kogito — cloud-native business automation"
+    url: "https://kogito.kie.org/get-started/"
+    description: "Getting started guide for Kogito, Red Hat's cloud-native runtime for BPMN and DMN processes built on Quarkus and targeting Kubernetes-native deployments."
+    domain: "kogito.kie.org"
+  - title: "Flowable documentation"
+    url: "https://documentation.flowable.com/latest/"
+    description: "Reference documentation for Flowable, the open-source continuation of Activiti 5 that supports BPMN, CMMN, and DMN in a single embeddable or standalone engine."
+    domain: "documentation.flowable.com"
 ---
 
 Business Process Management (BPM) platforms execute the workflows that coordinate systems, people and decisions across an organisation. When a mortgage application moves through review, approval, document collection and disbursement — a BPM engine is typically the thing that knows where each case is and what happens next.
@@ -42,17 +59,9 @@ The key BPMN elements:
 
 A BPMN model can become an executable specification, but only when the technical details are added: service task bindings, variables, error handling, message correlation, user-task forms and deployment configuration. The business diagram and the executable model should stay close, but they are rarely identical without engineering work.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Process Design Pro Tip</p>
-    <p>Keep business logic out of service task delegates. Service tasks should call application services, not implement business rules themselves. A BPMN model littered with implementation details becomes hard to change and impossible for non-engineers to reason about. The test: if you removed the BPM engine, the business logic in your service layer should still work independently.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Keep business logic out of service task delegates. Service tasks should call application services, not implement business rules themselves. A BPMN model littered with implementation details becomes hard to change and impossible for non-engineers to reason about. The test: if you removed the BPM engine, the business logic in your service layer should still work independently.
+:::
 
 ## Camunda
 
@@ -188,17 +197,9 @@ public class SendConfirmationEmailDelegate implements JavaDelegate {
 
 In the BPMN, the service task references `${sendConfirmationEmail}`. Camunda resolves it from the Spring context at runtime. This tight integration between process model and Spring beans is what makes Camunda 7 productive for Java teams.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Common Pitfall</p>
-    <p>The most common BPM migration headache is inheriting an estate where delegates contain business logic, variables are untyped, and the database holds years of completed instances that slow every query. Technical debt accumulates in direct proportion to how much logic was embedded in the engine rather than kept in application services. Starting on Camunda 7 today means accepting that a migration path will be needed sooner or later — design with that migration in mind from day one.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+The most common BPM migration headache is inheriting an estate where delegates contain business logic, variables are untyped, and the database holds years of completed instances that slow every query. Technical debt accumulates in direct proportion to how much logic was embedded in the engine rather than kept in application services. Starting on Camunda 7 today means accepting that a migration path will be needed sooner or later — design with that migration in mind from day one.
+:::
 
 ## Engine Portability
 

@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 11
 level: beginner
 excerpt: "Names are largely permanent. They get embedded in IaC, DNS, certificates, audit trails, and Private Endpoint zones. A bad convention is technical debt you pay forever — and the standard recipes break the moment your estate hits real scale. Here is what actually holds up."
+references:
+  - title: "Azure CAF — define your naming convention"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming"
+    description: "Microsoft's Cloud Adoption Framework guidance on building a naming convention: the recommended pattern, scope and length rules, and examples across all major resource types."
+    domain: "learn.microsoft.com"
+  - title: "Azure resource abbreviations — CAF reference"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations"
+    description: "The canonical CAF abbreviation list for Azure resource types — the shared vocabulary this article recommends as the starting point for any Azure naming convention."
+    domain: "learn.microsoft.com"
+  - title: "aztfmod/azurecaf Terraform provider"
+    url: "https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs"
+    description: "The community Terraform provider that generates and validates Azure resource names against the CAF convention — validates length, allowed characters, and uniqueness scope constraints automatically."
+    domain: "registry.terraform.io"
+  - title: "Azure resource naming rules and restrictions"
+    url: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules"
+    description: "The authoritative Microsoft reference for length limits, allowed characters, and uniqueness scope for every Azure resource type — the table to bookmark before finalising any naming schema."
+    domain: "learn.microsoft.com"
 ---
 
 There is a moment early in every cloud project when someone asks "what should we call the storage account?" and someone else says "we'll figure it out, just call it `mystorage01` for now." That conversation is the start of years of pain. Naming convention work looks like bikeshedding until the day you cannot create a new storage account because every variation of the workload name is taken globally, or until you are doing a multicloud migration and your dashboards cannot tell which `prod-app-01` lives in which cloud.
@@ -152,17 +169,9 @@ resource "azurerm_storage_account" "this" {
 
 OCI has no equivalent provider. You build the same logic with `locals` and discipline.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>In multicloud environments, the cloud prefix should be the default on every resource name. It costs two characters and saves every "wait, which cloud is this in?" for the rest of the estate's life. Document the rare exceptions — resources where length or provider naming rules make it genuinely impractical — but treat them as exceptions, not the norm.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+In multicloud environments, the cloud prefix should be the default on every resource name. It costs two characters and saves every "wait, which cloud is this in?" for the rest of the estate's life. Document the rare exceptions — resources where length or provider naming rules make it genuinely impractical — but treat them as exceptions, not the norm.
+:::
 
 ## Enforcement, because conventions on a wiki are fiction
 
@@ -210,17 +219,9 @@ The decision rule:
 
 If anyone asks "but the cost centre might change" — that is the whole point. Tags are mutable. Names are not.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Microsoft's CAF naming pages look clean in a slide deck and break the moment you hit petabyte scale, twelve regions, or your first M&amp;A. The official examples never show what happens when the same workload exists in three regions across two business units, or when a 15-character VM name has to encode all of it. Plan for the constrained cases first; the easy ones will follow.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Microsoft's CAF naming pages look clean in a slide deck and break the moment you hit petabyte scale, twelve regions, or your first M&A. The official examples never show what happens when the same workload exists in three regions across two business units, or when a 15-character VM name has to encode all of it. Plan for the constrained cases first; the easy ones will follow.
+:::
 
 ## Multicloud factor
 

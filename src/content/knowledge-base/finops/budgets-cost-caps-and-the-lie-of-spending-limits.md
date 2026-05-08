@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 13
 level: intermediate
 excerpt: "Neither Azure nor OCI provides a universal billing-level hard cap in enterprise commercial contracts. Budgets alert. OCI quotas enforce resource ceilings. Hard billing kill switches do not exist. Here is what is real, what is theatre, and what you actually wire up."
+references:
+  - title: "Create and manage Azure budgets"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"
+    description: "Step-by-step guide to configuring Azure Cost Management budgets, alert thresholds, and action groups — the tools that alert on overspend rather than blocking it."
+    domain: "learn.microsoft.com"
+  - title: "OCI Budgets overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/budgetsoverview.htm"
+    description: "How OCI Budgets and Alerts work at the tenancy and compartment level, including how they differ from Azure's cost management model in enforcement behaviour."
+    domain: "docs.oracle.com"
+  - title: "FinOps Framework"
+    url: "https://www.finops.org/framework/"
+    description: "The FinOps Foundation's structured framework for cloud financial management — the capabilities, principles, and maturity model behind effective budget governance across clouds."
+    domain: "finops.org"
+  - title: "FinOps Open Cost and Usage Specification (FOCUS)"
+    url: "https://focus.finops.org/"
+    description: "The open billing data schema standard that normalises cost data from Azure, OCI, AWS, and GCP into a common format — directly relevant to the cross-cloud FOCUS normalisation discussed in this article."
+    domain: "focus.finops.org"
 ---
 
 There is a question that comes up at every cloud architecture review when finance is in the room: *can we set a hard cap on cloud spend so we never exceed budget?* The answer everyone wants is yes. The honest answer is no — not in the way they mean.
@@ -123,17 +140,9 @@ The asymmetry matters: OCI quota management operates synchronously at the contro
 
 In both cases: **you have to build the emergency automation**. For OCI, the proactive quota setting requires no automation at all. The platforms ship the alerting; the hard enforcement action is yours — except in OCI, where declarative quotas let you set the ceiling before the alarm fires.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>This conversation comes up at almost every cloud architecture review where finance is in the room. The request is always some version of "set a hard cap so we cannot exceed €X per month." The honest answer is always the same: that mechanism does not exist on a real commercial contract on either cloud, and anyone who tells you otherwise has not tried to implement it. What you can build is a soft cap with automated remediation that <em>approximates</em> a hard cap with two-day worst-case lag. Finance teams who hear that clearly and accept it once always end up better-prepared than the ones who keep looking for the button that does not exist.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+This conversation comes up at almost every cloud architecture review where finance is in the room. The request is always some version of "set a hard cap so we cannot exceed €X per month." The honest answer is always the same: that mechanism does not exist on a real commercial contract on either cloud, and anyone who tells you otherwise has not tried to implement it. What you can build is a soft cap with automated remediation that *approximates* a hard cap with two-day worst-case lag. Finance teams who hear that clearly and accept it once always end up better-prepared than the ones who keep looking for the button that does not exist.
+:::
 
 ## Cost anomaly detection — the more useful tool
 
@@ -164,17 +173,9 @@ The mistake organisations make with commitments: treating them as straightforwar
 
 One structural difference worth understanding: Azure Reservations are SKU-specific commitments — you commit to a particular instance family in a specific region (e.g. Standard_D4s_v5, West Europe), and if your workload moves to a different family, the reservation's value is stranded. Exchange and Return policies exist but add operational overhead. OCI Universal Credits operate as a flexible consumption pool — you commit to a spend level, and the credits apply across eligible OCI services and regions without SKU lock-in. OCI's model is more forgiving for organisations whose architecture is still evolving. Azure Savings Plans for Compute partially close this gap — they apply across instance families and regions — but Reservations remain more common for workloads with stable, predictable compute shapes. The financial instrument your procurement team signs matters when forecasting commitment utilisation.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Treat budgets, anomaly detection, and commitments as three separate tools that do different jobs. Budgets are for "are we on track this month." Anomaly detection is for "did something just spike." Commitments are for "we are confident this baseline is real for the next 1–3 years." Conflating them — using budgets to manage anomalies, or commitments to control budget — produces poor outcomes from each. Three tools, three jobs, three reviews.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Treat budgets, anomaly detection, and commitments as three separate tools that do different jobs. Budgets are for "are we on track this month." Anomaly detection is for "did something just spike." Commitments are for "we are confident this baseline is real for the next 1–3 years." Conflating them — using budgets to manage anomalies, or commitments to control budget — produces poor outcomes from each. Three tools, three jobs, three reviews.
+:::
 
 ## What to actually wire up on day one
 

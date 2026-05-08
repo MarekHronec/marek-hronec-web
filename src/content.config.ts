@@ -12,6 +12,12 @@ const knowledgeBase = defineCollection({
     readTime: z.number().optional(),
     level: z.enum(['beginner', 'intermediate', 'advanced']),
     excerpt: z.string(),
+    references: z.array(z.object({
+      title: z.string(),
+      url: z.string().url(),
+      description: z.string(),
+      domain: z.string(),
+    })).optional(),
   }),
 });
 

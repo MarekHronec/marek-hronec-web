@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 13
 level: beginner
 excerpt: "'Available in Azure' rarely means 'available in the region you need.' 'Deployed to West Europe' does not always mean 'data stays in West Europe.' Region choice is an architectural decision, not a deployment toggle — and the resilience semantics differ in ways the marketing pages will not tell you."
+references:
+  - title: "Azure Availability Zones overview"
+    url: "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    description: "Microsoft's reference for AZ architecture, zone-redundant services, and how physical separation is delivered — the operational detail behind the \"three zones per region\" model."
+    domain: "learn.microsoft.com"
+  - title: "Azure global infrastructure — geographies"
+    url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/"
+    description: "The full map of Azure geographies, regions, and data residency boundaries — the starting point for data sovereignty and region-pair decisions."
+    domain: "azure.microsoft.com"
+  - title: "OCI regions and availability domains"
+    url: "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm"
+    description: "Oracle's reference for OCI regions, availability domain counts per region, realms, and home region semantics — essential reading before provisioning a new OCI tenancy."
+    domain: "docs.oracle.com"
+  - title: "Data residency in Azure"
+    url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/data-residency"
+    description: "Microsoft's guide to data residency commitments across Azure geographies, the EU Data Boundary programme, and service-specific residency behaviours — the reference for sovereignty-driven region decisions."
+    domain: "learn.microsoft.com"
 ---
 
 The portal lets you pick a region from a dropdown. That makes it look like a simple choice — pick a city, deploy. It is not a simple choice. The region you choose locks in your data residency, determines your resilience options, constrains which services you can use, and quietly shapes your cost model and disaster recovery story for years. Many of the architectural problems that prove hardest to fix are downstream of a hurried region decision in the first sprint.
@@ -105,17 +122,9 @@ OCI region restrictions through IAM conditions are authorisation controls, not a
 
 Pin allowed regions in policy from day one. The marginal cost of doing this on day one is zero. The cost of unwinding accidental deployments to unapproved regions on day 200 is significant.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>For OCI, the home region is not changeable after the tenancy is provisioned. IAM master definitions live there, and changes to users, groups, policies, compartments, dynamic groups, and federation resources are made in the home region and then propagated to other subscribed regions. Pick the home region deliberately, and pick the one that matches where your operators and identity management work — not just where your workloads run.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+For OCI, the home region is not changeable after the tenancy is provisioned. IAM master definitions live there, and changes to users, groups, policies, compartments, dynamic groups, and federation resources are made in the home region and then propagated to other subscribed regions. Pick the home region deliberately, and pick the one that matches where your operators and identity management work — not just where your workloads run.
+:::
 
 ## Anti-affinity within a region
 
@@ -131,17 +140,9 @@ Once you have chosen a region, the next question is how to structure resilience 
 
 The anti-pattern across both clouds: deploying everything to a single zone or AD "to keep latency tight." The savings on intra-zone latency are typically a millisecond or two; the cost of a zone or AD outage taking the whole tier down is hours of revenue. The trade is almost always wrong.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>OCI Availability Domain numbers are tenancy-specific. AD-1 in one tenancy is not the same physical datacenter as AD-1 in another. Oracle does this deliberately so that customers do not all pile their workloads into the lowest-numbered AD and overload it. The practical implication: when sharing infrastructure setup with other organisations, never refer to "AD-1" as if it means a fixed datacenter. Refer to the AD name from your own tenancy or use the AD's logical name.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+OCI Availability Domain numbers are tenancy-specific. AD-1 in one tenancy is not the same physical datacenter as AD-1 in another. Oracle does this deliberately so that customers do not all pile their workloads into the lowest-numbered AD and overload it. The practical implication: when sharing infrastructure setup with other organisations, never refer to "AD-1" as if it means a fixed datacenter. Refer to the AD name from your own tenancy or use the AD's logical name.
+:::
 
 ## Multicloud factor
 

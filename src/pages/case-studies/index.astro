@@ -54,6 +54,8 @@ const others     = allStudies.filter((s) => !s.data.featured);
                   class="cs-featured__diagram-img"
                   src="/images/case_study_01.webp"
                   alt="Government cloud governance architecture model"
+                  loading="eager"
+                  fetchpriority="high"
                 />
               </div>
 
@@ -387,6 +389,13 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     height: 100%;
     object-fit: cover;
     object-position: center;
+    color: transparent;
+    animation: img-appear 0.3s var(--ease-standard) both;
+  }
+
+  @keyframes img-appear {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   /* ── CTA button ─────────────────────────────────────────────── */

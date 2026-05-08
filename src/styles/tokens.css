@@ -61,8 +61,8 @@
 
   /* ---------- Typography ---------- */
 
-  --font-display: 'Manrope', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-display: 'Manrope Variable', 'ManropeFallback', sans-serif;
+  --font-body: 'Inter Variable', 'InterFallback', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Font sizes */

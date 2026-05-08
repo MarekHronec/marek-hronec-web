@@ -6,6 +6,19 @@ date: 2026-04-30
 readTime: 11
 level: intermediate
 excerpt: "Documentation rots. Cloud Centers of Excellence drift from purpose. The fix is not 'write more docs' or 'hire a CCoE lead.' It is treating documentation as a maintained product and the CCoE as an enabling team with a real charter — both with explicit decay management."
+references:
+  - title: "Cloud Center of Excellence — CAF"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/organize/cloud-center-of-excellence"
+    description: "Microsoft's definition of the CCoE model: its purpose, team composition, responsibilities, and how it differs from a traditional central IT function."
+    domain: "learn.microsoft.com"
+  - title: "Diátaxis — a documentation framework"
+    url: "https://diataxis.fr/"
+    description: "A widely-adopted framework for structuring technical documentation into four distinct types (tutorials, how-tos, reference, explanation) — the foundation for writing docs that resist decay."
+    domain: "diataxis.fr"
+  - title: "Lightweight Architecture Decision Records — Thoughtworks Radar"
+    url: "https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records"
+    description: "The Thoughtworks Technology Radar entry for ADRs — the technique for capturing architectural decisions as short, versioned documents that stay useful long after the decision is made."
+    domain: "thoughtworks.com"
 ---
 
 Two things every cloud organisation produces and underinvests in: documentation and the Cloud Center of Excellence. Both are visible from the start, both are talked about constantly, both decay faster than anyone budgets for. Six months in, the docs are out of date and the CCoE has become a meeting series.
@@ -58,17 +71,9 @@ Three patterns that fight decay:
 
 Without these patterns, the docs that matter most decay first because they are the ones you do not look at until you need them — and by the time you need them, you are already in a crisis.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Documentation rot is usually a governance failure disguised as a tooling problem — rot happens when there is no ownership, no review process, and no consequence for stale content. For engineering-owned technical documentation, docs-as-code in Git provides exactly those controls: reviewability, explicit ownership, and change history. For operational content used broadly across mixed teams, the right platform is one that enforces review discipline while remaining accessible to non-engineering audiences. The tool is a means; the governance is the point.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Documentation rot is usually a governance failure disguised as a tooling problem — rot happens when there is no ownership, no review process, and no consequence for stale content. For engineering-owned technical documentation, docs-as-code in Git provides exactly those controls: reviewability, explicit ownership, and change history. For operational content used broadly across mixed teams, the right platform is one that enforces review discipline while remaining accessible to non-engineering audiences. The tool is a means; the governance is the point.
+:::
 
 ## Cloud Center of Excellence — the version that works
 
@@ -120,17 +125,9 @@ In small orgs, one team does both. In bigger orgs, they split. The CCoE typicall
 
 The split that works has tight communication. The CCoE writes the policy that the platform team enforces. The platform team feeds operational signal back into CCoE planning. Without the loop, you get standards that cannot be operationalised, or operations without strategic direction.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>CCoEs founded with great enthusiasm and a large remit typically drift into ineffectuality within 18 months. The pattern is consistent: the team is small, the remit is huge, the political support is mid-level, and the workload teams develop habits of routing around the CCoE because it is slow. By the time the CCoE realises the workloads have stopped engaging, the damage is done. The fix is not "more authority" — it is a smaller charter, a faster cycle time, and a focus on enablement over enforcement. CCoEs that expand scope faster than execution capacity lose credibility; CCoEs that pick five things and execute them visibly gain it.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+CCoEs founded with great enthusiasm and a large remit typically drift into ineffectuality within 18 months. The pattern is consistent: the team is small, the remit is huge, the political support is mid-level, and the workload teams develop habits of routing around the CCoE because it is slow. By the time the CCoE realises the workloads have stopped engaging, the damage is done. The fix is not "more authority" — it is a smaller charter, a faster cycle time, and a focus on enablement over enforcement. CCoEs that expand scope faster than execution capacity lose credibility; CCoEs that pick five things and execute them visibly gain it.
+:::
 
 ## Multicloud factor
 

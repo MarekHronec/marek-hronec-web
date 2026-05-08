@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 14
 level: intermediate
 excerpt: "Landing zones are the most useful concept in modern cloud adoption and the most overengineered. The reference architectures are excellent. The implementations turn into multi-quarter projects that nobody finishes. Here is what to take, what to leave, and what the vendors will not tell you about retrofitting."
+references:
+  - title: "Azure Landing Zones — CAF"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/"
+    description: "Microsoft's definitive reference for the Azure Landing Zones architecture — management group structure, design areas, and the IaC accelerator options using Bicep and Terraform AVM modules."
+    domain: "learn.microsoft.com"
+  - title: "Azure Landing Zone design areas"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-areas"
+    description: "The eight design areas — billing, identity, management group hierarchy, network topology, security, management, governance, and platform automation — that each ALZ deployment must address."
+    domain: "learn.microsoft.com"
+  - title: "OCI Core Landing Zone — GitHub"
+    url: "https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart"
+    description: "Oracle's reference implementation for the OCI Core Landing Zone, evolving from the original CIS Landing Zone Quick Start — compartment structure, security services, network patterns, and Terraform source."
+    domain: "github.com"
+  - title: "Enterprise Azure Policy as Code (EPAC)"
+    url: "https://github.com/Azure/enterprise-azure-policy-as-code"
+    description: "Microsoft's open-source PowerShell solution for managing Azure Policy at scale via a desired-state Git repository — the recommended approach for policy management in ALZ deployments beyond basic scale."
+    domain: "github.com"
 ---
 
 A landing zone is a pre-built environment that workload teams can deploy into without having to make every architectural decision from scratch. The reference architectures from Microsoft (Azure Landing Zones, formerly Enterprise-Scale) and Oracle (OCI Core Landing Zone, formerly the CIS Landing Zone Quick Start) are genuinely good. They encode years of patterns from real customers. They are also significantly more complex than most organisations need on day one, and that mismatch is where most landing zone projects go wrong.
@@ -87,17 +104,9 @@ This is the part the vendor docs are diplomatic about, so here it is plainly.
 
 The trap most mid-size orgs fall into: they read the enterprise reference architecture, build the enterprise version, and discover three quarters in that they have a six-level management group hierarchy with one subscription in each leaf. That is not governance; that is overhead. Right-size for your *current* scale plus 2x headroom, not for the scale described in the reference architecture.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Start with the smallest landing zone that meets your <em>current</em> needs and one tier of growth. You can always add more management groups, more compartments, more policy initiatives. You can rarely subtract them without a project. The ALZ reference and the OCI Core Landing Zone are <em>maximalist</em> by design — they show what is possible, not what is mandatory. Cut what you do not need.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Start with the smallest landing zone that meets your *current* needs and one tier of growth. You can always add more management groups, more compartments, more policy initiatives. You can rarely subtract them without a project. The ALZ reference and the OCI Core Landing Zone are *maximalist* by design — they show what is possible, not what is mandatory. Cut what you do not need.
+:::
 
 ## Greenfield vs brownfield
 
@@ -181,17 +190,9 @@ A pragmatic minimum viable landing zone:
 
 That is the minimum that earns its keep. Everything else is incremental and can be added when there is a concrete reason.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Enterprise landing zone projects have run for 18+ months without a single workload landing in them. The platform team perfects the management group hierarchy, refines the policy initiatives, debates the network topology. Meanwhile the workloads keep deploying into whatever was already there. The way out: ship a v1 landing zone that has obvious imperfections, get one real workload into it, learn from that experience, iterate. A landing zone with one happy customer is worth more than a perfect landing zone with no customers.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Enterprise landing zone projects have run for 18+ months without a single workload landing in them. The platform team perfects the management group hierarchy, refines the policy initiatives, debates the network topology. Meanwhile the workloads keep deploying into whatever was already there. The way out: ship a v1 landing zone that has obvious imperfections, get one real workload into it, learn from that experience, iterate. A landing zone with one happy customer is worth more than a perfect landing zone with no customers.
+:::
 
 ## Multicloud factor
 

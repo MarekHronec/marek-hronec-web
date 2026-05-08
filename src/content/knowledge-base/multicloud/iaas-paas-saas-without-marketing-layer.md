@@ -6,6 +6,19 @@ date: 2026-04-30
 readTime: 12
 level: intermediate
 excerpt: "Slide-deck definitions of cloud service models tell you nothing about how they behave under real workloads. This is the operational reality: what the provider actually manages, what stays on you, where the security model shifts, and where the lock-in is born."
+references:
+  - title: "NIST SP 800-145 — The NIST Definition of Cloud Computing"
+    url: "https://csrc.nist.gov/publications/detail/sp/800-145/final"
+    description: "The foundational definition of IaaS, PaaS, and SaaS from NIST — the vendor-neutral reference that predates and underpins all marketing versions of the service model pyramid."
+    domain: "csrc.nist.gov"
+  - title: "Shared responsibility in the cloud — Azure"
+    url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    description: "Microsoft's breakdown of which security responsibilities belong to the provider vs the customer at each service model layer — the operational complement to the service model decision table."
+    domain: "learn.microsoft.com"
+  - title: "OCI shared security responsibility model"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/shared_responsibility.htm"
+    description: "OCI's equivalent shared responsibility breakdown — comparing it with Azure's version reveals how the boundary shifts differently across service tiers on each cloud."
+    domain: "docs.oracle.com"
 ---
 
 Every cloud architect has sat through the IaaS-PaaS-SaaS pyramid slide. It is one of the least useful things in our industry. The pyramid tells you nothing about who gets paged at 3 AM when a managed service throttles, what your exit costs look like in three years, or why "serverless" sometimes means "you cannot run this anywhere else, ever." This article replaces the pyramid with something operational.
@@ -47,17 +60,9 @@ The same is true for OCI Functions calling Autonomous Database via a Resource Pr
 
 The practical heuristic: count the proprietary integrations a workload uses. One or two may be a sprint. Five or six is usually a project. Ten or more is a strategic dependency.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>When evaluating any PaaS or SaaS service, draw the integration map first. Not the architecture diagram — the integration map. Every line that crosses into a vendor-specific service is a lock-in vector. If you cannot delete that line in a week, the service is more locked-in than the marketing suggests.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+When evaluating any PaaS or SaaS service, draw the integration map first. Not the architecture diagram — the integration map. Every line that crosses into a vendor-specific service is a lock-in vector. If you cannot delete that line in a week, the service is more locked-in than the marketing suggests.
+:::
 
 ## Where the SLAs actually live
 
@@ -127,17 +132,9 @@ The true multicloud strategy is not "deploy the same workload to two clouds." Th
 
 Most enterprises do not need true portability for every workload. They need *deliberate* lock-in: workloads where they have explicitly accepted the trade-off, with a known exit plan, in writing. The horror stories happen when teams accept the lock-in by accident, layer by layer, until one day someone asks "can we move this?" and the answer is "no, and we did not realize that."
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>"PaaS reduces TCO" is true at small scale and starts to crack at enterprise scale. Vendors never show the exit cost in the TCO calculator because by the time you need that number, you have already paid it. A common pattern: an organisation pays seven figures and a year of engineering time to migrate a Logic Apps estate that was originally adopted because it was "free to start." The free part was true. The leaving part was not in the brochure.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+"PaaS reduces TCO" is true at small scale and starts to crack at enterprise scale. Vendors never show the exit cost in the TCO calculator because by the time you need that number, you have already paid it. A common pattern: an organisation pays seven figures and a year of engineering time to migrate a Logic Apps estate that was originally adopted because it was "free to start." The free part was true. The leaving part was not in the brochure.
+:::
 
 ## Closing checklist
 

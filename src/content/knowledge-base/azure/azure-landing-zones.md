@@ -6,6 +6,27 @@ date: 2025-01-08
 readTime: 11
 level: advanced
 excerpt: "An Azure landing zone provides the standardised foundation for all cloud adoption. Learn the architecture, design areas, platform vs. application zones, and the right deployment approach for your organisation."
+references:
+  - title: "Azure landing zone — Cloud Adoption Framework"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/"
+    description: "The authoritative reference architecture and decision guidance for designing and deploying Azure landing zones, including the eight design areas and deployment accelerators."
+    domain: "learn.microsoft.com"
+  - title: "Management groups overview"
+    url: "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
+    description: "How Azure management groups work, their hierarchy limits, and how policy inheritance flows from parent to child subscriptions."
+    domain: "learn.microsoft.com"
+  - title: "Subscription vending"
+    url: "https://learn.microsoft.com/en-us/azure/architecture/landing-zones/subscription-vending"
+    description: "Architecture patterns and reference implementation for automating the provisioning of application landing zone subscriptions on demand."
+    domain: "learn.microsoft.com"
+  - title: "Azure Policy overview"
+    url: "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    description: "Reference for Azure Policy effects — deny, audit, DeployIfNotExists, and Modify — the enforcement engine for landing zone governance at management group scope."
+    domain: "learn.microsoft.com"
+  - title: "ALZ-Bicep — Azure Landing Zones IaC accelerator"
+    url: "https://github.com/Azure/ALZ-Bicep"
+    description: "The official Bicep-based IaC accelerator for deploying the full landing zone platform, including management groups, policies, and connectivity subscriptions."
+    domain: "github.com"
 ---
 
 An Azure landing zone is the standardised and recommended approach for all organisations adopting Azure at scale. It provides a consistent way to set up and manage an Azure environment, ensuring alignment with key requirements for security, compliance, and operational efficiency through platform and application landing zones. Every landing zone is built on a well-architected foundation aligned with core design principles across eight design areas.
@@ -58,17 +79,9 @@ Every Azure landing zone decision maps to one of eight design areas. Decisions i
 7. **Governance** — Azure Policy, Blueprints (deprecated), regulatory compliance initiatives
 8. **Platform automation and DevOps** — IaC toolchain, pipeline strategy, subscription vending automation
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Treat the reference architecture as a starting point, not a fixed template. Azure landing zones are designed to be tailored — adjust the management group hierarchy, policy assignments, and network topology to reflect your organisation's governance model before deploying anything. The eight design areas are interdependent; resolve billing and IAM first, then network topology, then governance — changes in those three areas constrain everything else.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Treat the reference architecture as a starting point, not a fixed template. Azure landing zones are designed to be tailored — adjust the management group hierarchy, policy assignments, and network topology to reflect your organisation's governance model before deploying anything. The eight design areas are interdependent; resolve billing and IAM first, then network topology, then governance — changes in those three areas constrain everything else.
+:::
 
 ## AI Workloads in Landing Zones
 
@@ -124,17 +137,9 @@ az pipelines run \
     ownerObjectId="$(az ad user show --id team@contoso.com --query id -o tsv)"
 ```
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Operational Warning</p>
-    <p>Never allow workload teams to create their own subscriptions and link them to management groups manually. Without vending automation, subscriptions land in the wrong management group, miss policy assignments, and require remediation that grows in cost with every ungoverned subscription added. The automation is not optional at scale — it is the only way to keep policy coverage complete.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Never allow workload teams to create their own subscriptions and link them to management groups manually. Without vending automation, subscriptions land in the wrong management group, miss policy assignments, and require remediation that grows in cost with every ungoverned subscription added. The automation is not optional at scale — it is the only way to keep policy coverage complete.
+:::
 
 ## Policy-Driven Governance
 

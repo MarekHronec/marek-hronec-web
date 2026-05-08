@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 14
 level: intermediate
 excerpt: "Cloud support tiers promise fast responses and strategic guidance, but what you buy is often triage, escalation access, and relationship quality — not guaranteed resolution."
+references:
+  - title: "Azure support plans"
+    url: "https://azure.microsoft.com/en-us/support/plans/"
+    description: "The official comparison of Azure's Developer, Standard, Professional Direct, and Unified support tiers — response times, scope, and pricing that the article dissects."
+    domain: "azure.microsoft.com"
+  - title: "Oracle support programs"
+    url: "https://www.oracle.com/support/programs/"
+    description: "Oracle's OCI and cloud support offering overview, including Premier Support, Customer Success Services, and the escalation paths available at each tier."
+    domain: "oracle.com"
+  - title: "OCI service level agreements"
+    url: "https://www.oracle.com/cloud/iaas/sla/"
+    description: "OCI's SLA definitions per service, including uptime commitments, credits calculation, and the exclusions that define the boundaries of what the vendor actually guarantees."
+    domain: "oracle.com"
+  - title: "How to create an Azure support request"
+    url: "https://learn.microsoft.com/en-us/azure/azure-portal/supportability/how-to-create-azure-support-request"
+    description: "The mechanics of opening Azure support tickets effectively — severity selection, impact description, and routing — relevant to understanding what support actually looks like in practice."
+    domain: "learn.microsoft.com"
 ---
 
 Cloud support is one of those line items that looks straightforward on the marketing page and gets murky the moment you have a real incident. The basic question — "what level of support do we actually need?" — has a real answer, but the answer depends on factors the support comparison tables do not capture.
@@ -103,17 +120,9 @@ When the premium tier is *not* worth it:
 - Cloud-only workload with no on-prem footprint. The "everything Microsoft / everything Oracle" argument disappears.
 - Organisation that primarily uses third-party tooling (Datadog, PagerDuty, Splunk) for incident response. The cloud vendor's support is a backstop, not the primary mechanism.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>The TAM (Technical Account Manager) relationship is real and valuable when it works. The TAM should know your architecture, your stack, your business cycles, and the names of your platform team. If your TAM is rotating every six months and starts every meeting by asking what your environment looks like, you are not getting Premier value — you are getting Standard with a reskinned wrapper. If TAM continuity matters to your organisation, negotiate explicit expectations around assignment duration, transition process, and escalation coverage as part of the contract conversation — do not assume continuity is the default.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+The TAM (Technical Account Manager) relationship is real and valuable when it works. The TAM should know your architecture, your stack, your business cycles, and the names of your platform team. If your TAM is rotating every six months and starts every meeting by asking what your environment looks like, you are not getting Premier value — you are getting Standard with a reskinned wrapper. If TAM continuity matters to your organisation, negotiate explicit expectations around assignment duration, transition process, and escalation coverage as part of the contract conversation — do not assume continuity is the default.
+:::
 
 ## What to test before you commit
 
@@ -146,17 +155,9 @@ Support contracts operate within the cloud shared-responsibility model: the vend
 
 The teams that depend heavily on vendor support are usually the ones who underinvested in their own observability, runbooks, and operations team. The fix is rarely a higher support tier; it is internal capability.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Organisations paying six figures annually for Premier support and running incidents with a runbook that says "open a ticket with Microsoft" as step one are a common pattern. The Premier contract is not a runbook. If incident response depends on a vendor responding within 15 minutes, operations have been outsourced to a queue that cannot be prioritised. Build internal capability first; treat support as a partner for the cases the team genuinely cannot solve, not as the front line.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Organisations paying six figures annually for Premier support and running incidents with a runbook that says "open a ticket with Microsoft" as step one are a common pattern. The Premier contract is not a runbook. If incident response depends on a vendor responding within 15 minutes, operations have been outsourced to a queue that cannot be prioritised. Build internal capability first; treat support as a partner for the cases the team genuinely cannot solve, not as the front line.
+:::
 
 ## Multicloud factor
 

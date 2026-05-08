@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, category, date, level, excerpt } = entry.data;
+const { title, category, date, level, excerpt, references } = entry.data;
 const { Content, headings } = await render(entry);
 const readTime = kbReadTime(entry.body ?? '', category, entry.data.readTime);
 
@@ -108,6 +108,24 @@ const categoryLabel = category.toUpperCase();
         <div class="prose">
           <Content />
         </div>
+
+        <!-- References — from frontmatter, excluded from search index -->
+        {references && references.length > 0 && (
+          <section class="kb-references" data-pagefind-ignore="all">
+            <h3 class="kb-references__heading">References</h3>
+            <div class="references">
+              {references.map((ref) => (
+                <a class="ref-item" href={ref.url} target="_blank" rel="noopener noreferrer">
+                  <span class="ref-item__content">
+                    <span class="ref-item__title">{ref.title}</span>
+                    <span class="ref-item__desc">{ref.description}</span>
+                  </span>
+                  <span class="ref-item__domain">{ref.domain}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         <!-- Related articles — same category, up to 2 -->
 
@@ -330,6 +348,13 @@ const categoryLabel = category.toUpperCase();
     color: var(--color-on-surface-muted);
   }
 
+  .prose :global(h2),
+  .prose :global(h3) {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
   .prose :global(h2) {
     font-family: var(--font-display);
     font-size: var(--text-headline-md);
@@ -346,6 +371,50 @@ const categoryLabel = category.toUpperCase();
     font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
     margin-top: var(--space-3);
+  }
+
+  /* ── Anchor-copy heading links ───────────────────────────────── */
+  .prose :global(.anchor-link) {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+    color: var(--color-on-surface-muted);
+    opacity: 0;
+    text-decoration: none;
+    transition: opacity var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard);
+  }
+
+  .prose :global(h2:hover .anchor-link),
+  .prose :global(h3:hover .anchor-link),
+  .prose :global(.anchor-link:focus-visible) {
+    opacity: 1;
+  }
+
+  .prose :global(.anchor-link:hover),
+  .prose :global(.anchor-link[data-copied]) {
+    color: var(--color-primary);
+    opacity: 1;
+  }
+
+  .prose :global(.anchor-link[data-copied]::after) {
+    content: 'Copied';
+    position: absolute;
+    top: 50%;
+    left: calc(100% + var(--space-2));
+    transform: translateY(-50%);
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.04em;
+    color: var(--color-surface-container-lowest);
+    background: var(--color-on-surface);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: var(--shadow-sm);
   }
 
   .prose :global(p) {
@@ -508,6 +577,90 @@ const categoryLabel = category.toUpperCase();
     margin-top: 0;
   }
 
+  /* ── References section ─────────────────────────────────────── */
+  .kb-references {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 68ch;
+  }
+
+  .kb-references__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-kb-text-muted);
+  }
+
+  .references {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .ref-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface-container-low);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .ref-item:hover {
+    background: var(--color-surface-container);
+    opacity: 1;
+  }
+
+  .ref-item__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .ref-item__title {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .ref-item:hover .ref-item__title {
+    text-decoration: underline;
+  }
+
+  .ref-item__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  .ref-item__domain {
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.05em;
+    color: var(--color-kb-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .ref-item__domain {
+      display: block;
+    }
+  }
+
   /* ── Related articles ────────────────────────────────────────── */
   .kb-related {
     display: flex;
@@ -579,5 +732,31 @@ const categoryLabel = category.toUpperCase();
     wrapper.className = 'prose-table-scroll';
     table.parentNode?.insertBefore(wrapper, table);
     wrapper.appendChild(table);
+  });
+
+  /* Anchor-copy links — appended to every h2/h3 that has an id.
+     Astro's built-in rehype-slug assigns the id; we just add the UI. */
+  document.querySelectorAll<HTMLHeadingElement>('.prose h2[id], .prose h3[id]').forEach(heading => {
+    const link = document.createElement('a');
+    link.className = 'anchor-link';
+    link.href = '#' + heading.id;
+    link.setAttribute('aria-label', 'Copy link to this section');
+    link.setAttribute('tabindex', '-1');
+    link.innerHTML =
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
+      '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>' +
+      '</svg>';
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      history.replaceState(null, '', '#' + heading.id);
+      navigator.clipboard?.writeText(location.href).catch(() => {});
+      link.dataset.copied = 'true';
+      setTimeout(() => delete link.dataset.copied, 2000);
+    });
+
+    heading.appendChild(link);
   });
 </script>

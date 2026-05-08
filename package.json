@@ -20,9 +20,14 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/manrope": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@types/cytoscape": "^3.21.9",
     "pagefind": "^1.5.2",
     "puppeteer": "^24.40.0",
-    "typescript": "^5.9.3"
+    "remark-directive": "^4.0.0",
+    "typescript": "^5.9.3",
+    "unist-util-visit": "^5.1.0"
   }
 }

@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 15
 level: intermediate
 excerpt: "An address plan is not the same as IPAM. IPAM tracks what you allocated. The plan decides what you should allocate, in what shape, with what reserved for tomorrow. Most organisations do IPAM and skip the plan. The skip costs them later."
+references:
+  - title: "RFC 1918 — Address Allocation for Private Internets"
+    url: "https://www.rfc-editor.org/rfc/rfc1918"
+    description: "The foundational IETF standard defining the three private IPv4 address ranges used in all enterprise and cloud network design — the starting constraint for every corporate IP envelope."
+    domain: "rfc-editor.org"
+  - title: "Azure CAF — plan for IP addressing"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-ip-addressing"
+    description: "Microsoft's Cloud Adoption Framework guidance on IP address planning for Azure: recommended ranges, hub and spoke sizing, service-specific subnet constraints, and non-routable design patterns."
+    domain: "learn.microsoft.com"
+  - title: "OCI VCN and subnet overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingVCNs_topic-Overview_of_VCNs_and_Subnets.htm"
+    description: "Oracle's reference for VCN CIDR constraints, subnet types (regional vs AD-specific), reserved IP addresses per subnet, and the multiple-CIDR-block-per-VCN model relevant to address plan design."
+    domain: "docs.oracle.com"
+  - title: "Azure IPAM — open source reference implementation"
+    url: "https://github.com/Azure/ipam"
+    description: "Microsoft's open-source IPAM tool for Azure: auto-discovers VNet usage, exposes a REST API and UI, and supports T-shirt size CIDR requests — the recommended starting point before AVNM native IPAM was widely available."
+    domain: "github.com"
 ---
 
 If IPAM is bookkeeping, the address plan is the strategy that bookkeeping is supposed to follow. The plan answers questions like "what range do we use for production in Frankfurt?" and "how much do we reserve for the cloud we have not adopted yet?" These questions sound boring; they shape the next decade of network architecture.
@@ -142,17 +159,9 @@ The objection is always: "but we won't use this for years, why reserve now?" The
 
 One distinction worth making explicit: the reservation discipline applies to *planning blocks* — the regional containers in your plan. Large planning blocks (a /16 per region) are correct. Individual workload VNets and OCI VCNs should be right-sized to what the workload needs, not allocated as large blocks by default. A production payments VNet probably needs a /22; allocating a /16 "just in case" wastes space and creates fragmentation. Reserve aggressively at the plan level; allocate tightly at the workload level.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Reserve aggressively at the corporate level. Allocate conservatively at the workload level. The corporate envelope should look mostly empty for years; the workload allocations should be tight. The opposite — corporate envelope looks tight, workloads have huge allocations — is the failure mode that produces fragmentation and forces renumbering down the line.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Reserve aggressively at the corporate level. Allocate conservatively at the workload level. The corporate envelope should look mostly empty for years; the workload allocations should be tight. The opposite — corporate envelope looks tight, workloads have huge allocations — is the failure mode that produces fragmentation and forces renumbering down the line.
+:::
 
 ## NAT and address overlap mitigation
 
@@ -173,17 +182,9 @@ Two platform-level NAT capabilities exist for exactly this scenario:
 
 Organisations that have pre-reserved M&A address space can execute step 2 in days. Organisations that have not reserved the space discover the problem when they try to connect — resulting in either a rushed renumber under pressure or a permanent NAT-at-the-boundary that everyone eventually forgets is there.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>NAT-at-the-boundary is a crutch, not an architecture. It hides address overlap rather than resolving it. The longer it stays in place, the more operational complexity accumulates around it — firewall rules, DNS overrides, monitoring exclusions. Treat every NAT-for-overlap deployment as a time-bounded remediation with a committed sunset date. Without that commitment, it will still be running five years later.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+NAT-at-the-boundary is a crutch, not an architecture. It hides address overlap rather than resolving it. The longer it stays in place, the more operational complexity accumulates around it — firewall rules, DNS overrides, monitoring exclusions. Treat every NAT-for-overlap deployment as a time-bounded remediation with a committed sunset date. Without that commitment, it will still be running five years later.
+:::
 
 ## IPv6 — dual-stack readiness
 

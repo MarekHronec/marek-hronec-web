@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 13
 level: intermediate
 excerpt: "Azure RBAC and OCI IAM both grant 'a principal does an action on a resource at a scope.' That sentence hides structural differences: Azure grants through role assignments, OCI through policy statements; both inherit, but not in the same mental model. Azure deny is rare, OCI deny is explicit but opt-in. Built-in roles bite differently. Get the model wrong and least privilege is fiction."
+references:
+  - title: "Azure role-based access control overview"
+    url: "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"
+    description: "The authoritative reference for Azure RBAC: roles, assignments, scope hierarchy, and the relationship between Entra ID and Azure resource permissions."
+    domain: "learn.microsoft.com"
+  - title: "OCI Identity and Access Management"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Identity/home.htm"
+    description: "OCI IAM documentation: policies, compartments, groups, dynamic groups, and the policy syntax that differs fundamentally from Azure RBAC's role assignment model."
+    domain: "docs.oracle.com"
+  - title: "Azure built-in roles"
+    url: "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles"
+    description: "Complete list of Azure built-in role definitions with their permissions — the starting point for permission matrix design before considering custom roles."
+    domain: "learn.microsoft.com"
+  - title: "Zero Trust identity deployment guide"
+    url: "https://learn.microsoft.com/en-us/security/zero-trust/deploy/identity"
+    description: "Microsoft's guidance for applying Zero Trust principles to identity — least privilege, conditional access, and continuous verification — across Azure and hybrid environments."
+    domain: "learn.microsoft.com"
 ---
 
 You can describe Azure RBAC and OCI IAM in nearly identical sentences. *A principal is granted permission to perform an action on a resource within a defined scope.* Both have a hierarchy. Both have inheritance, in some sense. Both have built-in and custom roles or policies. Read the marketing pages and you would think they are basically the same.
@@ -132,17 +149,9 @@ The thing OCI does badly: **no built-in role catalogue**. Every organisation has
 
 The single biggest source of bugs when moving between the two: **assuming the inheritance model behaves the same way**. Azure architects think in role assignments at management group, subscription, resource group, and resource scope. OCI architects think in policy statements attached to tenancy or compartments, with inheritance through the compartment tree and explicit path syntax for nested compartments. The risk is not that OCI lacks inheritance; the risk is writing broad parent-compartment policies that grant more than intended, or writing narrow path-specific policies that do not cover the compartment you thought they covered.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Build a permission decision matrix once, in writing, before assigning anything. Rows: roles in your org (developer, DBA, network admin, security analyst, auditor). Columns: actions they need on each resource type. Cells: yes/no/conditional. The matrix becomes the contract. Then implement it as Azure role assignments and OCI policy statements. The matrix is portable; the implementation is cloud-specific. Do not skip the matrix and try to assemble permissions service-by-service — that is the path to over-permissioned identities.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Build a permission decision matrix once, in writing, before assigning anything. Rows: roles in your org (developer, DBA, network admin, security analyst, auditor). Columns: actions they need on each resource type. Cells: yes/no/conditional. The matrix becomes the contract. Then implement it as Azure role assignments and OCI policy statements. The matrix is portable; the implementation is cloud-specific. Do not skip the matrix and try to assemble permissions service-by-service — that is the path to over-permissioned identities.
+:::
 
 ## Privileged identity — the part where carelessness shows up
 
@@ -192,17 +201,9 @@ The discipline that holds up:
 - No `manage all-resources` in OCI policies except for compartment admins.
 - Annual review of every custom role/policy. Most exist because of one need from three years ago that nobody re-evaluated.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Operational Warning</p>
-    <p>Custom Azure role sprawl is common — estates with 200+ custom roles and no active maintainer. Most of the custom roles existed because someone needed a permission that an old built-in role did not include — but the built-in role catalogue has expanded since, and the custom role is now an unmaintained subset of a current built-in. The cleanup is grim. Do not start down this path without a plan to maintain it. If you cannot promise quarterly review, do not create the custom role.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Custom Azure role sprawl is common — estates with 200+ custom roles and no active maintainer. Most of the custom roles existed because someone needed a permission that an old built-in role did not include — but the built-in role catalogue has expanded since, and the custom role is now an unmaintained subset of a current built-in. The cleanup is grim. Do not start down this path without a plan to maintain it. If you cannot promise quarterly review, do not create the custom role.
+:::
 
 ## Multicloud factor
 

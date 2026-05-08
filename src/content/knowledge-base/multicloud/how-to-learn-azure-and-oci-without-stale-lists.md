@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 11
 level: beginner
 excerpt: "Skills budget is real. Most teams overpay for training that is free if you know where to look. But hard-coded lists of certifications go stale fast — Microsoft and Oracle both rebrand every 18–24 months. Here is the durable approach: skills, not certificate names."
+references:
+  - title: "Microsoft Learn"
+    url: "https://learn.microsoft.com/en-us/training/"
+    description: "Microsoft's free structured learning platform for Azure — learning paths, modules, and sandboxes that let you develop hands-on skills without a subscription."
+    domain: "learn.microsoft.com"
+  - title: "Oracle University"
+    url: "https://education.oracle.com/"
+    description: "Oracle's official training and certification platform for OCI, covering architecture, operations, and the OCI Foundations and Architect certifications."
+    domain: "education.oracle.com"
+  - title: "FinOps certification — FinOps Foundation"
+    url: "https://www.finops.org/certification/"
+    description: "The FinOps Practitioner and FinOps Professional certifications — cloud-agnostic credentials focused on cost governance skills that apply across Azure, OCI, and any other cloud."
+    domain: "finops.org"
+  - title: "Microsoft credentials and certifications"
+    url: "https://learn.microsoft.com/en-us/credentials/"
+    description: "The full map of Microsoft certifications — Applied Skills (scenario-based), Associate, Expert, and Specialty — relevant for understanding which credentials actually reflect hands-on competency."
+    domain: "learn.microsoft.com"
 ---
 
 Cloud learning advice often ages faster than the skills it tries to teach. Certification names change, vendors rebrand, and exam codes disappear. The result is a flood of guidance tied to labels that no longer exist — search "best Azure certifications" and you will find articles confidently recommending exam codes that were retired last year.
@@ -72,17 +89,9 @@ For many professionals, a balanced baseline looks like this:
 
 Going deeper than this is fine if you enjoy exams. It does not move the career needle much.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>If you are picking your <em>first</em> two certifications, take an Azure or OCI Foundations on whichever cloud you use most, then go to a vendor-neutral one — Kubernetes (CKA or CKAD) or FinOps. The combination of "I know this cloud" and "I know this cross-cloud capability" is more durable than two certifications in the same cloud at increasing levels of specialisation.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+If you are picking your *first* two certifications, take an Azure or OCI Foundations on whichever cloud you use most, then go to a vendor-neutral one — Kubernetes (CKA or CKAD) or FinOps. The combination of "I know this cloud" and "I know this cross-cloud capability" is more durable than two certifications in the same cloud at increasing levels of specialisation.
+:::
 
 ## Hands-on, where the real skill grows
 
@@ -112,17 +121,9 @@ Cloud-specific knowledge ages with the cloud. Foundational distributed-systems k
 
 Spending an hour on one of these is, hour-for-hour, more valuable than an hour on most vendor-specific training. Vendor training tells you which buttons to press; foundational reading tells you why the buttons exist and what they replace.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Microsoft and Oracle regularly revise certification portfolios, branding, and exam mappings. Any article built entirely around specific exam codes risks becoming outdated within a year. This article avoids recommending specific exam codes for that reason — by the time you finish reading, the codes may have changed. Build skills against role tracks (architect, security, data, DevOps) and let the certification names follow.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Microsoft and Oracle regularly revise certification portfolios, branding, and exam mappings. Any article built entirely around specific exam codes risks becoming outdated within a year. This article avoids recommending specific exam codes for that reason — by the time you finish reading, the codes may have changed. Build skills against role tracks (architect, security, data, DevOps) and let the certification names follow.
+:::
 
 ## Building a competency matrix for a team
 

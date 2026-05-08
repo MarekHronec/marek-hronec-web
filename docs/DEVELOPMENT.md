@@ -11,6 +11,7 @@
 7. [Build and Preview](#7-build-and-preview)
 8. [Deployment](#8-deployment)
 9. [Knowledge Base Filter System](#9-knowledge-base-filter-system)
+10. [Knowledge Map Canvas](#10-knowledge-map-canvas)
 
 ---
 
@@ -43,7 +44,7 @@ The dev server starts at `http://localhost:4321`. Changes to `.astro`, `.ts`, `.
 | Command | What it does |
 |---|---|
 | `npm run dev` | Start the development server at `localhost:4321` |
-| `npm run build` | Build the production site to `dist/`, then run `npx pagefind --site dist` to generate the full-text search index at `dist/pagefind/` |
+| `npm run build` | Build the production site to `dist/`, then run `pagefind --site dist` to generate the full-text search index at `dist/pagefind/` |
 | `npm run preview` | Serve the `dist/` output locally for production verification |
 | `npm run astro` | Access the Astro CLI directly (e.g. `npm run astro check`) |
 | `npx astro check` | Run TypeScript type-checking across all `.astro` files |

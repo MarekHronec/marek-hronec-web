@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 13
 level: beginner
 excerpt: "Most cloud chaos starts with a wrong mental model on day one. Three boundaries — organisational, billing, and governance — collapse or separate in different ways across Azure and OCI. Get this wrong and you spend years undoing it."
+references:
+  - title: "Management group and subscription organisation — CAF"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
+    description: "Microsoft's guidance on structuring management group hierarchies and using subscription democratisation — the CAF reference for the Azure side of the hierarchy design decisions in this article."
+    domain: "learn.microsoft.com"
+  - title: "OCI compartments — managing compartments"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Identity/compartments/managingcompartments.htm"
+    description: "Oracle's reference for compartment creation, hierarchy, policy inheritance, and the move-compartment workflow — the operational detail for the OCI side of the hierarchy comparison."
+    domain: "docs.oracle.com"
+  - title: "Scale with multiple Azure subscriptions"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/scale-subscriptions"
+    description: "CAF guidance on subscription democratisation and why using many subscriptions with managed governance is the right model for enterprise estates — the operational case for the subscription-per-workload pattern."
+    domain: "learn.microsoft.com"
+  - title: "OCI service limits and quotas reference"
+    url: "https://docs.oracle.com/en-us/iaas/Content/General/Reference/aqsquickref.htm"
+    description: "Oracle's service limits reference for OCI — the tenancy-level capacity caps that differ fundamentally from Azure's per-subscription quota model and shape how OCI compartment hierarchies are designed."
+    domain: "docs.oracle.com"
 ---
 
 The cloud has three different kinds of boundary, and almost everyone confuses them. There is the *organisational* boundary, which is "where do my resources live in the org chart." There is the *billing* boundary, which is "who pays for what and how do we attribute it." And there is the *governance* boundary, which is "where do my policies, RBAC, and quotas apply."
@@ -67,17 +84,9 @@ The other thing Azure people miss: **compartments are global**. A compartment ex
 
 Resource groups are the construct OCI has no exact equivalent for, and it shows. In Azure, a resource group is a practical lifecycle boundary: resources that share a lifecycle can be deployed, updated, and deleted together. You can `az group delete` a resource group and watch every dependent resource go with it — clean teardown of an environment in one command. In OCI, compartments are stronger governance and access-control containers, but they are not a clean teardown primitive. A compartment must be emptied before deletion, so lifecycle cleanup usually belongs in Terraform / Resource Manager, scripts, or resource-specific delete flows. This bites people moving the other direction: OCI architects look at Azure resource groups and either use them as governance scopes (wrong) or ignore them entirely (also wrong).
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>When designing a multicloud landing zone, do not try to map Azure management groups one-to-one onto OCI compartments. A typical Azure ALZ has four to six management group levels. The equivalent OCI design is two to three compartment levels, max. Document the mapping in a single ADR before either side starts deploying.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+When designing a multicloud landing zone, do not try to map Azure management groups one-to-one onto OCI compartments. A typical Azure ALZ has four to six management group levels. The equivalent OCI design is two to three compartment levels, max. Document the mapping in a single ADR before either side starts deploying.
+:::
 
 ## How to subdivide — the patterns that hold up
 
@@ -151,17 +160,9 @@ resource "oci_limits_quota" "workload_compute" {
 
 Both achieve the same intent: a workload team requests a landing zone, the pipeline creates the right container with the right baseline, and nothing depends on a human remembering to do step seven correctly.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Operational Warning</p>
-    <p>The single most expensive Azure governance mistake is "we'll just use one subscription for everything to keep it simple." It works until the day you hit a per-subscription quota — the default 250 standard storage accounts per region, 5,000 disk encryption sets per region, or the vCPU cap on a specific VM family — and the only fix is splitting the estate, which means renaming, redeploying, repointing every dependency, and absorbing the egress cost of cross-subscription data motion. The simplification was always borrowing time from your future self.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+The single most expensive Azure governance mistake is "we'll just use one subscription for everything to keep it simple." It works until the day you hit a per-subscription quota — the default 250 standard storage accounts per region, 5,000 disk encryption sets per region, or the vCPU cap on a specific VM family — and the only fix is splitting the estate, which means renaming, redeploying, repointing every dependency, and absorbing the egress cost of cross-subscription data motion. The simplification was always borrowing time from your future self.
+:::
 
 ## Multicloud factor
 

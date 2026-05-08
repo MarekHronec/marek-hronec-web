@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 11
 level: intermediate
 excerpt: "Cloud IP space looks infinite until two VNets need to peer with overlapping ranges. By then, the cost of fixing it is renumbering, downtime, and a multi-week project. IPAM is one of those disciplines that costs nothing on day one and an enormous amount on day 500."
+references:
+  - title: "Azure Virtual Network Manager — IPAM"
+    url: "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-ip-address-management"
+    description: "Microsoft's native IPAM capability in Azure VNM — creating IP address pools, allocating non-overlapping CIDRs, and combining pools with Azure Policy to prevent teams from creating VNets outside approved space."
+    domain: "learn.microsoft.com"
+  - title: "Azure IPAM — open source reference implementation"
+    url: "https://github.com/Azure/ipam"
+    description: "Microsoft's open-source IPAM reference tool: auto-discovers Azure VNet usage, exposes a REST API and UI, and supports T-shirt size requests — recommended in CAF for organisations that need IPAM beyond what VNM native offers."
+    domain: "github.com"
+  - title: "NetBox documentation"
+    url: "https://netboxlabs.com/docs/netbox/en/stable/"
+    description: "The open-source network source of truth platform — the most widely adopted community IPAM for multicloud and on-prem estates, with prefix management, VRF support, and a Terraform provider for IaC integration."
+    domain: "netboxlabs.com"
+  - title: "RFC 1918 — Address Allocation for Private Internets"
+    url: "https://www.rfc-editor.org/rfc/rfc1918"
+    description: "The IETF standard defining the 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16 private ranges — the capacity ceiling that every enterprise IP plan must allocate within."
+    domain: "rfc-editor.org"
 ---
 
 Every cloud architect has had this conversation: "we need to peer your VNet to mine for the new project." "Sure, what's your CIDR?" "10.0.0.0/16." Long pause. "...so is mine." That moment is the punchline of a joke nobody set up deliberately. The setup happened months earlier when someone picked a CIDR without checking, and the punchline arrives the day a peering is needed.
@@ -123,17 +140,9 @@ locals {
 
 The discipline is the same on both clouds; only the tooling differs. For enterprise multicloud, OCI allocations should live in the same authoritative IPAM as Azure and on-prem. Terraform-only discipline works at smaller scale, but a central IPAM becomes important once multiple teams allocate address space independently.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Treat the global IP plan as a single document, owned by one team, even if the implementations are per-cloud. The document lives in version control. Every CIDR allocation is a PR. A merge requires CI checks against the existing allocations on both clouds and on-prem (where on-prem ranges are documented). Without one document, the team that has 10.50.0.0/16 in Azure will discover a year later that 10.50.0.0/16 in OCI exists and the two cannot be peered.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Treat the global IP plan as a single document, owned by one team, even if the implementations are per-cloud. The document lives in version control. Every CIDR allocation is a PR. A merge requires CI checks against the existing allocations on both clouds and on-prem (where on-prem ranges are documented). Without one document, the team that has 10.50.0.0/16 in Azure will discover a year later that 10.50.0.0/16 in OCI exists and the two cannot be peered.
+:::
 
 ## The allocation workflow
 
@@ -192,17 +201,9 @@ In rare cases (M&A, partner connectivity), you cannot avoid overlapping address 
 
 NAT is a tool of last resort. It complicates routing, breaks some application layer protocols, and is harder to debug. Use it only when renumbering is genuinely impossible.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>A multicloud migration stalled for six weeks because the chosen Azure VNet CIDR overlapped with an unused-but-reserved OCI tenancy CIDR that nobody knew about. The fix was renumbering forty subnets, updating dozens of NSGs and routing tables, and a long weekend of carefully orchestrated cutover. The original mistake was a 30-second decision on day one to pick the "obvious" 10.0.0.0/16 without checking. IPAM that costs nothing on day one prevents projects of months on day five hundred.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+A multicloud migration stalled for six weeks because the chosen Azure VNet CIDR overlapped with an unused-but-reserved OCI tenancy CIDR that nobody knew about. The fix was renumbering forty subnets, updating dozens of NSGs and routing tables, and a long weekend of carefully orchestrated cutover. The original mistake was a 30-second decision on day one to pick the "obvious" 10.0.0.0/16 without checking. IPAM that costs nothing on day one prevents projects of months on day five hundred.
+:::
 
 ## Multicloud factor
 

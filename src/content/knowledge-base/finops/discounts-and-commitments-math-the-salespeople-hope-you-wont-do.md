@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 12
 level: intermediate
 excerpt: "Reservations save 30–72%. Savings plans typically deliver moderate discounts with broader coverage. Universal Credits give discounts but lock in spend. The mechanism that fits your workload depends entirely on whether your workload actually fits the commitment shape — and most do not, exactly."
+references:
+  - title: "Azure Reservations — save with 1- or 3-year commitments"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/save-compute-costs-reservations"
+    description: "Microsoft's reference for Azure Reserved VM Instances and Reserved Capacity: scope options, flexibility settings, exchange and refund policy, and the discount calculations this article works through."
+    domain: "learn.microsoft.com"
+  - title: "Azure Savings Plans for compute"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/savings-plan/savings-plan-compute-overview"
+    description: "How Azure Savings Plans differ from Reservations — the hourly spend commitment model that provides flexibility across VM families, regions, and services in exchange for a lower discount rate."
+    domain: "learn.microsoft.com"
+  - title: "OCI billing and cost management overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/billingoverview.htm"
+    description: "OCI's billing model overview including Universal Credits, Pay As You Go, and Annual Flex contracts — the commitment structures on the OCI side of the discount comparison."
+    domain: "docs.oracle.com"
+  - title: "FinOps capability — manage commitment-based discounts"
+    url: "https://www.finops.org/framework/capabilities/manage-commitment-based-discounts/"
+    description: "The FinOps Foundation's framework capability for managing Reserved Instances, Savings Plans, and committed use discounts — covering the governance process around the math this article presents."
+    domain: "finops.org"
 ---
 
 Cloud salespeople love discounts. They make a great slide. Up to 72% off pay-as-you-go. Some Windows scenarios reach 80% with Hybrid Benefit. Universal Credits offer attractive multi-year discounts. Read the slide and you would think the only question is "how much do we commit?"
@@ -138,17 +155,9 @@ Reservations and savings plans both have term lengths. If you might leave the cl
 
 A common operating pattern: **reserve the predictable stable baseline — the portion you can forecast with reasonable confidence for the full term — savings plan or Universal Credits for the next layer of committed spend, pay-as-you-go for variable demand, spot or preemptible for tolerant workloads**. Do not try to commit your entire estate; unused commitment is more expensive than the pay-as-you-go premium on the variable part.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Right-size before you commit. The fastest way to waste a reservation is to commit to oversized VMs. Walk through the cost analysis, identify oversized resources, downsize them, <em>then</em> baseline what you have. The discount you should have gotten was on the right-sized workload, not the wasted-already workload. This sequence — right-size first, commit second — is documented in Microsoft's own guidance and consistently ignored in practice.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Right-size before you commit. The fastest way to waste a reservation is to commit to oversized VMs. Walk through the cost analysis, identify oversized resources, downsize them, *then* baseline what you have. The discount you should have gotten was on the right-sized workload, not the wasted-already workload. This sequence — right-size first, commit second — is documented in Microsoft's own guidance and consistently ignored in practice.
+:::
 
 ## When commitments go bad
 
@@ -162,17 +171,9 @@ The same patterns come up repeatedly:
 
 **The bundled commitment.** A multi-year Universal Credits commitment at OCI negotiated when budgets were higher. Workload reality came in under the commitment. The customer pays the commitment minimum regardless. Fix: negotiate annual rather than multi-year where the spend forecast is uncertain. Discount differential is rarely worth the lock-in.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>The headline savings numbers (72%, 65%, 80%) only apply if your committed capacity is fully utilised. At 70% utilisation, the realised savings can drop sharply; depending on commitment structure, the effective rate may approach or even exceed pay-as-you-go economics. Vendors do not lead with this math because it makes the slide less exciting. Do the math anyway.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+The headline savings numbers (72%, 65%, 80%) only apply if your committed capacity is fully utilised. At 70% utilisation, the realised savings can drop sharply; depending on commitment structure, the effective rate may approach or even exceed pay-as-you-go economics. Vendors do not lead with this math because it makes the slide less exciting. Do the math anyway.
+:::
 
 ## Multicloud factor
 

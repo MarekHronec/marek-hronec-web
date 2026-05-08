@@ -6,6 +6,27 @@ date: 2026-04-30
 readTime: 13
 level: intermediate
 excerpt: "Governance as a Confluence page is fiction. Governance is what your platform actually enforces — and the enforcement model differs more between Azure and OCI than the marketing suggests. EPAC, OCI compartment quotas, Security Zones, Cloud Guard, the gaps in each, and how to combine them without drowning."
+references:
+  - title: "Enterprise Azure Policy as Code (EPAC)"
+    url: "https://github.com/Azure/enterprise-azure-policy-as-code"
+    description: "Microsoft's open-source solution for managing Azure Policy at scale via a desired-state Git repository — the tool this article recommends for Azure estates above basic scale, with built-in pipelines for Azure DevOps and GitHub Actions."
+    domain: "github.com"
+  - title: "Azure Policy overview"
+    url: "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    description: "Microsoft's reference for Azure Policy — effects (deny, audit, modify, DINE), built-in definitions, initiative assignments, compliance evaluation, and remediation tasks."
+    domain: "learn.microsoft.com"
+  - title: "OCI Security Zones"
+    url: "https://docs.oracle.com/en-us/iaas/Content/SecurityZones/Concepts/securityzones.htm"
+    description: "Oracle's documentation for Security Zones — compartments governed by prescriptive security recipes that prevent insecure configurations — the OCI enforcement mechanism most equivalent to Azure Policy deny effects."
+    domain: "docs.oracle.com"
+  - title: "Open Policy Agent (OPA) documentation"
+    url: "https://www.openpolicyagent.org/docs/latest/"
+    description: "The CNCF policy-as-code engine — a general-purpose, vendor-neutral policy framework used for admission control in Kubernetes and for validating Terraform plans before deployment via Conftest."
+    domain: "openpolicyagent.org"
+  - title: "Conftest — policy testing for configuration files"
+    url: "https://www.conftest.dev/"
+    description: "The OPA-based tool for writing and evaluating policies against Terraform plans, Kubernetes manifests, and other structured configuration — the pre-deployment policy validation layer that complements cloud-native enforcement."
+    domain: "conftest.dev"
 ---
 
 A policy that lives only on a wiki page is not a policy. It is a hope. The first time a workload team accidentally deploys a public storage account, the wiki page does nothing. The platform either prevented the deployment or it did not.
@@ -176,17 +197,9 @@ OCI region restrictions via IAM conditions are authorization controls, not an Az
 
 This list — call it ten controls — covers most of the regulatory baseline that organisations need. CIS, ISO 27001, NIST 800-53 will all want more, but most of "more" is variations on the same patterns.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Default to <strong>audit before deny</strong>. When introducing a new policy, assign it as audit-only first. Watch the compliance state for a sprint or two. Discover the workloads that are non-compliant for legitimate reasons (legacy estates, exceptions you forgot about). Communicate, plan, then flip to deny. Deploying deny-from-day-one regularly breaks production deployments and costs the platform team trust they cannot easily rebuild.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Default to **audit before deny**. When introducing a new policy, assign it as audit-only first. Watch the compliance state for a sprint or two. Discover the workloads that are non-compliant for legitimate reasons (legacy estates, exceptions you forgot about). Communicate, plan, then flip to deny. Deploying deny-from-day-one regularly breaks production deployments and costs the platform team trust they cannot easily rebuild.
+:::
 
 ## When to use IaC for policies vs the dedicated tools
 
@@ -215,17 +228,9 @@ Azure Policy supports exemptions natively (a separate resource that exempts a sc
 
 OCI's mechanisms are less unified. A compartment quota can be raised; a tag default can be removed; a Security Zone violation can be suppressed in Cloud Guard. There is no single "exemption" surface. You document exemptions in the IaC repo (a comment in Terraform, a JIRA reference) and trust the review process.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Policies should not be used to do what RBAC/IAM is for. The Azure governance pattern that goes wrong most often is "deny user X from doing thing Y" via Azure Policy when it should have been "do not grant user X the role for Y" via RBAC. Policy is for "nobody and nothing should do this in this scope." RBAC is for "this principal is allowed / not allowed to do this." Conflating them produces brittle governance and confusing audit trails.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Policies should not be used to do what RBAC/IAM is for. The Azure governance pattern that goes wrong most often is "deny user X from doing thing Y" via Azure Policy when it should have been "do not grant user X the role for Y" via RBAC. Policy is for "nobody and nothing should do this in this scope." RBAC is for "this principal is allowed / not allowed to do this." Conflating them produces brittle governance and confusing audit trails.
+:::
 
 ## Multicloud factor
 

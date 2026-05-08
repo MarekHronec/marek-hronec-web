@@ -6,6 +6,23 @@ date: 2024-11-15
 readTime: 9
 level: intermediate
 excerpt: "Learn how to implement a production-grade GitOps workflow using Argo CD across multiple Kubernetes clusters, with progressive delivery and automated drift detection."
+references:
+  - title: "Argo CD documentation"
+    url: "https://argo-cd.readthedocs.io/en/stable/"
+    description: "Complete reference for Argo CD: application definitions, ApplicationSet, RBAC, SSO integration, multi-cluster patterns, and progressive delivery with Argo Rollouts."
+    domain: "argo-cd.readthedocs.io"
+  - title: "OpenGitOps — GitOps principles"
+    url: "https://opengitops.dev/"
+    description: "The CNCF working group's vendor-neutral definition of GitOps: the four principles (declarative, versioned, pulled, continuously reconciled) that distinguish GitOps from generic CI/CD."
+    domain: "opengitops.dev"
+  - title: "Flux CD documentation"
+    url: "https://fluxcd.io/docs/"
+    description: "Documentation for Flux, the CNCF-graduated GitOps toolkit offering modular controllers for Helm, Kustomize, and image automation — relevant for Azure Arc-integrated deployments."
+    domain: "fluxcd.io"
+  - title: "GitOps with Flux on Azure Arc-enabled Kubernetes"
+    url: "https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2"
+    description: "How Azure Arc uses Flux v2 as the GitOps engine for managing configuration and workloads across AKS and non-Azure Kubernetes clusters from a single control plane."
+    domain: "learn.microsoft.com"
 ---
 
 GitOps shifts the operational model for Kubernetes to a Git-centric approach. All desired state lives in version control, and a reconciliation loop continuously drives the cluster toward that state. Argo CD is the industry-standard tool implementing this loop at scale.
@@ -18,17 +35,9 @@ Traditional deployment pipelines push changes to infrastructure. GitOps inverts 
 - **Self-healing** — Any manual drift is automatically reverted on the next sync.
 - **Rollback** — Rolling back is a `git revert`. No runbooks required.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Separate your application manifests repository from your application code repository. This prevents accidental coupling between deployment state and source history.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Separate your application manifests repository from your application code repository. This prevents accidental coupling between deployment state and source history.
+:::
 
 ## Multi-Cluster Application Set
 
@@ -78,17 +87,9 @@ spec:
         - setWeight: 100
 ```
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Operational Warning</p>
-    <p>Enabling automated sync with pruning on production clusters without a proper promotion gate will delete resources when branches are merged. Always gate production sync behind a manual approval step.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Enabling automated sync with pruning on production clusters without a proper promotion gate will delete resources when branches are merged. Always gate production sync behind a manual approval step.
+:::
 
 ## Drift Detection and Alerting
 

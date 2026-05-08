@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 9
 level: beginner
 excerpt: "Cloud status pages are public communication artifacts, not primary monitoring systems. They tell you about confirmed provider-side incidents, often after validation and scoping. The green dot can lag reality. Service Health is more useful, but still partial. Build your own monitoring."
+references:
+  - title: "Azure Service Health overview"
+    url: "https://learn.microsoft.com/en-us/azure/service-health/overview"
+    description: "How Azure Service Health works, the difference between Service Issues, Planned Maintenance, and Health Advisories, and how to configure alerts routed to your operations team."
+    domain: "learn.microsoft.com"
+  - title: "Azure status"
+    url: "https://azure.status.microsoft/"
+    description: "Microsoft's public status page for Azure — shows current service disruptions by region and service, the source for broad outage confirmation when internal alerts fire."
+    domain: "azure.status.microsoft"
+  - title: "OCI Cloud Status"
+    url: "https://ocistatus.oraclecloud.com/"
+    description: "Oracle's public OCI status page showing current service health across regions — bookmark this alongside the Azure status page for multicloud incident triage."
+    domain: "ocistatus.oraclecloud.com"
+  - title: "Azure Monitor alerts overview"
+    url: "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview"
+    description: "How to configure Azure Monitor alerts — including Service Health alerts — so your team is notified by the monitoring system rather than discovering issues from the public status page."
+    domain: "learn.microsoft.com"
 ---
 
 The first place engineers look during a suspected cloud outage is the vendor's public status page. The second place is usually the community signal — X, Reddit, vendor forums, Slack communities, or outage aggregators — because the public page can still be green while customers are already seeing impact.
@@ -83,17 +100,9 @@ synthetic_monitor:
 
 This monitor does not care what the Azure status page says. It tells you whether your users can reach your application, which is the only thing that ultimately matters.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Wire vendor service health alerts into the same incident management pipeline as your synthetic monitors. PagerDuty, Opsgenie, whichever you use — both signals route to the same on-call rotation. This means your team sees the vendor signal in context with your internal signals and can correlate them in seconds. Two separate dashboards mean two separate places to look during an incident, which is exactly when you cannot afford the cognitive overhead.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Wire vendor service health alerts into the same incident management pipeline as your synthetic monitors. PagerDuty, Opsgenie, whichever you use — both signals route to the same on-call rotation. This means your team sees the vendor signal in context with your internal signals and can correlate them in seconds. Two separate dashboards mean two separate places to look during an incident, which is exactly when you cannot afford the cognitive overhead.
+:::
 
 ## Reading vendor status during an active incident
 
@@ -123,17 +132,9 @@ These are worth reading. Patterns you will see repeated:
 
 Treating the RCAs as input to your own DR planning makes them more useful than just a "what happened" read. If a particular failure mode is repeating, your architecture should account for it.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Every major cloud has had multi-hour outages affecting major regions in the last few years, despite all the redundancy and zone-isolation marketing. The vendor's status page during these events varies from "all green" for the first 30+ minutes to detailed incident pages once the situation is acknowledged. The lesson is not that the cloud is unreliable; it is that you should architect, monitor, and respond as if vendor status is one input among many, not the canonical source.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Every major cloud has had multi-hour outages affecting major regions in the last few years, despite all the redundancy and zone-isolation marketing. The vendor's status page during these events varies from "all green" for the first 30+ minutes to detailed incident pages once the situation is acknowledged. The lesson is not that the cloud is unreliable; it is that you should architect, monitor, and respond as if vendor status is one input among many, not the canonical source.
+:::
 
 ## Multicloud factor
 

@@ -2,7 +2,34 @@
    Global CSS — Marek Hronec Portfolio
    ========================================================================== */
 
+/* Self-hosted fonts — bundled by Vite, no CDN round-trip, no FOUT from external load */
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/inter';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
 @import './tokens.css';
+
+/* Fallback @font-face with adjusted metrics to match self-hosted fonts.
+   Makes the system-fallback occupy the same space as Manrope/Inter so the
+   swap is invisible even on first paint. */
+@font-face {
+  font-family: 'ManropeFallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  ascent-override: 107%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+  size-adjust: 97%;
+}
+
+@font-face {
+  font-family: 'InterFallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  ascent-override: 90%;
+  descent-override: 23%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
 
 /* Responsive gutter — overrides the 16px mobile default from tokens.css */
 @media (min-width: 768px) {

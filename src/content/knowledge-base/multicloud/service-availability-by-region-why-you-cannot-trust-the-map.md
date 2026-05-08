@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 10
 level: beginner
 excerpt: "Cloud is not as 'everywhere' as the marketing suggests. Services launch in single US regions and stay there for a year. Sovereign clouds quietly miss capabilities. 'Available' often means 'eventually, with a support ticket.' Here is how to build a checklist that survives this."
+references:
+  - title: "Azure products available by region"
+    url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/"
+    description: "Microsoft's canonical table of which Azure services are available in which regions — the first source to check before committing to a region or service in any architecture design."
+    domain: "azure.microsoft.com"
+  - title: "Azure service-specific reliability guides"
+    url: "https://learn.microsoft.com/en-us/azure/reliability/overview-reliability-guidance"
+    description: "Per-service reliability documentation that covers AZ support, region-pair behaviour, and service-specific resilience patterns — the detail layer beneath the products-by-region table."
+    domain: "learn.microsoft.com"
+  - title: "OCI service availability by region"
+    url: "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#Services"
+    description: "Oracle's authoritative table of which OCI services are available in which regions and realms — the equivalent of Azure's products-by-region for OCI workload design."
+    domain: "docs.oracle.com"
+  - title: "Azure Availability Zone support by service and region"
+    url: "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-service-support"
+    description: "Which Azure services support Availability Zone deployment and in which regions — the table that determines whether a given resilience design is actually achievable in your chosen region."
+    domain: "learn.microsoft.com"
 ---
 
 There is a poster on every cloud provider's marketing page. It shows a map of the world dotted with regions and a confident headline about global reach. The poster is not lying. It is also not telling you the whole story.
@@ -95,17 +112,9 @@ In all cases, do not assume the commercial cloud service catalogue applies uncha
 
 The implication for design: sovereign cloud workloads sometimes need a different architecture from their commercial equivalents. A pattern that uses Azure OpenAI in commercial regions may need a different approach in Azure Government because the same service is gated or absent. Plan for divergence.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Build a single internal "approved services per region" register. One row per service-region combination, with status (GA / preview / not available / restricted). Feed it from Azure's Products-by-Region page/table, Azure service reliability documentation, and OCI's service availability documentation on a schedule. Surface it in your platform portal so architects can self-serve. The register is more useful than any vendor page because it is filtered to <em>your</em> approved regions and <em>your</em> approved services.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Build a single internal "approved services per region" register. One row per service-region combination, with status (GA / preview / not available / restricted). Feed it from Azure's Products-by-Region page/table, Azure service reliability documentation, and OCI's service availability documentation on a schedule. Surface it in your platform portal so architects can self-serve. The register is more useful than any vendor page because it is filtered to *your* approved regions and *your* approved services.
+:::
 
 ## When previews lie about being stable
 
@@ -127,17 +136,9 @@ The signals that a preview should stay out of production:
 
 Your risk appetite is yours, but be deliberate about it. "It works fine in preview" is true right up until it does not, and "preview" is exactly the period when the provider reserves the right to break things.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Operational Warning</p>
-    <p>Both vendors have, on multiple occasions, shipped services to "all regions" while quietly excluding sovereign clouds, China, or specific instance families. Read the small print of every announcement. The pattern that appears most often: an architect reads "now available globally," designs for global rollout, and discovers six weeks into deployment that the service is not in the two specific regions the architecture depended on.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Both vendors have, on multiple occasions, shipped services to "all regions" while quietly excluding sovereign clouds, China, or specific instance families. Read the small print of every announcement. The pattern that appears most often: an architect reads "now available globally," designs for global rollout, and discovers six weeks into deployment that the service is not in the two specific regions the architecture depended on.
+:::
 
 ## Multicloud factor
 

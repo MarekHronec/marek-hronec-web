@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 12
 level: beginner
 excerpt: "The shared responsibility chart looks tidy on a slide and falls apart in production. Managed never means hands-off, the SLA rarely covers your application, and the line between provider and customer moves service by service. Here is what actually stays on you."
+references:
+  - title: "Shared responsibility in the cloud — Azure"
+    url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    description: "Microsoft's breakdown of which security responsibilities belong to the provider versus the customer at each service model layer — the reference document this article interrogates and extends."
+    domain: "learn.microsoft.com"
+  - title: "OCI shared security responsibility model"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/shared_responsibility.htm"
+    description: "Oracle's equivalent shared responsibility breakdown for OCI — comparing it with Azure's version reveals how the boundary shifts differently across service tiers on each cloud."
+    domain: "docs.oracle.com"
+  - title: "Microsoft Cloud Security Benchmark"
+    url: "https://learn.microsoft.com/en-us/security/benchmark/azure/introduction"
+    description: "Microsoft's security control framework mapped to Azure services — the operational companion to shared responsibility that defines what \"customer responsibility\" actually means in practice for each control domain."
+    domain: "learn.microsoft.com"
+  - title: "Shared responsibility for cloud reliability — Azure"
+    url: "https://learn.microsoft.com/en-us/azure/reliability/concept-shared-responsibility"
+    description: "Microsoft's three-level reliability responsibility model — core platform, reliability-enhancing capabilities, and applications — the reliability parallel to the security shared responsibility model."
+    domain: "learn.microsoft.com"
 ---
 
 There is a chart you have seen a hundred times. A grid of boxes labelled IaaS, PaaS, SaaS down the side, security domains across the top, and the cells filled in green or blue depending on who is responsible. It is one of the most reproduced diagrams in cloud computing and one of the most misleading.
@@ -40,17 +57,9 @@ Read enough incident postmortems and a pattern emerges. The phrase "we assumed t
 
 **SaaS retention is not a backup.** Exchange Online, SharePoint, OneDrive, Teams, Salesforce, and other SaaS platforms all have their own deletion, retention, legal hold, and recovery semantics. Exchange deleted item retention is not the same as SharePoint recycle bin retention. Salesforce Recycle Bin retention is not the same as a backup. None of these mechanisms are a substitute for a recoverable, independently controlled backup that survives account compromise, malicious deletion, ransomware acting through an API, or a provider-side retention configuration mistake. If the data matters, define a backup and recovery model explicitly.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Gartner's often-cited prediction was that through 2025, the overwhelming majority of cloud security failures would be the customer's fault. Whether the exact percentage is perfect is less important than the direction of travel: the customer-controlled surface is huge — configuration, IAM, secrets, data classification, key rotation, network exposure, and workload design. The provider secures the cloud below the waterline. Most incidents happen at the waterline, where the chart looks tidy and reality does not.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Gartner's often-cited prediction was that through 2025, the overwhelming majority of cloud security failures would be the customer's fault. Whether the exact percentage is perfect is less important than the direction of travel: the customer-controlled surface is huge — configuration, IAM, secrets, data classification, key rotation, network exposure, and workload design. The provider secures the cloud below the waterline. Most incidents happen at the waterline, where the chart looks tidy and reality does not.
+:::
 
 ## Reliability is also shared, and people forget that part
 
@@ -84,17 +93,9 @@ Here is the list I keep on hand. It is the part of shared responsibility that do
 
 **Cost.** A surprising one to put on this list, but: nobody at Microsoft or Oracle is going to call you when your spend triples overnight. Cost is a reliability and security signal too, and the responsibility for noticing is entirely yours.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Build a service-by-service responsibility matrix for your top ten cloud services. One row per service, columns for: who patches it, who backs it up, who responds to its incidents, who owns its IAM model, who owns its network exposure. The exercise takes a couple of days. The output is a document that quietly answers "who deals with this" for the next five years. Make it part of every service onboarding.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Build a service-by-service responsibility matrix for your top ten cloud services. One row per service, columns for: who patches it, who backs it up, who responds to its incidents, who owns its IAM model, who owns its network exposure. The exercise takes a couple of days. The output is a document that quietly answers "who deals with this" for the next five years. Make it part of every service onboarding.
+:::
 
 ## SaaS is the layer where shared responsibility gets weird
 

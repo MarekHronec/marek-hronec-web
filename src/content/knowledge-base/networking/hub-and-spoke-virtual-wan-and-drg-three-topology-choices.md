@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 13
 level: intermediate
 excerpt: "Hub-and-spoke is the default. Azure Virtual WAN is the managed alternative. OCI's DRG v2 is the OCI-native equivalent. They solve overlapping problems differently, with different trade-offs the marketing pages do not put side by side."
+references:
+  - title: "Hub-spoke network topology in Azure"
+    url: "https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke"
+    description: "Microsoft's reference architecture for classic hub-and-spoke on Azure — hub VNet design, spoke peering configuration, UDR patterns for spoke-to-spoke transit, and on-prem gateway placement."
+    domain: "learn.microsoft.com"
+  - title: "Azure Virtual WAN overview"
+    url: "https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about"
+    description: "Microsoft's documentation for Virtual WAN — the managed hub model that replaces customer-managed hub VNets, enabling any-to-any spoke connectivity and built-in multi-region transit."
+    domain: "learn.microsoft.com"
+  - title: "OCI Dynamic Routing Gateway (DRG)"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm"
+    description: "Oracle's DRG v2 reference — VCN attachments, route tables, transit routing between VCNs, FastConnect integration, and remote peering for cross-region connectivity."
+    domain: "docs.oracle.com"
+  - title: "Define an Azure network topology — CAF"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/define-an-azure-network-topology"
+    description: "CAF guidance on choosing between traditional hub-and-spoke and Virtual WAN — the decision framework that complements the comparison in this article with Microsoft's recommended selection criteria."
+    domain: "learn.microsoft.com"
 ---
 
 Pick a network topology too early and you live with it. Pick it too late and you have already built three workloads on the wrong foundation. Both clouds offer broadly similar topology choices, but the implementation details and pricing models diverge enough to change the recommendation.
@@ -165,17 +182,9 @@ Large (hundreds of VNets, multiple regions, branch connectivity): vWAN's cost is
 Azure-native: vWAN's managed approach fits. OCI DRG v2 fits similarly on OCI.
 Cloud-agnostic: classic hub-and-spoke is more portable in mental model. The patterns transfer to AWS Transit Gateway or GCP NCC.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Topology decisions are sticky. A workload that is built on classic hub-and-spoke can move to vWAN, but the migration is a real project — Microsoft documents it in detail and it usually takes a quarter or more. Choose deliberately, with a multi-year horizon. The right answer for the workload you have now may not be the right answer for the workload you will have in three years; choose the one that scales.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Topology decisions are sticky. A workload that is built on classic hub-and-spoke can move to vWAN, but the migration is a real project — Microsoft documents it in detail and it usually takes a quarter or more. Choose deliberately, with a multi-year horizon. The right answer for the workload you have now may not be the right answer for the workload you will have in three years; choose the one that scales.
+:::
 
 ## Spoke-to-spoke — the asterisk
 

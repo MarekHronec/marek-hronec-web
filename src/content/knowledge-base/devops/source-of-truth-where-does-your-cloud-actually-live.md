@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 11
 level: intermediate
 excerpt: "Your cloud has a source of truth, whether you chose one or not. If you did not choose, the source of truth is the live cloud and you have a problem. Pick deliberately, enforce ruthlessly, and accept that there is no clean answer that does everything."
+references:
+  - title: "Terraform state — HashiCorp documentation"
+    url: "https://developer.hashicorp.com/terraform/language/state"
+    description: "How Terraform state works, why it is the source of truth for what Terraform manages, and best practices for remote state backends and locking."
+    domain: "developer.hashicorp.com"
+  - title: "Azure Resource Graph overview"
+    url: "https://learn.microsoft.com/en-us/azure/governance/resource-graph/overview"
+    description: "The query service for interrogating live Azure resource state at scale — the runtime complement to IaC repos for answering \"what actually exists right now.\""
+    domain: "learn.microsoft.com"
+  - title: "OCI Search with OpenSearch — resource query overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Search/Concepts/queryoverview.htm"
+    description: "OCI's equivalent resource query service for discovering and filtering resources across compartments, the runtime source of truth for OCI estate inventory."
+    domain: "docs.oracle.com"
+  - title: "Backstage — software catalogue and developer portal"
+    url: "https://backstage.io/docs/overview/what-is-backstage"
+    description: "The CNCF project behind software catalogues that aggregate ownership and metadata across multi-cloud estates, often used as the unified inventory layer above per-cloud IaC repos."
+    domain: "backstage.io"
 ---
 
 Every cloud estate has a source of truth. The question is whether the source of truth is:
@@ -136,17 +153,9 @@ Where CMDBs add overhead without value:
 
 The pragmatic stance for cloud-native organisations: treat the CMDB as a slow-moving system of record for compliance, populated by automated discovery from cloud APIs. Do not pretend it is the source of truth for cloud configuration; it is downstream.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>Document your source-of-truth choice explicitly in your platform docs. Not implicitly, not "well, we kind of use Terraform" — write it down. "The IaC repo is the source of truth for what should exist. The cloud APIs are the source of truth for what does exist. Backstage indexes both. The CMDB is a downstream system of record for compliance." Three sentences. New team members get up to speed in five minutes; the discipline becomes self-reinforcing.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+Document your source-of-truth choice explicitly in your platform docs. Not implicitly, not "well, we kind of use Terraform" — write it down. "The IaC repo is the source of truth for what should exist. The cloud APIs are the source of truth for what does exist. Backstage indexes both. The CMDB is a downstream system of record for compliance." Three sentences. New team members get up to speed in five minutes; the discipline becomes self-reinforcing.
+:::
 
 ## Drift, and the eternal question
 

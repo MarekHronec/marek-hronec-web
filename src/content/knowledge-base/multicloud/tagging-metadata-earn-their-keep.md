@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 12
 level: beginner
 excerpt: "Names are immutable identifiers; tags are mutable metadata. Most orgs believe their tagging is better than it is. Without enforcement, tagging is fiction. Here is the schema, the enforcement, and the gotchas in both clouds."
+references:
+  - title: "Azure CAF — define your tagging strategy"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging"
+    description: "Microsoft's Cloud Adoption Framework guidance on building a tagging strategy: the minimum viable tag set, inheritance patterns, and governance enforcement approach via Azure Policy."
+    domain: "learn.microsoft.com"
+  - title: "Tag resources, resource groups, and subscriptions — Azure"
+    url: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources"
+    description: "Azure's operational reference for tagging: tag limits, inheritance behaviour, Cost Management tag inheritance quirks, and the CLI, PowerShell, and REST API syntax for tag operations."
+    domain: "learn.microsoft.com"
+  - title: "OCI tagging overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Tagging/Concepts/taggingoverview.htm"
+    description: "Oracle's tagging reference covering free-form tags, defined tags with namespaces, tag defaults, cost-tracking tags, and the lifecycle of tag namespaces — the OCI side of the comparison in this article."
+    domain: "docs.oracle.com"
+  - title: "FinOps capability — tagging, account, and metadata hierarchy"
+    url: "https://www.finops.org/framework/capabilities/tagging-account-metadata-hierarchy/"
+    description: "The FinOps Foundation's framework capability for tagging strategy — the vendor-neutral governance model that underpins the cross-cloud tag schema approach described in this article."
+    domain: "finops.org"
 ---
 
 If naming is the part that gets argued about in workshops, tagging is the part that gets quietly ignored until somebody runs the FinOps report. Then the question becomes "why is so much of our cloud spend unallocated?" and the answer is usually the same: because the unattributed spend sits on resources nobody tagged, with owners who left the company, in subscriptions or compartments that should have been deleted six months ago.
@@ -160,17 +177,9 @@ The `is_cost_tracking = true` flag marks a defined tag as one of OCI's cost-trac
 
 The thing Azure does not have: a structured tag namespace with allowed-value validation built in. You can simulate this with Azure Policy and an `in` condition, but it is more brittle than OCI's native model. The thing OCI does not have: a fully clean equivalent of Azure's policy-based tag inheritance from resource groups (because OCI does not have resource groups). The closest equivalent is tag defaults at the compartment level, which is a different mechanism with a similar effect.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>If you are designing for multicloud, define your tag schema once with allowed values, then implement it twice. On OCI use defined tags with ENUM validators. On Azure use Azure Policy with the <code>in</code> condition matching the same allowed values. The schema lives in a single document; the implementations live in Terraform modules. This is the only way to get a consistent FinOps story across both clouds.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+If you are designing for multicloud, define your tag schema once with allowed values, then implement it twice. On OCI use defined tags with ENUM validators. On Azure use Azure Policy with the `in` condition matching the same allowed values. The schema lives in a single document; the implementations live in Terraform modules. This is the only way to get a consistent FinOps story across both clouds.
+:::
 
 ## The 60% problem
 
@@ -217,17 +226,9 @@ A few categories that look like they belong in tags and do not:
 - **Free-text descriptions.** They drift. Use descriptions on resources where they are supported, or a CMDB.
 - **Things that change every deploy.** `last-deployed-by`, `git-commit-sha`. These belong in deployment metadata, not on the resource indefinitely. If you want them, write them to a separate audit store, not as tags.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Operational Warning</p>
-    <p>Tags have been used to store database connection strings, internal hostnames, and in one memorable case, a service account password. Tags are visible in audit logs, ARM exports, OCI Search results, billing exports, and dozens of third-party tools. Anything you put in a tag, assume it leaks. Use Key Vault or OCI Vault Secrets for anything that should not.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Tags have been used to store database connection strings, internal hostnames, and in one memorable case, a service account password. Tags are visible in audit logs, ARM exports, OCI Search results, billing exports, and dozens of third-party tools. Anything you put in a tag, assume it leaks. Use Key Vault or OCI Vault Secrets for anything that should not.
+:::
 
 ## Tagging is not ownership unless someone answers
 

@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 11
 level: beginner
 excerpt: "Every cloud needs a place where engineers can break things safely. Most orgs either skip sandboxes entirely (and watch developers experiment in production) or build them so locked-down they are useless. Here is how to build one that actually gets used and does not eat the budget."
+references:
+  - title: "Azure CAF — sandbox environments"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/sandbox-environments"
+    description: "Microsoft's guidance on sandbox environments in the Cloud Adoption Framework: management group placement, policy relaxation patterns, and the boundary between sandbox and development environments."
+    domain: "learn.microsoft.com"
+  - title: "Azure spending limit and budget actions"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/spending-limit"
+    description: "How Azure spending limits, budget alerts, and action groups work — including the important distinction between spending limits for trial subscriptions and budget-triggered automation for enterprise contract types."
+    domain: "learn.microsoft.com"
+  - title: "OCI compartment quotas"
+    url: "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/resourcequotas.htm"
+    description: "Oracle's documentation for compartment-level resource quotas — the set, zero, and unset quota syntax that provides the closest thing to a hard spend cap in OCI sandbox environments."
+    domain: "docs.oracle.com"
+  - title: "OCI Always Free tier"
+    url: "https://www.oracle.com/cloud/free/"
+    description: "Oracle's always-free resources — two AMD VMs, Autonomous Database, object storage, and more kept indefinitely — the recommended starting point for personal OCI sandboxes before organisational environments are provisioned."
+    domain: "oracle.com"
 ---
 
 There is a moment in every cloud adoption where someone asks "where do I try things out?" If the answer is silence, you have a problem. Engineers will experiment somewhere. The question is whether that somewhere is a designated environment with guard rails or a forgotten resource group in production where the experiment lives forever as `vm-test01-pleasedontdelete`.
@@ -50,17 +67,9 @@ The properties of a sandbox that gets used:
 
 **Audit logging on, even though no one looks at it daily.** When something does go wrong, you want the trail. Activity logs to a central Log Analytics workspace on Azure, audit logs to a central object storage bucket on OCI. Cheap insurance.
 
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Architectural Pro Tip</p>
-    <p>The forcing function that works well in practice is automatic teardown on a schedule. Every Friday at 19:00, a script enumerates resource groups in the sandbox subscription that are older than the configured TTL and deletes them. Engineers learn fast that anything they want to keep needs a tag <code>preserve = true</code>. The exception process is low-friction (set a tag) but explicit, which is exactly what governance should be.</p>
-  </div>
-</div>
+:::tip[Architectural Pro Tip]
+The forcing function that works well in practice is automatic teardown on a schedule. Every Friday at 19:00, a script enumerates resource groups in the sandbox subscription that are older than the configured TTL and deletes them. Engineers learn fast that anything they want to keep needs a tag `preserve = true`. The exception process is low-friction (set a tag) but explicit, which is exactly what governance should be.
+:::
 
 ## Azure: the implementation
 
@@ -168,17 +177,9 @@ The practical answer for sandboxes:
 
 The hard cap vendors do not advertise: **deleting the sandbox resources — or retiring the sandbox subscription or compartment entirely — is the only true zero-spend mechanism**. If a sandbox is genuinely runaway, the recovery action is "tear it down, give the engineer a new one." Plan the workflow for that. It happens occasionally.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>Cost-control features are often read as hard spend limits, but in enterprise contract types they are usually alerting and governance mechanisms, not a true kill switch. Plan for soft caps with automated remediation, not for a button that stops spend cold.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+Cost-control features are often read as hard spend limits, but in enterprise contract types they are usually alerting and governance mechanisms, not a true kill switch. Plan for soft caps with automated remediation, not for a button that stops spend cold.
+:::
 
 ## What goes in the sandbox vs what does not
 

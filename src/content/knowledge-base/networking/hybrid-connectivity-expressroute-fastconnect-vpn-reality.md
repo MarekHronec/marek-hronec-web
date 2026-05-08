@@ -6,6 +6,23 @@ date: 2026-04-30
 readTime: 12
 level: intermediate
 excerpt: "Hybrid connectivity is where marketing diagrams most diverge from reality. Circuit bandwidth is not end-to-end application throughput. Redundancy is rarely as redundant as it looks. The patterns that survive production are simpler and more conservative than the diagrams suggest."
+references:
+  - title: "Azure ExpressRoute overview"
+    url: "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction"
+    description: "Microsoft's reference for ExpressRoute circuits, SKUs, peering types, gateway options, and redundancy patterns — the primary source for the Azure hybrid connectivity details in this article."
+    domain: "learn.microsoft.com"
+  - title: "OCI FastConnect overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnectoverview.htm"
+    description: "Oracle's FastConnect reference covering virtual circuits, cross-connect groups, BGP configuration, and the colocation provider ecosystem — the OCI equivalent of the ExpressRoute documentation."
+    domain: "docs.oracle.com"
+  - title: "Azure VPN Gateway overview"
+    url: "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways"
+    description: "Microsoft's reference for site-to-site and point-to-site VPN Gateway — SKU bandwidth limits, tunnel counts, BGP support, and the ExpressRoute coexistence pattern described in this article."
+    domain: "learn.microsoft.com"
+  - title: "Azure–OCI Interconnect overview"
+    url: "https://learn.microsoft.com/en-us/azure/virtual-machines/workloads/oracle/oracle-oci-overview"
+    description: "Microsoft's documentation for the Azure–OCI Interconnect — the private cross-cloud connectivity option between specific Azure and OCI regions that avoids routing hybrid traffic through on-prem."
+    domain: "learn.microsoft.com"
 ---
 
 Hybrid connectivity is the part of cloud where the on-prem network meets the cloud. It is technically straightforward and operationally treacherous. The marketing diagrams show clean lines between datacenters and cloud regions; the reality involves carrier provisioning timelines, BGP weirdness, redundancy that is not as redundant as it looks, and the discovery that your "10 Gbps" circuit actually delivers 2 Gbps to your specific destination.
@@ -125,17 +142,9 @@ Most "redundant" ExpressRoute deployments fail at one of these checks. Often the
 
 The same applies to FastConnect on OCI. Cross-connect group with multiple cross-connects, ideally at different cross-connect locations, with different carriers if you can negotiate it.
 
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.25 7v3h1.5V7h-1.5zm0 4v1.5h1.5V11h-1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Reality Check</p>
-    <p>A common finding in connectivity reviews: "redundant ExpressRoute" setups where both circuits go to the same peering location through the same carrier sharing the same fibre conduit. The customer is paying for "redundancy" that is theatre. The fix is typically a quarter-long project to provision a second carrier at a different peering location. Verify actual redundancy by tracing paths end-to-end with the carriers, not by counting circuits in the Azure portal.</p>
-  </div>
-</div>
+:::warning[Reality Check]
+A common finding in connectivity reviews: "redundant ExpressRoute" setups where both circuits go to the same peering location through the same carrier sharing the same fibre conduit. The customer is paying for "redundancy" that is theatre. The fix is typically a quarter-long project to provision a second carrier at a different peering location. Verify actual redundancy by tracing paths end-to-end with the carriers, not by counting circuits in the Azure portal.
+:::
 
 ## Bandwidth ≠ throughput
 
