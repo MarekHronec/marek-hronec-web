@@ -121,7 +121,7 @@ The nav and TOC feel like they float above content, which is appropriate for ele
 
 ## ADR-006: Fonts — Google Fonts CDN over Self-Hosted
 
-**Status:** Accepted  
+**Status:** Superseded by ADR-025  
 **Date:** 2025-03-22
 
 **Context.**  
@@ -208,7 +208,7 @@ Typography carries a significant portion of the editorial character of the desig
 - **JetBrains Mono** — monospace for all code blocks; designed for developer readability
 
 **Consequences.**  
-The typographic hierarchy is legible and intentional. Each content register has a visual signature. Google Fonts loads all three in a single optimised request. The weight subset (400, 500, 600, 700 for Manrope and Inter; 400, 500 for JetBrains Mono) is defined in the font URL to avoid loading unused weights.
+The typographic hierarchy is legible and intentional. Each content register has a visual signature. All three typefaces are self-hosted via fontsource npm packages and bundled by Vite — see ADR-025 for the font loading decision. The weight subset that ships is controlled by which fontsource import files are referenced: only `400.css` and `500.css` are imported for JetBrains Mono; Manrope Variable and Inter Variable load as single variable font files covering the full weight axis.
 
 ---
 
@@ -588,3 +588,90 @@ The canvas needed a custom click indicator to replace Cytoscape's default gray `
 
 **Consequences.**  
 The interaction provides a distinct, branded indicator with zero library dependency. Ping-to-atom continuity is achieved through CSS transitions on `scale` and `opacity` rather than matched sizes, so the animation is robust to timing variability. Quick taps (< 4 s) get a 200 ms fade; held interactions get a 380 ms scale-dissolve. The rAF loop is tied to the atom's lifetime and stops automatically when the container is removed from the DOM.
+
+---
+
+## ADR-025: Fonts — Self-Hosted via Fontsource over Google Fonts CDN
+
+**Status:** Accepted  
+**Date:** 2026-05-08
+
+**Context.**  
+ADR-006 chose Google Fonts CDN for simplicity. Two issues emerged in practice: (1) browser cache partitioning (implemented in Chrome 86+, Firefox 85+, Safari 13.1+) eliminates the "already cached from another site" benefit — every visitor fetches the fonts from Google's servers; (2) the text rendered in the system fallback font before the custom fonts arrived from the CDN was visibly different in weight and metrics, causing a noticeable FOUT on first load.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Google Fonts CDN (status quo) | Zero build complexity | CDN round-trip on every first visit; cache partitioning removed shared-cache benefit; FOUT from metric mismatch |
+| Self-hosted via `public/fonts/` + manual `@font-face` | Full control; no CDN | Requires downloading font files, managing versions, writing `@font-face` declarations manually |
+| Self-hosted via fontsource npm packages | Maintained packages with correct `@font-face` declarations; Vite bundles and hashes files automatically; SIL OFL license explicitly permits embedding | Adds npm dependencies (~3 packages) |
+
+**Decision.** Self-hosted via `@fontsource-variable/manrope`, `@fontsource-variable/inter`, and `@fontsource/jetbrains-mono`. Imported in `src/styles/global.css`; Vite bundles the `.woff2` files into `dist/_astro/` with content-hashed filenames.
+
+CSS `@font-face` fallback metric overrides (`ascent-override`, `descent-override`, `line-gap-override`, `size-adjust`) are declared for `ManropeFallback` and `InterFallback` so the system font (Arial/Helvetica) occupies the same layout space as the custom fonts. The font stack in `tokens.css` references the fallback families: `'Manrope Variable', 'ManropeFallback', sans-serif`.
+
+**Consequences.**  
+No external DNS lookup, TLS handshake, or CDN latency on any visit. Fonts are served from the same origin as the page — one fewer connection. The metric-matched fallbacks make the font swap imperceptible: layout does not shift when the custom fonts finish loading. All three typefaces are licensed under SIL Open Font License 1.1, which explicitly permits embedding and redistribution. The Google Fonts `<link>` tags and `preconnect` hints were removed from `BaseLayout.astro`.
+
+---
+
+## ADR-026: KB Callout Authoring — Directive Syntax over Raw HTML
+
+**Status:** Accepted  
+**Date:** 2026-05-08
+
+**Context.**  
+Knowledge Base articles required two types of callout blocks (tip and warning). The original implementation required authors to write raw HTML `<div>` structures with nested icon SVGs directly inside `.md` files. This polluted the Markdown source, made articles harder to read and edit, and created a maintenance burden if the callout HTML structure ever changed.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Raw HTML in Markdown (status quo) | No build config | Verbose; fragile; markup duplicated across 25 articles; hard to read in source |
+| Astro component shortcode | Clean authoring | Astro components cannot be imported into `.md` content collection files |
+| MDX | Supports component imports in Markdown | Requires switching content files from `.md` to `.mdx`; changes the collection loader pattern; adds complexity |
+| `remark-directive` + custom plugin | Clean `:::tip[Label]` syntax; works with `.md` files; HTML generated once in the plugin | Requires two npm packages and a custom plugin file |
+
+**Decision.** `remark-directive` (npm) parses `:::name[label]` container directive syntax in the Markdown AST. A custom plugin (`src/plugins/remark-callouts.mjs`) transforms `:::tip[...]` and `:::warning[...]` nodes into the exact HTML structure matching the existing `.callout-tip` and `.callout-warning` CSS classes. Both plugins are registered in `astro.config.mjs` under `markdown.remarkPlugins`.
+
+Authoring syntax:
+```
+:::tip[Architectural Pro Tip]
+Your tip content here. Standard Markdown inline formatting works.
+:::
+
+:::warning[Critical Caveat]
+Your warning content here.
+:::
+```
+
+All 25 existing articles were migrated from the HTML format to directive syntax in a one-shot Node.js script (`scripts/migrate-to-directives.mjs`).
+
+**Consequences.**  
+Article source files are readable Markdown again. Changing the callout HTML structure requires editing one plugin file, not 25 article files. The directive syntax is a documented standard (`remark-directive` spec), not a bespoke convention. The CSS classes remain unchanged, so no visual change resulted from the migration.
+
+---
+
+## ADR-027: KB Article References — Frontmatter Array over Inline HTML
+
+**Status:** Accepted  
+**Date:** 2026-05-08
+
+**Context.**  
+Knowledge Base articles included a "Further Reading" section at the end of the Markdown body, rendered as a `<div class="references">` block containing `<a class="ref-item">` elements with inline styles and structure. This had the same maintenance problems as the callout HTML: raw HTML in Markdown source, structure duplicated across articles, and reference data mixed into prose.
+
+**Options considered:**
+
+| Option | Pros | Cons |
+|---|---|---|
+| Raw HTML in Markdown (status quo) | No build changes | Verbose; hard to read; duplication; rename of CSS class requires updating every article |
+| Markdown link list below content | Simple | No structured metadata (description, domain label); CSS cannot target them distinctly from body links |
+| Frontmatter YAML array | Data separated from prose; structured fields; rendered by the page template once; type-validated by Zod | Requires schema extension and template update |
+
+**Decision.** References moved to a `references` YAML array in article frontmatter. Each entry has four fields: `title` (link text), `url` (destination), `description` (one-sentence summary), `domain` (source domain label). The `knowledgeBase` Zod schema in `src/content.config.ts` validates the array. The `knowledge-base/[...slug].astro` page template renders the references section from `entry.data.references` — outside the `.prose` div, after the article body.
+
+All 25 articles were migrated as part of the same one-shot script that handled the callout directive migration (ADR-026). The `## Further Reading` heading and its HTML block were removed from each article body during the same pass.
+
+**Consequences.**  
+Article Markdown files contain only prose and directives — no structural HTML. Reference data is queryable as structured data if needed in future (e.g. generating a site-wide reading list). Changing the reference card layout requires editing one template file, not every article. The Zod schema provides build-time validation: a malformed URL in any article's `references` array aborts the build with a clear error.

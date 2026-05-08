@@ -56,6 +56,11 @@ date: 2025-01-08
 readTime: 11             # optional — omit to calculate automatically
 level: advanced          # beginner | intermediate | advanced
 excerpt: ""
+# references:            # optional — rendered as a citations section below the article body
+#   - title: ""
+#     url: ""
+#     description: ""
+#     domain: ""
 ---
 ```
 
@@ -70,6 +75,7 @@ excerpt: ""
 | `readTime` | number | No | Integer, minutes | Estimated reading time. If omitted, calculated automatically at build time from word count. Displayed in the article card and article header. |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | Controls the colour-coded level badge on the article card and article header. |
 | `excerpt` | string | Yes | ≤160 characters recommended | One-sentence summary. Appears on the article card and in page meta description. |
+| `references` | `{title, url, description, domain}[]` | No | — | External citations. Each entry renders as a linked card in a References section below the article body. `title` is the link text, `url` the destination, `description` a one-sentence summary, `domain` the display label for the source (e.g. `"docs.microsoft.com"`). |
 
 ### Example
 
@@ -273,38 +279,29 @@ const entry = await getEntry('knowledgeBase', 'azure/azure-landing-zones');
 
 ### Callout blocks
 
-Two callout types are available. Because `.md` files cannot import Astro components, callouts are written as raw HTML:
+Two callout types are available, written using container directive syntax. The `remark-directive` + `remark-callouts.mjs` plugin pipeline (configured in `astro.config.mjs`) converts these to the correct HTML at build time.
 
 **Pro Tip:**
-```html
-<div class="callout-tip">
-  <div class="callout-tip__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm.75 10.5h-1.5V7h1.5v5zm0-6.5h-1.5V4h1.5v1.5z" fill="currentColor"/>
-    </svg>
-  </div>
-  <div class="callout-tip__content">
-    <p class="callout-tip__label">Pro Tip</p>
-    <p>Your tip content here.</p>
-  </div>
-</div>
+```
+:::tip[Architectural Pro Tip]
+Your tip content here. Standard Markdown inline formatting works: **bold**, `code`, *italic*.
+:::
 ```
 
 **Warning:**
-```html
-<div class="callout-warning">
-  <div class="callout-warning__icon" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1.5L1.5 14h13L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-      <path d="M8 6v3.5M8 11.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="callout-warning__content">
-    <p class="callout-warning__label">Warning</p>
-    <p>Your warning content here.</p>
-  </div>
-</div>
 ```
+:::warning[Critical Caveat]
+Your warning content here.
+:::
+```
+
+Rules:
+- The `:::` fences must be on their own lines with no leading whitespace.
+- The label in `[...]` is required and becomes the callout heading.
+- The body can contain one or more paragraphs separated by a blank line.
+- Inline Markdown formatting (`**bold**`, `` `code` ``, `*italic*`) works inside the body.
+
+The rendered HTML matches `.callout-tip` and `.callout-warning` CSS classes defined in `src/pages/knowledge-base/[...slug].astro`.
 
 ### Case study section headings
 

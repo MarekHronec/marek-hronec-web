@@ -43,7 +43,7 @@ flowchart LR
 | Content | Markdown + Zod via Content Collections | — |
 | Sitemap | @astrojs/sitemap | 3.7.2 |
 | Search | Pagefind (static index, no dependency) | 1.5.x |
-| Fonts | Google Fonts CDN | — |
+| Fonts | Self-hosted via fontsource (Vite-bundled) | — |
 | Deployment | GitHub Actions + GitHub Pages | — |
 
 The full decision trail for each choice — options considered, trade-offs, and consequences — is in [DECISIONS.md](DECISIONS.md).
@@ -141,7 +141,7 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │       ├── networking/
     │       └── security/
     ├── layouts/
-    │   └── BaseLayout.astro      # HTML shell, SEO meta, Open Graph, font loading
+    │   └── BaseLayout.astro      # HTML shell, SEO meta, Open Graph
     ├── pages/                    # File-based routes
     │   ├── index.astro
     │   ├── case-studies/
@@ -155,6 +155,8 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   └── 404.astro
     ├── data/
     │   └── knowledge-graph.ts    # KB Learning Map — edge definitions and build-time slug validation
+    ├── plugins/
+    │   └── remark-callouts.mjs   # Remark plugin: transforms :::tip[]/:::warning[] directives into HTML
     ├── scripts/
     │   └── canvas.ts             # Cytoscape.js init, node HTML labels, detail panel, atom indicator (lazy)
     ├── styles/
@@ -259,6 +261,7 @@ Content is managed through Astro Content Collections. Collection definitions and
 | `readTime` | `number` | No | Read time in minutes — auto-calculated from word count if omitted; manual value takes priority. Speed config in `src/utils/readTime.ts`. | `11` |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | `"advanced"` |
 | `excerpt` | `string` | Yes | One-sentence summary (≤160 characters) | `"An Azure landing zone provides..."` |
+| `references` | `{title, url, description, domain}[]` | No | External citations rendered as a References section below the article body | — |
 
 **Category taxonomy:**
 
@@ -479,10 +482,10 @@ The `npm run build` script chains two commands: `astro build` (produces `dist/`)
 
 **Static pre-rendering.** All pages — 6 static routes plus one per content entry (3 case studies + 25 KB articles = 34 total for current content) — are built at deploy time. Time to first byte is the CDN edge latency. There is no server to slow down under load.
 
-**Font loading.** Google Fonts is loaded via `<link rel="preconnect">` hints to `fonts.googleapis.com` and `fonts.gstatic.com`, established in `BaseLayout.astro`. The `display=swap` parameter in the font URL ensures body text renders immediately in the fallback font while the custom fonts load — no flash of invisible text.
+**Font loading.** All three typefaces (Manrope Variable, Inter Variable, JetBrains Mono) are self-hosted via `@fontsource-variable` and `@fontsource` npm packages, imported in `src/styles/global.css` and bundled by Vite into hashed `.woff2` files in `dist/_astro/`. No CDN requests are made; fonts load from the same origin as the page. CSS `@font-face` fallback definitions with metric overrides (`ascent-override`, `descent-override`, `size-adjust`) ensure the system fallback font occupies the same layout space as the custom fonts, making any remaining font swap imperceptible. The fallback families `ManropeFallback` and `InterFallback` are declared in `global.css` and referenced in the `--font-display` and `--font-body` tokens in `tokens.css`.
 
 **Sitemap.** `@astrojs/sitemap` generates `sitemap-index.xml` automatically on each build, referencing all statically generated pages. This is consumed by search engines.
 
 **GitHub Pages constraints.** The site is deployed to a custom domain (`www.marekhronec.com`) rather than the default `github.io` subdomain. This means `BASE_URL` in `astro.config.mjs` is the root `/`, not a subpath. All internal links use the `base` utility from `src/utils/base.ts` (which normalises `import.meta.env.BASE_URL`) to remain portable if the deployment target changes.
 
-**Lighthouse.** The architecture is designed for maximum Core Web Vitals scores: no render-blocking JS, pre-rendered HTML, system font fallbacks with `display=swap`, and no third-party scripts except Google Fonts. Run `npx lighthouse https://www.marekhronec.com --view` to capture the current scores.
+**Lighthouse.** The architecture is designed for maximum Core Web Vitals scores: no render-blocking JS, pre-rendered HTML, same-origin self-hosted fonts, and no third-party scripts. Run `npx lighthouse https://www.marekhronec.com --view` to capture the current scores.
