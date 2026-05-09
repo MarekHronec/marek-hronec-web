@@ -1,11 +1,4 @@
 ---
-/**
- * KnowledgeCanvas — container for the KB Learning Map.
- *
- * Props are serialised into data attributes at build time.
- * The Cytoscape graph (+ node HTML labels) is initialised client-side on first
- * activation via the 'kb:canvas-activate' CustomEvent dispatched by index.astro.
- */
 import type { CanvasNode, CanvasEdge } from '../../scripts/canvas';
 
 interface Props {
@@ -23,41 +16,121 @@ const { nodes, edges } = Astro.props;
   data-edges={JSON.stringify(edges)}
   hidden
 >
-  <!-- Graph surface — Cytoscape mounts here -->
+  <!-- ── Toolbar — absolute overlay at top of canvas ──────────────────── -->
+  <div class="kbc-toolbar" role="toolbar" aria-label="Map controls">
+    <div class="kbc-toolbar__left">
+      <button id="kbc-filter-all" class="kbc-toolbar__filter kbc-toolbar__filter--active" data-filter="all" title="Show all nodes">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        All
+      </button>
+
+      <button id="kbc-start-here" class="kbc-toolbar__btn kbc-toolbar__btn--ghost" title="Pan to Start Here node">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>
+        Start Here
+      </button>
+
+      <div class="kbc-toolbar__sep" aria-hidden="true"></div>
+
+      <button class="kbc-toolbar__filter" data-filter="cloud-reality" title="Highlight Cloud Reality & Thinking">
+        <span class="kbc-toolbar__dot" style="background:#2c694e"></span>
+        Cloud Reality
+      </button>
+
+      <button class="kbc-toolbar__filter" data-filter="governance" title="Highlight Platform Organisation & Governance">
+        <span class="kbc-toolbar__dot" style="background:#3e6daa"></span>
+        Governance
+      </button>
+
+      <button class="kbc-toolbar__filter" data-filter="network" title="Highlight Network Architecture">
+        <span class="kbc-toolbar__dot" style="background:#6354a8"></span>
+        Network
+      </button>
+
+      <div class="kbc-toolbar__sep" aria-hidden="true"></div>
+
+      <button class="kbc-toolbar__filter" data-filter="learning-path" title="Show full learning path">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18"/><path d="M15 5l7 7-7 7"/></svg>
+        Learning Path
+      </button>
+    </div>
+
+    <div class="kbc-toolbar__right">
+      <button id="kbc-reset-view" class="kbc-toolbar__btn kbc-toolbar__btn--ghost" title="Reset zoom to 100%">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        Reset View
+      </button>
+
+      <button id="kbc-fit" class="kbc-toolbar__btn kbc-toolbar__btn--ghost" title="Fit visible nodes to canvas">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        Fit
+      </button>
+
+      <div id="kbc-search-wrap" class="kbc-search-wrap">
+        <button id="kbc-search-toggle" class="kbc-toolbar__btn kbc-toolbar__btn--ghost kbc-search-wrap__toggle">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Search <kbd>⌘K</kbd>
+        </button>
+        <input
+          id="kbc-search-input"
+          class="kbc-search-wrap__input"
+          type="text"
+          placeholder="Search nodes…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Graph surface — fills full wrapper; Cytoscape mounts here -->
   <div id="kb-canvas" class="kbc-surface" aria-label="Knowledge map" role="img"></div>
 
   <!-- Detail panel — populated by canvas.ts on node click -->
   <aside id="kbc-panel" class="kbc-panel" hidden></aside>
 
-  <!-- Zoom / fit controls -->
-  <div class="kbc-controls" aria-label="Map controls">
-    <button id="kbc-fit" class="kbc-controls__btn" title="Fit to screen">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-        <path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+  <!-- Zoom controls: +  100%  − -->
+  <div class="kbc-controls" aria-label="Zoom controls">
     <button id="kbc-zoom-in" class="kbc-controls__btn" title="Zoom in">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-        <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M9.5 9.5L13 13M6 4v4M4 6h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
     </button>
+    <span id="kbc-zoom-pct" class="kbc-controls__pct">100%</span>
     <button id="kbc-zoom-out" class="kbc-controls__btn" title="Zoom out">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-        <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M9.5 9.5L13 13M4 6h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
     </button>
   </div>
 
-  <!-- Legend -->
+  <!-- Legend — compact horizontal pill -->
   <div class="kbc-legend" aria-label="Map legend">
-    <span class="kbc-legend__item kbc-legend__item--path">Learning path</span>
-    <span class="kbc-legend__item kbc-legend__item--related">Related</span>
+    <div class="kbc-legend__section">
+      <span class="kbc-legend__item kbc-legend__item--path">Learning path</span>
+      <span class="kbc-legend__item kbc-legend__item--related">Related</span>
+    </div>
+    <div class="kbc-legend__divider" aria-hidden="true"></div>
+    <div class="kbc-legend__section">
+      <span class="kbc-legend__diff">
+        <span class="kbc-legend__dot kbc-legend__dot--on"></span><span class="kbc-legend__dot"></span><span class="kbc-legend__dot"></span>
+        Foundational
+      </span>
+      <span class="kbc-legend__diff">
+        <span class="kbc-legend__dot kbc-legend__dot--on"></span><span class="kbc-legend__dot kbc-legend__dot--on"></span><span class="kbc-legend__dot"></span>
+        Intermediate
+      </span>
+      <span class="kbc-legend__diff">
+        <span class="kbc-legend__dot kbc-legend__dot--on"></span><span class="kbc-legend__dot kbc-legend__dot--on"></span><span class="kbc-legend__dot kbc-legend__dot--on"></span>
+        Advanced
+      </span>
+    </div>
   </div>
 </div>
 
-<!-- ── Scoped structural styles ─────────────────────────────────────────── -->
+<!-- ── Structural styles ─────────────────────────────────────────────────── -->
 <style>
   .kbc-wrapper {
     position: relative;
@@ -69,7 +142,12 @@ const { nodes, edges } = Astro.props;
     overflow: hidden;
   }
 
+  .kbc-wrapper[hidden] { display: none; }
+
+  /* Canvas fills the full wrapper; toolbar/controls/legend overlay it */
   .kbc-surface {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     -webkit-tap-highlight-color: transparent;
@@ -77,13 +155,117 @@ const { nodes, edges } = Astro.props;
     user-select: none;
   }
 
+  /* ── Toolbar — transparent strip; each button is its own floating pill ── */
+  .kbc-toolbar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    pointer-events: none;
+  }
+
+  .kbc-toolbar__left,
+  .kbc-toolbar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    pointer-events: auto;
+  }
+
+  .kbc-toolbar__sep {
+    width: 1px;
+    height: 16px;
+    background: var(--color-warm-gray-20);
+    flex-shrink: 0;
+    margin-inline: 2px;
+    opacity: 0;
+  }
+
+  .kbc-toolbar__btn,
+  .kbc-toolbar__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--color-on-surface-muted);
+    background: rgba(252, 249, 248, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 4px rgba(50, 50, 50, 0.09);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard);
+  }
+
+  .kbc-toolbar__btn:hover,
+  .kbc-toolbar__filter:hover {
+    color: var(--color-on-surface);
+    background: rgba(252, 249, 248, 0.97);
+  }
+  .kbc-toolbar__filter--active {
+    color: var(--color-primary);
+    background: var(--color-cta-surface);
+  }
+
+  .kbc-toolbar__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  kbd {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: var(--weight-regular);
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: var(--color-surface-container);
+    color: var(--color-on-surface-muted);
+    border: 1px solid var(--color-warm-gray-20);
+    letter-spacing: 0;
+  }
+
+  /* ── Search ───────────────────────────────────────────────────────── */
+  .kbc-search-wrap { position: relative; }
+
+  .kbc-search-wrap__input {
+    display: none;
+    width: 190px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-container-lowest);
+    border: 1px solid var(--color-warm-gray-20);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface);
+    outline: none;
+  }
+  .kbc-search-wrap__input:focus { border-color: var(--color-primary); }
+  .kbc-search-wrap--open .kbc-search-wrap__toggle { display: none; }
+  .kbc-search-wrap--open .kbc-search-wrap__input  { display: block; }
+
   /* ── Detail panel ─────────────────────────────────────────────────── */
   .kbc-panel {
     position: absolute;
-    top: var(--space-4);
+    top: 70px;
     right: var(--space-4);
     width: 288px;
-    max-height: calc(100% - var(--space-8));
+    max-height: calc(100% - 70px - var(--space-8));
     overflow-y: auto;
     background: var(--color-surface-container-lowest);
     box-shadow: var(--shadow-float);
@@ -95,12 +277,8 @@ const { nodes, edges } = Astro.props;
     z-index: 10;
   }
 
-  /* display:flex above overrides the browser's [hidden]→display:none, so re-apply it */
-  .kbc-panel[hidden] {
-    display: none;
-  }
+  .kbc-panel[hidden] { display: none; }
 
-  /* Detail panel children are injected by canvas.ts — use :global() */
   .kbc-panel :global(.kbc-panel__header-label) {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
@@ -126,10 +304,7 @@ const { nodes, edges } = Astro.props;
     flex-shrink: 0;
     transition: background-color var(--duration-fast) var(--ease-standard);
   }
-
-  .kbc-panel :global(.kbc-panel__close:hover) {
-    background: var(--color-surface-container);
-  }
+  .kbc-panel :global(.kbc-panel__close:hover) { background: var(--color-surface-container); }
 
   .kbc-panel :global(.kbc-panel__title) {
     font-family: var(--font-display);
@@ -175,20 +350,23 @@ const { nodes, edges } = Astro.props;
     text-decoration: none;
     margin-top: var(--space-1);
   }
+  .kbc-panel :global(.kbc-panel__link:hover) { text-decoration: underline; }
 
-  .kbc-panel :global(.kbc-panel__link:hover) {
-    text-decoration: underline;
-  }
-
-  /* ── Zoom / fit controls ─────────────────────────────────────────── */
+  /* ── Zoom controls — unified segmented pill ──────────────────────── */
   .kbc-controls {
     position: absolute;
     bottom: var(--space-5);
     left: var(--space-4);
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    align-items: stretch;
     z-index: 10;
+    background: rgba(252, 249, 248, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 1px 4px rgba(50, 50, 50, 0.09);
+    overflow: hidden;
   }
 
   .kbc-controls__btn {
@@ -196,31 +374,62 @@ const { nodes, edges } = Astro.props;
     align-items: center;
     justify-content: center;
     width: 32px;
-    height: 32px;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-radius: var(--radius-sm);
+    height: 28px;
+    background: transparent;
     color: var(--color-on-surface-muted);
     cursor: pointer;
-    box-shadow: var(--shadow-sm);
     transition: color var(--duration-fast) var(--ease-standard),
                 background-color var(--duration-fast) var(--ease-standard);
   }
-
   .kbc-controls__btn:hover {
     color: var(--color-primary);
-    background: var(--color-surface-container-lowest);
+    background: rgba(44, 105, 78, 0.07);
   }
 
-  /* ── Legend ──────────────────────────────────────────────────────── */
+  .kbc-controls__pct {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface-muted);
+    background: transparent;
+    width: 32px;
+    text-align: center;
+    padding: 4px 2px;
+    letter-spacing: -0.02em;
+    border-top: 1px solid rgba(179, 178, 177, 0.25);
+    border-bottom: 1px solid rgba(179, 178, 177, 0.25);
+  }
+
+  /* ── Legend — compact horizontal pill ────────────────────────────── */
   .kbc-legend {
     position: absolute;
     bottom: var(--space-5);
     right: var(--space-4);
     display: flex;
-    gap: var(--space-4);
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+    background: rgba(252, 249, 248, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    box-shadow: 0 1px 4px rgba(50, 50, 50, 0.09);
     z-index: 10;
+  }
+
+  .kbc-legend__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .kbc-legend__divider {
+    width: 1px;
+    height: 16px;
+    background: var(--color-warm-gray-20);
+    flex-shrink: 0;
   }
 
   .kbc-legend__item {
@@ -235,41 +444,94 @@ const { nodes, edges } = Astro.props;
   .kbc-legend__item::before {
     content: '';
     display: block;
-    width: 24px;
+    width: 22px;
     height: 2px;
     flex-shrink: 0;
   }
-
-  .kbc-legend__item--path::before {
-    background: var(--color-primary);
-  }
-
+  .kbc-legend__item--path::before { background: var(--color-primary); }
   .kbc-legend__item--related::before {
     background: repeating-linear-gradient(
       90deg, var(--color-warm-gray) 0, var(--color-warm-gray) 5px, transparent 5px, transparent 9px
     );
   }
-</style>
 
-<!-- ── Global styles for HTML node labels (rendered by cytoscape-node-html-label) -->
-<!-- Must be global: the extension appends HTML outside this component's scope.   -->
-<style is:global>
-  /* Outer container — matches the Cytoscape node dimensions exactly */
-  .kbc-node {
-    width: 200px;
-    height: 72px;
-    box-sizing: border-box;
-    padding: 10px 12px;
+  .kbc-legend__diff {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    pointer-events: none;  /* Cytoscape canvas handles all interactions */
-    position: relative;
-    overflow: visible;     /* START HERE badge overflows the top edge */
+    align-items: center;
+    gap: 3px;
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
   }
 
-  /* "START HERE" badge — floats above the entry node */
+  .kbc-legend__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-warm-gray-30);
+    border: 1px solid var(--color-warm-gray);
+    flex-shrink: 0;
+  }
+  .kbc-legend__dot--on {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .kbc-legend__diff .kbc-legend__dot:last-of-type { margin-right: 4px; }
+</style>
+
+<!-- ── Global styles for HTML node labels injected by Cytoscape ──────────── -->
+<style is:global>
+  /* Article node — must match canvas.ts width:340 height:78 */
+  .kbc-node {
+    width: 340px;
+    height: 78px;
+    box-sizing: border-box;
+    padding: 0 12px 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: none;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Group header — must match canvas.ts width:340 height:50 */
+  .kbc-node--group {
+    width: 340px;
+    height: 50px;
+    padding: 0 14px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 9px;
+  }
+
+  /* Icon + title row inside article nodes */
+  .kbc-node__row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .kbc-node__icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kbc-node__icon-wrap svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  /* START HERE badge */
   .kbc-node__start {
     position: absolute;
     top: -26px;
@@ -287,38 +549,61 @@ const { nodes, edges } = Astro.props;
     white-space: nowrap;
   }
 
-  /* Article title inside the node */
+  /* Article title */
   .kbc-node__title {
     font-family: var(--font-body);
     font-size: 11px;
     font-weight: 600;
-    color: var(--color-on-surface);
+    color: #323232;
     line-height: 1.35;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    width: 100%;
+    flex: 1;
   }
 
-  /* Difficulty chip — muted neutral style for all levels */
-  .kbc-node__chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 7px;
-    border-radius: 10px;
+  /* Group header label */
+  .kbc-node__group-label {
     font-family: var(--font-body);
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex: 1;
+    overflow: hidden;
     white-space: nowrap;
-    flex-shrink: 0;
-    background: rgba(95, 95, 95, 0.10);
-    color: var(--color-on-surface-muted);
+    text-overflow: ellipsis;
   }
 
-  /* Atom click indicator */
+  .kbc-node--group[data-branch="cloud-reality"] .kbc-node__group-label { color: #2c694e; }
+  .kbc-node--group[data-branch="governance"]    .kbc-node__group-label { color: #3e6daa; }
+  .kbc-node--group[data-branch="network"]       .kbc-node__group-label { color: #6354a8; }
+
+  /* Difficulty dots — absolute bottom-right of card */
+  .kbc-node__dots {
+    position: absolute;
+    bottom: 7px;
+    right: 10px;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .kbc-node__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(179, 178, 177, 0.35);
+    border: 1px solid rgba(179, 178, 177, 0.6);
+    flex-shrink: 0;
+  }
+
+  .kbc-node[data-branch="cloud-reality"] .kbc-node__dot--filled { background: #2c694e; border-color: #2c694e; }
+  .kbc-node[data-branch="governance"]    .kbc-node__dot--filled { background: #3e6daa; border-color: #3e6daa; }
+  .kbc-node[data-branch="network"]       .kbc-node__dot--filled { background: #6354a8; border-color: #6354a8; }
+  .kbc-node[data-branch=""]             .kbc-node__dot--filled { background: #2c694e; border-color: #2c694e; }
+
+  /* ── Atom click indicator ──────────────────────────────────────────── */
   .kbc-atom {
     position: absolute;
     width: 70px;
@@ -330,92 +615,62 @@ const { nodes, edges } = Astro.props;
 
   .kbc-atom__nucleus {
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 50%; top: 50%;
     transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
+    width: 8px; height: 8px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, rgba(44, 105, 78, 0.95), rgba(44, 105, 78, 0.45));
-    box-shadow: 0 0 5px rgba(44, 105, 78, 0.5), 0 0 12px rgba(44, 105, 78, 0.18);
+    background: radial-gradient(circle at 35% 35%, rgba(44,105,78,0.95), rgba(44,105,78,0.45));
+    box-shadow: 0 0 5px rgba(44,105,78,0.5), 0 0 12px rgba(44,105,78,0.18);
   }
 
-  /* Sonar ping ring — expands outward while waiting for the atom to activate */
   .kbc-atom__nucleus::after {
     content: '';
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 8px;
-    height: 8px;
+    left: 50%; top: 50%;
+    width: 8px; height: 8px;
     border-radius: 50%;
-    border: 1.5px solid rgba(44, 105, 78, 0.55);
-    transform: translate(-50%, -50%) scale(1);
+    border: 1.5px solid rgba(44,105,78,0.55);
+    transform: translate(-50%,-50%) scale(1);
     animation: kbc-atom-ping 1.4s ease-out infinite;
     transition: opacity 0.35s ease;
   }
 
-  /* Gracefully fade the ping out as the atom blooms in */
-  .kbc-atom--active .kbc-atom__nucleus::after {
-    animation: none;
-    opacity: 0;
-  }
+  .kbc-atom--active .kbc-atom__nucleus::after { animation: none; opacity: 0; }
 
   @keyframes kbc-atom-ping {
-    0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.7; }
-    100% { transform: translate(-50%, -50%) scale(5.5); opacity: 0;   }
+    0%   { transform: translate(-50%,-50%) scale(1);   opacity: 0.7; }
+    100% { transform: translate(-50%,-50%) scale(5.5); opacity: 0;   }
   }
 
-  /* Rings: bloom from a pinpoint at the nucleus outward to their tilted ellipse.
-     --ring-angle is set per-element by canvas.ts so CSS can own the full transform. */
   .kbc-atom__ring {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 52px;
-    height: 18px;
-    margin-left: -26px;
-    margin-top: -9px;
-    border: 1px solid rgba(44, 105, 78, 0.22);
+    left: 50%; top: 50%;
+    width: 52px; height: 18px;
+    margin-left: -26px; margin-top: -9px;
+    border: 1px solid rgba(44,105,78,0.22);
     border-radius: 50%;
     opacity: 0;
     transform: rotate(var(--ring-angle, 0deg)) scale(0.15);
-    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2,0.8,0.2,1);
   }
+  .kbc-atom--active .kbc-atom__ring { opacity: 1; transform: rotate(var(--ring-angle, 0deg)) scale(1); }
+  .kbc-atom--active .kbc-atom__ring:nth-child(2) { transition-delay: 0s;    }
+  .kbc-atom--active .kbc-atom__ring:nth-child(3) { transition-delay: 0.09s; }
+  .kbc-atom--active .kbc-atom__ring:nth-child(4) { transition-delay: 0.18s; }
 
-  .kbc-atom--active .kbc-atom__ring {
-    opacity: 1;
-    transform: rotate(var(--ring-angle, 0deg)) scale(1);
-  }
-
-  /* Stagger the 3 rings so they bloom one after another */
-  .kbc-atom--active .kbc-atom__ring:nth-child(2) { transition-delay: 0s;     }
-  .kbc-atom--active .kbc-atom__ring:nth-child(3) { transition-delay: 0.09s;  }
-  .kbc-atom--active .kbc-atom__ring:nth-child(4) { transition-delay: 0.18s;  }
-
-  /* Electrons appear once the rings have settled */
   .kbc-atom__electron {
     position: absolute;
-    width: 4px;
-    height: 4px;
+    width: 4px; height: 4px;
     border-radius: 50%;
-    background: rgba(44, 105, 78, 0.85);
-    box-shadow: 0 0 4px rgba(44, 105, 78, 0.4);
+    background: rgba(44,105,78,0.85);
+    box-shadow: 0 0 4px rgba(44,105,78,0.4);
     opacity: 0;
     transition: opacity 0.4s ease 0.38s;
   }
-
-  .kbc-atom--active .kbc-atom__electron {
-    opacity: 1;
-  }
+  .kbc-atom--active .kbc-atom__electron { opacity: 1; }
 </style>
 
 <script>
-  /**
-   * Listens for 'kb:canvas-activate' dispatched by index.astro's view toggle.
-   * On first activation: dynamically imports canvas.ts (which bundles Cytoscape).
-   * { once: true } ensures the import only happens once per page load.
-   */
   document.getElementById('kb-canvas-wrapper')?.addEventListener(
     'kb:canvas-activate',
     async () => {

@@ -17,18 +17,53 @@ const articles = await getCollection('knowledgeBase');
 const allSlugs = new Set(articles.map(a => a.id));
 validateEdges(allSlugs);
 
-// ── Canvas node data (exclude BPM — separate canvas planned) ─────────────
-const canvasNodes: CanvasNode[] = articles
-  .filter(a => a.data.category !== 'bpm')
-  .map(a => ({
-    id: a.id,
-    label: a.data.title,
-    category: a.data.category,
-    level: a.data.level,
-    excerpt: a.data.excerpt,
-    url: `/knowledge-base/${a.id}`,
-    tags: a.data.tags,
-  }));
+// ── Canvas node data — curated three-branch learning tree ─────────────────
+
+const CANVAS_START_NODE = 'multicloud/how-to-learn-azure-and-oci-without-stale-lists';
+
+const ARTICLE_BRANCH: Record<string, string> = {
+  'multicloud/iaas-paas-saas-without-marketing-layer':                           'cloud-reality',
+  'multicloud/shared-responsibility-for-people-who-stopped-believing-marketing': 'cloud-reality',
+  'multicloud/regions-zones-availability-domains-where-your-data-lives':         'cloud-reality',
+  'multicloud/service-availability-by-region-why-you-cannot-trust-the-map':      'cloud-reality',
+  'multicloud/tenant-subscription-management-group-compartment':                 'governance',
+  'multicloud/landing-zones-what-they-solve-and-the-honest-catch':               'governance',
+  'multicloud/sandboxes-environments-you-will-probably-set-up-wrong':            'governance',
+  'multicloud/naming-conventions-azure-oci':                                      'governance',
+  'multicloud/tagging-metadata-earn-their-keep':                                  'governance',
+  'security/policy-as-code-and-quotas-where-governance-stops-being-wiki':        'governance',
+  'multicloud/documentation-ccoe-why-both-decay-faster-than-you-think':          'governance',
+  'networking/address-plans-designing-ip-space-for-three-clouds':                'network',
+  'networking/ipam-ip-address-management-before-you-wish-you-had-done-it':       'network',
+  'networking/hub-and-spoke-virtual-wan-and-drg-three-topology-choices':         'network',
+  'networking/hybrid-connectivity-expressroute-fastconnect-vpn-reality':         'network',
+};
+
+const CANVAS_ARTICLE_IDS = new Set([CANVAS_START_NODE, ...Object.keys(ARTICLE_BRANCH)]);
+
+// Synthetic group-header nodes (not from the content collection)
+const GROUP_NODES: CanvasNode[] = [
+  { id: 'group:cloud-reality', label: 'Cloud Reality & Thinking',          category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'cloud-reality' },
+  { id: 'group:governance',    label: 'Platform Organisation & Governance', category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'governance'    },
+  { id: 'group:network',       label: 'Network Architecture',               category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'network'       },
+];
+
+const canvasNodes: CanvasNode[] = [
+  ...GROUP_NODES,
+  ...articles
+    .filter(a => CANVAS_ARTICLE_IDS.has(a.id))
+    .map(a => ({
+      id:       a.id,
+      label:    a.data.title,
+      category: a.data.category,
+      level:    a.data.level,
+      excerpt:  a.data.excerpt,
+      url:      `/knowledge-base/${a.id}`,
+      tags:     a.data.tags,
+      nodeType: 'article' as const,
+      branch:   ARTICLE_BRANCH[a.id] ?? '',
+    })),
+];
 
 /* Sort newest first (default) */
 const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
