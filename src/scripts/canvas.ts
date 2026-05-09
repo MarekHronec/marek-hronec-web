@@ -34,15 +34,17 @@ export interface CanvasEdge {
 // ── Branch colours ────────────────────────────────────────────────────────
 // Deliberately distinct: teal (site primary) / slate-blue / purple
 
-const BRANCH_COLORS: Record<string, { border: string; bg: string; icon: string }> = {
-  'cloud-reality': { border: '#2c694e', bg: '#dce8e3', icon: '#2c694e' },
-  governance:      { border: '#3e6daa', bg: '#d9e5f4', icon: '#3e6daa' },
-  network:         { border: '#6354a8', bg: '#e6e3f4', icon: '#6354a8' },
+const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: string; groupBg: string; icon: string }> = {
+  'cloud-reality': { border: '#2c694e', groupBorder: '#83AD9D', bg: '#dce8e3', groupBg: '#F9FAFA', icon: '#2c694e' },
+  governance:      { border: '#3e6daa', groupBorder: '#9FB8DA', bg: '#d9e5f4', groupBg: '#F7F8FC', icon: '#3e6daa' },
+  network:         { border: '#6354a8', groupBorder: '#9996C8', bg: '#e6e3f4', groupBg: '#F7F6F9', icon: '#6354a8' },
 };
 
-function branchBorder(branch: string): string { return BRANCH_COLORS[branch]?.border ?? '#5f5f5f'; }
-function branchBg   (branch: string): string { return BRANCH_COLORS[branch]?.bg    ?? '#f0eded'; }
-function branchIcon (branch: string): string { return BRANCH_COLORS[branch]?.icon  ?? '#2c694e'; }
+function branchBorder     (branch: string): string { return BRANCH_COLORS[branch]?.border      ?? '#5f5f5f'; }
+function branchGroupBorder(branch: string): string { return BRANCH_COLORS[branch]?.groupBorder ?? '#83AD9D'; }
+function branchBg         (branch: string): string { return BRANCH_COLORS[branch]?.bg          ?? '#f0eded'; }
+function branchGroupBg    (branch: string): string { return BRANCH_COLORS[branch]?.groupBg     ?? '#F9FAFA'; }
+function branchIcon       (branch: string): string { return BRANCH_COLORS[branch]?.icon        ?? '#2c694e'; }
 
 // ── Inline SVG icons (Lucide-compatible, 16×16 on 24×24 viewBox) ──────────
 
@@ -141,7 +143,7 @@ function nodeTemplate(data: Record<string, unknown>, isEntry: boolean): string {
   const color = branchIcon(branch);
 
   if (nodeType === 'group') {
-    const gIcon = icon(GROUP_ICON[branch] ?? 'cloud', color);
+    const gIcon = icon(GROUP_ICON[branch] ?? 'cloud', color, 24);
     return `<div class="kbc-node kbc-node--group" data-branch="${branch}">
       <span class="kbc-node__icon" style="color:${color}">${gIcon}</span>
       <p class="kbc-node__group-label" style="color:${color}">${label}</p>
@@ -218,7 +220,7 @@ function setupPanClamp(cy: cytoscape.Core, canvasEl: HTMLElement) {
 
 // ── Filter / search state ─────────────────────────────────────────────────
 
-type BranchFilter = 'all' | 'learning-path' | 'cloud-reality' | 'governance' | 'network';
+type BranchFilter = 'all' | 'cloud-reality' | 'governance' | 'network';
 let activeFilter: BranchFilter = 'all';
 let searchQuery = '';
 
@@ -230,7 +232,7 @@ function applyVisibility(cy: cytoscape.Core): void {
     const label    = String(node.data('label')    ?? '').toLowerCase();
     if (!branch) { node.removeClass('dimmed'); return; }
     let dim = false;
-    if (activeFilter !== 'all' && activeFilter !== 'learning-path' && branch !== activeFilter) dim = true;
+    if (activeFilter !== 'all' && branch !== activeFilter) dim = true;
     if (!dim && q && nodeType === 'article' && !label.includes(q)) dim = true;
     if (dim !== node.hasClass('dimmed')) { if (dim) node.addClass('dimmed'); else node.removeClass('dimmed'); }
   });
@@ -273,8 +275,8 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
           tags:        n.tags,
           nodeType:    n.nodeType  ?? 'article',
           branch:      n.branch    ?? '',
-          borderColor: branchBorder(n.branch ?? ''),
-          bgColor:     n.nodeType === 'group' ? branchBg(n.branch ?? '') : '#ffffff',
+          borderColor: n.nodeType === 'group' ? branchGroupBorder(n.branch ?? '') : branchBorder(n.branch ?? ''),
+          bgColor:     n.nodeType === 'group' ? branchGroupBg(n.branch ?? '') : '#ffffff',
         },
       })),
       edges: edgeList.map((e, i) => ({
@@ -284,6 +286,8 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
 
     style: [
       { selector: 'core', style: { 'active-bg-opacity': 0 } as cytoscape.Css.Core },
+      { selector: 'node', style: { 'overlay-opacity': 0 } as cytoscape.Css.Node },
+      { selector: 'edge', style: { 'overlay-opacity': 0 } as cytoscape.Css.Edge },
       {
         selector: 'node[nodeType = "article"]',
         style: {
@@ -427,9 +431,41 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     tpl: (data: Record<string, unknown>) => nodeTemplate(data, entryIds.has(String(data.id))),
   }]);
 
+  // ── Pan from node drag ────────────────────────────────────────────────────
+
+  let nodeDragPan: { panX: number; panY: number; clientX: number; clientY: number } | null = null;
+  let nodeDragging = false;
+
+  cy.on('mousedown', 'node', evt => {
+    if (evt.originalEvent.button !== 0) return;
+    const pan = cy.pan();
+    nodeDragPan = { panX: pan.x, panY: pan.y, clientX: evt.originalEvent.clientX, clientY: evt.originalEvent.clientY };
+    nodeDragging = false;
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!nodeDragPan || e.buttons !== 1) { nodeDragPan = null; nodeDragging = false; return; }
+    const dx = e.clientX - nodeDragPan.clientX;
+    const dy = e.clientY - nodeDragPan.clientY;
+    if (!nodeDragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+      nodeDragging = true;
+      cy.userPanningEnabled(false);
+    }
+    if (nodeDragging) cy.pan({ x: nodeDragPan.panX + dx, y: nodeDragPan.panY + dy });
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (nodeDragging) cy.userPanningEnabled(true);
+    nodeDragPan = null;
+    nodeDragging = false;
+  });
+
   // ── Interactions ────────────────────────────────────────────────────────
 
+  // tap fires on canvas element (before document mouseup), so nodeDragging is
+  // still true here when the gesture was a drag — safe to use as a guard.
   cy.on('tap', 'node', evt => {
+    if (nodeDragging) return;
     const data = evt.target.data() as CanvasNode;
     if (data.nodeType === 'group') return;
     cy.nodes().removeClass('selected');
@@ -477,47 +513,29 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
 
   document.getElementById('kbc-filter-all')?.addEventListener('click', () => {
     setFilter('all');
-    fitAndUpdate();
   });
 
   document.querySelectorAll<HTMLElement>('[data-filter]').forEach(btn => {
     const f = btn.dataset.filter as BranchFilter;
     if (f === 'all') return;
-    btn.addEventListener('click', () => setFilter(f));
+    btn.addEventListener('click', () => setFilter(activeFilter === f ? 'all' : f));
   });
 
   // ── Toolbar: Fit ──────────────────────────────────────────────────────────
 
   document.getElementById('kbc-fit')?.addEventListener('click', fitAndUpdate);
 
-  // ── Toolbar: Reset View ───────────────────────────────────────────────────
-
-  document.getElementById('kbc-reset-view')?.addEventListener('click', () => {
-    cy.zoom({ level: 1, renderedPosition: { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 } });
-    updateZoomPct();
-  });
-
-  // ── Toolbar: Start Here ───────────────────────────────────────────────────
-
-  document.getElementById('kbc-start-here')?.addEventListener('click', () => {
-    const entry = cy.nodes().filter(n => entryIds.has(n.id()))[0];
-    if (entry) {
-      cy.animate({ center: { eles: entry }, zoom: 1, duration: 350,
-        easing: 'ease-in-out-cubic' as Parameters<cytoscape.Core['animate']>[0]['easing'] });
-      setTimeout(updateZoomPct, 380);
-    }
-  });
-
   // ── Toolbar: Search ───────────────────────────────────────────────────────
 
   const searchToggleEl = document.getElementById('kbc-search-toggle');
   const searchInputEl  = document.getElementById('kbc-search-input') as HTMLInputElement | null;
   const searchWrapEl   = document.getElementById('kbc-search-wrap');
+  const searchClearEl  = document.getElementById('kbc-search-clear');
 
   function clearSearch() {
     searchQuery = '';
     if (searchInputEl) searchInputEl.value = '';
-    searchWrapEl?.classList.remove('kbc-search-wrap--open');
+    searchWrapEl?.classList.remove('kbc-search-wrap--open', 'kbc-search-wrap--has-text');
     applyVisibility(cy);
   }
 
@@ -528,10 +546,24 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
 
   searchInputEl?.addEventListener('input', () => {
     searchQuery = searchInputEl?.value ?? '';
+    searchWrapEl?.classList.toggle('kbc-search-wrap--has-text', searchQuery.length > 0);
     applyVisibility(cy);
   });
 
   searchInputEl?.addEventListener('keydown', e => { if (e.key === 'Escape') clearSearch(); });
+
+  searchInputEl?.addEventListener('blur', e => {
+    if ((e.relatedTarget as HTMLElement | null)?.id === 'kbc-search-clear') return;
+    if (!searchQuery) clearSearch();
+  });
+
+  searchClearEl?.addEventListener('click', () => {
+    searchQuery = '';
+    if (searchInputEl) searchInputEl.value = '';
+    searchWrapEl?.classList.remove('kbc-search-wrap--has-text');
+    applyVisibility(cy);
+    searchInputEl?.focus();
+  });
 
   document.addEventListener('keydown', e => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); searchToggleEl?.click(); }
@@ -541,5 +573,30 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
 
   setupPanClamp(cy, canvasEl);
 
-  cy.one('layoutstop', fitAndUpdate);
+  cy.one('layoutstop', () => {
+    // dagre does not guarantee left-to-right order of equal-rank siblings.
+    // Read positions, swap branch subtrees into the desired order, then
+    // re-apply via a preset layout so the HTML label plugin re-renders.
+    const BRANCHES = ['cloud-reality', 'governance', 'network'];
+    const gx = BRANCHES.map(b => {
+      const el = cy.nodes().filter(n => n.id() === `group:${b}`);
+      return el.length ? el.position('x') : 0;
+    });
+    const targetXs = [...gx].sort((a, b) => a - b);
+
+    const pos: Record<string, cytoscape.Position> = {};
+    cy.nodes().forEach(n => { pos[n.id()] = { x: n.position('x'), y: n.position('y') }; });
+
+    BRANCHES.forEach((branch, i) => {
+      const dx = targetXs[i] - gx[i];
+      if (Math.abs(dx) < 1) return;
+      cy.nodes().filter(n => n.data('branch') === branch)
+        .forEach(n => { pos[n.id()].x += dx; });
+    });
+
+    // @ts-expect-error — preset layout positions option not in base LayoutOptions types
+    const corrected = cy.layout({ name: 'preset', positions: (n) => pos[n.id()], animate: false });
+    corrected.one('layoutstop', fitAndUpdate);
+    corrected.run();
+  });
 }

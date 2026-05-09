@@ -359,7 +359,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
 
 3. **Write the body.** Start with `##` headings. The `title` from frontmatter is the `<h1>`.
 
-4. **Add to the Learning Map (optional).** If the article should appear on the Knowledge Map canvas, register it as a node in `src/data/knowledge-graph.ts`. The graph data includes edges (connections between articles) — `type: 'path'` for sequential learning paths, `type: 'related'` for supplementary connections. See [DEVELOPMENT.md §10](DEVELOPMENT.md#10-knowledge-map-canvas) for the full admin guide.
+4. **Add to the Learning Map (optional).** The canvas only shows articles that are explicitly opted in. See [DEVELOPMENT.md §10 — Adding an article to the canvas](DEVELOPMENT.md#adding-an-article-to-the-canvas) for the four-step procedure: add the slug to `ARTICLE_BRANCH` in `index.astro` (controls which branch column it appears in), optionally add an icon to `ARTICLE_ICON` in `canvas.ts`, then wire it into the graph with edges in `knowledge-graph.ts`.
 
 ### Adding a new category
 

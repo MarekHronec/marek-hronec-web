@@ -48,10 +48,13 @@ const GROUP_NODES: CanvasNode[] = [
   { id: 'group:network',       label: 'Network Architecture',               category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'network'       },
 ];
 
+const BRANCH_RANK: Record<string, number> = { 'cloud-reality': 0, governance: 1, network: 2 };
+
 const canvasNodes: CanvasNode[] = [
   ...GROUP_NODES,
   ...articles
     .filter(a => CANVAS_ARTICLE_IDS.has(a.id))
+    .sort((a, b) => (BRANCH_RANK[ARTICLE_BRANCH[a.id] ?? ''] ?? -1) - (BRANCH_RANK[ARTICLE_BRANCH[b.id] ?? ''] ?? -1))
     .map(a => ({
       id:       a.id,
       label:    a.data.title,
@@ -107,25 +110,39 @@ const totalCount = sorted.length;
   title="Knowledge Base"
   description="Technical articles on cloud architecture, Azure, DevOps, and infrastructure patterns."
 >
-  <div class="kb-page">
+  <!-- Runs synchronously before first paint — prevents canvas→list blink on page load / navigation -->
+  <script is:inline>
+    if (sessionStorage.getItem('kb-view') === 'map') {
+      document.documentElement.classList.add('kb-canvas-init');
+    }
+  </script>
+
+  <div class="kb-page" id="kb-page">
 
     <CategorySidebar />
 
     <div class="kb-content">
       <div class="kb-content__inner">
 
-        <!-- Page header -->
-        <header class="kb-header">
-          <p class="kb-header__label">Knowledge Base</p>
-          <h1 class="kb-header__title">Technical Notes<span class="kb-header__period">.</span></h1>
-          <p class="kb-header__subtitle">
-            In-depth architecture patterns, implementation guides, and
-            operational constraints for cloud-native systems.
-          </p>
-        </header>
+        <!-- Collapses as a unit when canvas view activates -->
+        <div class="kb-preflight">
+          <div class="kb-preflight__inner">
 
-        <!-- Full-text search (Pagefind — index generated at build time) -->
-        <KBSearch />
+            <!-- Page header -->
+            <header class="kb-header">
+              <p class="kb-header__label">Knowledge Base</p>
+              <h1 class="kb-header__title">Technical Notes<span class="kb-header__period">.</span></h1>
+              <p class="kb-header__subtitle">
+                In-depth architecture patterns, implementation guides, and
+                operational constraints for cloud-native systems.
+              </p>
+            </header>
+
+            <!-- Full-text search (Pagefind — index generated at build time) -->
+            <KBSearch />
+
+          </div>
+        </div>
 
         <!-- Toolbar: article count + active filter chips + view toggle + sort -->
         <div class="kb-toolbar">
@@ -239,6 +256,48 @@ const totalCount = sorted.length;
     .kb-page :global(.kb-filter) {
       display: block;
     }
+  }
+
+  /* ── Canvas mode — instant layout switch, no transitions ─────────────── */
+  @media (min-width: 768px) {
+    .kb-page--canvas :global(.kb-filter) {
+      display: none;
+    }
+  }
+
+  .kb-preflight__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .kb-page--canvas .kb-preflight {
+    display: none;
+  }
+
+  .kb-page--canvas .kb-toolbar__count,
+  .kb-page--canvas .kb-toolbar__chips,
+  .kb-page--canvas .kb-toolbar__sort {
+    display: none;
+  }
+
+  .kb-page--canvas .kb-toolbar {
+    justify-content: flex-end;
+    min-height: 0;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .kb-page--canvas .kb-content {
+    padding: 0;
+  }
+
+  .kb-page--canvas .kb-content__inner {
+    gap: 0;
+  }
+
+  .kb-page--canvas :global(.kbc-wrapper) {
+    height: calc(100vh - 8rem);
+    border-radius: 0;
   }
 
   /* Content panel */
@@ -379,7 +438,8 @@ const totalCount = sorted.length;
     color: var(--color-on-surface);
   }
 
-  .kb-view-toggle__btn--active {
+  .kb-view-toggle__btn--active,
+  .kb-view-toggle__btn--active:hover {
     background: var(--color-surface-container-lowest);
     color: var(--color-primary);
     box-shadow: var(--shadow-sm);
@@ -628,6 +688,28 @@ const totalCount = sorted.length;
 
   @media (max-width: 479px) {
     :global(.kb-pagination__pages) { display: none; }
+  }
+</style>
+
+<!-- Global rules that match the canvas-mode scoped rules above.
+     Applied synchronously by the inline script (kb-canvas-init class on <html>)
+     so the layout is correct before the first paint when restoring from session. -->
+<style is:global>
+  html.kb-canvas-init .kb-preflight         { display: none; }
+  html.kb-canvas-init .kb-filter            { display: none; }
+  html.kb-canvas-init .kb-toolbar__count,
+  html.kb-canvas-init .kb-toolbar__chips,
+  html.kb-canvas-init .kb-toolbar__sort     { display: none; }
+  html.kb-canvas-init .kb-toolbar {
+    justify-content: flex-end;
+    min-height: 0;
+    padding: var(--space-3) var(--space-4);
+  }
+  html.kb-canvas-init .kb-content           { padding: 0; }
+  html.kb-canvas-init .kb-content__inner    { gap: 0; }
+  html.kb-canvas-init .kbc-wrapper {
+    height: calc(100vh - 8rem);
+    border-radius: 0;
   }
 </style>
 
@@ -933,6 +1015,7 @@ const totalCount = sorted.length;
   (function () {
     const SESSION_KEY = 'kb-view';
 
+    const kbPageEl   = document.getElementById('kb-page')           as HTMLElement | null;
     const listBtn    = document.getElementById('kb-view-list')      as HTMLButtonElement | null;
     const mapBtn     = document.getElementById('kb-view-map')       as HTMLButtonElement | null;
     const listBody   = document.getElementById('kb-list-body')      as HTMLElement | null;
@@ -947,6 +1030,8 @@ const totalCount = sorted.length;
     }
 
     function activateList() {
+      document.documentElement.classList.remove('kb-canvas-init');
+      kbPageEl?.classList.remove('kb-page--canvas');
       if (listBody)   listBody.hidden   = false;
       if (canvasWrap) canvasWrap.hidden = true;
       setToggleState('list');
@@ -954,6 +1039,8 @@ const totalCount = sorted.length;
     }
 
     function activateMap() {
+      document.documentElement.classList.remove('kb-canvas-init');
+      kbPageEl?.classList.add('kb-page--canvas');
       if (listBody)   listBody.hidden   = true;
       if (canvasWrap) {
         canvasWrap.hidden = false;

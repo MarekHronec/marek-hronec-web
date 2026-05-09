@@ -536,6 +536,57 @@ Any article that is never the *target* of a `path` edge receives the **START HER
 
 ---
 
+### Adding an article to the canvas
+
+The canvas only displays articles that are explicitly opted in — not every knowledge base article appears there automatically. The curated set is controlled by two records in `src/pages/knowledge-base/index.astro`.
+
+**Step 1 — Write the article as normal** (see CONTENT_MODEL.md §7). The `.md` file and frontmatter are unchanged.
+
+**Step 2 — Add the article to `ARTICLE_BRANCH`** (`src/pages/knowledge-base/index.astro`, Astro frontmatter)
+
+`ARTICLE_BRANCH` maps each canvas article slug to the branch column it belongs to. Add one entry:
+
+```ts
+const ARTICLE_BRANCH: Record<string, string> = {
+  // ... existing entries ...
+  'networking/expressroute-design-patterns': 'network',   // ← add this
+};
+```
+
+Valid branch values: `'cloud-reality'` | `'governance'` | `'network'`.
+
+The article's slug is `category/filename-without-extension`. For example, `src/content/knowledge-base/networking/expressroute-design-patterns.md` → `'networking/expressroute-design-patterns'`.
+
+**Step 3 — Add a node icon (optional)** (`src/scripts/canvas.ts`)
+
+Each article can have a dedicated icon from the `ICONS` record. If omitted the fallback is `book`. Add one entry to `ARTICLE_ICON`:
+
+```ts
+const ARTICLE_ICON: Record<string, string> = {
+  // ... existing entries ...
+  'networking/expressroute-design-patterns': 'arrowsLR',   // ← add this
+};
+```
+
+Available icon keys: `book`, `box`, `users`, `globe`, `activity`, `building`, `flag`, `server`, `type`, `tag`, `shield`, `file`, `network`, `database`, `share`, `arrowsLR`, `cloud`.
+
+**Step 4 — Add edges** in `src/data/knowledge-graph.ts` (see "Managing connections" above). At minimum, wire the article into the branch path so it is reachable. Example:
+
+```ts
+{ from: 'networking/ipam-ip-address-management-before-you-wish-you-had-done-it',
+  to:   'networking/expressroute-design-patterns', type: 'path' },
+```
+
+**Step 5 — Validate:**
+
+```sh
+npm run build
+```
+
+A build error is raised if the slug in `ARTICLE_BRANCH` or `knowledge-graph.ts` does not match a real article file.
+
+---
+
 ### Tweakable settings
 
 All constants live at module level in `src/scripts/canvas.ts`.
@@ -553,39 +604,37 @@ wheelSensitivity: 4,   // Mouse-wheel zoom speed (Cytoscape default: 1 — highe
 
 ```ts
 // dagre layout options:
-nodeSep: 60,   // Horizontal gap between nodes in the same rank (px)
-rankSep: 100,  // Vertical gap between ranks/rows (px)
-padding: 56,   // Canvas edge padding — extra top space reserved for START HERE badges (px)
+nodeSep: 48,   // Horizontal gap between sibling nodes in the same rank (px)
+rankSep: 60,   // Vertical gap between ranks/rows (px)
+padding: 72,   // Canvas edge padding (px)
 ```
 
 **Node card dimensions**
 
 ```ts
-// Cytoscape node style:
-'width': 200,   // Card width (px) — must match .kbc-node width in KnowledgeCanvas.astro global CSS
-'height': 72,   // Card height (px) — must match .kbc-node height
+// Article node:
+width: 340, height: 78,   // must match .kbc-node { width/height } in KnowledgeCanvas.astro global CSS
+
+// Group header node:
+width: 340, height: 50,   // must match .kbc-node--group { width/height }
 ```
 
-If you change either value, update the matching `.kbc-node { width: ...; height: ...; }` rule in the `<style is:global>` block of `KnowledgeCanvas.astro`.
+If you change either value, update the matching rule in the `<style is:global>` block of `KnowledgeCanvas.astro`.
 
-**Category border colours**
+**Branch colours** — `BRANCH_COLORS` in `src/scripts/canvas.ts`:
 
 ```ts
-const CATEGORY_BORDER: Record<string, string> = {
-  azure:      '#2a5298',
-  oci:        '#b34700',
-  multicloud: '#2c694e',
-  networking: '#4e2a84',
-  identity:   '#6b4d00',
-  security:   '#7a2424',
-  finops:     '#23522f',
-  devops:     '#253268',
-  bpm:        '#4a1d7a',
-  default:    '#5f5f5f',   // fallback for any unrecognised category
+const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: string; groupBg: string; icon: string }> = {
+  'cloud-reality': { border: '#2c694e', groupBorder: '#83AD9D', bg: '#dce8e3', groupBg: '#F9FAFA', icon: '#2c694e' },
+  governance:      { border: '#3e6daa', groupBorder: '#9FB8DA', bg: '#d9e5f4', groupBg: '#F7F8FC', icon: '#3e6daa' },
+  network:         { border: '#6354a8', groupBorder: '#9996C8', bg: '#e6e3f4', groupBg: '#F7F6F9', icon: '#6354a8' },
 };
 ```
 
-Each category has a unique border tint on its node card. To add support for a new category, add its key here. The `default` fallback applies automatically to any `category` value not in the map.
+Each branch has five colour roles:
+- `border` / `bg` — article node card border and icon-circle background
+- `groupBorder` / `groupBg` — group header node border and background
+- `icon` — icon stroke colour used in both article and group nodes
 
 **Edge colours** — in the Cytoscape style array inside `initCanvas()`:
 
@@ -597,18 +646,6 @@ Each category has a unique border tint on its node card. To add support for a ne
 // Related edges:
 'line-color': '#b3b2b1',          // neutral grey
 ```
-
-**Difficulty chip labels**
-
-```ts
-const LEVEL_LABELS: Record<string, string> = {
-  beginner:     'Foundations',
-  intermediate: 'Practitioner',
-  advanced:     'Expert',
-};
-```
-
-These appear on the chip inside each node card and as the first tag in the detail panel. Change values here to rename them globally.
 
 ---
 
