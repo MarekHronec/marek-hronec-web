@@ -60,16 +60,25 @@
 </section>
 
 <style>
+  /* Tonal band: section carries the off-white background, cards are white on top of it.
+     The 1px gap between cards is the section background showing through — no explicit borders. */
   .contact-channels {
+    background-color: var(--color-surface-container-low);
     padding-block: 0 var(--space-12);
   }
 
-  /* Three columns on desktop; stacks vertically on mobile with border-bottom separators instead. */
+  @media (max-width: 639px) {
+    .contact-channels {
+      padding-bottom: var(--space-6);
+    }
+  }
+
+  /* Three columns on desktop, stacks vertically on mobile.
+     gap: 1px lets the tonal section bg show through as a soft separator. */
   .contact-channels__inner {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--color-warm-gray-30);
-    border-bottom: 1px solid var(--color-warm-gray-15);
+    gap: 1px;
   }
 
   @media (min-width: 640px) {
@@ -84,25 +93,15 @@
     justify-content: space-between;
     padding: var(--space-7);
     flex: 1;
+    background-color: var(--color-surface-container-lowest);
     color: inherit;
     text-decoration: none;
     transition: background-color var(--duration-fast) var(--ease-standard);
-    border-right: 1px solid var(--color-warm-gray-20);
-  }
-
-  .channel-card:last-child {
-    border-right: none;
   }
 
   @media (max-width: 639px) {
     .channel-card {
-      border-right: none;
-      border-bottom: 1px solid var(--color-warm-gray-20);
-      padding: var(--space-5) 0;
-    }
-
-    .channel-card:last-child {
-      border-bottom: none;
+      padding: var(--space-5) var(--space-4);
     }
   }
 
@@ -138,7 +137,6 @@
     cursor: default;
   }
 
-  /* location and disabled cards have no link so the arrow is dimmed */
   .channel-card--location .channel-card__arrow,
   .channel-card--disabled .channel-card__arrow {
     opacity: 0.4;
