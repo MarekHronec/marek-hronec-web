@@ -145,6 +145,7 @@ const filterGroups = [
     top: calc(4rem + 1px);
     max-height: calc(100vh - calc(4rem + 1px));
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: var(--space-6) 0;
     display: flex;
     flex-direction: column;
@@ -503,6 +504,24 @@ const filterGroups = [
 </style>
 
 <script>
+  /* ── Sidebar scroll — Windows hover-scroll fix ───────────────── *
+   * On Windows, scroll events go to the focused element, not the
+   * hovered one, until the user clicks. This interceptor forwards
+   * wheel events from the sidebar container directly to the sticky
+   * panel so it scrolls on hover without needing a click first.   */
+  const stickyPanel = document.querySelector<HTMLElement>('.kb-filter__sticky');
+  const filterAside = document.querySelector<HTMLElement>('.kb-filter');
+  if (stickyPanel && filterAside) {
+    filterAside.addEventListener('wheel', e => {
+      const atTop    = stickyPanel.scrollTop <= 0 && e.deltaY < 0;
+      const atBottom = stickyPanel.scrollTop + stickyPanel.clientHeight >= stickyPanel.scrollHeight - 1 && e.deltaY > 0;
+      if (atTop || atBottom) return;
+      e.preventDefault();
+      e.stopPropagation();
+      stickyPanel.scrollTop += e.deltaY;
+    }, { passive: false });
+  }
+
   /* ── Mobile sheet open/close ──────────────────────────────────── */
   const trigger = document.getElementById('kb-mobile-trigger') as HTMLButtonElement | null;
   const overlay = document.getElementById('kb-sheet-overlay') as HTMLElement | null;

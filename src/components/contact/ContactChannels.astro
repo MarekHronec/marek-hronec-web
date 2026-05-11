@@ -4,55 +4,66 @@
 <section class="contact-channels">
   <div class="contact-channels__inner container">
 
-    <div class="channel-card channel-card--disabled">
-      <div class="channel-card__top">
-        <span class="channel-card__category">Primary Contact</span>
-        <svg class="channel-card__arrow" width="12" height="12" viewBox="0 0 12 12"
-             fill="none" aria-hidden="true">
-          <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
-                stroke="currentColor" stroke-width="1.25" stroke-linecap="round"
-                stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="channel-card__bottom">
-        <span class="channel-card__type">Email</span>
-        <span class="channel-card__value">Coming Soon</span>
+    <div class="contact-card contact-card--primary">
+      <span class="contact-card__label">Primary Contact</span>
+      <h2 class="contact-card__heading">Start a conversation on LinkedIn</h2>
+      <p class="contact-card__body">
+        For architecture reviews, cloud strategy, governance questions, or
+        technical advisory work, LinkedIn is the best current channel.
+      </p>
+      <div class="contact-card__actions">
+        <a
+          class="contact-card__cta"
+          href="https://www.linkedin.com/in/marekhronec"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Message me on LinkedIn
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 11L11 3M11 3H5.5M11 3V8.5"
+                  stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <span class="contact-card__email-note">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect x="1.5" y="3" width="11" height="8" rx="1.25"
+                  stroke="currentColor" stroke-width="1.25"/>
+            <path d="M1.5 5.5L7 8.5L12.5 5.5"
+                  stroke="currentColor" stroke-width="1.25"/>
+          </svg>
+          Email channel: coming soon
+        </span>
       </div>
     </div>
 
-    <a class="channel-card"
-       href="https://www.linkedin.com/in/marekhronec"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="View Marek Hronec on LinkedIn">
-      <div class="channel-card__top">
-        <span class="channel-card__category">Professional Network</span>
-        <svg class="channel-card__arrow" width="12" height="12" viewBox="0 0 12 12"
-             fill="none" aria-hidden="true">
-          <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
-                stroke="currentColor" stroke-width="1.25" stroke-linecap="round"
-                stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="channel-card__bottom">
-        <span class="channel-card__type">LinkedIn</span>
-        <span class="channel-card__value channel-card__value--underline">Marek Hronec</span>
-      </div>
-    </a>
-
-    <div class="channel-card channel-card--location">
-      <div class="channel-card__top">
-        <span class="channel-card__category">Global Presence</span>
-        <svg class="channel-card__arrow" width="12" height="12" viewBox="0 0 12 12"
-             fill="none" aria-hidden="true">
-          <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
-                stroke="currentColor" stroke-width="1.25" stroke-linecap="round"
-                stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="channel-card__bottom">
-        <span class="channel-card__type">Base Operations</span>
-        <span class="channel-card__value">Bratislava, Slovakia</span>
+    <div class="contact-card contact-card--location">
+      <span class="contact-card__label">Location</span>
+      <h2 class="contact-card__heading">Bratislava, Slovakia</h2>
+      <p class="contact-card__body">
+        Available for focused advisory conversations, architecture reviews,
+        and practical cloud strategy discussions.
+      </p>
+      <div class="contact-card__checklist-block">
+        <p class="contact-card__checklist-heading">Best first message</p>
+        <ol class="contact-card__checklist">
+          <li class="contact-card__checklist-item">
+            <span class="contact-card__num" aria-hidden="true">01</span>
+            Current platform or cloud context
+          </li>
+          <li class="contact-card__checklist-item">
+            <span class="contact-card__num" aria-hidden="true">02</span>
+            Problem or decision to clarify
+          </li>
+          <li class="contact-card__checklist-item">
+            <span class="contact-card__num" aria-hidden="true">03</span>
+            Constraints: security, cost, timeline, ownership
+          </li>
+          <li class="contact-card__checklist-item">
+            <span class="contact-card__num" aria-hidden="true">04</span>
+            Desired outcome
+          </li>
+        </ol>
       </div>
     </div>
 
@@ -60,114 +71,146 @@
 </section>
 
 <style>
-  /* Tonal band: section carries the off-white background, cards are white on top of it.
-     The 1px gap between cards is the section background showing through — no explicit borders. */
   .contact-channels {
-    background-color: var(--color-surface-container-low);
-    padding-block: 0 var(--space-12);
+    padding-block: 0 var(--space-6);
   }
 
-  @media (max-width: 639px) {
-    .contact-channels {
-      padding-bottom: var(--space-6);
-    }
-  }
-
-  /* Three columns on desktop, stacks vertically on mobile.
-     gap: 1px lets the tonal section bg show through as a soft separator. */
   .contact-channels__inner {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .contact-channels__inner {
-      flex-direction: row;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  .channel-card {
+  .contact-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: var(--space-7);
-    flex: 1;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-lg);
+  }
+
+  .contact-card--primary {
     background-color: var(--color-surface-container-lowest);
-    color: inherit;
-    text-decoration: none;
-    transition: background-color var(--duration-fast) var(--ease-standard);
+    box-shadow: inset 0 0 0 4px var(--color-surface-container-low),
+                var(--shadow-sm);
   }
 
   @media (max-width: 639px) {
-    .channel-card {
-      padding: var(--space-5) var(--space-4);
+    .contact-card {
+      padding: var(--space-6);
     }
   }
 
-  a.channel-card:hover {
-    background-color: var(--color-surface-container-low);
-    opacity: 1;
-  }
-
-  .channel-card__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-6);
-  }
-
-  .channel-card__category {
+  .contact-card__label {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-bold);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-on-surface-muted);
-  }
-
-  .channel-card__arrow {
-    color: var(--color-warm-gray);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .channel-card--disabled {
-    opacity: 0.45;
-    cursor: default;
-  }
-
-  .channel-card--location .channel-card__arrow,
-  .channel-card--disabled .channel-card__arrow {
-    opacity: 0.4;
-  }
-
-  .channel-card__bottom {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .channel-card__type {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-primary);
   }
 
-  .channel-card__value {
+  .contact-card__heading {
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 3vw, 1.875rem);
+    font-size: clamp(1.375rem, 2.5vw, 1.75rem);
     font-weight: var(--weight-bold);
-    letter-spacing: -0.025em;
-    line-height: 1.2;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .contact-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    flex: 1;
+  }
+
+  .contact-card__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .contact-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    align-self: flex-start;
+    padding: var(--space-3) var(--space-6);
+    background: var(--gradient-cta);
+    color: var(--color-on-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: opacity var(--duration-fast) var(--ease-standard),
+                transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .contact-card__cta:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .contact-card__email-note {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+  }
+
+  .contact-card__checklist-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .contact-card__checklist-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-bold);
     color: var(--color-on-surface);
   }
 
-  .channel-card__value--underline {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .contact-card__checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contact-card__checklist-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .contact-card__num {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-warm-gray);
+    flex-shrink: 0;
+    width: 1.5rem;
   }
 </style>

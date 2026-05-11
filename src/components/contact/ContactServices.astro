@@ -9,7 +9,6 @@ import Workflow from '../icons/Workflow.astro';
 
     <div class="contact-services__heading-row">
       <h2 class="contact-services__heading">How I Can Help</h2>
-      <div class="contact-services__heading-rule" aria-hidden="true"></div>
     </div>
 
     <div class="services-grid">
@@ -18,8 +17,9 @@ import Workflow from '../icons/Workflow.astro';
         <ShieldCheck size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Architecture Reviews</h3>
         <p class="service-card__body">
-          Review existing cloud architectures for clarity, scalability, security,
-          and operational soundness.
+          Assess cloud architectures for resiliency, security posture, cost
+          signals, and operational clarity. Actionable findings and practical
+          recommendations.
         </p>
       </div>
 
@@ -27,8 +27,9 @@ import Workflow from '../icons/Workflow.astro';
         <Target size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Cloud Strategy</h3>
         <p class="service-card__body">
-          Help shape practical cloud direction, from platform decisions to
-          governance and long-term architectural planning.
+          Define platform direction and target operating model. Governance
+          models, landing zones, and roadmaps aligned to long-term business
+          outcomes.
         </p>
       </div>
 
@@ -36,8 +37,9 @@ import Workflow from '../icons/Workflow.astro';
         <Workflow size={28} class="service-card__icon" aria-hidden="true" />
         <h3 class="service-card__title">Process Optimization</h3>
         <p class="service-card__body">
-          Consultation on BPM workflows, automation opportunities, and process
-          architecture improvements.
+          Improve BPM workflows and identify automation opportunities. Design
+          orchestration that reduces friction and clarifies business/IT
+          ownership.
         </p>
       </div>
 
@@ -48,22 +50,19 @@ import Workflow from '../icons/Workflow.astro';
 
 <style>
   .contact-services {
-    padding-block: var(--space-4) var(--space-6);
+    padding-block: var(--space-2) var(--space-6);
   }
 
   .contact-services__inner {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--color-warm-gray-30);
+    padding-top: var(--space-4);
   }
 
-  /* Same heading + trailing rule pattern as the Experience section */
   .contact-services__heading-row {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
   }
 
   .contact-services__heading {
@@ -73,12 +72,6 @@ import Workflow from '../icons/Workflow.astro';
     color: var(--color-on-surface);
     white-space: nowrap;
     letter-spacing: var(--tracking-tight);
-  }
-
-  .contact-services__heading-rule {
-    flex: 1;
-    height: 1px;
-    background-color: var(--color-warm-gray-30);
   }
 
   .services-grid {
@@ -105,7 +98,6 @@ import Workflow from '../icons/Workflow.astro';
     gap: var(--space-4);
     padding: var(--space-6);
     background-color: var(--color-surface-container);
-    border: 1px solid var(--color-warm-gray-10);
     border-radius: var(--radius-lg);
   }
 

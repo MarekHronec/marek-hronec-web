@@ -499,6 +499,7 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     cy.zoom({ level: cy.zoom() / 1.3, renderedPosition: { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 } });
   });
 
+
   // ── Toolbar: filter buttons ───────────────────────────────────────────────
 
   const filterButtons = document.querySelectorAll<HTMLElement>('.kbc-toolbar__filter');
