@@ -58,16 +58,25 @@ const filterGroups = [
       <>
         <div class="kb-filter__sep" role="separator"></div>
         <div class="kb-filter__group">
-          <p class="kb-filter__group-label">{heading}</p>
-          <ul class="kb-filter__options" role="list">
-            {items.map(({ value, label }) => (
-              <li>
-                <button class="kb-filter__btn" data-filter-group={group} data-filter-value={value} aria-pressed="false">
-                  <span>{label}</span><span class="kb-filter__count"></span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <button class="kb-filter__group-label" aria-expanded="true">
+            {heading}
+            <svg class="kb-filter__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 4.5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="kb-filter__options-wrap">
+            <div class="kb-filter__options-inner">
+              <ul class="kb-filter__options" role="list">
+                {items.map(({ value, label }) => (
+                  <li>
+                    <button class="kb-filter__btn" data-filter-group={group} data-filter-value={value} aria-pressed="false">
+                      <span>{label}</span><span class="kb-filter__count"></span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </>
     ))}
@@ -146,10 +155,10 @@ const filterGroups = [
     max-height: calc(100vh - calc(4rem + 1px));
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: var(--space-6) 0;
+    padding: var(--space-5) 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-3);
   }
 
   .kb-filter__header {
@@ -178,17 +187,48 @@ const filterGroups = [
   .kb-filter__group {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
   }
 
   .kb-filter__group-label {
-    padding: 0 var(--space-5) var(--space-1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-1) var(--space-5);
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-bold);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-on-surface);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .kb-filter__chevron {
+    color: var(--color-on-surface-muted);
+    flex-shrink: 0;
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-filter__group-label[aria-expanded="false"] .kb-filter__chevron {
+    transform: rotate(-90deg);
+  }
+
+  .kb-filter__options-wrap {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows var(--duration-fast) var(--ease-standard);
+    overflow: hidden;
+  }
+
+  .kb-filter__options-wrap--collapsed {
+    grid-template-rows: 0fr;
+  }
+
+  .kb-filter__options-inner {
+    min-height: 0;
   }
 
   .kb-filter__options {
@@ -203,7 +243,7 @@ const filterGroups = [
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: var(--space-2) var(--space-5);
+    padding: var(--space-1) var(--space-5);
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
@@ -512,15 +552,25 @@ const filterGroups = [
   const stickyPanel = document.querySelector<HTMLElement>('.kb-filter__sticky');
   const filterAside = document.querySelector<HTMLElement>('.kb-filter');
   if (stickyPanel && filterAside) {
+    // Always capture wheel events over the sidebar — prevents body from
+    // co-scrolling when touchpad momentum carries over from the page.
     filterAside.addEventListener('wheel', e => {
-      const atTop    = stickyPanel.scrollTop <= 0 && e.deltaY < 0;
-      const atBottom = stickyPanel.scrollTop + stickyPanel.clientHeight >= stickyPanel.scrollHeight - 1 && e.deltaY > 0;
-      if (atTop || atBottom) return;
       e.preventDefault();
       e.stopPropagation();
       stickyPanel.scrollTop += e.deltaY;
     }, { passive: false });
   }
+
+  /* ── Collapsible category groups ─────────────────────────────────── */
+  document.querySelectorAll<HTMLButtonElement>('.kb-filter__group-label').forEach(label => {
+    const wrap = label.nextElementSibling as HTMLElement | null;
+    if (!wrap) return;
+    label.addEventListener('click', () => {
+      const expanded = label.getAttribute('aria-expanded') === 'true';
+      label.setAttribute('aria-expanded', String(!expanded));
+      wrap.classList.toggle('kb-filter__options-wrap--collapsed', expanded);
+    });
+  });
 
   /* ── Mobile sheet open/close ──────────────────────────────────── */
   const trigger = document.getElementById('kb-mobile-trigger') as HTMLButtonElement | null;

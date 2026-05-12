@@ -344,14 +344,30 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
       rankDir: 'TB', nodeSep: 48, rankSep: 60, padding: 72, animate: false,
     },
 
-    userZoomingEnabled: true,
+    userZoomingEnabled: false,
     userPanningEnabled: true,
     boxSelectionEnabled: false,
     selectionType: 'single',
-    wheelSensitivity: 4,
   });
 
   canvasEl.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });
+
+  // Normalized wheel zoom: clamp deltaY so high scroll-sensitivity
+  // devices (notebooks, high-dpi mice) can't cause runaway zoom.
+  // Any device gets the same max zoom step per event regardless of
+  // what deltaY value the OS/driver reports.
+  let wheelMousePos = { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 };
+  canvasEl.addEventListener('mousemove', e => {
+    const r = canvasEl.getBoundingClientRect();
+    wheelMousePos = { x: e.clientX - r.left, y: e.clientY - r.top };
+  });
+  canvasEl.addEventListener('wheel', e => {
+    e.preventDefault();
+    const clamped = Math.sign(e.deltaY) * Math.min(Math.abs(e.deltaY), 50);
+    const factor  = Math.pow(1.04, -clamped / 10);
+    const next    = Math.min(Math.max(cy.zoom() * factor, cy.minZoom()), cy.maxZoom());
+    cy.zoom({ level: next, renderedPosition: wheelMousePos });
+  }, { passive: false });
 
   // ── Atom click indicator ────────────────────────────────────────────────
 
