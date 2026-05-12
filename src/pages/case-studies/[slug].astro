@@ -103,15 +103,13 @@ const { Content } = await render(entry);
 
         <!-- Illustration -->
         {heroImage && (
-          <div class="cs-hero__right">
-            <div class="cs-hero__image-frame">
-              <img
-                class="cs-hero__img"
-                src={heroImage}
-                alt=""
-                loading="eager"
-              />
-            </div>
+          <div class="cs-hero__image-frame">
+            <img
+              class="cs-hero__img"
+              src={heroImage}
+              alt=""
+              loading="eager"
+            />
           </div>
         )}
 
@@ -367,10 +365,6 @@ const { Content } = await render(entry);
   }
 
   /* ── Hero image ────────────────────────────────────────────────── */
-  .cs-hero__right {
-    display: flex;
-  }
-
   .cs-hero__image-frame {
     width: 100%;
     height: 100%;

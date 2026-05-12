@@ -42,7 +42,6 @@ const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: s
 
 function branchBorder     (branch: string): string { return BRANCH_COLORS[branch]?.border      ?? '#5f5f5f'; }
 function branchGroupBorder(branch: string): string { return BRANCH_COLORS[branch]?.groupBorder ?? '#83AD9D'; }
-function branchBg         (branch: string): string { return BRANCH_COLORS[branch]?.bg          ?? '#f0eded'; }
 function branchGroupBg    (branch: string): string { return BRANCH_COLORS[branch]?.groupBg     ?? '#F9FAFA'; }
 function branchIcon       (branch: string): string { return BRANCH_COLORS[branch]?.icon        ?? '#2c694e'; }
 
@@ -354,37 +353,34 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
 
   canvasEl.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });
 
-  // Normalized wheel zoom: clamp deltaY so high scroll-sensitivity
-  // devices (notebooks, high-dpi mice) can't cause runaway zoom.
-  // Any device gets the same max zoom step per event regardless of
-  // what deltaY value the OS/driver reports.
+  // Cache rect; only re-query on resize (stable during canvas interaction).
+  let cachedRect: DOMRect | null = null;
+  window.addEventListener('resize', () => { cachedRect = null; }, { passive: true });
+  function cursorPos(e: MouseEvent) {
+    if (!cachedRect) cachedRect = canvasEl!.getBoundingClientRect();
+    return { x: e.clientX - cachedRect!.left, y: e.clientY - cachedRect!.top };
+  }
+
+  // Clamp deltaY so high-sensitivity devices can't cause runaway zoom.
   let wheelMousePos: { x: number; y: number } | null = null;
-  canvasEl.addEventListener('mousemove', e => {
-    const r = canvasEl.getBoundingClientRect();
-    wheelMousePos = { x: e.clientX - r.left, y: e.clientY - r.top };
-  });
-  canvasEl.addEventListener('wheel', e => {
+  canvasEl!.addEventListener('mousemove', e => { wheelMousePos = cursorPos(e); });
+  canvasEl!.addEventListener('wheel', e => {
     e.preventDefault();
     const clamped = Math.sign(e.deltaY) * Math.min(Math.abs(e.deltaY), 50);
     const factor  = Math.pow(1.04, -clamped / 10);
     const next    = Math.min(Math.max(cy.zoom() * factor, cy.minZoom()), cy.maxZoom());
-    const pos     = wheelMousePos ?? { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 };
+    const pos     = wheelMousePos ?? { x: canvasEl!.offsetWidth / 2, y: canvasEl!.offsetHeight / 2 };
     cy.zoom({ level: next, renderedPosition: pos });
   }, { passive: false });
 
   // ── Atom click indicator ────────────────────────────────────────────────
-
-  function cursorPos(e: MouseEvent) {
-    const r = canvasEl.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
-  }
 
   function spawnAtom(x: number, y: number) {
     const container = document.createElement('div');
     container.className = 'kbc-atom';
     container.style.left = `${x - ATOM_HALF}px`;
     container.style.top  = `${y - ATOM_HALF}px`;
-    canvasEl.appendChild(container);
+    canvasEl!.appendChild(container);
     const nucleus = document.createElement('div');
     nucleus.className = 'kbc-atom__nucleus';
     container.appendChild(nucleus);
@@ -563,10 +559,12 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     if (open) searchInputEl?.focus(); else clearSearch();
   });
 
+  let searchDebounce: ReturnType<typeof setTimeout> | null = null;
   searchInputEl?.addEventListener('input', () => {
     searchQuery = searchInputEl?.value ?? '';
     searchWrapEl?.classList.toggle('kbc-search-wrap--has-text', searchQuery.length > 0);
-    applyVisibility(cy);
+    if (searchDebounce) clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => applyVisibility(cy), 50);
   });
 
   searchInputEl?.addEventListener('keydown', e => { if (e.key === 'Escape') clearSearch(); });

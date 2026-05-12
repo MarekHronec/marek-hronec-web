@@ -880,8 +880,9 @@ const totalCount = sorted.length;
 
     /* ── Apply filter + sort ────────────────────────────────────── */
     function apply() {
-      const visible = wrappers.filter(matchesFilter);
-      const hidden  = wrappers.filter(w => !matchesFilter(w));
+      const visible: HTMLElement[] = [];
+      const hidden:  HTMLElement[] = [];
+      for (const w of wrappers) (matchesFilter(w) ? visible : hidden).push(w);
 
       visible.sort(sortFn);
 
@@ -951,7 +952,7 @@ const totalCount = sorted.length;
         const btn = document.createElement('button');
         btn.className = 'kb-chip';
         btn.setAttribute('aria-label', `Remove filter: ${label}`);
-        btn.appendChild(document.createTextNode(label + ' '));
+        btn.appendChild(document.createTextNode(label));
         const x = document.createElement('span');
         x.setAttribute('aria-hidden', 'true');
         x.textContent = '×';

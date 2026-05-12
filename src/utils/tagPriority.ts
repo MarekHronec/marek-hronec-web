@@ -1,3 +1,4 @@
+// All values must be lowercase — matched via tag.toLowerCase() at runtime.
 const PRIORITY_GROUPS: readonly (readonly string[])[] = [
   ['beginner', 'intermediate', 'advanced'],
   ['azure', 'oci', 'aws', 'gcp'],

@@ -2,6 +2,8 @@
 import TagBadge from '../shared/TagBadge.astro';
 import { base } from '../../utils/base';
 import { sortTagsByPriority } from '../../utils/tagPriority';
+import { LEVEL_LABELS } from '../../utils/levelLabel';
+import { formatDate } from '../../utils/formatDate';
 
 interface Props {
   slug: string;
@@ -16,7 +18,7 @@ interface Props {
 
 const { slug, title, excerpt, date, readTime, level, tags } = Astro.props;
 
-const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[level];
+const levelLabel = LEVEL_LABELS[level];
 
 const MOBILE_MAX = 3;
 const DESKTOP_MAX = 5;
@@ -34,7 +36,7 @@ const desktopRevealCount = Math.min(hiddenTags.length, DESKTOP_MAX - MOBILE_MAX)
 const mobileHiddenCount  = hiddenTags.length;
 const desktopHiddenCount = Math.max(0, allDisplayTags.length - DESKTOP_MAX);
 
-const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const dateStr = formatDate(date);
 const href = `${base}/knowledge-base/${slug}`;
 ---
 

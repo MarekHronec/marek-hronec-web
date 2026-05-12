@@ -10,28 +10,29 @@ import CategorySidebar from '../../components/knowledge-base/CategorySidebar.ast
 import ArticleOutline from '../../components/knowledge-base/ArticleOutline.astro';
 import { kbReadTime } from '../../utils/readTime';
 import { base } from '../../utils/base';
+import { LEVEL_LABELS } from '../../utils/levelLabel';
+import { formatDate } from '../../utils/formatDate';
 
 export async function getStaticPaths() {
   const entries = await getCollection('knowledgeBase');
   return entries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: { entry, allEntries: entries },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, allEntries } = Astro.props;
 const { title, category, date, level, excerpt, references } = entry.data;
 const { Content, headings } = await render(entry);
 const readTime = kbReadTime(entry.body ?? '', category, entry.data.readTime);
 
 /* Related articles — same category, excluding self */
-const allArticles = await getCollection('knowledgeBase');
-const related = allArticles
+const related = allEntries
   .filter((a) => a.id !== entry.id && a.data.category === category)
   .slice(0, 2);
 
-const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[level];
-const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const levelLabel = LEVEL_LABELS[level];
+const dateStr = formatDate(date);
 
 /* Breadcrumb: KNOWLEDGE BASE > CATEGORY > TITLE */
 const categoryLabel = category.toUpperCase();

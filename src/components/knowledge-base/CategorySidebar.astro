@@ -552,8 +552,6 @@ const filterGroups = [
   const stickyPanel = document.querySelector<HTMLElement>('.kb-filter__sticky');
   const filterAside = document.querySelector<HTMLElement>('.kb-filter');
   if (stickyPanel && filterAside) {
-    // Always capture wheel events over the sidebar — prevents body from
-    // co-scrolling when touchpad momentum carries over from the page.
     filterAside.addEventListener('wheel', e => {
       e.preventDefault();
       e.stopPropagation();
