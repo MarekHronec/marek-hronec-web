@@ -348,6 +348,8 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     userPanningEnabled: true,
     boxSelectionEnabled: false,
     selectionType: 'single',
+    minZoom: 0.15,
+    maxZoom: 3,
   });
 
   canvasEl.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });
@@ -356,7 +358,7 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
   // devices (notebooks, high-dpi mice) can't cause runaway zoom.
   // Any device gets the same max zoom step per event regardless of
   // what deltaY value the OS/driver reports.
-  let wheelMousePos = { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 };
+  let wheelMousePos: { x: number; y: number } | null = null;
   canvasEl.addEventListener('mousemove', e => {
     const r = canvasEl.getBoundingClientRect();
     wheelMousePos = { x: e.clientX - r.left, y: e.clientY - r.top };
@@ -366,7 +368,8 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     const clamped = Math.sign(e.deltaY) * Math.min(Math.abs(e.deltaY), 50);
     const factor  = Math.pow(1.04, -clamped / 10);
     const next    = Math.min(Math.max(cy.zoom() * factor, cy.minZoom()), cy.maxZoom());
-    cy.zoom({ level: next, renderedPosition: wheelMousePos });
+    const pos     = wheelMousePos ?? { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 };
+    cy.zoom({ level: next, renderedPosition: pos });
   }, { passive: false });
 
   // ── Atom click indicator ────────────────────────────────────────────────
@@ -514,7 +517,6 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
   document.getElementById('kbc-zoom-out')?.addEventListener('click', () => {
     cy.zoom({ level: cy.zoom() / 1.3, renderedPosition: { x: canvasEl.offsetWidth / 2, y: canvasEl.offsetHeight / 2 } });
   });
-
 
   // ── Toolbar: filter buttons ───────────────────────────────────────────────
 

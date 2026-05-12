@@ -951,7 +951,11 @@ const totalCount = sorted.length;
         const btn = document.createElement('button');
         btn.className = 'kb-chip';
         btn.setAttribute('aria-label', `Remove filter: ${label}`);
-        btn.innerHTML = `${label} <span aria-hidden="true">×</span>`;
+        btn.appendChild(document.createTextNode(label + ' '));
+        const x = document.createElement('span');
+        x.setAttribute('aria-hidden', 'true');
+        x.textContent = '×';
+        btn.appendChild(x);
         btn.addEventListener('click', () => {
           activeFilters[group]?.delete(value);
           currentPage = 1;

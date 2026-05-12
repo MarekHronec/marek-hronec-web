@@ -563,7 +563,7 @@ const filterGroups = [
 
   /* ── Collapsible category groups ─────────────────────────────────── */
   document.querySelectorAll<HTMLButtonElement>('.kb-filter__group-label').forEach(label => {
-    const wrap = label.nextElementSibling as HTMLElement | null;
+    const wrap = label.closest('.kb-filter__group')?.querySelector<HTMLElement>('.kb-filter__options-wrap');
     if (!wrap) return;
     label.addEventListener('click', () => {
       const expanded = label.getAttribute('aria-expanded') === 'true';
