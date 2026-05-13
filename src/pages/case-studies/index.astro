@@ -161,7 +161,7 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     flex-direction: column;
     gap: var(--space-5);          /* 24px — label→heading, heading→subtitle */
     padding-top: var(--space-4);  /* 16px — top gap before label */
-    max-width: 680px;             /* keep subtitle to a readable width */
+    max-width: var(--container-narrow); /* keep subtitle to a readable width */
   }
 
   /* ← identical to .hero__label */
@@ -211,10 +211,16 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     background-color: var(--color-surface-container-lowest);
     border-radius: calc(var(--radius-md) - 2px);
     box-shadow: var(--shadow-sm);
-    padding: var(--space-5);
+    padding: var(--space-4);
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
+  }
+
+  @media (min-width: 540px) {
+    .cs-featured__card {
+      padding: var(--space-5);
+    }
   }
 
   @media (min-width: 768px) {
@@ -335,8 +341,15 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
   }
 
   .cs-featured__outcome .cs-featured__report-btn {
-    margin-top: auto;
-    align-self: flex-end;
+    align-self: stretch;
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .cs-featured__outcome .cs-featured__report-btn {
+      align-self: flex-end;
+      margin-top: auto;
+    }
   }
 
   .cs-featured__problem {
@@ -373,12 +386,13 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     border-radius: 2px;
     position: relative;
     min-height: 180px;
+    max-height: 220px;
     overflow: hidden;
   }
 
-  @media (max-width: 767px) {
+  @media (min-width: 768px) {
     .cs-featured__diagram {
-      max-height: 220px;
+      max-height: none;
     }
   }
 
@@ -420,18 +434,6 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     transform: translateY(-2px);
   }
 
-  @media (max-width: 767px) {
-    .cs-featured__outcome .cs-featured__report-btn {
-      align-self: stretch;
-      margin-top: var(--space-2);
-    }
-  }
-
-  @media (max-width: 539px) {
-    .cs-featured__card {
-      padding: var(--space-4);
-    }
-  }
 
   /* ── Secondary cards grid ───────────────────────────────────────
      Tonal contrast (page surface vs card bg) provides separation — no borders needed.

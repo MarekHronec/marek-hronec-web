@@ -103,7 +103,10 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full technical deep-div
     │   └── canvas.ts           # Cytoscape.js init, node labels, detail panel, atom indicator (lazy)
     ├── utils/
     │   ├── base.ts             # BASE_URL normalisation — single import for all internal links
-    │   └── readTime.ts         # Build-time read time calculation + per-category WPM config
+    │   ├── readTime.ts         # Build-time read time calculation + per-category WPM config
+    │   ├── formatDate.ts       # Locale-formatted date string — used by ArticleCard and article detail
+    │   ├── levelLabel.ts       # LEVEL_LABELS record — maps beginner/intermediate/advanced to display strings
+    │   └── tagPriority.ts      # sortTagsByPriority() — editorial tag ordering (difficulty > platform > topic > tools)
     └── content.config.ts     # Content Collections + Zod schema definitions
 ```
 

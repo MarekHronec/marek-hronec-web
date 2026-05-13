@@ -53,6 +53,7 @@ title: ""
 category: azure          # see taxonomy below for valid values
 tags: []
 date: 2025-01-08
+updated: 2025-06-01      # optional — shown as "Updated" in the article header only when different from date
 readTime: 11             # optional — omit to calculate automatically
 level: advanced          # beginner | intermediate | advanced
 excerpt: ""
@@ -72,6 +73,7 @@ excerpt: ""
 | `category` | enum | Yes | One of 10 values | Controls sidebar navigation and filtering. See taxonomy. |
 | `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. All tags shown on article card. Used for filter chip display and article detail header. |
 | `date` | Date | Yes | ISO 8601 string, coerced to Date | Publication date. Articles are sorted newest-first on the listing page. |
+| `updated` | Date | No | ISO 8601 string, coerced to Date | Last-updated date. Displayed as "Updated [date]" in the article header between Published and read time — but only when the date differs from `date`. Omit if the article has never been revised. |
 | `readTime` | number | No | Integer, minutes | Estimated reading time. If omitted, calculated automatically at build time from word count. Displayed in the article card and article header. |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | Controls the colour-coded level badge on the article card and article header. |
 | `excerpt` | string | Yes | ≤160 characters recommended | One-sentence summary. Appears on the article card and in page meta description. |
@@ -85,6 +87,7 @@ title: "Azure Landing Zones: Scalable Cloud Foundations at Enterprise Scale"
 category: azure
 tags: ["Azure", "Landing Zones", "Cloud Adoption Framework", "Governance", "IaC"]
 date: 2025-01-08
+updated: 2026-05-13
 readTime: 11
 level: advanced
 excerpt: "An Azure landing zone provides the standardised foundation for all cloud adoption at enterprise scale."
@@ -353,6 +356,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
    | `category` | Must be one of: `azure \| oci \| multicloud \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
    | `level` | Must be one of: `beginner \| intermediate \| advanced` |
    | `date` | Must be a valid date string, e.g. `2025-06-01` |
+   | `updated` | Optional. If present, must be a valid date string. When equal to `date`, the "Updated" label is suppressed in the article header. |
    | `readTime` | Optional. If present, must be a plain number — not a string like `"9 min"`. If omitted, calculated automatically. |
    | `excerpt` | Keep under 160 characters |
    | `tags` | Free-form array of strings — no enum constraint |

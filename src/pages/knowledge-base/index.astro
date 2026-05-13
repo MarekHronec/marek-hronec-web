@@ -304,7 +304,7 @@ const totalCount = sorted.length;
   .kb-content {
     flex: 1;
     min-width: 0;
-    padding: var(--space-6) var(--space-5) calc(var(--space-10) + 4rem);
+    padding: var(--space-6) var(--space-5) calc(var(--space-10) + var(--nav-height));
   }
 
   @media (min-width: 768px) {
@@ -553,7 +553,7 @@ const totalCount = sorted.length;
   }
 
   :global(.kb-chip--clear:hover) {
-    background: var(--color-surface-container-highest, var(--color-outline-variant));
+    background: var(--color-surface-container-high);
     color: var(--color-on-surface);
   }
 

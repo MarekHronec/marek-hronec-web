@@ -8,7 +8,6 @@ import { formatDate } from '../../utils/formatDate';
 interface Props {
   slug: string;
   title: string;
-  category: string;
   excerpt: string;
   date: Date;
   readTime: number;
@@ -168,7 +167,7 @@ const href = `${base}/knowledge-base/${slug}`;
     color: var(--color-meta-label);
     background-color: var(--color-secondary-container);
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
     white-space: nowrap;
     cursor: pointer;
     transition:

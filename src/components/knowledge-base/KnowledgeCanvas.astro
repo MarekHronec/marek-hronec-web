@@ -24,7 +24,6 @@ const { nodes, edges } = Astro.props;
         All
       </button>
 
-      <div class="kbc-toolbar__sep" aria-hidden="true"></div>
 
       <button class="kbc-toolbar__filter" data-filter="cloud-reality" title="Highlight Cloud Reality & Thinking">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
@@ -170,16 +169,7 @@ const { nodes, edges } = Astro.props;
     pointer-events: auto;
   }
 
-  .kbc-toolbar__sep {
-    width: 1px;
-    height: 16px;
-    background: var(--color-warm-gray-20);
-    flex-shrink: 0;
-    margin-inline: 2px;
-    opacity: 0;
-  }
-
-  .kbc-toolbar__btn,
+.kbc-toolbar__btn,
   .kbc-toolbar__filter {
     display: inline-flex;
     align-items: center;
@@ -557,7 +547,7 @@ const { nodes, edges } = Astro.props;
     font-family: var(--font-body);
     font-size: 11px;
     font-weight: 600;
-    color: #323232;
+    color: var(--color-on-surface);
     line-height: 1.35;
     overflow: hidden;
     display: -webkit-box;
@@ -578,7 +568,7 @@ const { nodes, edges } = Astro.props;
     text-overflow: ellipsis;
   }
 
-  .kbc-node--group[data-branch="cloud-reality"] .kbc-node__group-label { color: #2c694e; }
+  .kbc-node--group[data-branch="cloud-reality"] .kbc-node__group-label { color: var(--color-primary); }
   .kbc-node--group[data-branch="governance"]    .kbc-node__group-label { color: #3e6daa; }
   .kbc-node--group[data-branch="network"]       .kbc-node__group-label { color: #6354a8; }
 
@@ -601,10 +591,10 @@ const { nodes, edges } = Astro.props;
     flex-shrink: 0;
   }
 
-  .kbc-node[data-branch="cloud-reality"] .kbc-node__dot--filled { background: #2c694e; border-color: #2c694e; }
+  .kbc-node[data-branch="cloud-reality"] .kbc-node__dot--filled { background: var(--color-primary); border-color: var(--color-primary); }
   .kbc-node[data-branch="governance"]    .kbc-node__dot--filled { background: #3e6daa; border-color: #3e6daa; }
   .kbc-node[data-branch="network"]       .kbc-node__dot--filled { background: #6354a8; border-color: #6354a8; }
-  .kbc-node[data-branch=""]             .kbc-node__dot--filled { background: #2c694e; border-color: #2c694e; }
+  .kbc-node[data-branch=""]             .kbc-node__dot--filled { background: var(--color-primary); border-color: var(--color-primary); }
 
   /* ── Atom click indicator ──────────────────────────────────────────── */
   .kbc-atom {

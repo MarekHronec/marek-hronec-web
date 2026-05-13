@@ -82,14 +82,12 @@ import { base } from '../../utils/base';
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     font-weight: var(--weight-semibold);
-    /* intentionally sharp — no radius token */
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
     transition: transform var(--duration-fast) var(--ease-standard),
                 opacity var(--duration-fast) var(--ease-standard);
   }
 
   .cta-banner__button:hover {
-    opacity: 1;
     transform: translateY(-2px);
   }
 </style>

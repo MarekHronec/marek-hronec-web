@@ -151,8 +151,8 @@ const filterGroups = [
 
   .kb-filter__sticky {
     position: sticky;
-    top: calc(4rem + 1px);
-    max-height: calc(100vh - calc(4rem + 1px));
+    top: calc(var(--nav-height) + 1px);
+    max-height: calc(100vh - var(--nav-height) - 1px);
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: var(--space-5) 0;

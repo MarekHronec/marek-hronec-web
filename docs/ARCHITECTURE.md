@@ -164,7 +164,10 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   └── global.css            # Reset, base typography, layout utilities, focus styles; scroll-padding-top on html
     ├── utils/
     │   ├── base.ts               # BASE_URL normalisation — single import for all internal links
-    │   └── readTime.ts           # Build-time read time calculation + per-category WPM config
+    │   ├── readTime.ts           # Build-time read time calculation + per-category WPM config
+    │   ├── formatDate.ts         # Locale-formatted date string — shared by ArticleCard and article detail
+    │   ├── levelLabel.ts         # LEVEL_LABELS record — maps beginner/intermediate/advanced to display strings
+    │   └── tagPriority.ts        # sortTagsByPriority() — editorial tag ordering (difficulty > platform > topic > tools)
     └── content.config.ts         # Collection definitions and Zod schemas
 ```
 
@@ -258,6 +261,7 @@ Content is managed through Astro Content Collections. Collection definitions and
 | `category` | enum | Yes | One of 10 values (see taxonomy below) | `"azure"` |
 | `tags` | `string[]` | Yes | Keyword tags for filtering | `["Azure", "IaC", "Governance"]` |
 | `date` | `Date` | Yes | Publication date (coerced from string) | `2025-01-08` |
+| `updated` | `Date` | No | Last-updated date (coerced from string). Rendered as "Updated [date]" in the article header between Published and read time — suppressed when equal to `date`. | `2026-05-13` |
 | `readTime` | `number` | No | Read time in minutes — auto-calculated from word count if omitted; manual value takes priority. Speed config in `src/utils/readTime.ts`. | `11` |
 | `level` | enum | Yes | `beginner`, `intermediate`, or `advanced` | `"advanced"` |
 | `excerpt` | `string` | Yes | One-sentence summary (≤160 characters) | `"An Azure landing zone provides..."` |
