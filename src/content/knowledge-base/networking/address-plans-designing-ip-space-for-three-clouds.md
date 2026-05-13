@@ -3,9 +3,10 @@ title: "Address Plans — Designing IP Space for Three Clouds and a Future You C
 category: networking
 tags: ["Azure", "OCI", "Networking", "Address Planning", "CIDR"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 15
 level: intermediate
-excerpt: "An address plan is not the same as IPAM. IPAM tracks what you allocated. The plan decides what you should allocate, in what shape, with what reserved for tomorrow. Most organisations do IPAM and skip the plan. The skip costs them later."
+excerpt: "IPAM tracks allocations. An address plan decides what to allocate and what to reserve. Most orgs skip the plan and pay for it in months of remediation later."
 references:
   - title: "RFC 1918 — Address Allocation for Private Internets"
     url: "https://www.rfc-editor.org/rfc/rfc1918"

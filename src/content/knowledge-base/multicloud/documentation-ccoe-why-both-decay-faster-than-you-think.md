@@ -1,11 +1,12 @@
 ---
 title: "Documentation, the CCoE, and Why Both Decay Faster Than You Think"
 category: multicloud
-tags: ["Azure", "OCI", "Documentation", "CCoE", "Knowledge Management"]
+tags: ["Azure", "OCI", "Documentation", "CCoE", "ADR"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 11
 level: intermediate
-excerpt: "Documentation rots. Cloud Centers of Excellence drift from purpose. The fix is not 'write more docs' or 'hire a CCoE lead.' It is treating documentation as a maintained product and the CCoE as an enabling team with a real charter — both with explicit decay management."
+excerpt: "Documentation rots. CCoEs drift to meetings. The fix is treating docs as a maintained product and the CCoE as an enabling team with a real charter."
 references:
   - title: "Cloud Center of Excellence — CAF"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/organize/cloud-center-of-excellence"

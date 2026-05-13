@@ -1,11 +1,12 @@
 ---
 title: "GitOps at Scale with Argo CD and Multi-Cluster Kubernetes"
 category: devops
-tags: ["GitOps", "Argo CD", "Kubernetes", "CI/CD", "Progressive Delivery"]
+tags: ["GitOps", "Argo CD", "Kubernetes", "Progressive Delivery", "Azure", "OCI"]
 date: 2024-11-15
+updated: 2026-05-13
 readTime: 9
 level: intermediate
-excerpt: "Learn how to implement a production-grade GitOps workflow using Argo CD across multiple Kubernetes clusters, with progressive delivery and automated drift detection."
+excerpt: "Production-grade GitOps with Argo CD across multiple Kubernetes clusters. Progressive delivery, drift detection, and the Azure vs OCI platform choice."
 references:
   - title: "Argo CD documentation"
     url: "https://argo-cd.readthedocs.io/en/stable/"

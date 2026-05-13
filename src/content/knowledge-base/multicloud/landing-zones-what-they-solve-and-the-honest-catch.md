@@ -3,9 +3,10 @@ title: "Landing Zones — What They Actually Solve, and the Honest Catch"
 category: multicloud
 tags: ["Azure", "OCI", "Landing Zones", "Governance", "CAF"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 14
 level: intermediate
-excerpt: "Landing zones are the most useful concept in modern cloud adoption and the most overengineered. The reference architectures are excellent. The implementations turn into multi-quarter projects that nobody finishes. Here is what to take, what to leave, and what the vendors will not tell you about retrofitting."
+excerpt: "The most useful and most overengineered concept in cloud adoption. What to take from reference architectures, what to skip, and the real cost of retrofitting."
 references:
   - title: "Azure Landing Zones — CAF"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/"

@@ -3,9 +3,10 @@ title: "Shared Responsibility — For People Who Stopped Believing the Marketing
 category: multicloud
 tags: ["Azure", "OCI", "Security", "Shared Responsibility", "Compliance"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 12
 level: beginner
-excerpt: "The shared responsibility chart looks tidy on a slide and falls apart in production. Managed never means hands-off, the SLA rarely covers your application, and the line between provider and customer moves service by service. Here is what actually stays on you."
+excerpt: "The shared responsibility chart is tidy on a slide. In production it falls apart. Managed never means hands-off. What stays on you — every service, every time."
 references:
   - title: "Shared responsibility in the cloud — Azure"
     url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"

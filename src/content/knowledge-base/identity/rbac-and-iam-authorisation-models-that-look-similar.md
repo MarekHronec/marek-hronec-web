@@ -3,9 +3,10 @@ title: "RBAC and IAM — Authorisation Models That Look Similar and Are Not"
 category: identity
 tags: ["Azure", "OCI", "RBAC", "IAM", "Least Privilege"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 13
 level: intermediate
-excerpt: "Azure RBAC and OCI IAM both grant 'a principal does an action on a resource at a scope.' That sentence hides structural differences: Azure grants through role assignments, OCI through policy statements; both inherit, but not in the same mental model. Azure deny is rare, OCI deny is explicit but opt-in. Built-in roles bite differently. Get the model wrong and least privilege is fiction."
+excerpt: "Azure RBAC and OCI IAM look similar until inheritance, deny semantics, and role catalogues diverge. Get the model wrong and least privilege is fiction."
 references:
   - title: "Azure role-based access control overview"
     url: "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"

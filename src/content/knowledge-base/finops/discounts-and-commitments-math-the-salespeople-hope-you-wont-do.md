@@ -3,9 +3,10 @@ title: "Discounts and Commitments — The Math the Salespeople Hope You Will Not
 category: finops
 tags: ["Azure", "OCI", "FinOps", "Reservations", "Cost Optimization"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 12
 level: intermediate
-excerpt: "Reservations save 30–72%. Savings plans typically deliver moderate discounts with broader coverage. Universal Credits give discounts but lock in spend. The mechanism that fits your workload depends entirely on whether your workload actually fits the commitment shape — and most do not, exactly."
+excerpt: "Reservations save 30–72% only if utilisation stays high. The discount you committed to keeps billing after the workload changes. Here is the math vendors skip."
 references:
   - title: "Azure Reservations — save with 1- or 3-year commitments"
     url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/save-compute-costs-reservations"

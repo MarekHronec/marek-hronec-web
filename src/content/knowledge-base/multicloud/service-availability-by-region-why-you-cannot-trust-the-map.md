@@ -3,9 +3,10 @@ title: "Service Availability by Region — Why You Cannot Trust the Map"
 category: multicloud
 tags: ["Azure", "OCI", "Service Availability", "Governance", "Region Selection"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 10
 level: beginner
-excerpt: "Cloud is not as 'everywhere' as the marketing suggests. Services launch in single US regions and stay there for a year. Sovereign clouds quietly miss capabilities. 'Available' often means 'eventually, with a support ticket.' Here is how to build a checklist that survives this."
+excerpt: "Services launch in one US region and stay there a year. Sovereign clouds miss capabilities. 'Available' often means 'with a ticket.' Verify before committing."
 references:
   - title: "Azure products available by region"
     url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/"

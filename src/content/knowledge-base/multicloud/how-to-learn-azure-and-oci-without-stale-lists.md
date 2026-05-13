@@ -3,9 +3,10 @@ title: "How to Learn Azure and OCI Without Chasing Expiring Certifications"
 category: multicloud
 tags: ["Azure", "OCI", "Learning", "Certifications", "Training"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 11
 level: beginner
-excerpt: "Skills budget is real. Most teams overpay for training that is free if you know where to look. But hard-coded lists of certifications go stale fast — Microsoft and Oracle both rebrand every 18–24 months. Here is the durable approach: skills, not certificate names."
+excerpt: "Most cloud training is free if you know where to look. Certification names expire in 18–24 months. The durable approach: learn by role track, not by exam code."
 references:
   - title: "Microsoft Learn"
     url: "https://learn.microsoft.com/en-us/training/"

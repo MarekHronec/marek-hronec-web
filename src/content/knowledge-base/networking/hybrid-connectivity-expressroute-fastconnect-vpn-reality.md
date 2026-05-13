@@ -3,9 +3,10 @@ title: "Hybrid Connectivity — ExpressRoute, FastConnect, VPN, and the Reality 
 category: networking
 tags: ["Azure", "OCI", "Networking", "ExpressRoute", "FastConnect"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 12
 level: intermediate
-excerpt: "Hybrid connectivity is where marketing diagrams most diverge from reality. Circuit bandwidth is not end-to-end application throughput. Redundancy is rarely as redundant as it looks. The patterns that survive production are simpler and more conservative than the diagrams suggest."
+excerpt: "Circuit bandwidth is not end-to-end application throughput. Redundancy is rarely as redundant as it looks. What actually survives production."
 references:
   - title: "Azure ExpressRoute overview"
     url: "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction"

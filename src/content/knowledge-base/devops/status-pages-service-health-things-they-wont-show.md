@@ -3,9 +3,10 @@ title: "Status Pages, Service Health, and the Things They Will Not Show You"
 category: devops
 tags: ["Azure", "OCI", "Service Health", "Incident Response", "Observability"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 9
 level: beginner
-excerpt: "Cloud status pages are public communication artifacts, not primary monitoring systems. They tell you about confirmed provider-side incidents, often after validation and scoping. The green dot can lag reality. Service Health is more useful, but still partial. Build your own monitoring."
+excerpt: "Status pages are public communication, not monitoring. The green dot lags reality by 30+ minutes. Service Health helps. Build your own observability first."
 references:
   - title: "Azure Service Health overview"
     url: "https://learn.microsoft.com/en-us/azure/service-health/overview"

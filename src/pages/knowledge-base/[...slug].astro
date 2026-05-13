@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 }
 
 const { entry, allEntries } = Astro.props;
-const { title, category, date, level, excerpt, references } = entry.data;
+const { title, category, date, updated, level, excerpt, references } = entry.data;
 const { Content, headings } = await render(entry);
 const readTime = kbReadTime(entry.body ?? '', category, entry.data.readTime);
 
@@ -33,6 +33,7 @@ const related = allEntries
 
 const levelLabel = LEVEL_LABELS[level];
 const dateStr = formatDate(date);
+const updatedStr = (updated && updated.getTime() !== date.getTime()) ? formatDate(updated) : null;
 
 /* Breadcrumb: KNOWLEDGE BASE > CATEGORY > TITLE */
 const categoryLabel = category.toUpperCase();
@@ -94,6 +95,15 @@ const categoryLabel = category.toUpperCase();
               </svg>
               Published {dateStr}
             </span>
+            {updatedStr && (
+              <span class="kb-article__meta-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M9.5 2L12 4.5l-7 7-3 .5.5-3 7-7z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8.5 3l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                Updated {updatedStr}
+              </span>
+            )}
             <span class="kb-article__meta-item">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/>

@@ -3,9 +3,10 @@ title: "Tagging and Metadata That Actually Earn Their Keep"
 category: multicloud
 tags: ["Azure", "OCI", "Tagging", "FinOps", "Governance"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 12
 level: beginner
-excerpt: "Names are immutable identifiers; tags are mutable metadata. Most orgs believe their tagging is better than it is. Without enforcement, tagging is fiction. Here is the schema, the enforcement, and the gotchas in both clouds."
+excerpt: "Without enforcement, tagging is fiction. Most orgs believe coverage is higher than reality. The schema, enforcement model, and gotchas on Azure and OCI."
 references:
   - title: "Azure CAF — define your tagging strategy"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging"

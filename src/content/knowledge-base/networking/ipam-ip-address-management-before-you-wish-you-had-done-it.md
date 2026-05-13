@@ -3,9 +3,10 @@ title: "IPAM — IP Address Management Before You Wish You Had Done It"
 category: networking
 tags: ["Azure", "OCI", "Networking", "IPAM", "CIDR"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 11
 level: intermediate
-excerpt: "Cloud IP space looks infinite until two VNets need to peer with overlapping ranges. By then, the cost of fixing it is renumbering, downtime, and a multi-week project. IPAM is one of those disciplines that costs nothing on day one and an enormous amount on day 500."
+excerpt: "IP space looks infinite until two VNets try to peer with overlapping ranges. By then the fix is renumbering and weeks of work. IPAM costs nothing on day one."
 references:
   - title: "Azure Virtual Network Manager — IPAM"
     url: "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-ip-address-management"

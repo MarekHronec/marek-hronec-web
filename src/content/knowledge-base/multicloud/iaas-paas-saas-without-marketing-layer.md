@@ -3,9 +3,10 @@ title: "IaaS, PaaS, and SaaS Without the Marketing Layer"
 category: multicloud
 tags: ["Azure", "OCI", "IaaS", "PaaS", "SaaS"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 12
 level: intermediate
-excerpt: "Slide-deck definitions of cloud service models tell you nothing about how they behave under real workloads. This is the operational reality: what the provider actually manages, what stays on you, where the security model shifts, and where the lock-in is born."
+excerpt: "The service model pyramid tells you nothing operational. What the provider manages, what stays on you, and where lock-in lives — connector, not runtime."
 references:
   - title: "NIST SP 800-145 — The NIST Definition of Cloud Computing"
     url: "https://csrc.nist.gov/publications/detail/sp/800-145/final"

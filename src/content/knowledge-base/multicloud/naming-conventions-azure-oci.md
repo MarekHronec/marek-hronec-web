@@ -3,9 +3,10 @@ title: "Naming Conventions That Survive Both Azure and OCI"
 category: multicloud
 tags: ["Azure", "OCI", "Naming", "Governance", "IaC"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 11
 level: beginner
-excerpt: "Names are largely permanent. They get embedded in IaC, DNS, certificates, audit trails, and Private Endpoint zones. A bad convention is technical debt you pay forever — and the standard recipes break the moment your estate hits real scale. Here is what actually holds up."
+excerpt: "Names are permanent — embedded in IaC, DNS, and certificates. A bad convention is debt you pay forever. The schema that survives Azure and OCI at real scale."
 references:
   - title: "Azure CAF — define your naming convention"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming"

@@ -9,6 +9,7 @@ const knowledgeBase = defineCollection({
     category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'multicloud']),
     tags: z.array(z.string()),
     date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
     readTime: z.number().optional(),
     level: z.enum(['beginner', 'intermediate', 'advanced']),
     excerpt: z.string(),

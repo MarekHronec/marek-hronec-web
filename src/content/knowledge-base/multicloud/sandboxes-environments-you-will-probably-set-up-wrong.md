@@ -3,9 +3,10 @@ title: "Sandboxes — The Environments You Will Probably Set Up Wrong the First 
 category: multicloud
 tags: ["Azure", "OCI", "Sandbox", "Governance", "Cost Control"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 11
 level: beginner
-excerpt: "Every cloud needs a place where engineers can break things safely. Most orgs either skip sandboxes entirely (and watch developers experiment in production) or build them so locked-down they are useless. Here is how to build one that actually gets used and does not eat the budget."
+excerpt: "Most orgs skip sandboxes or build them too locked-down to use. Either way, engineers find production. How to build one that gets used without eating budget."
 references:
   - title: "Azure CAF — sandbox environments"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/sandbox-environments"

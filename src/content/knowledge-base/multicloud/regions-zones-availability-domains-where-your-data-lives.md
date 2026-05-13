@@ -3,9 +3,10 @@ title: "Regions, Zones, Availability Domains — Where Your Data Actually Lives"
 category: multicloud
 tags: ["Azure", "OCI", "Regions", "Availability Zones", "Data Residency"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 13
 level: beginner
-excerpt: "'Available in Azure' rarely means 'available in the region you need.' 'Deployed to West Europe' does not always mean 'data stays in West Europe.' Region choice is an architectural decision, not a deployment toggle — and the resilience semantics differ in ways the marketing pages will not tell you."
+excerpt: "Region choice locks in data residency, resilience, and service availability for years. The portal calls it a dropdown. It is an architectural decision."
 references:
   - title: "Azure Availability Zones overview"
     url: "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"

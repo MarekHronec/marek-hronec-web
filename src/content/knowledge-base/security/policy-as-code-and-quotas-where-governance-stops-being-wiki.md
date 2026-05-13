@@ -3,9 +3,10 @@ title: "Policy as Code and Quotas — Where Governance Stops Being a Wiki Page"
 category: security
 tags: ["Azure", "OCI", "Policy as Code", "Governance", "Compliance"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 13
 level: intermediate
-excerpt: "Governance as a Confluence page is fiction. Governance is what your platform actually enforces — and the enforcement model differs more between Azure and OCI than the marketing suggests. EPAC, OCI compartment quotas, Security Zones, Cloud Guard, the gaps in each, and how to combine them without drowning."
+excerpt: "Governance as a wiki page is fiction. Governance is what the platform enforces. EPAC, Security Zones, quotas, Cloud Guard — the gaps and how to combine them."
 references:
   - title: "Enterprise Azure Policy as Code (EPAC)"
     url: "https://github.com/Azure/enterprise-azure-policy-as-code"

@@ -3,9 +3,10 @@ title: "Hub-and-Spoke, Virtual WAN, and DRG — Three Topology Choices, Two Clou
 category: networking
 tags: ["Azure", "OCI", "Networking", "Hub-Spoke", "Virtual WAN"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 13
 level: intermediate
-excerpt: "Hub-and-spoke is the default. Azure Virtual WAN is the managed alternative. OCI's DRG v2 is the OCI-native equivalent. They solve overlapping problems differently, with different trade-offs the marketing pages do not put side by side."
+excerpt: "Hub-and-spoke, Virtual WAN, OCI DRG v2 — three topologies, overlapping trade-offs. Decision framework and the non-transitive peering gotcha nobody warns about."
 references:
   - title: "Hub-spoke network topology in Azure"
     url: "https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke"

@@ -3,7 +3,7 @@ title: "Introduction to BPM Solutions: Camunda, Activiti and Kogito"
 category: bpm
 tags: ["BPM", "BPMN", "Camunda", "Activiti", "Kogito"]
 date: 2025-03-12
-updated: 2026-05-02
+updated: 2026-05-13
 readTime: 10
 level: beginner
 excerpt: "A practical introduction to modern BPM engines. What they solve, how they differ, and how to choose between Camunda, Activiti and Kogito for your organisation."

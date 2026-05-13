@@ -3,9 +3,10 @@ title: "Source of Truth — Where Does Your Cloud Actually Live?"
 category: devops
 tags: ["Azure", "OCI", "IaC", "CMDB", "GitOps"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 11
 level: intermediate
-excerpt: "Your cloud has a source of truth, whether you chose one or not. If you did not choose, the source of truth is the live cloud and you have a problem. Pick deliberately, enforce ruthlessly, and accept that there is no clean answer that does everything."
+excerpt: "If you did not choose a source of truth, the live cloud chose for you. IaC repo, cloud APIs, Backstage, CMDB — pick deliberately and document the choice."
 references:
   - title: "Terraform state — HashiCorp documentation"
     url: "https://developer.hashicorp.com/terraform/language/state"

@@ -3,9 +3,10 @@ title: "Tenant, Subscription, Management Group, Compartment — and What Actuall
 category: multicloud
 tags: ["Azure", "OCI", "Governance", "Landing Zones", "Billing"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 13
 level: beginner
-excerpt: "Most cloud chaos starts with a wrong mental model on day one. Three boundaries — organisational, billing, and governance — collapse or separate in different ways across Azure and OCI. Get this wrong and you spend years undoing it."
+excerpt: "Organisational, billing, and governance boundaries collapse differently across Azure and OCI. Get the mental model wrong on day one and spend years undoing it."
 references:
   - title: "Management group and subscription organisation — CAF"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"

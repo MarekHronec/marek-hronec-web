@@ -1,11 +1,12 @@
 ---
 title: "Azure Landing Zones: Scalable Cloud Foundations at Enterprise Scale"
 category: azure
-tags: ["Azure", "Landing Zones", "Cloud Adoption Framework", "Governance", "IaC"]
+tags: ["Azure", "Landing Zones", "Cloud Adoption Framework", "Governance", "IaC", "OCI"]
 date: 2025-01-08
+updated: 2026-05-13
 readTime: 11
 level: advanced
-excerpt: "An Azure landing zone provides the standardised foundation for all cloud adoption. Learn the architecture, design areas, platform vs. application zones, and the right deployment approach for your organisation."
+excerpt: "The standardised foundation for Azure adoption at scale. Architecture, design areas, platform vs. application zones, and the right IaC deployment approach."
 references:
   - title: "Azure landing zone — Cloud Adoption Framework"
     url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/"

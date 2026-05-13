@@ -3,9 +3,10 @@ title: "Budgets, Cost Caps, and the Illusion of 'Spending Limits'"
 category: finops
 tags: ["Azure", "OCI", "FinOps", "Budgets", "Cost Management"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 13
 level: intermediate
-excerpt: "Neither Azure nor OCI provides a universal billing-level hard cap in enterprise commercial contracts. Budgets alert. OCI quotas enforce resource ceilings. Hard billing kill switches do not exist. Here is what is real, what is theatre, and what you actually wire up."
+excerpt: "No enterprise cloud contract has a billing-level hard cap. Budgets alert. OCI quotas enforce resource ceilings. What is real and what you actually wire up."
 references:
   - title: "Create and manage Azure budgets"
     url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"

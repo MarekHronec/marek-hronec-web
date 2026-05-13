@@ -3,9 +3,10 @@ title: "Cloud Support — What You Are Actually Paying For"
 category: finops
 tags: ["Azure", "OCI", "Support", "SLA", "Operations"]
 date: 2026-04-30
+updated: 2026-05-13
 readTime: 14
 level: intermediate
-excerpt: "Cloud support tiers promise fast responses and strategic guidance, but what you buy is often triage, escalation access, and relationship quality — not guaranteed resolution."
+excerpt: "Support tiers sell response time. What you buy is triage access and relationship quality. When premium support earns its cost and when it doesn't."
 references:
   - title: "Azure support plans"
     url: "https://azure.microsoft.com/en-us/support/plans/"
