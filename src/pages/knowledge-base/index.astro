@@ -109,6 +109,7 @@ const totalCount = sorted.length;
 <BaseLayout
   title="Knowledge Base"
   description="Technical articles on cloud architecture, Azure, DevOps, and infrastructure patterns."
+  ogImage="/images/og-image.webp"
 >
   <!-- Runs synchronously before first paint — prevents canvas→list blink on page load / navigation -->
   <script is:inline>
@@ -204,7 +205,6 @@ const totalCount = sorted.length;
                   <ArticleCard
                     slug={article.id}
                     title={article.data.title}
-                    category={article.data.category}
                     excerpt={article.data.excerpt}
                     date={article.data.date}
                     readTime={kbReadTime(article.body ?? '', article.data.category, article.data.readTime)}
