@@ -306,4 +306,11 @@ const isActive = (href: string): boolean => {
   .header__mobile-cta:hover {
     opacity: 0.9;
   }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .header,
+    .header__mobile-menu {
+      background: var(--color-surface);
+    }
+  }
 </style>
