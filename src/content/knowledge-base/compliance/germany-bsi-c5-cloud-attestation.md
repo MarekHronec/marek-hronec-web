@@ -102,11 +102,11 @@ This disclosure layer is the practical answer C5 gives to the sovereignty questi
 
 C5:2020 organises controls into **17 domains**. The controls are derived from:
 
-- **[ISO/IEC 27001 / 27002 / 27017 / 27018](./iso-27001-27017-27018-27701-cloud-baselines)** — see the dedicated baseline article.
+- **[ISO/IEC 27001 / 27002 / 27017 / 27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines)** — see the dedicated baseline article.
 - **BSI IT-Grundschutz-Kompendium**, 2nd edition (2019) — the German baseline security framework.
-- **[CSA Cloud Controls Matrix](./csa-star-registry-cross-cutting-trust-layer) 3.0.1**.
-- **AICPA Trust Service Criteria 2017** — the [SOC 2](./soc-2-reports-how-to-actually-read-them) reference set.
-- Relevant parts of **[ANSSI Référentiel SecNumCloud](./france-anssi-secnumcloud-qualification)**.
+- **[CSA Cloud Controls Matrix](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer) 3.0.1**.
+- **AICPA Trust Service Criteria 2017** — the [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) reference set.
+- Relevant parts of **[ANSSI Référentiel SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification)**.
 
 **C5:2026** updates the reference base to **ISO/IEC 27001:2022**, **CSA CCM v4**, and integrates explicit NIS2 references. New control areas cover container management, supply-chain security, post-quantum cryptography readiness, confidential computing, and tightened client separation requirements.
 
@@ -178,10 +178,10 @@ In March 2026, ANSSI and BSI published a **joint statement on harmonised cloud-s
 
 For a multinational CSP, C5 is structurally compatible with most other frameworks:
 
-- The control set maps cleanly to [ISO 27001/27017/27018](./iso-27001-27017-27018-27701-cloud-baselines), [CSA CCM](./csa-star-registry-cross-cutting-trust-layer), and AICPA TSC. The mapping is explicit in the C5 catalogue, not inferred.
-- The ISAE 3000 audit form is portable. [PiTuKri](./finland-pitukri-cloud-assessment) assessments in Finland use ISAE 3000 Type 2; [SOC 2](./soc-2-reports-how-to-actually-read-them) uses essentially the same auditor methodology.
+- The control set maps cleanly to [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [CSA CCM](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer), and AICPA TSC. The mapping is explicit in the C5 catalogue, not inferred.
+- The ISAE 3000 audit form is portable. [PiTuKri](/knowledge-base/compliance/finland-pitukri-cloud-assessment) assessments in Finland use ISAE 3000 Type 2; [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) uses essentially the same auditor methodology.
 - The annual cadence aligns with SOC 2 Type 2, simplifying joint audits.
-- The system description and subprocessing disclosure pieces feed directly into [ENS](./spain-ens-national-security-framework), [ACN](./italy-acn-cloud-qualification), and [KsVC](./slovakia-ksvc-mirri-government-cloud) documentation requirements.
+- The system description and subprocessing disclosure pieces feed directly into [ENS](/knowledge-base/compliance/spain-ens-national-security-framework), [ACN](/knowledge-base/compliance/italy-acn-cloud-qualification), and [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) documentation requirements.
 
 The pieces of C5 that do *not* port automatically:
 
@@ -207,4 +207,4 @@ C5 attestation is sometimes treated as the "gold standard" that, once held, sett
 - Run C5 jointly with SOC 2 Type 2. The overlap is large; the marginal cost is low; the operational discipline is shared.
 - For multinational CSPs, C5 is the natural baseline. Layered on top of ISO 27001/27017/27018 and SOC 2, it gives you Germany. For France, Italy PSN tier, or Slovak U4, additional sovereignty-specific work is required.
 - Plan the C5:2020 → C5:2026 transition: align audit scope with the new reference standards (ISO/IEC 27001:2022, CSA CCM v4) ahead of the 1 June 2027 cut-over so the first C5:2026 audit is not a fresh remediation cycle.
-- **What to read next:** [SOC 2 Reports](./soc-2-reports-how-to-actually-read-them) for the joint-audit partner most commonly paired with C5; [Reading Attestation Reports](./reading-cloud-attestation-reports-practitioner-guide) for the practitioner skill of evaluating C5 reports; [EUCS Watch](./eucs-watch-political-tracking-2026) for the political context of C5's positioning as the EUCS Substantial reference.
+- **What to read next:** [SOC 2 Reports](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for the joint-audit partner most commonly paired with C5; [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) for the practitioner skill of evaluating C5 reports; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context of C5's positioning as the EUCS Substantial reference.

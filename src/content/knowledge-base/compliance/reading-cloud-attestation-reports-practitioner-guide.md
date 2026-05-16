@@ -28,7 +28,7 @@ references:
 
 A compliance audit report can be 200+ pages and contain useful information for a procurement decision in ten of them — if you know which ten. This article is the practitioner skill: how to actually read SOC 2 reports, BSI C5 attestations, ENS audit certificates, ACN qualification dossiers, and the others, to extract real signal and reject the marketing language they contain. The skill is more useful than any single framework knowledge because it is what determines whether you can convert framework participation into procurement confidence.
 
-> **Before reading this article**, familiarity with [SOC 2 Reports](./soc-2-reports-how-to-actually-read-them) and the [ISO standards stack](./iso-27001-27017-27018-27701-cloud-baselines) is assumed. If those concepts are new to you, read those articles first — this article builds on them.
+> **Before reading this article**, familiarity with [SOC 2 Reports](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) and the [ISO standards stack](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) is assumed. If those concepts are new to you, read those articles first — this article builds on them.
 
 ## What you are actually trying to learn
 
@@ -250,4 +250,4 @@ Inconsistencies across reports — different scopes, different sub-processors di
 - Red flags: unclear scope, stale period, non-accredited auditor, qualified or adverse opinion, undocumented remediation, no programme history.
 - Build a standardised evaluation worksheet. Don't evaluate impressions; evaluate fields.
 - Trust-centre marketing pages are not audit reports. Always request and read the underlying reports for non-trivial workloads.
-- See the [SOC 2 article](./soc-2-reports-how-to-actually-read-them) for SOC 2 specifically, the [ISO baselines article](./iso-27001-27017-27018-27701-cloud-baselines) for ISO certificates, and the country articles for the specific national frameworks' report structures.
+- See the [SOC 2 article](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for SOC 2 specifically, the [ISO baselines article](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for ISO certificates, and the country articles for the specific national frameworks' report structures.

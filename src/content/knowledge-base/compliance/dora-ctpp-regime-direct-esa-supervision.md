@@ -34,7 +34,7 @@ The Critical Third-Party Provider (CTPP) regime under DORA is the most consequen
 
 ## What the CTPP regime actually is
 
-Articles 31-44 of [DORA](./dora-for-cloud-financial-sector-overlay) establish a regime under which:
+Articles 31-44 of [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) establish a regime under which:
 
 - The ESAs — **EBA** (European Banking Authority), **EIOPA** (European Insurance and Occupational Pensions Authority), and **ESMA** (European Securities and Markets Authority) — jointly designate certain ICT third-party providers as **Critical**.
 - A **Lead Overseer** is appointed for each CTPP — one of the three ESAs, depending on the dominant sector of the CTPP's regulated customers.
@@ -123,9 +123,9 @@ For hyperscalers structured as US parent + EU subsidiary, the CTPP designation c
 
 - If the EU subsidiary is the contracting party with financial entities and operates the relevant infrastructure, the EU subsidiary is the designated CTPP.
 - If the global parent has material operational involvement, the parent can be co-designated or the designation can extend to cover global operations affecting EU financial entities.
-- Joint ventures like [Bleu](./france-anssi-secnumcloud-qualification) (Microsoft + Orange + Capgemini) are separate legal entities and would be designated separately if their CTPP criteria are met.
+- Joint ventures like [Bleu](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (Microsoft + Orange + Capgemini) are separate legal entities and would be designated separately if their CTPP criteria are met.
 
-This question is significant for hyperscalers contemplating [sovereign cloud structures](./sovereign-cloud-products-2026-landscape) — a JV may obtain sovereignty advantages but it does not escape CTPP designation; in fact, a separate legal entity may face its own separate designation determination.
+This question is significant for hyperscalers contemplating [sovereign cloud structures](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) — a JV may obtain sovereignty advantages but it does not escape CTPP designation; in fact, a separate legal entity may face its own separate designation determination.
 
 ## What hyperscalers do operationally to prepare
 
@@ -143,7 +143,7 @@ A hyperscaler expecting CTPP designation prepares across several dimensions:
 
 **Resilience demonstrations**:
 - Tested incident-response capabilities at supervisory standards.
-- Documented capacity to support customer [DORA TLPT](./dora-for-cloud-financial-sector-overlay) at scale.
+- Documented capacity to support customer [DORA TLPT](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) at scale.
 - Exit-assistance capabilities at supervisory standards.
 
 **Concentration risk management**:
@@ -220,4 +220,4 @@ The CTPP regime is sometimes interpreted by financial entities as "the ESAs will
 - CTPP designation creates **two parallel supervisory tracks**: direct Lead Overseer supervision of the CTPP, plus national supervisor supervision of each financial customer.
 - For cloud providers: build a supervisor-grade information disclosure interface; engage Lead Overseer early; price for supervisory overhead.
 - For financial entities: CTPP designation does not absolve customer DORA obligations. Continue full supply-chain risk management work alongside the supervisory regime.
-- See [DORA overview](./dora-for-cloud-financial-sector-overlay) for the broader DORA framework, [DORA Article 30 contracts article](./dora-article-30-contracts-and-exit-strategies) for the contractual content the CTPP regime sits alongside, and [Sovereign Cloud Products](./sovereign-cloud-products-2026-landscape) for how JV structures interact with CTPP designation.
+- See [DORA overview](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) for the broader DORA framework, [DORA Article 30 contracts article](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the contractual content the CTPP regime sits alongside, and [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for how JV structures interact with CTPP designation.

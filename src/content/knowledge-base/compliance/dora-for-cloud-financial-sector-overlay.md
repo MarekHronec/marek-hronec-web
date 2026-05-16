@@ -36,7 +36,7 @@ The Digital Operational Resilience Act (DORA) entered into force on **17 January
 
 DORA is Regulation (EU) 2022/2554 — a **directly applicable** EU regulation (no national transposition required) that establishes uniform ICT operational resilience requirements for the EU financial sector. It applies to approximately **22,000 financial entities** across the EU and to their **critical ICT third-party providers** — which includes any cloud provider whose services are material to the financial entity's operations.
 
-DORA's key innovation: it brings critical ICT third-party providers — meaning hyperscalers and major SaaS platforms — under **direct European supervision** by the European Supervisory Authorities (ESAs: **EBA** for banking, **EIOPA** for insurance and pensions, **ESMA** for securities markets). For the first time, AWS, Microsoft, Google, and other major cloud providers can be required to answer to European financial regulators directly. This is the [Critical Third-Party Provider (CTPP) regime](./dora-ctpp-regime-direct-esa-supervision) — covered in detail in its own article.
+DORA's key innovation: it brings critical ICT third-party providers — meaning hyperscalers and major SaaS platforms — under **direct European supervision** by the European Supervisory Authorities (ESAs: **EBA** for banking, **EIOPA** for insurance and pensions, **ESMA** for securities markets). For the first time, AWS, Microsoft, Google, and other major cloud providers can be required to answer to European financial regulators directly. This is the [Critical Third-Party Provider (CTPP) regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) — covered in detail in its own article.
 
 ## The five pillars
 
@@ -47,10 +47,10 @@ DORA structures the regime around five pillars:
 | 1 | **ICT risk management** | The financial entity's responsibilities for managing ICT risk: governance, risk framework, ICT systems, ICT-related incidents, business continuity |
 | 2 | **ICT-related incident management** | Classification, reporting timelines (24h initial / 72h intermediate / 1-month final), post-incident review |
 | 3 | **Digital operational resilience testing** | Vulnerability assessments, network security tests, scenario-based testing, **threat-led penetration testing (TLPT)** every 3 years for systemically important entities |
-| 4 | **ICT third-party risk management** | Contractual requirements (Article 30), exit strategies, concentration risk, the [CTPP regime](./dora-ctpp-regime-direct-esa-supervision) |
+| 4 | **ICT third-party risk management** | Contractual requirements (Article 30), exit strategies, concentration risk, the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) |
 | 5 | **Information and intelligence sharing** | Coordination on cyber threats across financial entities |
 
-For cloud providers, **pillars 2, 3, and 4** are where the operational demands concentrate. Cloud-related content under pillar 4 is the most contractually material — see [DORA Article 30 contracts and exit strategies](./dora-article-30-contracts-and-exit-strategies) for the deep treatment.
+For cloud providers, **pillars 2, 3, and 4** are where the operational demands concentrate. Cloud-related content under pillar 4 is the most contractually material — see [DORA Article 30 contracts and exit strategies](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the deep treatment.
 
 ## Scope — who is in scope and who is not
 
@@ -76,7 +76,7 @@ For cloud providers, **pillars 2, 3, and 4** are where the operational demands c
 - Datacentre service providers.
 - ICT outsourcing service providers.
 
-The CTPP designation criteria are detailed in the [dedicated CTPP article](./dora-ctpp-regime-direct-esa-supervision).
+The CTPP designation criteria are detailed in the [dedicated CTPP article](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision).
 
 ## Incident reporting — the 24-hour clock
 
@@ -90,7 +90,7 @@ DORA imposes one of the strictest incident reporting regimes in EU regulation:
 
 The clock starts at **classification**, not at detection. The financial entity must classify the incident according to DORA's classification criteria (impact, geographical spread, duration, criticality of services, economic impact).
 
-For cloud providers, the operational consequence is the **cooperation obligation** detailed in [Article 30](./dora-article-30-contracts-and-exit-strategies). The provider must support the customer's reporting timelines — providing technical details, impact assessments, and remediation status fast enough that the customer can meet the 24-hour deadline. Cloud providers without an established cooperation interface tend to become the bottleneck.
+For cloud providers, the operational consequence is the **cooperation obligation** detailed in [Article 30](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies). The provider must support the customer's reporting timelines — providing technical details, impact assessments, and remediation status fast enough that the customer can meet the 24-hour deadline. Cloud providers without an established cooperation interface tend to become the bottleneck.
 
 Reports go to the financial entity's national competent authority (the financial supervisor in the entity's home Member State).
 
@@ -126,7 +126,7 @@ Reporting under DORA flows to national financial supervisors, which vary by Memb
 | Poland | KNF | KNF | KNF |
 | Finland | Finanssivalvonta (FIN-FSA) | FIN-FSA | FIN-FSA |
 
-For cloud providers operating across multiple Member States, this matrix of national supervisors is the operational reality. [CTPP designation](./dora-ctpp-regime-direct-esa-supervision) centralises supervision at ESA level, but for non-CTPP providers, the financial-entity supervisor of each customer is the relevant authority.
+For cloud providers operating across multiple Member States, this matrix of national supervisors is the operational reality. [CTPP designation](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) centralises supervision at ESA level, but for non-CTPP providers, the financial-entity supervisor of each customer is the relevant authority.
 
 ## DORA's relationship with NIS2 and GDPR
 
@@ -135,8 +135,8 @@ DORA does not exist in isolation. Three EU regimes apply in parallel to cloud ar
 | Regime | What it covers | Applies to |
 |---|---|---|
 | **DORA** | ICT operational resilience for financial sector | Financial entities + their critical ICT providers |
-| **[NIS2](./nis2-supply-chain-cloud-providers)** | Cybersecurity for essential and important entities | Cloud providers as essential entities + their NIS2-scope customers |
-| **[GDPR](./gdpr-article-28-and-eu-cloud-code-of-conduct)** | Personal data processing | All controllers and processors handling EU resident personal data |
+| **[NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers)** | Cybersecurity for essential and important entities | Cloud providers as essential entities + their NIS2-scope customers |
+| **[GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct)** | Personal data processing | All controllers and processors handling EU resident personal data |
 
 For a cloud provider serving an EU bank that processes customer personal data, all three regimes apply simultaneously. The provider has:
 - **DORA obligations** as an ICT third-party provider (directly applicable, potentially CTPP-designated).
@@ -153,10 +153,10 @@ For a cloud provider designing its DORA-compliance posture, the highest-leverage
 
 DORA does not displace the national cloud frameworks for non-financial workloads. For financial workloads, DORA is the primary framework, but national framework participation is still operationally relevant:
 
-- **[Slovak KsVC](./slovakia-ksvc-mirri-government-cloud)** listing is the procurement gate for Slovak public-sector financial customers (NBS infrastructure, public-sector pension funds).
-- **[BSI C5](./germany-bsi-c5-cloud-attestation)** attestation provides DORA-aligned evidence on data security and operational controls.
-- **[ENS](./spain-ens-national-security-framework) High** and **[ACN](./italy-acn-cloud-qualification) QC3+** provide overlapping evidence on security and operational resilience.
-- **[SecNumCloud](./france-anssi-secnumcloud-qualification)** provides DORA-aligned evidence with an additional sovereignty layer.
+- **[Slovak KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud)** listing is the procurement gate for Slovak public-sector financial customers (NBS infrastructure, public-sector pension funds).
+- **[BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation)** attestation provides DORA-aligned evidence on data security and operational controls.
+- **[ENS](/knowledge-base/compliance/spain-ens-national-security-framework) High** and **[ACN](/knowledge-base/compliance/italy-acn-cloud-qualification) QC3+** provide overlapping evidence on security and operational resilience.
+- **[SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification)** provides DORA-aligned evidence with an additional sovereignty layer.
 
 DORA effectively reads existing national framework attestations as supporting evidence for third-party risk management obligations. CSPs with strong national framework participation have less to do for DORA than CSPs without.
 
@@ -164,28 +164,28 @@ DORA effectively reads existing national framework attestations as supporting ev
 
 Adjacent European jurisdictions are integrating DORA in different ways:
 
-- **United Kingdom** has built its own equivalent regime — the **Critical Third-Party (CTP) regime** under FCA/PRA/BoE supervision. See [UK NCSC article](./united-kingdom-ncsc-cloud-security-principles).
-- **Switzerland** is not under DORA but operates the substantively similar **FINMA Circular 2018/3** for financial-sector outsourcing including cloud. See [Switzerland article](./switzerland-finma-cloud-frameworks).
-- **Norway** as an EEA state is incorporating DORA through the EEA Joint Committee process. See [Norway article](./norway-nsm-cloud-frameworks).
+- **United Kingdom** has built its own equivalent regime — the **Critical Third-Party (CTP) regime** under FCA/PRA/BoE supervision. See [UK NCSC article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles).
+- **Switzerland** is not under DORA but operates the substantively similar **FINMA Circular 2018/3** for financial-sector outsourcing including cloud. See [Switzerland article](/knowledge-base/compliance/switzerland-finma-cloud-frameworks).
+- **Norway** as an EEA state is incorporating DORA through the EEA Joint Committee process. See [Norway article](/knowledge-base/compliance/norway-nsm-cloud-frameworks).
 
 For cloud providers serving European financial entities across these jurisdictions, the operational substance is convergent; the procedural and supervisory specifics differ.
 
 :::warning[Reality Check]
-DORA is the regulation that most often gets underestimated by cloud providers' legal teams. The contractual requirements (Article 30) read as procedural, but operationalising them — exit strategies, audit rights, data portability commitments, incident cooperation playbooks, TLPT enablement — is a substantial programme. Cloud providers that approached DORA as a contract-template update typically find themselves rewriting contracts again 12 months later as financial customers refuse to accept thin commitments. The substantive work is operational, not legal. See [Article 30 deep-dive](./dora-article-30-contracts-and-exit-strategies) for the operational reality behind each contract clause.
+DORA is the regulation that most often gets underestimated by cloud providers' legal teams. The contractual requirements (Article 30) read as procedural, but operationalising them — exit strategies, audit rights, data portability commitments, incident cooperation playbooks, TLPT enablement — is a substantial programme. Cloud providers that approached DORA as a contract-template update typically find themselves rewriting contracts again 12 months later as financial customers refuse to accept thin commitments. The substantive work is operational, not legal. See [Article 30 deep-dive](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the operational reality behind each contract clause.
 :::
 
 :::tip[Slovak context]
-For Slovak financial entities, DORA reporting flows to **NBS** (Národná banka Slovenska) as the unified financial supervisor across banking, insurance, and securities sectors. NBS coordinates with the relevant ESA via the Joint Oversight Network when CTPP-designated cloud providers are involved. Slovak banks consuming cloud services from CTPP-designated hyperscalers should expect their NBS supervisory engagement on the cloud arrangement to coordinate with ESA-level oversight of the hyperscaler — the two supervisory tracks are deliberately parallel. For Slovak public-sector financial entities (Slovenská záručná a rozvojová banka, EXIMBANKA SR), DORA applies alongside [KsVC](./slovakia-ksvc-mirri-government-cloud) procurement requirements for their cloud arrangements.
+For Slovak financial entities, DORA reporting flows to **NBS** (Národná banka Slovenska) as the unified financial supervisor across banking, insurance, and securities sectors. NBS coordinates with the relevant ESA via the Joint Oversight Network when CTPP-designated cloud providers are involved. Slovak banks consuming cloud services from CTPP-designated hyperscalers should expect their NBS supervisory engagement on the cloud arrangement to coordinate with ESA-level oversight of the hyperscaler — the two supervisory tracks are deliberately parallel. For Slovak public-sector financial entities (Slovenská záručná a rozvojová banka, EXIMBANKA SR), DORA applies alongside [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) procurement requirements for their cloud arrangements.
 :::
 
 ## Where to go next
 
 If you arrived here via the overview and need to go deeper:
 
-- **CTPP regime** — direct ESA supervision, designation criteria, what hyperscalers do operationally → [DORA CTPP Regime article](./dora-ctpp-regime-direct-esa-supervision).
-- **Contracts and exit strategies** — Article 30 contractual content clause-by-clause, audit rights handling, exit-strategy operationalisation → [DORA Article 30 article](./dora-article-30-contracts-and-exit-strategies).
-- **Supply chain** — how DORA fits with NIS2 supply-chain obligations → [NIS2 Supply Chain article](./nis2-supply-chain-cloud-providers).
-- **Personal data** — GDPR Article 28 in cloud context → [GDPR Article 28 + EU Cloud CoC article](./gdpr-article-28-and-eu-cloud-code-of-conduct).
+- **CTPP regime** — direct ESA supervision, designation criteria, what hyperscalers do operationally → [DORA CTPP Regime article](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision).
+- **Contracts and exit strategies** — Article 30 contractual content clause-by-clause, audit rights handling, exit-strategy operationalisation → [DORA Article 30 article](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies).
+- **Supply chain** — how DORA fits with NIS2 supply-chain obligations → [NIS2 Supply Chain article](/knowledge-base/compliance/nis2-supply-chain-cloud-providers).
+- **Personal data** — GDPR Article 28 in cloud context → [GDPR Article 28 + EU Cloud CoC article](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct).
 - **Country-specific** — your national financial supervisor and any national cloud framework participation → country articles.
 
 ## Closing checklist
@@ -198,5 +198,5 @@ If you arrived here via the overview and need to go deeper:
 - DORA, NIS2, and GDPR apply in parallel for cloud providers serving EU financial customers processing personal data. Build a single classification and reporting workflow covering all three.
 - DORA reads national framework attestations (KsVC, BSI C5, ENS, ACN, SecNumCloud) as supporting evidence. Strong national framework participation reduces DORA preparation work.
 - Adjacent jurisdictions: UK has its own CTP regime; Switzerland has FINMA 2018/3; Norway is incorporating DORA via EEA.
-- Treat DORA as an operational programme, not a contract-template update. Substantive work happens in incident cooperation, audit handling, and exit-strategy testing — see the [Article 30 deep-dive](./dora-article-30-contracts-and-exit-strategies).
-- See country articles ([Slovakia](./slovakia-ksvc-mirri-government-cloud), [Germany](./germany-bsi-c5-cloud-attestation), [France](./france-anssi-secnumcloud-qualification), [Italy](./italy-acn-cloud-qualification), [Spain](./spain-ens-national-security-framework)) for per-country financial supervisor mapping and how each framework intersects with DORA.
+- Treat DORA as an operational programme, not a contract-template update. Substantive work happens in incident cooperation, audit handling, and exit-strategy testing — see the [Article 30 deep-dive](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies).
+- See country articles ([Slovakia](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud), [Germany](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), [France](/knowledge-base/compliance/france-anssi-secnumcloud-qualification), [Italy](/knowledge-base/compliance/italy-acn-cloud-qualification), [Spain](/knowledge-base/compliance/spain-ens-national-security-framework)) for per-country financial supervisor mapping and how each framework intersects with DORA.

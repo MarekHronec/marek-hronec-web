@@ -69,7 +69,7 @@ The 14 principles cover the standard cloud security domains:
 
 Each principle is documented with implementation guidance from NCSC, covering both provider-side and consumer-side responsibilities (analogous to ISO 27017's dual-role treatment).
 
-The 14 principles **map cleanly to [ISO/IEC 27017](./iso-27001-27017-27018-27701-cloud-baselines) and [CSA CCM](./csa-star-registry-cross-cutting-trust-layer)**. A cloud provider with strong ISO 27001/27017/27018 evidence has substantial alignment with the NCSC principles already. The principles are intentionally non-prescriptive on specific controls — they describe outcomes, not implementations.
+The 14 principles **map cleanly to [ISO/IEC 27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) and [CSA CCM](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer)**. A cloud provider with strong ISO 27001/27017/27018 evidence has substantial alignment with the NCSC principles already. The principles are intentionally non-prescriptive on specific controls — they describe outcomes, not implementations.
 
 ## Cyber Essentials and Cyber Essentials Plus
 
@@ -132,7 +132,7 @@ For EU→UK→EU data flow patterns common in business operations:
 For cloud providers operating across both EU and UK, the EU-headquartered approach is operationally more constrained (more frameworks, EUCS aspiration, NIS2 transposition complexity). The UK-headquartered approach is simpler but offers less alignment with EU regulated markets without explicit additional work.
 
 :::tip[Architectural Pro Tip]
-For a cloud provider serving both EU and UK customers, the practical compliance package is the same on both sides plus minor additions: [ISO 27001/27017/27018/27701](./iso-27001-27017-27018-27701-cloud-baselines), [SOC 2 Type 2](./soc-2-reports-how-to-actually-read-them) or [BSI C5](./germany-bsi-c5-cloud-attestation), [EU Cloud CoC](./gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2, **Cyber Essentials Plus for UK government contracts**, mapping to NCSC 14 Cloud Security Principles for UK customer documentation, UK GDPR awareness in the contracts. The marginal UK-specific work is small once the EU baseline is in place. Cyber Essentials Plus is the one UK-specific artefact that cannot be derived from EU evidence and is worth obtaining if UK government revenue is material.
+For a cloud provider serving both EU and UK customers, the practical compliance package is the same on both sides plus minor additions: [ISO 27001/27017/27018/27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [SOC 2 Type 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) or [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), [EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2, **Cyber Essentials Plus for UK government contracts**, mapping to NCSC 14 Cloud Security Principles for UK customer documentation, UK GDPR awareness in the contracts. The marginal UK-specific work is small once the EU baseline is in place. Cyber Essentials Plus is the one UK-specific artefact that cannot be derived from EU evidence and is worth obtaining if UK government revenue is material.
 :::
 
 ## UK and the national frameworks in this series
@@ -170,4 +170,4 @@ The UK's lighter cloud regulatory posture is sometimes interpreted as "easier" b
 - Cross-border: EU↔UK simple via adequacy; UK→other third countries follows UK adequacy regulations + SCCs.
 - For Slovak organisations, the practical implication is that UK is the easiest adjacent jurisdiction to extend EU cloud compliance work into. Cyber Essentials Plus + UK GDPR awareness + NCSC principles mapping is the bulk of the UK-specific work.
 - Watch items: UK GDPR reform, CTP regime divergence from DORA, AI regulation divergence.
-- See the [Switzerland article](./switzerland-finma-cloud-frameworks) and the [Norway article](./norway-nsm-cloud-frameworks) for the other primary non-EU and EEA adjacent jurisdictions in Europe.
+- See the [Switzerland article](/knowledge-base/compliance/switzerland-finma-cloud-frameworks) and the [Norway article](/knowledge-base/compliance/norway-nsm-cloud-frameworks) for the other primary non-EU and EEA adjacent jurisdictions in Europe.

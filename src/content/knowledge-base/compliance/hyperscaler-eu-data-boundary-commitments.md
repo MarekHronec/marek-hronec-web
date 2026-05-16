@@ -30,7 +30,7 @@ references:
     domain: "edpb.europa.eu"
 ---
 
-When a hyperscaler says "we keep your data in the EU," what they actually mean varies a lot. **Microsoft EU Data Boundary** is one commitment with phased scope, **AWS European Sovereign Cloud** is a different one with a different structure, **Google Workspace EU Data Boundary** is a third with a more limited application. None of them are the same as the [sovereign cloud products](./sovereign-cloud-products-2026-landscape) discussed in the parallel article — these are mainline-region commitments about where data physically sits, not separate products. This article unpacks what each commitment actually covers and what it excludes.
+When a hyperscaler says "we keep your data in the EU," what they actually mean varies a lot. **Microsoft EU Data Boundary** is one commitment with phased scope, **AWS European Sovereign Cloud** is a different one with a different structure, **Google Workspace EU Data Boundary** is a third with a more limited application. None of them are the same as the [sovereign cloud products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) discussed in the parallel article — these are mainline-region commitments about where data physically sits, not separate products. This article unpacks what each commitment actually covers and what it excludes.
 
 ## What "EU Data Boundary" means and what it does not
 
@@ -72,7 +72,7 @@ The Microsoft EU Data Boundary is the most documentation-heavy of the three. The
 
 ## AWS — Digital Sovereignty Pledge and European Sovereign Cloud
 
-AWS handles the question differently — through the **Digital Sovereignty Pledge** for existing regions and the **European Sovereign Cloud** as a separate dedicated region (covered in the [sovereign cloud products article](./sovereign-cloud-products-2026-landscape)).
+AWS handles the question differently — through the **Digital Sovereignty Pledge** for existing regions and the **European Sovereign Cloud** as a separate dedicated region (covered in the [sovereign cloud products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape)).
 
 **Digital Sovereignty Pledge** for mainline EU regions includes:
 
@@ -141,7 +141,7 @@ What is **not** typically available:
 The mature pattern is: rely on the contractual commitment + audit evidence as the substantive verification, with Customer Lockbox or equivalent for high-sensitivity access scenarios, and customer-held encryption for the highest-assurance workloads.
 
 :::tip[Architectural Pro Tip]
-For workloads where EU Data Boundary alone is insufficient and full sovereignty is overkill, the **strongest practical posture is EU mainline region + customer-held keys**. Use the hyperscaler's EU region as the operational platform; use BYOK or HYOK (Hold Your Own Key) with a customer-controlled key manager so that even authorised hyperscaler personnel cannot access plaintext without the customer's cryptographic cooperation. This is operationally simpler than a JV or sovereign region and addresses most of the substantive sovereignty concerns short of ownership-based foreign-law-immunity. See the [BYOK/HYOK article](./cloud-encryption-key-custody-byok-hyok) for the deep dive on hyperscaler implementations (AWS KMS XKS, Azure Customer-Managed Keys with Managed HSM, Google Cloud External Key Manager, Google Workspace Client-side Encryption).
+For workloads where EU Data Boundary alone is insufficient and full sovereignty is overkill, the **strongest practical posture is EU mainline region + customer-held keys**. Use the hyperscaler's EU region as the operational platform; use BYOK or HYOK (Hold Your Own Key) with a customer-controlled key manager so that even authorised hyperscaler personnel cannot access plaintext without the customer's cryptographic cooperation. This is operationally simpler than a JV or sovereign region and addresses most of the substantive sovereignty concerns short of ownership-based foreign-law-immunity. See the [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the deep dive on hyperscaler implementations (AWS KMS XKS, Azure Customer-Managed Keys with Managed HSM, Google Cloud External Key Manager, Google Workspace Client-side Encryption).
 :::
 
 ## Operational data flow questions
@@ -170,14 +170,14 @@ EU Data Boundary commitments do not eliminate the need for GDPR transfer mechani
 
 For workloads that fall fully within EU Data Boundary scope, the GDPR transfer chapter (Chapter V) is largely moot. For workloads with any out-of-scope data (telemetry, support access, sub-processor flows), Chapter V mechanisms still apply.
 
-The [EU Cloud Code of Conduct Third Country Transfer Module](./gdpr-article-28-and-eu-cloud-code-of-conduct) is the operative GDPR-aligned framework for the residual transfer flows.
+The [EU Cloud Code of Conduct Third Country Transfer Module](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) is the operative GDPR-aligned framework for the residual transfer flows.
 
 :::warning[Reality Check]
 "Our data stays in the EU" is one of the most marketed and least precisely defined cloud commitments. The phrase can mean (1) the customer's primary data is stored in EU regions by default, (2) all data including telemetry and support access stays in the EU, (3) the hyperscaler is structurally an EU entity, or (4) something in between. The four commitments differ substantially. Procurement teams that don't distinguish among them end up with assumptions that don't survive audit. Always identify which specific EU Data Boundary commitment applies, what its scope is, and what its documented exclusions are.
 :::
 
 :::tip[Slovak context]
-For Slovak [KsVC](./slovakia-ksvc-mirri-government-cloud) procurement, hyperscaler EU Data Boundary commitments are the practical evidence layer for **U1 and U2 listings** — they demonstrate that customer data, telemetry, and support access stay within the EU/EEA. For **U3 listings**, EU Data Boundary alone is not sufficient; the methodology requires customer-held HSM-based key custody as well — see the [BYOK/HYOK article](./cloud-encryption-key-custody-byok-hyok) for the practical implementation patterns. The combination is `EU Data Boundary + customer-managed keys with HSM` — which most regulated Slovak workloads now adopt. For NBS-supervised banks evaluating cloud providers under [DORA](./dora-for-cloud-financial-sector-overlay) Article 30, EU Data Boundary documentation is the standard service-location-clause evidence; non-boundary commitments require bespoke contractual annexes.
+For Slovak [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) procurement, hyperscaler EU Data Boundary commitments are the practical evidence layer for **U1 and U2 listings** — they demonstrate that customer data, telemetry, and support access stay within the EU/EEA. For **U3 listings**, EU Data Boundary alone is not sufficient; the methodology requires customer-held HSM-based key custody as well — see the [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the practical implementation patterns. The combination is `EU Data Boundary + customer-managed keys with HSM` — which most regulated Slovak workloads now adopt. For NBS-supervised banks evaluating cloud providers under [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) Article 30, EU Data Boundary documentation is the standard service-location-clause evidence; non-boundary commitments require bespoke contractual annexes.
 :::
 
 ## Closing checklist
@@ -190,4 +190,4 @@ For Slovak [KsVC](./slovakia-ksvc-mirri-government-cloud) procurement, hyperscal
 - For sovereignty above EU Data Boundary, the practical pattern is **EU mainline + customer-held keys** (BYOK / HYOK / XKS / Client-side Encryption) addressing most concerns short of ownership-based foreign-law immunity.
 - Verification relies on contractual commitments, audit reports, public documentation, and Customer Lockbox-style access controls. Real-time cryptographic location guarantees are not standard.
 - GDPR Chapter V transfer mechanisms still apply to residual out-of-boundary flows (telemetry, support, sub-processors).
-- See [Sovereign Cloud Products article](./sovereign-cloud-products-2026-landscape) for sovereignty-grade alternatives beyond EU Data Boundary, and the [GDPR Article 28 / CoC article](./gdpr-article-28-and-eu-cloud-code-of-conduct) for the transfer-mechanism layer.
+- See [Sovereign Cloud Products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for sovereignty-grade alternatives beyond EU Data Boundary, and the [GDPR Article 28 / CoC article](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) for the transfer-mechanism layer.

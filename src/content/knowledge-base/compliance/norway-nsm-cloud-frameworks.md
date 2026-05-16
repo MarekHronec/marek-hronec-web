@@ -44,7 +44,7 @@ The Norwegian framework operates on three layers:
 - **Domestic legislation** — Sikkerhetsloven (National Security Act) for classified information; sector-specific regulation for finance, healthcare, energy.
 - **NSM guidance** — Grunnprinsipper for IKT-sikkerhet plus NSM Cloud Strategy and Guidance, principle-based rather than prescriptive.
 
-Like [Switzerland](./switzerland-finma-cloud-frameworks) and the [UK](./united-kingdom-ncsc-cloud-security-principles), Norway has **no central cloud certification scheme** analogous to Slovak KsVC or Italian ACN. Cloud assessment happens at procurement time against the published principles and sector-specific obligations.
+Like [Switzerland](/knowledge-base/compliance/switzerland-finma-cloud-frameworks) and the [UK](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles), Norway has **no central cloud certification scheme** analogous to Slovak KsVC or Italian ACN. Cloud assessment happens at procurement time against the published principles and sector-specific obligations.
 
 Key institutions:
 
@@ -128,7 +128,7 @@ Cloud services processing classified information must meet the Sikkerhetsloven r
 The framework operates through customer-side assessment:
 
 1. **Customer (data controller)** assesses the cloud provider against NSM Grunnprinsipper, sectoral requirements, and GDPR expectations.
-2. Standard evidence requested: ISO 27001/27017/27018, SOC 2 Type 2, [BSI C5](./germany-bsi-c5-cloud-attestation), [EU Cloud Code of Conduct](./gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2.
+2. Standard evidence requested: ISO 27001/27017/27018, SOC 2 Type 2, [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), [EU Cloud Code of Conduct](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2.
 3. **Finanstilsynet-supervised entities** report material outsourcing arrangements; Finanstilsynet can inspect.
 4. **NSM-supervised entities** (classified-information handlers) require formal NSM approval of cloud arrangements above identified thresholds.
 5. **Datatilsynet** monitors compliance with Personopplysningsloven and can investigate complaints.
@@ -166,7 +166,7 @@ For cloud providers serving Norwegian financial entities, the path of regulatory
 
 Norway does not impose explicit sovereignty rules on commercial cloud providers — no ownership caps, no headquartering requirements, no immunity-from-extraterritorial-law clauses.
 
-For **classified information** under Sikkerhetsloven, Norwegian-specific handling requirements effectively limit foreign-controlled providers from the most sensitive classified tiers. This functions as de facto sovereignty for that tier without the explicit ownership rules of [SecNumCloud](./france-anssi-secnumcloud-qualification).
+For **classified information** under Sikkerhetsloven, Norwegian-specific handling requirements effectively limit foreign-controlled providers from the most sensitive classified tiers. This functions as de facto sovereignty for that tier without the explicit ownership rules of [SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification).
 
 For **personal data**, EEA membership means GDPR's transfer chapter applies directly. EU/EEA data flows are unrestricted; third-country transfers require SCCs or equivalent.
 
@@ -192,10 +192,10 @@ For a cloud provider serving Norway in addition to the EU:
 - **Sikkerhetsloven compliance** if processing classified information — typically requires Norwegian-controlled infrastructure for KONFIDENSIELT and above.
 - **NIS2 readiness** as the transposition completes through EEA incorporation.
 
-The marginal Norwegian-specific work over a strong EU baseline is moderate. The ISO baselines, SOC 2, BSI C5, EU Cloud CoC, and [NIS2 supply-chain work](./nis2-supply-chain-cloud-providers) all carry forward; the country-specific additions are contractual and procedural rather than fresh substantive control work.
+The marginal Norwegian-specific work over a strong EU baseline is moderate. The ISO baselines, SOC 2, BSI C5, EU Cloud CoC, and [NIS2 supply-chain work](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) all carry forward; the country-specific additions are contractual and procedural rather than fresh substantive control work.
 
 :::tip[Architectural Pro Tip]
-For a CSP serving Norwegian financial-sector customers, the most efficient additional work over an EU baseline is **a Finanstilsynet outsourcing notification template** that maps existing audit rights, exit strategies, incident reporting commitments, and data location declarations to Norwegian supervisor expectations. Once DORA is fully incorporated through EEA, the CTPP-designation process becomes available; cloud providers expecting designation should engage early with Finanstilsynet to align with the supervisory model. The substantive content overlaps heavily with [DORA Article 30 contractual requirements](./dora-for-cloud-financial-sector-overlay).
+For a CSP serving Norwegian financial-sector customers, the most efficient additional work over an EU baseline is **a Finanstilsynet outsourcing notification template** that maps existing audit rights, exit strategies, incident reporting commitments, and data location declarations to Norwegian supervisor expectations. Once DORA is fully incorporated through EEA, the CTPP-designation process becomes available; cloud providers expecting designation should engage early with Finanstilsynet to align with the supervisory model. The substantive content overlaps heavily with [DORA Article 30 contractual requirements](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay).
 :::
 
 ## Multicloud factor
@@ -224,4 +224,4 @@ The "Norway is outside the EU" framing leads to misunderstandings. EEA membershi
 - **No central cloud catalogue**, no multi-tier service classification. Procurement-flexible regime; assessment is customer-side.
 - For Slovak organisations: Norwegian customers are operationally similar to EU customers in cloud terms. EEA membership simplifies cross-border data flow.
 - For cloud providers: marginal additions to an EU baseline are contractual annexes (Norwegian DPA, Finanstilsynet template) and mapping documents (Grunnprinsipper → ISO 27001 mapping), not fresh substantive control implementation.
-- See [Switzerland article](./switzerland-finma-cloud-frameworks) for the parallel non-EEA adjacent jurisdiction, [UK NCSC article](./united-kingdom-ncsc-cloud-security-principles) for the post-Brexit adjacent regime, [NIS2 supply chain article](./nis2-supply-chain-cloud-providers) for the supply-chain expectations that flow through EEA incorporation, and [DORA article](./dora-for-cloud-financial-sector-overlay) for the financial-sector framework being incorporated into Norwegian law.
+- See [Switzerland article](/knowledge-base/compliance/switzerland-finma-cloud-frameworks) for the parallel non-EEA adjacent jurisdiction, [UK NCSC article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) for the post-Brexit adjacent regime, [NIS2 supply chain article](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the supply-chain expectations that flow through EEA incorporation, and [DORA article](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) for the financial-sector framework being incorporated into Norwegian law.

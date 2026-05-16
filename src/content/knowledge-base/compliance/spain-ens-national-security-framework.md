@@ -121,7 +121,7 @@ The cloud PCE is the operative route for cloud providers and is the version of E
 
 On **17 June 2025**, CCN updated five **Serie 800 STIC guides** (STIC 801, 802, 803, 805, 808) to reflect RD 311/2022 and the post-NIS2 cybersecurity challenges. These updates affect the operational interpretation of ENS controls and are the most current authoritative source for the audit methodology.
 
-[ISO/IEC 27001](./iso-27001-27017-27018-27701-cloud-baselines) compatibility is explicitly recognised: a system certified to 27001 has a substantial head start in ENS. The audit instructions under the pre-RD 311/2022 regime (Resolución de 27 de marzo de 2018) treated 27001 evidence as material; current practice under RD 311/2022 continues this compatibility through CCN guidance and the updated STIC Serie 800 guides.
+[ISO/IEC 27001](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) compatibility is explicitly recognised: a system certified to 27001 has a substantial head start in ENS. The audit instructions under the pre-RD 311/2022 regime (Resolución de 27 de marzo de 2018) treated 27001 evidence as material; current practice under RD 311/2022 continues this compatibility through CCN guidance and the updated STIC Serie 800 guides.
 
 ## The assessment process
 
@@ -179,9 +179,9 @@ The framework's pragmatic position is closer to the German C5 transparency model
 
 ENS is one of the more workable EU national frameworks for multinational CSPs:
 
-- **[ISO/IEC 27001](./iso-27001-27017-27018-27701-cloud-baselines) compatibility** is explicit. A CSP that holds 27001/27017 already covers a significant portion of the ENS Annex II control set.
+- **[ISO/IEC 27001](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) compatibility** is explicit. A CSP that holds 27001/27017 already covers a significant portion of the ENS Annex II control set.
 - **The Cloud Services PCE** provides a defined audit scope rather than requiring providers to map themselves against the full breadth of ENS.
-- **ENAC-accredited bodies** include audit firms that also audit for ISO and [SOC 2](./soc-2-reports-how-to-actually-read-them), reducing supplier fragmentation.
+- **ENAC-accredited bodies** include audit firms that also audit for ISO and [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them), reducing supplier fragmentation.
 - The 2-year recertification cycle aligns with most multi-framework audit calendars.
 
 Hyperscalers (AWS, Microsoft, Google) have multiple Spanish-region services ENS-certified at Media and Alta. The framework is operationally accommodating to large CSPs in a way that SecNumCloud is not.
@@ -200,4 +200,4 @@ The five-dimension model (CIA + authenticity + traceability) sounds like a margi
 - Sovereignty posture is layered through category Alta and the PCE rather than through ownership caps. International CSPs hold ENS certifications at Media and Alta.
 - ISO/IEC 27001 compatibility is explicit and a strong baseline for ENS audit prep. Plan the 2-year cycle alongside ISO and SOC 2 calendars.
 - Watch traceability requirements at Alta — logging discipline is more demanding than the standard CIA-triad framework would suggest.
-- **What to read next:** [ISO 27001/27017/27018](./iso-27001-27017-27018-27701-cloud-baselines) for the baseline ENS audit prep stack; [GDPR Article 28 + EU Cloud CoC](./gdpr-article-28-and-eu-cloud-code-of-conduct) for the parallel GDPR regime; [Reading Attestation Reports](./reading-cloud-attestation-reports-practitioner-guide) for evaluating ENAC-accredited certifications.
+- **What to read next:** [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the baseline ENS audit prep stack; [GDPR Article 28 + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) for the parallel GDPR regime; [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) for evaluating ENAC-accredited certifications.

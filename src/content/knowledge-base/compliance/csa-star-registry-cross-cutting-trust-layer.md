@@ -136,11 +136,11 @@ A CSP that publishes Level 1 self-assessment and treats it as equivalent to Leve
 :::tip[Where this fits in the corpus]
 CSA STAR is the **navigation layer** across the rest of this security section. The CCM-to-other-framework mappings let a reader pivot from CSA STAR to any of the national frameworks the corpus covers:
 
-- A STAR Level 2 entry → maps to control evidence accepted by [Slovak KsVC](./slovakia-ksvc-mirri-government-cloud), [Spanish ENS](./spain-ens-national-security-framework), [Italian ACN](./italy-acn-cloud-qualification).
-- The CCM v4 base → maps to [BSI C5:2026](./germany-bsi-c5-cloud-attestation) which uses CCM v4 explicitly.
-- STAR Attestation pairs with [SOC 2 Type 2](./soc-2-reports-how-to-actually-read-them); STAR Certification pairs with [ISO 27001](./iso-27001-27017-27018-27701-cloud-baselines).
-- [EU Cloud Code of Conduct](./gdpr-article-28-and-eu-cloud-code-of-conduct) adherences are co-published in STAR Registry since 2024.
-- For [Slovak readers](./slovakia-ksvc-mirri-government-cloud): MIRRI methodology references the ENISA Cloud Certification Scheme, which maps to CCM — CSA STAR Level 2 evidence is material supporting input for KsVC U2 / U3 audit preparation, alongside the Slovak-specific Cybersecurity Auditor opinion at higher tiers.
+- A STAR Level 2 entry → maps to control evidence accepted by [Slovak KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud), [Spanish ENS](/knowledge-base/compliance/spain-ens-national-security-framework), [Italian ACN](/knowledge-base/compliance/italy-acn-cloud-qualification).
+- The CCM v4 base → maps to [BSI C5:2026](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) which uses CCM v4 explicitly.
+- STAR Attestation pairs with [SOC 2 Type 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them); STAR Certification pairs with [ISO 27001](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines).
+- [EU Cloud Code of Conduct](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) adherences are co-published in STAR Registry since 2024.
+- For [Slovak readers](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud): MIRRI methodology references the ENISA Cloud Certification Scheme, which maps to CCM — CSA STAR Level 2 evidence is material supporting input for KsVC U2 / U3 audit preparation, alongside the Slovak-specific Cybersecurity Auditor opinion at higher tiers.
 
 Use the CCM mappings as the scaffold; use the country and overlay articles for the framework-specific specifics.
 :::
@@ -154,4 +154,4 @@ Use the CCM mappings as the scaffold; use the country and overlay articles for t
 - STAR Level 2 sits between unverified self-assessment and country-specific attestation. Useful as portable evidence; not a substitute for national framework audits where those are required.
 - For procurement: use the CAIQ as first-pass screening; layer national framework evidence on top for higher-sensitivity workloads.
 - For CSPs: build the control framework to CCM, generate framework-specific evidence via the mappings. Avoid building each framework as a parallel project.
-- See the [ISO baselines article](./iso-27001-27017-27018-27701-cloud-baselines) for how STAR Certification pairs with 27001, and [SOC 2 article](./soc-2-reports-how-to-actually-read-them) for how STAR Attestation pairs with SOC 2.
+- See the [ISO baselines article](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for how STAR Certification pairs with 27001, and [SOC 2 article](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for how STAR Attestation pairs with SOC 2.

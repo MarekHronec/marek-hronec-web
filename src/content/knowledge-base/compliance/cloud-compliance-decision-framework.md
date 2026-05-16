@@ -9,23 +9,23 @@ level: intermediate
 excerpt: "The national frameworks, cross-cutting baselines, and regulatory overlays add up to dozens of acronyms. This article is the decision tree that maps 'I am [type of organisation] doing [type of workload] in [geography]' to 'these are the frameworks that actually apply to you'."
 references:
   - title: "EU National Cloud Security Frameworks Overview"
-    url: "./cloud-data-security-eu-national-frameworks-overview"
+    url: "/knowledge-base/compliance/cloud-data-security-eu-national-frameworks-overview"
     description: "The orientation article covering all the national frameworks referenced in this decision tree."
     domain: "internal"
   - title: "ISO 27001 / 27017 / 27018 / 27701 Baselines"
-    url: "./iso-27001-27017-27018-27701-cloud-baselines"
+    url: "/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines"
     description: "The universal baseline standards referenced by every national framework."
     domain: "internal"
   - title: "DORA for Cloud — Financial Sector Overlay"
-    url: "./dora-for-cloud-financial-sector-overlay"
+    url: "/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay"
     description: "The sectoral framework for financial services that applies regardless of national framework participation."
     domain: "internal"
   - title: "NIS2 Supply Chain for Cloud Providers"
-    url: "./nis2-supply-chain-cloud-providers"
+    url: "/knowledge-base/compliance/nis2-supply-chain-cloud-providers"
     description: "The supply-chain obligations that flow from any NIS2 essential or important entity customer to its cloud providers."
     domain: "internal"
   - title: "GDPR Article 28 and the EU Cloud Code of Conduct"
-    url: "./gdpr-article-28-and-eu-cloud-code-of-conduct"
+    url: "/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct"
     description: "The personal-data-processing layer that applies whenever the cloud service handles EU resident personal data."
     domain: "internal"
 ---
@@ -67,7 +67,7 @@ These are the floor. Every more specific framework layered above assumes these a
 - DORA if also a financial supervisor or financial-services-adjacent entity.
 - Sector-specific regulation (healthcare under MZ SR oversight, etc.).
 
-**Map to articles**: [Slovakia KsVC](./slovakia-ksvc-mirri-government-cloud), [NIS2 supply chain](./nis2-supply-chain-cloud-providers), [GDPR Article 28](./gdpr-article-28-and-eu-cloud-code-of-conduct).
+**Map to articles**: [Slovakia KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud), [NIS2 supply chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct).
 
 ### B. EU financial services entity (bank, insurer, asset manager, payment institution)
 
@@ -81,7 +81,7 @@ These are the floor. Every more specific framework layered above assumes these a
 - National framework participation in the country of operation (KsVC, BSI C5, ENS, ACN, etc.) — required for public-sector adjacent workloads.
 - SecNumCloud if French OIV/OSE.
 
-**Map to articles**: [DORA](./dora-for-cloud-financial-sector-overlay), [NIS2 supply chain](./nis2-supply-chain-cloud-providers), country-specific articles, [Sovereign cloud products](./sovereign-cloud-products-2026-landscape) for sovereign workloads.
+**Map to articles**: [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay), [NIS2 supply chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), country-specific articles, [Sovereign cloud products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for sovereign workloads.
 
 ### C. EU healthcare entity (hospital, health insurer, health-data platform)
 
@@ -95,7 +95,7 @@ These are the floor. Every more specific framework layered above assumes these a
 - DORA if also operating regulated financial services.
 - Cross-border data flow regulations under EHDS (European Health Data Space).
 
-**Map to articles**: [NIS2 supply chain](./nis2-supply-chain-cloud-providers), [GDPR Article 28](./gdpr-article-28-and-eu-cloud-code-of-conduct), country-specific articles.
+**Map to articles**: [NIS2 supply chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), country-specific articles.
 
 ### D. EU essential / important entity (energy, transport, water, digital infrastructure, postal services, manufacturing of critical products, food, etc.)
 
@@ -109,7 +109,7 @@ These are the floor. Every more specific framework layered above assumes these a
 - DORA if also performing regulated financial services.
 - Sector-specific regulations (energy sector under TSO-DSO obligations, transport under safety regulators, etc.).
 
-**Map to articles**: [NIS2 supply chain](./nis2-supply-chain-cloud-providers), country-specific articles, [GDPR Article 28](./gdpr-article-28-and-eu-cloud-code-of-conduct).
+**Map to articles**: [NIS2 supply chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), country-specific articles, [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct).
 
 ### E. EU general commercial entity (B2B SaaS, marketplace, software vendor — not in NIS2 scope, not in DORA scope)
 
@@ -121,7 +121,7 @@ These are the floor. Every more specific framework layered above assumes these a
 - EU Cloud CoC adherence as customer-facing signal of GDPR alignment.
 - ISO 27018 / 27701 if handling significant volumes of personal data.
 
-**Map to articles**: [ISO baselines](./iso-27001-27017-27018-27701-cloud-baselines), [SOC 2](./soc-2-reports-how-to-actually-read-them), [GDPR Article 28](./gdpr-article-28-and-eu-cloud-code-of-conduct).
+**Map to articles**: [ISO baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them), [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct).
 
 ### F. Non-EU entity processing EU resident data
 
@@ -134,7 +134,7 @@ These are the floor. Every more specific framework layered above assumes these a
 - Specific transfer impact assessments.
 - For workloads serving EU public-sector or regulated customers: those customers' framework participation requirements flow through to you as a sub-processor.
 
-**Map to articles**: [GDPR Article 28 / CoC](./gdpr-article-28-and-eu-cloud-code-of-conduct), [Hyperscaler EU Data Boundary](./hyperscaler-eu-data-boundary-commitments).
+**Map to articles**: [GDPR Article 28 / CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments).
 
 ## Decision tree by workload sensitivity
 
@@ -178,7 +178,7 @@ Operational pattern: build evidence to the strictest framework; map to others vi
 ### EU + UK / Switzerland / Norway
 
 - EU national frameworks for EU operations.
-- UK NCSC 14 Cloud Security Principles for UK operations (see the [UK article](./united-kingdom-ncsc-cloud-security-principles)).
+- UK NCSC 14 Cloud Security Principles for UK operations (see the [UK article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles)).
 - Swiss FINMA Circular for Swiss financial operations.
 - Norwegian NSM grunnprinsipper for Norwegian operations.
 - Adequacy decisions handle most data flows; some sectors require additional measures.
@@ -212,9 +212,9 @@ Don't apply: DORA (not a financial entity); SecNumCloud (not French); EUCS High+
 - **Tier 3**.
 - **Single Member State** scope primarily, EU scope for cross-border banking services.
 
-Apply: **[DORA](./dora-for-cloud-financial-sector-overlay)** as primary framework. Specifically: the [CTPP regime](./dora-ctpp-regime-direct-esa-supervision) if the cloud provider gets designated, and [Article 30 contractual content](./dora-article-30-contracts-and-exit-strategies) for the cloud contract substance. Plus: [ISO 27001/27017/27018/27701](./iso-27001-27017-27018-27701-cloud-baselines); [SOC 2 Type 2](./soc-2-reports-how-to-actually-read-them) / [BSI C5](./germany-bsi-c5-cloud-attestation); [GDPR Article 28](./gdpr-article-28-and-eu-cloud-code-of-conduct); EU Cloud CoC Level 2; [NIS2 obligations](./nis2-supply-chain-cloud-providers) (bank is essential entity); [BYOK/HYOK key custody](./cloud-encryption-key-custody-byok-hyok) for Tier 3 data; [KsVC](./slovakia-ksvc-mirri-government-cloud) participation may apply if the bank consumes public-sector-adjacent services.
+Apply: **[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)** as primary framework. Specifically: the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) if the cloud provider gets designated, and [Article 30 contractual content](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the cloud contract substance. Plus: [ISO 27001/27017/27018/27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines); [SOC 2 Type 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) / [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation); [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct); EU Cloud CoC Level 2; [NIS2 obligations](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) (bank is essential entity); [BYOK/HYOK key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for Tier 3 data; [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) participation may apply if the bank consumes public-sector-adjacent services.
 
-Don't apply: [SecNumCloud](./france-anssi-secnumcloud-qualification) (not French OIV/OSE); national-classified information handling (no classified data).
+Don't apply: [SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (not French OIV/OSE); national-classified information handling (no classified data).
 
 ### Example 3 — French defence-adjacent SaaS provider
 
@@ -261,11 +261,11 @@ The most common decision-framework mistake is **picking the framework before und
 This article references most others in the security section. Use the framework above to identify which apply to your situation, then go deep on the relevant ones:
 
 - **Country-specific obligations** — see the country article for your operating jurisdiction(s).
-- **Universal baselines** — [ISO 27001/27017/27018/27701](./iso-27001-27017-27018-27701-cloud-baselines), [SOC 2 Reports](./soc-2-reports-how-to-actually-read-them), [CSA STAR Registry](./csa-star-registry-cross-cutting-trust-layer).
-- **Regulatory overlays** — [DORA](./dora-for-cloud-financial-sector-overlay) (financial sector), [NIS2 Supply Chain](./nis2-supply-chain-cloud-providers) (cross-sectoral), [GDPR Article 28 + EU Cloud CoC](./gdpr-article-28-and-eu-cloud-code-of-conduct) (personal data).
-- **Vendor landscape** — [Sovereign Cloud Products](./sovereign-cloud-products-2026-landscape), [Hyperscaler EU Data Boundary](./hyperscaler-eu-data-boundary-commitments) if sovereignty or data residency matters.
-- **Adjacent jurisdictions** — [UK NCSC](./united-kingdom-ncsc-cloud-security-principles), [Switzerland FINMA](./switzerland-finma-cloud-frameworks), [Norway NSM](./norway-nsm-cloud-frameworks) if your operations extend beyond the EU.
-- **Practitioner skill** — [Reading Attestation Reports](./reading-cloud-attestation-reports-practitioner-guide) once you start evaluating actual evidence from providers.
+- **Universal baselines** — [ISO 27001/27017/27018/27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [SOC 2 Reports](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them), [CSA STAR Registry](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer).
+- **Regulatory overlays** — [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) (financial sector), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) (cross-sectoral), [GDPR Article 28 + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) (personal data).
+- **Vendor landscape** — [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape), [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) if sovereignty or data residency matters.
+- **Adjacent jurisdictions** — [UK NCSC](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles), [Switzerland FINMA](/knowledge-base/compliance/switzerland-finma-cloud-frameworks), [Norway NSM](/knowledge-base/compliance/norway-nsm-cloud-frameworks) if your operations extend beyond the EU.
+- **Practitioner skill** — [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) once you start evaluating actual evidence from providers.
 
 ## Closing checklist
 
@@ -277,4 +277,4 @@ This article references most others in the security section. Use the framework a
 - Worked examples cover Slovak ministry, Slovak bank, French defence-adjacent SaaS, and non-EU SaaS — each with different framework intersections.
 - Design to the strictest applicable framework once; map to others. Avoid parallel-framework projects.
 - Common traps: assuming national frameworks substitute for GDPR/NIS2, treating EUCS as imminent, confusing sovereign cloud with EU Data Boundary, building each framework separately, forgetting NIS2 supply-chain flow-through.
-- See the country articles for per-framework detail, the [ISO baseline](./iso-27001-27017-27018-27701-cloud-baselines) and [SOC 2](./soc-2-reports-how-to-actually-read-them) articles for the universal evidence base, and the [reading attestation reports article](./reading-cloud-attestation-reports-practitioner-guide) for how to evaluate the evidence you receive.
+- See the country articles for per-framework detail, the [ISO baseline](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) and [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) articles for the universal evidence base, and the [reading attestation reports article](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) for how to evaluate the evidence you receive.

@@ -97,7 +97,7 @@ IBD publishes a practical tool — the **Baselinetoets BBN** (an Excel-based que
 
 ## Evaluation criteria
 
-BIO2 is built on the Dutch national editions of [ISO/IEC 27001 and 27002](./iso-27001-27017-27018-27701-cloud-baselines):
+BIO2 is built on the Dutch national editions of [ISO/IEC 27001 and 27002](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines):
 
 - **NEN-EN-ISO/IEC 27001:2023 (Dutch edition)** — ISMS.
 - **NEN-EN-ISO/IEC 27002:2022 (Dutch edition)** — control set.
@@ -200,4 +200,4 @@ For a CSP targeting Dutch public-sector consumers, the highest-leverage move is 
 - Sanctions are reputational pre-Cbw; statutory NIS2 sanctions apply post-Cbw, with RDI as the digital infrastructure supervisor.
 - Sovereignty posture is permissive. No ownership caps; no headquartering requirements. The Netherlands is politically on the more open side of the EUCS sovereignty debate.
 - Publish a BIO landing zone reference alongside the Thema-uitwerking certificate. The landing zone is what makes the certificate consumable for Dutch government workloads.
-- **What to read next:** [ISO 27001/27002](./iso-27001-27017-27018-27701-cloud-baselines) for the international baseline BIO2 inherits from; [NIS2 Supply Chain](./nis2-supply-chain-cloud-providers) for the Cbw-aligned supply-chain obligations; [EUCS Watch](./eucs-watch-political-tracking-2026) for the Dutch position in the EUCS debate.
+- **What to read next:** [ISO 27001/27002](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline BIO2 inherits from; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the Cbw-aligned supply-chain obligations; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the Dutch position in the EUCS debate.

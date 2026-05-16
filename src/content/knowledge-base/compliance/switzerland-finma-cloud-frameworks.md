@@ -47,7 +47,7 @@ The framework is composed rather than centralised:
 - **NCSC Switzerland** — the federal cybersecurity centre (distinct from the UK NCSC).
 - **Sector-specific regulation** for healthcare, defence, and critical infrastructure operators.
 
-There is no Swiss equivalent of EUCS, BSI C5, ENS, or KsVC — no centralised cloud certification scheme. Swiss government cloud procurement is handled through federal procurement processes with NCSC-style assessment against published expectations rather than catalogue-based approval. This is structurally closer to the [UK NCSC model](./united-kingdom-ncsc-cloud-security-principles) than the catalogue-driven Slovak or Italian models.
+There is no Swiss equivalent of EUCS, BSI C5, ENS, or KsVC — no centralised cloud certification scheme. Swiss government cloud procurement is handled through federal procurement processes with NCSC-style assessment against published expectations rather than catalogue-based approval. This is structurally closer to the [UK NCSC model](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) than the catalogue-driven Slovak or Italian models.
 
 ## Legislative basis
 
@@ -96,7 +96,7 @@ For financial-sector cloud arrangements, the operative criteria sit in Circular 
 - **Reporting** — material incident notification to FINMA.
 - **Geographic considerations** — where data is processed, what jurisdictional exposure exists.
 
-The substance is comparable to [DORA](./dora-for-cloud-financial-sector-overlay) in several dimensions (incident reporting, audit rights, exit strategies, concentration risk awareness). The procedural specifics differ — supervision is by FINMA rather than by ESAs; the CTPP-equivalent designation regime is absent (though concentration risk is monitored qualitatively).
+The substance is comparable to [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) in several dimensions (incident reporting, audit rights, exit strategies, concentration risk awareness). The procedural specifics differ — supervision is by FINMA rather than by ESAs; the CTPP-equivalent designation regime is absent (though concentration risk is monitored qualitatively).
 
 Swiss banks consume material amounts of EU and US hyperscaler cloud services. The FINMA Circular framework has matured into a stable operational regime over multiple years; supervised entities and their cloud providers have established standard contractual patterns aligned with the circular's requirements.
 
@@ -119,7 +119,7 @@ For cloud providers, nFADP-aligned processing is operationally similar to GDPR A
 The Swiss framework does not run a centralised assessment of cloud providers. The process flows from customer to provider:
 
 1. **Supervised entity** (or any controller) assesses the cloud provider as part of its outsourcing / supplier due diligence.
-2. Standard evidence requested: ISO 27001/27017/27018, SOC 2 Type 2, [BSI C5](./germany-bsi-c5-cloud-attestation), [EU Cloud Code of Conduct](./gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2.
+2. Standard evidence requested: ISO 27001/27017/27018, SOC 2 Type 2, [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), [EU Cloud Code of Conduct](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2.
 3. **FINMA-supervised entities** report material outsourcing arrangements; FINMA can request additional information or perform on-site inspections.
 4. **FDPIC** monitors compliance with nFADP and can investigate complaints.
 5. **NCSC Switzerland** coordinates broader cybersecurity matters and operates incident response for federal authorities.
@@ -157,7 +157,7 @@ The penalty structure of nFADP is notably different from GDPR. The individual-ta
 
 Switzerland does not impose explicit sovereignty rules on cloud providers — no ownership caps, no headquartering requirements, no immunity-from-extraterritorial-law clauses on commercial cloud services.
 
-For **classified information** under ISA, Swiss-specific handling requirements apply that effectively limit foreign-controlled providers from handling the most sensitive federal information. This functions as de facto sovereignty for the classified-information tier without the explicit ownership rules of [SecNumCloud](./france-anssi-secnumcloud-qualification).
+For **classified information** under ISA, Swiss-specific handling requirements apply that effectively limit foreign-controlled providers from handling the most sensitive federal information. This functions as de facto sovereignty for the classified-information tier without the explicit ownership rules of [SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification).
 
 For **financial sector data**, FINMA's outsourcing supervision includes assessment of geographic and jurisdictional exposure but does not categorically exclude foreign-controlled cloud providers. Major hyperscalers operate in the Swiss financial market under FINMA-supervised arrangements with their bank and insurer customers.
 
@@ -175,7 +175,7 @@ Switzerland's bilateral adequacy with the EU produces a straightforward picture 
 For Slovak organisations operating in Switzerland or with Swiss customers, the EU-Swiss adequacy makes cross-border flow operationally simple. The Swiss-specific work is contractual (Swiss DPA annex) and procedural (FDPIC awareness) rather than fresh substantive compliance.
 
 :::tip[Architectural Pro Tip]
-For a cloud provider with material Swiss financial-sector revenue, the highest-leverage Swiss-specific addition to an EU-baseline programme is **a FINMA Circular 2018/3 contractual annex** that maps existing audit rights, exit strategies, incident reporting commitments, and data location declarations to the circular's requirements. FINMA-supervised entities expect this annex format; CSPs that produce it on first request close procurement faster than those who treat each Swiss bank engagement as a fresh contracting exercise. The substantive content overlaps heavily with [DORA Article 30 contractual requirements](./dora-for-cloud-financial-sector-overlay) — a CSP producing DORA-compliant contracts is most of the way to FINMA 2018/3.
+For a cloud provider with material Swiss financial-sector revenue, the highest-leverage Swiss-specific addition to an EU-baseline programme is **a FINMA Circular 2018/3 contractual annex** that maps existing audit rights, exit strategies, incident reporting commitments, and data location declarations to the circular's requirements. FINMA-supervised entities expect this annex format; CSPs that produce it on first request close procurement faster than those who treat each Swiss bank engagement as a fresh contracting exercise. The substantive content overlaps heavily with [DORA Article 30 contractual requirements](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) — a CSP producing DORA-compliant contracts is most of the way to FINMA 2018/3.
 :::
 
 ## Multicloud factor
@@ -204,4 +204,4 @@ The "Switzerland is not in the EU" framing sometimes leads EU cloud providers to
 - **No Swiss-specific cloud certification** to obtain. The evidence base is the standard international portfolio (ISO, SOC 2, BSI C5, EU Cloud CoC) plus Swiss-tailored contractual annexes.
 - Sovereignty posture is principle-based: no explicit ownership rules for commercial cloud, but ISA classified-information handling effectively limits foreign providers from the most sensitive federal tier.
 - For Slovak organisations: Swiss customers are operationally similar to other EU customers in cloud terms. The Swiss-specific additions are small.
-- See [Norway article](./norway-nsm-cloud-frameworks) for the parallel EEA-side adjacent jurisdiction, [UK NCSC article](./united-kingdom-ncsc-cloud-security-principles) for the other primary non-EU European adjacent regime, and [DORA article](./dora-for-cloud-financial-sector-overlay) for the EU financial-sector framework FINMA 2018/3 most closely mirrors.
+- See [Norway article](/knowledge-base/compliance/norway-nsm-cloud-frameworks) for the parallel EEA-side adjacent jurisdiction, [UK NCSC article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) for the other primary non-EU European adjacent regime, and [DORA article](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) for the EU financial-sector framework FINMA 2018/3 most closely mirrors.

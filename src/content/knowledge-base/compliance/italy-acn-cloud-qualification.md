@@ -132,7 +132,7 @@ Recertification:
 - **36 months** validity for qualification and adjustment.
 - **Renewal request** must be submitted **at least 90 days before expiration**. Filing 90 days early allows the existing qualification to extend until the administrative procedure for renewal completes — protection against gaps caused by ACN processing time.
 
-The 36-month cycle is longer than most EU frameworks ([Spain's ENS](./spain-ens-national-security-framework) is 2 years; [ANSSI SecNumCloud](./france-anssi-secnumcloud-qualification) is 3 years with annual surveillance). The longer cycle is balanced by the 6-monthly consumer reporting, which provides interim oversight.
+The 36-month cycle is longer than most EU frameworks ([Spain's ENS](/knowledge-base/compliance/spain-ens-national-security-framework) is 2 years; [ANSSI SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) is 3 years with annual surveillance). The longer cycle is balanced by the 6-monthly consumer reporting, which provides interim oversight.
 
 ## Sanctions and oversight
 
@@ -186,4 +186,4 @@ The catena di qualificazione doctrine catches CSPs off-guard more often than it 
 - 6-monthly consumer reporting (MON-01) is a unique operational requirement. Plan a process to assemble and submit the consumer list.
 - Sanctions are catalogue-based: suspension or revocation removes the service from the catalogue, ending public-administration access. NIS2 sanctions under D.Lgs. 138/2024 apply independently.
 - The framework is operationally tractable for hyperscalers at QC1–QC2, requires sovereignty-adjacent work at QC3, and is effectively PSN-only at QC4. Plan the roadmap accordingly.
-- **What to read next:** [Sovereign Cloud Products](./sovereign-cloud-products-2026-landscape) for PSN partnership routes and sovereign cloud landscape; [NIS2 Supply Chain](./nis2-supply-chain-cloud-providers) for D.Lgs. 138/2024 supply-chain obligations running parallel to QC qualification; [ISO 27001/27017](./iso-27001-27017-27018-27701-cloud-baselines) for the international baseline ACN audit reuses.
+- **What to read next:** [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for PSN partnership routes and sovereign cloud landscape; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for D.Lgs. 138/2024 supply-chain obligations running parallel to QC qualification; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline ACN audit reuses.

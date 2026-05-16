@@ -109,7 +109,7 @@ The 80% minimum-conformity threshold for the cybersecurity audit at U3/U4 is set
 
 The reference frameworks for evaluation under the published MIRRI methodology are:
 
-- **[ISO/IEC 27001 / 27017 / 27018 / 27701](./iso-27001-27017-27018-27701-cloud-baselines)** — the universal baseline; see the dedicated article for what each standard covers.
+- **[ISO/IEC 27001 / 27017 / 27018 / 27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines)** — the universal baseline; see the dedicated article for what each standard covers.
 - **ENISA Cloud Certification Scheme** — form `1C` of the application references the ENISA controls framework.
 - **Cybersecurity audit under Act 69/2018** with minimum 80% conformity for U3/U4.
 
@@ -143,7 +143,7 @@ The sanctioning mechanism is procurement-based rather than penalty-based:
 - A non-listed service may not be used by a public administration body. No fine; loss of access to the public-sector market.
 - MIRRI and NBÚ verify correct ISVS classification on the consumer side.
 - A service can be **removed from the catalogue** if material parameters change without re-application, if ISO certification lapses, or if a cybersecurity audit fails.
-- **[NIS2](./nis2-supply-chain-cloud-providers) sanctions** — under the amended Act 69/2018 via Act 366/2024 — apply to cloud providers as supply-chain participants for essential-service operators, in addition to catalogue consequences. The sanction levels follow the NIS2 framework (up to €10 million or 2% of global turnover for essential entities).
+- **[NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) sanctions** — under the amended Act 69/2018 via Act 366/2024 — apply to cloud providers as supply-chain participants for essential-service operators, in addition to catalogue consequences. The sanction levels follow the NIS2 framework (up to €10 million or 2% of global turnover for essential entities).
 
 The pending operational alignment between MIRRI methodology and the NBÚ regime is, in practice, an enforcement-layer question: catalogue removal still works as the procurement bite, NIS2 sanctions apply as the substantive cybersecurity bite, and the two layers operate in parallel until MIRRI's next methodology revision lands or the 31 December 2026 transition window closes.
 
@@ -170,7 +170,7 @@ For a hyperscaler operating in Slovakia and aiming at the public sector at U2 or
 - The SLA-with-measurable-parameters requirement forces explicit numeric thresholds.
 - Subcontractor classification — every subcontractor in the supply chain must have a declared classification. This requires the CSP to surface its own supply chain in a form most do not by default.
 
-The fastest route through KsVC for a multinational CSP that already holds [BSI C5](./germany-bsi-c5-cloud-attestation) + [ISO 27001/27017/27018](./iso-27001-27017-27018-27701-cloud-baselines) + [ENS](./spain-ens-national-security-framework) or [SecNumCloud](./france-anssi-secnumcloud-qualification) documentation is to retain a Slovak Cybersecurity Auditor, map the existing evidence to the `1C` form, run the risk analysis under vyhláška 227/2025, and submit. The audit and the risk analysis are the bottlenecks.
+The fastest route through KsVC for a multinational CSP that already holds [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) + [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) + [ENS](/knowledge-base/compliance/spain-ens-national-security-framework) or [SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) documentation is to retain a Slovak Cybersecurity Auditor, map the existing evidence to the `1C` form, run the risk analysis under vyhláška 227/2025, and submit. The audit and the risk analysis are the bottlenecks.
 
 :::tip[Architectural Pro Tip]
 For a CSP preparing for KsVC listing or maintaining an existing one, **design to vyhláška 227/2025 and the new NBÚ risk-analysis methodology now**, regardless of the MIRRI methodology's revision status. Two reasons: (1) the cybersecurity audit at U3/U4 uses the amended Act 69/2018 reference, so the auditor is already applying the new regime; (2) MIRRI's next methodology revision will inevitably align with vyhláška 227/2025, and CSPs that have already implemented risk-based design will not need a second remediation cycle when that revision lands. The risk-based regime is also the framework the NIS2 essential/important entities obligation applies under — meeting it once covers both regimes.
@@ -186,4 +186,4 @@ For a CSP preparing for KsVC listing or maintaining an existing one, **design to
 - Vyhláška 179/2020 (public-administration IT categorisation) is reported as deprecated in NIS2 commentary; **a formal repeal could not be verified.** Treat sweeping statements about its abolition with caution.
 - Sanctions remain procurement-based at the catalogue layer; NIS2 administrative sanctions (up to €10 million or 2% of global turnover) apply on top via the amended Act 69/2018.
 - The pragmatic sequence for a hyperscaler entering Slovak public sector in 2026: ISO 27001/27017/27018 → BSI C5 Type 2 → risk analysis under vyhláška 227/2025 → KsVC U2 listing → optional U3 path with a Slovak Cybersecurity Auditor.
-- **What to read next:** [ISO 27001/27017/27018/27701 baselines](./iso-27001-27017-27018-27701-cloud-baselines) for the universal evidence layer referenced throughout; [NIS2 Supply Chain](./nis2-supply-chain-cloud-providers) for the post-Act-366/2024 supply-chain regime; [Decision Framework](./cloud-compliance-decision-framework) to map your specific organisation type to the applicable frameworks; [BYOK/HYOK article](./cloud-encryption-key-custody-byok-hyok) for the U3+ HSM key-custody patterns.
+- **What to read next:** [ISO 27001/27017/27018/27701 baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the universal evidence layer referenced throughout; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the post-Act-366/2024 supply-chain regime; [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework) to map your specific organisation type to the applicable frameworks; [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the U3+ HSM key-custody patterns.

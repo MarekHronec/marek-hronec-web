@@ -30,7 +30,7 @@ references:
     domain: "enisa.europa.eu"
 ---
 
-The EU AI Act — Regulation (EU) 2024/1689 — applies progressively from **February 2025 through August 2027**. For cloud providers, two roles matter: **provider of general-purpose AI models** (GPAI providers) and **infrastructure for customer-deployed AI systems**. For customers, **deployer obligations** apply at scale and increasingly to operational AI use. The AI Act sits alongside [GDPR](./gdpr-article-28-and-eu-cloud-code-of-conduct), [NIS2](./nis2-supply-chain-cloud-providers), and [DORA](./dora-for-cloud-financial-sector-overlay) as a parallel regulatory layer. This article walks through what the AI Act actually requires of cloud providers and their customers, where it intersects with existing cloud regulation, and what to plan for.
+The EU AI Act — Regulation (EU) 2024/1689 — applies progressively from **February 2025 through August 2027**. For cloud providers, two roles matter: **provider of general-purpose AI models** (GPAI providers) and **infrastructure for customer-deployed AI systems**. For customers, **deployer obligations** apply at scale and increasingly to operational AI use. The AI Act sits alongside [GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), [NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) as a parallel regulatory layer. This article walks through what the AI Act actually requires of cloud providers and their customers, where it intersects with existing cloud regulation, and what to plan for.
 
 ## What the AI Act is and what it covers
 
@@ -76,7 +76,7 @@ The cloud provider's obligations as infrastructure provider include:
 - Documentation about infrastructure characteristics relevant to high-risk AI obligations.
 - Cooperation with regulatory inquiries about high-risk AI systems on the platform.
 
-This position is operationally close to the [NIS2 supply-chain provider role](./nis2-supply-chain-cloud-providers) — the cloud provider supports the customer's regulatory compliance without being directly regulated for the AI system.
+This position is operationally close to the [NIS2 supply-chain provider role](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) — the cloud provider supports the customer's regulatory compliance without being directly regulated for the AI system.
 
 ### Position 3 — AI service provider
 
@@ -133,11 +133,11 @@ AI systems frequently process personal data. Where they do, **GDPR applies in fu
 - **Data subject rights** — explanation rights for automated decisions interact with AI Act transparency.
 - **DPIA** — AI processing typically triggers GDPR Article 35 DPIA requirement, which integrates with AI Act FRIA for public-sector high-risk uses.
 
-Cloud providers operating AI services as processors handle the GDPR Article 28 layer alongside the AI Act provider/deployer layer. See [GDPR Article 28 + EU Cloud CoC article](./gdpr-article-28-and-eu-cloud-code-of-conduct) for the GDPR layer.
+Cloud providers operating AI services as processors handle the GDPR Article 28 layer alongside the AI Act provider/deployer layer. See [GDPR Article 28 + EU Cloud CoC article](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) for the GDPR layer.
 
 ### Intersection with NIS2
 
-AI systems used by essential or important entities under [NIS2](./nis2-supply-chain-cloud-providers) become part of the entity's regulated ICT estate. NIS2 supply-chain risk management extends to AI service providers. Specific points:
+AI systems used by essential or important entities under [NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) become part of the entity's regulated ICT estate. NIS2 supply-chain risk management extends to AI service providers. Specific points:
 
 - AI systems used for security-critical functions (fraud detection, threat detection) become NIS2-relevant.
 - Cloud AI service providers serving NIS2-scope customers become supply-chain participants for NIS2 obligations.
@@ -145,7 +145,7 @@ AI systems used by essential or important entities under [NIS2](./nis2-supply-ch
 
 ### Intersection with DORA
 
-For financial entities using AI in operations — credit decisions, fraud detection, market analysis, customer interaction — [DORA](./dora-for-cloud-financial-sector-overlay) applies to the operational resilience of the AI system. Specific points:
+For financial entities using AI in operations — credit decisions, fraud detection, market analysis, customer interaction — [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) applies to the operational resilience of the AI system. Specific points:
 
 - AI systems used in critical or important functions trigger DORA Article 30 contractual requirements for the AI service provider.
 - Concentration risk in AI service providers becomes part of DORA concentration risk management.
@@ -250,13 +250,13 @@ For organisations using cloud AI services, the highest-leverage AI Act preparati
 For Slovak organisations, AI Act application is direct (regulation applies without national transposition for the substantive content). National-level implementation activity:
 
 - **Designation of national competent authority** for AI Act supervision — in progress as of mid-2026.
-- **Public-sector AI guidance** — MIRRI is expected to issue guidance on AI in eGovernment, complementing the AI Act; this is the natural extension of MIRRI's role under [KsVC](./slovakia-ksvc-mirri-government-cloud) and Act 95/2019.
-- **Sectoral guidance** — financial sector ([NBS aligned with DORA](./dora-for-cloud-financial-sector-overlay)), healthcare (ÚDZS), and other regulators are aligning with AI Act for their sectoral remit.
+- **Public-sector AI guidance** — MIRRI is expected to issue guidance on AI in eGovernment, complementing the AI Act; this is the natural extension of MIRRI's role under [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) and Act 95/2019.
+- **Sectoral guidance** — financial sector ([NBS aligned with DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)), healthcare (ÚDZS), and other regulators are aligning with AI Act for their sectoral remit.
 
-For Slovak public-sector entities deploying AI, the AI Act high-risk system obligations and the FRIA requirement apply directly. AI services consumed via [KsVC](./slovakia-ksvc-mirri-government-cloud)-listed cloud providers face the same AI Act obligations as any other deployment — the KsVC listing does not abstract or absorb AI Act compliance. Slovak commercial entities using cloud AI services have deployer obligations and (for high-risk uses) FRIA-equivalent assessment expectations.
+For Slovak public-sector entities deploying AI, the AI Act high-risk system obligations and the FRIA requirement apply directly. AI services consumed via [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud)-listed cloud providers face the same AI Act obligations as any other deployment — the KsVC listing does not abstract or absorb AI Act compliance. Slovak commercial entities using cloud AI services have deployer obligations and (for high-risk uses) FRIA-equivalent assessment expectations.
 
 :::tip[Slovak context]
-For Slovak public-sector AI use, the practical compliance stack is **AI Act + [GDPR](./gdpr-article-28-and-eu-cloud-code-of-conduct) + [KsVC](./slovakia-ksvc-mirri-government-cloud) + Act 95/2019 eGovernment provisions** — applied in parallel, not in alternative. A high-risk AI system deployed by a Slovak ministry must satisfy: AI Act conformity assessment, GDPR Article 22 automated-decision protections where applicable, KsVC catalogue listing for the underlying cloud service at the appropriate U-tier, and Act 95/2019 administrative procedure rules. Build the AI service inventory once; map to all four regimes. The cost of treating these as separate compliance projects is operationally significant.
+For Slovak public-sector AI use, the practical compliance stack is **AI Act + [GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) + [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) + Act 95/2019 eGovernment provisions** — applied in parallel, not in alternative. A high-risk AI system deployed by a Slovak ministry must satisfy: AI Act conformity assessment, GDPR Article 22 automated-decision protections where applicable, KsVC catalogue listing for the underlying cloud service at the appropriate U-tier, and Act 95/2019 administrative procedure rules. Build the AI service inventory once; map to all four regimes. The cost of treating these as separate compliance projects is operationally significant.
 :::
 
 :::warning[Reality Check]
@@ -275,4 +275,4 @@ The AI Act is often discussed as a future regulation, but obligations have been 
 - Sanctions up to **€35 million or 7% of global turnover** for prohibited practices; lower tiers for other violations.
 - Build an AI service inventory with risk-tier classification — the foundation for AI Act compliance.
 - Treat 2026 as the operational readiness year, not 2027. The "wait until deadline" approach has aged poorly for past EU regulatory cycles.
-- See [GDPR + EU Cloud CoC article](./gdpr-article-28-and-eu-cloud-code-of-conduct), [NIS2 Supply Chain](./nis2-supply-chain-cloud-providers), [DORA Article 30](./dora-article-30-contracts-and-exit-strategies) for the parallel regulatory layers that AI Act intersects with.
+- See [GDPR + EU Cloud CoC article](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), [DORA Article 30](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the parallel regulatory layers that AI Act intersects with.

@@ -91,12 +91,12 @@ These are not SecNumCloud's territory. The framework's design intent is the sens
 
 ## Evaluation criteria
 
-SecNumCloud 3.2 contains **more than 350–360 requirements** — making it significantly more prescriptive than [BSI C5](./germany-bsi-c5-cloud-attestation) or [ENS](./spain-ens-national-security-framework). Organised into:
+SecNumCloud 3.2 contains **more than 350–360 requirements** — making it significantly more prescriptive than [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) or [ENS](/knowledge-base/compliance/spain-ens-national-security-framework). Organised into:
 
 - **6 audit categories** — corresponding to control families.
 - **14 security themes** — the operational domains.
 
-The reference base is [ISO/IEC 27001](./iso-27001-27017-27018-27701-cloud-baselines) Annex A, but SecNumCloud is significantly more prescriptive. It covers:
+The reference base is [ISO/IEC 27001](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) Annex A, but SecNumCloud is significantly more prescriptive. It covers:
 
 - **Information security organisation and risk management** — formal structures, named responsibilities, documented risk appetite.
 - **Cryptography** — algorithms must follow ANSSI recommendations. This is more constraining than ISO/IEC 27001, which is algorithm-neutral.
@@ -164,7 +164,7 @@ This is the section that distinguishes SecNumCloud from every other EU national 
 
 **Immunity from extraterritorial law.** Explicit requirement that the provider not be subject to the US CLOUD Act or equivalent foreign data-access regimes. This is verified at the corporate-structure level, not just contractually.
 
-In the [EUCS debate](./eucs-watch-political-tracking-2026), SecNumCloud is the model for the **High+** assurance level — the sovereignty-strict tier that was in the 2023 draft and was removed or weakened in the March 2024 draft. France has been the principal political force behind keeping a sovereignty layer in EUCS, which is why the scheme has been stuck since 2024.
+In the [EUCS debate](/knowledge-base/compliance/eucs-watch-political-tracking-2026), SecNumCloud is the model for the **High+** assurance level — the sovereignty-strict tier that was in the 2023 draft and was removed or weakened in the March 2024 draft. France has been the principal political force behind keeping a sovereignty layer in EUCS, which is why the scheme has been stuck since 2024.
 
 In **March 2026, ANSSI and BSI published a joint statement on harmonised cloud-sovereignty criteria** — the first public bilateral step toward narrowing the FR–DE divergence that has blocked EUCS. It is a statement of direction, not yet a binding agreement on EUCS High+ content. Worth tracking as a leading indicator on whether French and German positions are converging on operational common ground.
 
@@ -200,4 +200,4 @@ The argument that "SecNumCloud is protectionism dressed as cybersecurity" has be
 - The qualified providers list is short and changes as qualifications are granted and renewed — check the ANSSI website for the current count. Known holders include 3DS Outscale, OVHcloud, Cegedim.cloud, and S3NS.
 - For multinational CSPs, the joint-venture model is the practical route: Bleu (Microsoft + Orange + Capgemini), S3NS (Google + Thales). Direct qualification of a US-controlled subsidiary is not a path that works structurally.
 - In the EUCS debate, SecNumCloud is the model for the High+ tier that has been the blocking point since 2024. The French position on sovereignty has not softened and is unlikely to.
-- **What to read next:** [Sovereign Cloud Products article](./sovereign-cloud-products-2026-landscape) for Bleu, S3NS, and other JV product details; [EUCS Watch](./eucs-watch-political-tracking-2026) for the political context of the SecNumCloud-EUCS High+ relationship; [BYOK/HYOK article](./cloud-encryption-key-custody-byok-hyok) for the cryptographic patterns that complement SecNumCloud qualification.
+- **What to read next:** [Sovereign Cloud Products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for Bleu, S3NS, and other JV product details; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context of the SecNumCloud-EUCS High+ relationship; [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the cryptographic patterns that complement SecNumCloud qualification.

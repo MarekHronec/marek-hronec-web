@@ -187,7 +187,7 @@ For cloud providers serving Slovak public-sector customers, CoC Level 2 adherenc
 :::
 
 :::tip[Slovak context]
-For Slovak organisations, GDPR is supplemented by **Act 18/2018 Z. z.** on personal data protection — the Slovak implementing law that aligns with GDPR's substantive content and designates the **Úrad na ochranu osobných údajov SR (ÚOOÚ SR)** as the supervisory authority. Article 28 obligations apply directly without national-specific divergences in substance. ÚOOÚ SR recognises Article 40 codes including the EU Cloud Code of Conduct; CoC adherence does not require additional Slovak recognition. For Slovak public-sector controllers operating in [KsVC](./slovakia-ksvc-mirri-government-cloud) scope, Article 28 contracts with cloud providers are reviewed alongside the catalogue-listing evidence; CoC Level 2 adherence is the standard accompanying signal.
+For Slovak organisations, GDPR is supplemented by **Act 18/2018 Z. z.** on personal data protection — the Slovak implementing law that aligns with GDPR's substantive content and designates the **Úrad na ochranu osobných údajov SR (ÚOOÚ SR)** as the supervisory authority. Article 28 obligations apply directly without national-specific divergences in substance. ÚOOÚ SR recognises Article 40 codes including the EU Cloud Code of Conduct; CoC adherence does not require additional Slovak recognition. For Slovak public-sector controllers operating in [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) scope, Article 28 contracts with cloud providers are reviewed alongside the catalogue-listing evidence; CoC Level 2 adherence is the standard accompanying signal.
 :::
 
 ## Closing checklist
@@ -200,4 +200,4 @@ For Slovak organisations, GDPR is supplemented by **Act 18/2018 Z. z.** on perso
 - The **Third Country Transfer Module** addresses Chapter V transfer obligations post-Schrems II. Layer on top of base CoC adherence.
 - The CoC is a complementary instrument. It does not replace the Article 28 contract, the underlying operational controls, or sector-specific compliance (DORA, NIS2).
 - Operational programme: ISO 27018 + ISO 27701 → SOC 2 → CoC Level 2 declaration. The CoC is the publication layer; the operational substance is the ISO and SOC 2 work.
-- See the [ISO baselines article](./iso-27001-27017-27018-27701-cloud-baselines) for the underlying privacy and PII standards, and the [CSA STAR article](./csa-star-registry-cross-cutting-trust-layer) for the co-publication relationship.
+- See the [ISO baselines article](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the underlying privacy and PII standards, and the [CSA STAR article](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer) for the co-publication relationship.

@@ -34,13 +34,13 @@ DORA Article 30 specifies the contractual content every financial entity must ob
 
 ## Where Article 30 sits in DORA
 
-[DORA](./dora-for-cloud-financial-sector-overlay) imposes obligations on financial entities (ICT risk management, incident reporting, operational resilience testing, third-party risk management, information sharing). Within third-party risk management, **Article 30** is the contractual specification — what the financial entity's contract with its ICT third-party provider must contain.
+[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) imposes obligations on financial entities (ICT risk management, incident reporting, operational resilience testing, third-party risk management, information sharing). Within third-party risk management, **Article 30** is the contractual specification — what the financial entity's contract with its ICT third-party provider must contain.
 
 Article 30 sits alongside:
 - **Article 28** — general obligations on the financial entity for ICT third-party arrangements.
 - **Article 29** — preliminary assessment of ICT concentration risk.
 - **Article 30** — contractual arrangements (this article's focus).
-- **Articles 31-44** — the [CTPP regime](./dora-ctpp-regime-direct-esa-supervision).
+- **Articles 31-44** — the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision).
 
 Article 30 applies to **all** ICT third-party arrangements supporting critical or important functions, not only to CTPP-designated providers. Every financial entity's cloud contract must meet it.
 
@@ -88,7 +88,7 @@ Service locations clauses must specify:
 - Locations of subprocessor operations.
 - Locations of support personnel with access to financial-entity data.
 
-This is where [Hyperscaler EU Data Boundary commitments](./hyperscaler-eu-data-boundary-commitments) directly feed into DORA contracts. A cloud provider with documented EU Data Boundary scope can readily complete the service-locations clause. A provider without such documentation must produce it bespoke per contract — operationally expensive.
+This is where [Hyperscaler EU Data Boundary commitments](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) directly feed into DORA contracts. A cloud provider with documented EU Data Boundary scope can readily complete the service-locations clause. A provider without such documentation must produce it bespoke per contract — operationally expensive.
 
 For arrangements supporting critical or important functions, financial entities increasingly impose **EU-only data location requirements** — meaning the provider must commit to processing and storing data exclusively within the EU/EEA. This is a stricter requirement than Article 30 imposes; it is the financial entity's risk-management overlay on top.
 
@@ -115,9 +115,9 @@ The DAIC clause covers the standard CIA-triad plus authenticity. Required conten
 - Backup and recovery commitments.
 - Confidentiality obligations of provider personnel.
 
-The clause overlaps substantially with [GDPR Article 28 obligations](./gdpr-article-28-and-eu-cloud-code-of-conduct). A cloud provider with strong GDPR Article 28 contractual templates is most of the way to satisfying the DAIC clause. The additional DORA-specific content is around **authenticity** — verifying that data has not been tampered with, including controls on the provider side that prevent unauthorised modification.
+The clause overlaps substantially with [GDPR Article 28 obligations](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct). A cloud provider with strong GDPR Article 28 contractual templates is most of the way to satisfying the DAIC clause. The additional DORA-specific content is around **authenticity** — verifying that data has not been tampered with, including controls on the provider side that prevent unauthorised modification.
 
-This is also where customer-controlled encryption ([BYOK / HYOK](./cloud-encryption-key-custody-byok-hyok)) increasingly appears in financial-sector contracts. Financial entities with high-sensitivity workloads prefer arrangements where the cloud provider's plaintext access is cryptographically constrained.
+This is also where customer-controlled encryption ([BYOK / HYOK](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok)) increasingly appears in financial-sector contracts. Financial entities with high-sensitivity workloads prefer arrangements where the cloud provider's plaintext access is cryptographically constrained.
 
 ## Assistance with incidents — the cooperation clause
 
@@ -139,7 +139,7 @@ The provider must cooperate with the financial entity's competent authority, inc
 
 - Providing information requested by the competent authority through the financial entity.
 - Allowing on-site inspections of provider facilities by the competent authority where necessary.
-- Cooperating with [CTPP designation](./dora-ctpp-regime-direct-esa-supervision) processes where applicable.
+- Cooperating with [CTPP designation](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) processes where applicable.
 
 For cloud providers that are also CTPP-designated, this cooperation includes the direct supervisory relationship with the Lead Overseer in addition to indirect relationships flowing through individual customers' competent authorities.
 
@@ -226,7 +226,7 @@ Personnel-related clauses cover:
 - Restrictions on offshore support access to data of EU financial entities.
 - Confidentiality and security obligations of personnel.
 
-For [Hyperscaler EU Data Boundary](./hyperscaler-eu-data-boundary-commitments)-aligned services, the personnel-access dimension matters — the Boundary commitment is undermined if EU customer data can be accessed by support personnel outside the EU during incident handling. Mature DORA contracts include specific personnel-location and access-control commitments.
+For [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments)-aligned services, the personnel-access dimension matters — the Boundary commitment is undermined if EU customer data can be accessed by support personnel outside the EU during incident handling. Mature DORA contracts include specific personnel-location and access-control commitments.
 
 ## Insurance provisions
 
@@ -271,7 +271,7 @@ Cloud providers push back on:
 
 The contractual middle ground is now reasonably well-established across the EU financial sector. First-time DORA contract negotiations are slower and more expensive than renewals once both sides have established their positions.
 
-## DORA, [GDPR Article 28](./gdpr-article-28-and-eu-cloud-code-of-conduct), and the contract stack
+## DORA, [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), and the contract stack
 
 For a financial entity processing personal data via cloud:
 
@@ -296,7 +296,7 @@ Cloud providers serving the EU financial sector commonly publish a "DORA-ready" 
 
 - DORA Article 30 specifies the contractual content for ICT third-party arrangements supporting critical or important functions. Fifteen distinct clause categories.
 - Service description must be granular enough to support risk assessment. Use referenced service-description documents with versioning.
-- Service locations clauses connect to [Hyperscaler EU Data Boundary](./hyperscaler-eu-data-boundary-commitments) commitments. EU-only restrictions are common at financial-entity discretion.
+- Service locations clauses connect to [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) commitments. EU-only restrictions are common at financial-entity discretion.
 - Service levels must be quantitative + qualitative with measurable methodology. Move beyond credit-based remedy frameworks.
 - Cooperation with incidents is at no additional cost and supports the financial entity's 24-hour notification cadence.
 - Audit rights are the most contentious clause. Pooled audit programmes + expanded SOC 2 / C5 disclosure handles most cases; direct audits reserved for largest customers.
@@ -304,4 +304,4 @@ Cloud providers serving the EU financial sector commonly publish a "DORA-ready" 
 - The Register of Information under Article 28 requires structured data export from cloud providers. Build register-data export capability.
 - Build a structured DORA contract template; avoid bespoke-per-customer drift.
 - Three-layer contract stack: base contract + DORA annex (Article 30) + GDPR DPA (Article 28) + sector-specific annexes as needed.
-- See [DORA overview](./dora-for-cloud-financial-sector-overlay) for the broader framework, [CTPP regime article](./dora-ctpp-regime-direct-esa-supervision) for the direct supervision layer, and [Reading Attestation Reports](./reading-cloud-attestation-reports-practitioner-guide) for evaluating the audit reports that support Article 30 evidence.
+- See [DORA overview](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) for the broader framework, [CTPP regime article](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) for the direct supervision layer, and [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) for evaluating the audit reports that support Article 30 evidence.

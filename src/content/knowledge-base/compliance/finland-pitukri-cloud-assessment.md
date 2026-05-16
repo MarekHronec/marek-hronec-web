@@ -106,9 +106,9 @@ PiTuKri v1.1 contains **52 criteria across 11 sub-areas**:
 
 The reference standards on which PiTuKri is built:
 
-- **[ISO/IEC 27001 and 27017](./iso-27001-27017-27018-27701-cloud-baselines)**.
-- **[BSI C5](./germany-bsi-c5-cloud-attestation)**.
-- **[Cloud Security Alliance Cloud Controls Matrix (CCM)](./csa-star-registry-cross-cutting-trust-layer)**.
+- **[ISO/IEC 27001 and 27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines)**.
+- **[BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation)**.
+- **[Cloud Security Alliance Cloud Controls Matrix (CCM)](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer)**.
 - **Katakri 2015** — the Finnish national audit tool for public authorities. Used in parallel for assessing organisations handling classified information.
 
 The framework imposes strict requirements on:
@@ -206,4 +206,4 @@ The phrase "PiTuKri is guidance, not law" is technically true but operationally 
 - **Kyberturvallisuuslaki (Act 124/2025) — Finnish NIS2 transposition, in force since 8 April 2025.** Risk-management-based; the framework/law gap that this creates against PiTuKri v1.1 is the explicit motivation for the new criteria library.
 - Sovereignty posture differentiates by classification. International CSPs are accepted at TL IV and below; TL III and above prefer national cloud and exclude third-country authority access.
 - For multinational CSPs, run PiTuKri ISAE 3000 jointly with C5 Type 2 from the same audit firm. The overlap is large; the marginal cost is small.
-- **What to read next:** [BSI C5](./germany-bsi-c5-cloud-attestation) for the joint-audit partner most commonly paired with PiTuKri; [ISO 27001/27017](./iso-27001-27017-27018-27701-cloud-baselines) for the international baseline PiTuKri references; [Slovakia KsVC article](./slovakia-ksvc-mirri-government-cloud) for the other EU country with a similar framework/law gap pattern.
+- **What to read next:** [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) for the joint-audit partner most commonly paired with PiTuKri; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline PiTuKri references; [Slovakia KsVC article](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) for the other EU country with a similar framework/law gap pattern.

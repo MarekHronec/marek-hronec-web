@@ -57,10 +57,10 @@ The draft EUCS scheme defines three assurance levels:
 | Level | Intent | Reference national framework |
 |---|---|---|
 | **Basic** | Baseline cloud security | Light touch; ISO 27001 alignment |
-| **Substantial** | Robust cloud security | [BSI C5](./germany-bsi-c5-cloud-attestation) as the reference model |
+| **Substantial** | Robust cloud security | [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) as the reference model |
 | **High** | Strong cloud security | Stronger than BSI C5; includes additional controls and audit rigor |
 
-A fourth level — **High+** — was in the November 2023 draft. The High+ level included **sovereignty requirements**: EU-resident operator, capped non-EU ownership, immunity from extraterritorial law. These requirements modelled on the [French SecNumCloud](./france-anssi-secnumcloud-qualification) framework.
+A fourth level — **High+** — was in the November 2023 draft. The High+ level included **sovereignty requirements**: EU-resident operator, capped non-EU ownership, immunity from extraterritorial law. These requirements modelled on the [French SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) framework.
 
 In the **March 2024 draft**, the High+ sovereignty requirements were **removed or significantly weakened**. The change is the core of the political dispute that has stalled EUCS since.
 
@@ -112,7 +112,7 @@ The voting math in ECCG and the Council favours the sceptical block over the pro
 
 ## What the ANSSI/BSI March 2026 joint statement actually says
 
-The joint statement (referenced in the [France](./france-anssi-secnumcloud-qualification) and [Germany](./germany-bsi-c5-cloud-attestation) articles) is a public statement of direction rather than a substantive policy agreement. It addresses:
+The joint statement (referenced in the [France](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) and [Germany](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) articles) is a public statement of direction rather than a substantive policy agreement. It addresses:
 
 - Shared recognition that cloud sovereignty has multiple dimensions (data location, jurisdictional immunity, operational control, ownership structure).
 - Acknowledgement that different sovereignty dimensions may warrant different regulatory responses.
@@ -184,9 +184,9 @@ For cloud providers and customers building compliance programmes:
 
 EUCS does not exist in isolation. Other EU-level instruments are operative regardless of EUCS:
 
-- **[GDPR](./gdpr-article-28-and-eu-cloud-code-of-conduct)** — applicable; the EU Cloud Code of Conduct is the operative GDPR Article 28 framework.
-- **[NIS2](./nis2-supply-chain-cloud-providers)** — applicable across Member States via national transposition; supply chain provisions apply to cloud regardless of EUCS.
-- **[DORA](./dora-for-cloud-financial-sector-overlay)** — applicable directly to financial sector; CTPP regime functions without EUCS.
+- **[GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct)** — applicable; the EU Cloud Code of Conduct is the operative GDPR Article 28 framework.
+- **[NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers)** — applicable across Member States via national transposition; supply chain provisions apply to cloud regardless of EUCS.
+- **[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)** — applicable directly to financial sector; CTPP regime functions without EUCS.
 - **EU AI Act** — applies progressively to AI services on cloud, independent of EUCS.
 
 If EUCS adopts, it adds a certification layer on top of these regulations. It does not replace them.
@@ -214,7 +214,7 @@ For the sovereignty question (in Scenario B):
 - Hyperscalers' dedicated sovereign regions face EUCS High+ as the test case.
 
 :::tip[Architectural Pro Tip]
-For a cloud provider preparing for EUCS, the **substantive controls work** that will support eventual EUCS certification at the Substantial level is already underway through [BSI C5:2026](./germany-bsi-c5-cloud-attestation), which is explicitly aligned with EUCS Substantial. A cloud provider building to C5:2026 is most of the way to EUCS Substantial whenever adoption arrives. For potential High+ work (in Scenario B), follow [ANSSI SecNumCloud](./france-anssi-secnumcloud-qualification) developments closely — SecNumCloud is the substantive base for any future EUCS sovereignty tier. Building portfolio depth on C5 and SecNumCloud is the lowest-regret path against EUCS uncertainty.
+For a cloud provider preparing for EUCS, the **substantive controls work** that will support eventual EUCS certification at the Substantial level is already underway through [BSI C5:2026](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), which is explicitly aligned with EUCS Substantial. A cloud provider building to C5:2026 is most of the way to EUCS Substantial whenever adoption arrives. For potential High+ work (in Scenario B), follow [ANSSI SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) developments closely — SecNumCloud is the substantive base for any future EUCS sovereignty tier. Building portfolio depth on C5 and SecNumCloud is the lowest-regret path against EUCS uncertainty.
 :::
 
 :::warning[Reality Check]
@@ -222,7 +222,7 @@ EUCS has been "imminent" in industry analyst reports continuously since 2022. Ev
 :::
 
 :::tip[Slovak context]
-For Slovak readers, EUCS adoption matters specifically because **[KsVC methodology](./slovakia-ksvc-mirri-government-cloud) will inevitably align with EUCS levels** once it lands. MIRRI has not published explicit plans for EUCS transition, but the substantive controls work for KsVC U2 (independent evaluator) and U3 (Cybersecurity Auditor) maps to EUCS Substantial and High respectively. **Scenario A (adoption without sovereignty)** is operationally manageable for Slovakia — KsVC U4 retains the private-cloud-segment posture; EUCS Basic / Substantial / High provide harmonised tiers for U1 / U2 / U3. **Scenario B (adoption with sovereignty)** would create direct alignment between KsVC U4 and EUCS High+, simplifying multinational CSP qualification for Slovak public sector. **Scenario C (continued slippage)** is the status quo — KsVC continues unchanged with the [transitional gap to vyhláška 227/2025](./slovakia-ksvc-mirri-government-cloud) being the operative Slovak concern rather than EUCS arrival. Plan against Scenario C as the base case.
+For Slovak readers, EUCS adoption matters specifically because **[KsVC methodology](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) will inevitably align with EUCS levels** once it lands. MIRRI has not published explicit plans for EUCS transition, but the substantive controls work for KsVC U2 (independent evaluator) and U3 (Cybersecurity Auditor) maps to EUCS Substantial and High respectively. **Scenario A (adoption without sovereignty)** is operationally manageable for Slovakia — KsVC U4 retains the private-cloud-segment posture; EUCS Basic / Substantial / High provide harmonised tiers for U1 / U2 / U3. **Scenario B (adoption with sovereignty)** would create direct alignment between KsVC U4 and EUCS High+, simplifying multinational CSP qualification for Slovak public sector. **Scenario C (continued slippage)** is the status quo — KsVC continues unchanged with the [transitional gap to vyhláška 227/2025](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) being the operative Slovak concern rather than EUCS arrival. Plan against Scenario C as the base case.
 :::
 
 ## Quarterly watch items — what to track
@@ -245,7 +245,7 @@ For readers using this article as a tracking reference:
 - **ANSSI/BSI joint statement (March 2026)** is the most positive signal in two years for narrowing the central France-Germany sovereignty divergence. Watch for substantive follow-up.
 - Three plausible scenarios: A) adoption without sovereignty in 2027; B) adoption with sovereignty in 2027-2028; C) continued slippage through 2027.
 - Operative EU-wide regimes apply regardless of EUCS: GDPR, NIS2, DORA, EU AI Act, EU Cloud CoC.
-- For cloud providers preparing for EUCS: build to [BSI C5:2026](./germany-bsi-c5-cloud-attestation) (Substantial reference) and follow [ANSSI SecNumCloud](./france-anssi-secnumcloud-qualification) (High+ candidate reference).
+- For cloud providers preparing for EUCS: build to [BSI C5:2026](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) (Substantial reference) and follow [ANSSI SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (High+ candidate reference).
 - Quarterly watch items: ENISA, ECCG, ESA statements, ANSSI/BSI joint outputs, Commission CSA review, national framework updates, hyperscaler sovereign-cloud milestones.
 - This article is dated by design. Re-read against current events. The `updated` frontmatter field reflects the date the political picture was last current.
-- See the [Overview](./cloud-data-security-eu-national-frameworks-overview) for context on the broader EU cloud landscape; see [Sovereign Cloud Products](./sovereign-cloud-products-2026-landscape) for the product responses to EUCS uncertainty.
+- See the [Overview](/knowledge-base/compliance/cloud-data-security-eu-national-frameworks-overview) for context on the broader EU cloud landscape; see [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for the product responses to EUCS uncertainty.
