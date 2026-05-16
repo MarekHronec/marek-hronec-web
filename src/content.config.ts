@@ -6,7 +6,7 @@ const knowledgeBase = defineCollection({
   loader: glob({ pattern: '**/*.md', base: 'src/content/knowledge-base' }),
   schema: z.object({
     title: z.string(),
-    category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'multicloud']),
+    category: z.enum(['azure', 'oci', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'multicloud', 'compliance']),
     tags: z.array(z.string()),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
@@ -15,7 +15,7 @@ const knowledgeBase = defineCollection({
     excerpt: z.string(),
     references: z.array(z.object({
       title: z.string(),
-      url: z.string().url(),
+      url: z.string(),
       description: z.string(),
       domain: z.string(),
     })).optional(),

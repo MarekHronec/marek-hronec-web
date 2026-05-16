@@ -38,6 +38,7 @@ const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: s
   'cloud-reality': { border: '#2c694e', groupBorder: '#83AD9D', bg: '#dce8e3', groupBg: '#F9FAFA', icon: '#2c694e' },
   governance:      { border: '#3e6daa', groupBorder: '#9FB8DA', bg: '#d9e5f4', groupBg: '#F7F8FC', icon: '#3e6daa' },
   network:         { border: '#6354a8', groupBorder: '#9996C8', bg: '#e6e3f4', groupBg: '#F7F6F9', icon: '#6354a8' },
+  compliance:      { border: '#b85c20', groupBorder: '#D4956A', bg: '#f5e4d4', groupBg: '#FAFAF9', icon: '#b85c20' },
 };
 
 function branchBorder     (branch: string): string { return BRANCH_COLORS[branch]?.border      ?? '#5f5f5f'; }
@@ -65,6 +66,8 @@ const ICONS: Record<string, string> = {
   share:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
   arrowsLR: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
   cloud:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>`,
+  scale:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`,
+  layers:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
 };
 
 const ARTICLE_ICON: Record<string, string> = {
@@ -84,12 +87,48 @@ const ARTICLE_ICON: Record<string, string> = {
   'networking/ipam-ip-address-management-before-you-wish-you-had-done-it':               'database',
   'networking/hub-and-spoke-virtual-wan-and-drg-three-topology-choices':                 'share',
   'networking/hybrid-connectivity-expressroute-fastconnect-vpn-reality':                 'arrowsLR',
+  // ── EU Cloud Compliance ────────────────────────────────────────────────────
+  'compliance/cloud-data-security-eu-national-frameworks-overview':                      'globe',
+  // National Frameworks — flag for every country article
+  'compliance/slovakia-ksvc-mirri-government-cloud':                                     'flag',
+  'compliance/germany-bsi-c5-cloud-attestation':                                         'flag',
+  'compliance/france-anssi-secnumcloud-qualification':                                    'flag',
+  'compliance/spain-ens-national-security-framework':                                     'flag',
+  'compliance/netherlands-bio2-baseline':                                                 'flag',
+  'compliance/italy-acn-cloud-qualification':                                             'flag',
+  'compliance/finland-pitukri-cloud-assessment':                                          'flag',
+  'compliance/czechia-nukib-cybersecurity-act':                                           'flag',
+  'compliance/poland-ksc-cybersecurity-system':                                           'flag',
+  'compliance/united-kingdom-ncsc-cloud-security-principles':                             'flag',
+  'compliance/switzerland-finma-cloud-frameworks':                                        'flag',
+  'compliance/norway-nsm-cloud-frameworks':                                               'flag',
+  // Cross-Cutting Baselines — icon per semantic role
+  'compliance/iso-27001-27017-27018-27701-cloud-baselines':                               'shield',
+  'compliance/soc-2-reports-how-to-actually-read-them':                                   'file',
+  'compliance/csa-star-registry-cross-cutting-trust-layer':                               'activity',
+  'compliance/dora-for-cloud-financial-sector-overlay':                                   'building',
+  'compliance/dora-ctpp-regime-direct-esa-supervision':                                   'building',
+  'compliance/dora-article-30-contracts-and-exit-strategies':                             'file',
+  'compliance/gdpr-article-28-and-eu-cloud-code-of-conduct':                              'users',
+  'compliance/nis2-supply-chain-cloud-providers':                                          'network',
+  'compliance/sovereign-cloud-products-2026-landscape':                                    'server',
+  'compliance/hyperscaler-eu-data-boundary-commitments':                                   'globe',
+  'compliance/cloud-encryption-key-custody-byok-hyok':                                     'database',
+  'compliance/eucs-watch-political-tracking-2026':                                          'activity',
+  'compliance/eu-ai-act-and-cloud-provider-obligations':                                    'box',
+  // Decision Support
+  'compliance/cloud-compliance-decision-framework':                                         'arrowsLR',
+  'compliance/reading-cloud-attestation-reports-practitioner-guide':                        'book',
 };
 
 const GROUP_ICON: Record<string, string> = {
-  'cloud-reality': 'cloud',
-  governance:      'shield',
-  network:         'share',
+  'cloud-reality':          'cloud',
+  governance:               'shield',
+  network:                  'share',
+  compliance:               'scale',
+  'compliance-national':    'flag',
+  'compliance-cross':       'layers',
+  'compliance-decision':    'arrowsLR',
 };
 
 // ── Utilities ─────────────────────────────────────────────────────────────
@@ -142,7 +181,8 @@ function nodeTemplate(data: Record<string, unknown>, isEntry: boolean): string {
   const color = branchIcon(branch);
 
   if (nodeType === 'group') {
-    const gIcon = icon(GROUP_ICON[branch] ?? 'cloud', color, 24);
+    const gIconKey = GROUP_ICON[id.replace('group:', '')] ?? GROUP_ICON[branch] ?? 'cloud';
+    const gIcon = icon(gIconKey, color, 24);
     return `<div class="kbc-node kbc-node--group" data-branch="${branch}">
       <span class="kbc-node__icon" style="color:${color}">${gIcon}</span>
       <p class="kbc-node__group-label" style="color:${color}">${label}</p>
@@ -219,7 +259,7 @@ function setupPanClamp(cy: cytoscape.Core, canvasEl: HTMLElement) {
 
 // ── Filter / search state ─────────────────────────────────────────────────
 
-type BranchFilter = 'all' | 'cloud-reality' | 'governance' | 'network';
+type BranchFilter = 'all' | 'cloud-reality' | 'governance' | 'network' | 'compliance';
 let activeFilter: BranchFilter = 'all';
 let searchQuery = '';
 
@@ -256,8 +296,10 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     edgeList = JSON.parse(wrapper.dataset.edges ?? '[]') as CanvasEdge[];
   } catch { return; }
 
-  const pathTargets = new Set(edgeList.filter(e => e.type === 'path').map(e => e.to));
-  const entryIds    = new Set(nodes.filter(n => !pathTargets.has(n.id)).map(n => n.id));
+  // A node is an "entry" only if no edge of any type points to it.
+  // Using pathTargets alone wrongly marks `related`-only targets as entries.
+  const allEdgeTargets = new Set(edgeList.map(e => e.to));
+  const entryIds       = new Set(nodes.filter(n => !allEdgeTargets.has(n.id)).map(n => n.id));
 
   const cy = cytoscape({
     container: canvasEl,
@@ -594,7 +636,7 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
     // dagre does not guarantee left-to-right order of equal-rank siblings.
     // Read positions, swap branch subtrees into the desired order, then
     // re-apply via a preset layout so the HTML label plugin re-renders.
-    const BRANCHES = ['cloud-reality', 'governance', 'network'];
+    const BRANCHES = ['cloud-reality', 'governance', 'network', 'compliance'];
     const gx = BRANCHES.map(b => {
       const el = cy.nodes().filter(n => n.id() === `group:${b}`);
       return el.length ? el.position('x') : 0;

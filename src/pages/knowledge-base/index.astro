@@ -37,18 +37,51 @@ const ARTICLE_BRANCH: Record<string, string> = {
   'networking/ipam-ip-address-management-before-you-wish-you-had-done-it':       'network',
   'networking/hub-and-spoke-virtual-wan-and-drg-three-topology-choices':         'network',
   'networking/hybrid-connectivity-expressroute-fastconnect-vpn-reality':         'network',
+  // ── EU Cloud Compliance ────────────────────────────────────────────────────
+  'compliance/cloud-data-security-eu-national-frameworks-overview':              'compliance',
+  'compliance/slovakia-ksvc-mirri-government-cloud':                             'compliance',
+  'compliance/germany-bsi-c5-cloud-attestation':                                 'compliance',
+  'compliance/france-anssi-secnumcloud-qualification':                            'compliance',
+  'compliance/spain-ens-national-security-framework':                             'compliance',
+  'compliance/netherlands-bio2-baseline':                                         'compliance',
+  'compliance/italy-acn-cloud-qualification':                                     'compliance',
+  'compliance/finland-pitukri-cloud-assessment':                                  'compliance',
+  'compliance/czechia-nukib-cybersecurity-act':                                   'compliance',
+  'compliance/poland-ksc-cybersecurity-system':                                   'compliance',
+  'compliance/united-kingdom-ncsc-cloud-security-principles':                     'compliance',
+  'compliance/switzerland-finma-cloud-frameworks':                                'compliance',
+  'compliance/norway-nsm-cloud-frameworks':                                       'compliance',
+  'compliance/iso-27001-27017-27018-27701-cloud-baselines':                       'compliance',
+  'compliance/soc-2-reports-how-to-actually-read-them':                           'compliance',
+  'compliance/csa-star-registry-cross-cutting-trust-layer':                       'compliance',
+  'compliance/dora-for-cloud-financial-sector-overlay':                           'compliance',
+  'compliance/dora-ctpp-regime-direct-esa-supervision':                           'compliance',
+  'compliance/dora-article-30-contracts-and-exit-strategies':                     'compliance',
+  'compliance/gdpr-article-28-and-eu-cloud-code-of-conduct':                      'compliance',
+  'compliance/nis2-supply-chain-cloud-providers':                                  'compliance',
+  'compliance/sovereign-cloud-products-2026-landscape':                            'compliance',
+  'compliance/hyperscaler-eu-data-boundary-commitments':                           'compliance',
+  'compliance/cloud-encryption-key-custody-byok-hyok':                             'compliance',
+  'compliance/eucs-watch-political-tracking-2026':                                 'compliance',
+  'compliance/eu-ai-act-and-cloud-provider-obligations':                           'compliance',
+  'compliance/cloud-compliance-decision-framework':                                'compliance',
+  'compliance/reading-cloud-attestation-reports-practitioner-guide':               'compliance',
 };
 
 const CANVAS_ARTICLE_IDS = new Set([CANVAS_START_NODE, ...Object.keys(ARTICLE_BRANCH)]);
 
 // Synthetic group-header nodes (not from the content collection)
 const GROUP_NODES: CanvasNode[] = [
-  { id: 'group:cloud-reality', label: 'Cloud Reality & Thinking',          category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'cloud-reality' },
-  { id: 'group:governance',    label: 'Platform Organisation & Governance', category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'governance'    },
-  { id: 'group:network',       label: 'Network Architecture',               category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'network'       },
+  { id: 'group:cloud-reality',          label: 'Cloud Reality & Thinking',          category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'cloud-reality' },
+  { id: 'group:governance',             label: 'Platform Organisation & Governance', category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'governance'    },
+  { id: 'group:network',                label: 'Network Architecture',               category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'network'       },
+  { id: 'group:compliance',             label: 'EU Cloud Compliance',                category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'compliance'    },
+  { id: 'group:compliance-national',    label: 'National Frameworks',                category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'compliance'    },
+  { id: 'group:compliance-cross',       label: 'Cross-Cutting Baselines',            category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'compliance'    },
+  { id: 'group:compliance-decision',    label: 'Decision Support',                   category: '', level: 'beginner', excerpt: '', url: '', tags: [], nodeType: 'group', branch: 'compliance'    },
 ];
 
-const BRANCH_RANK: Record<string, number> = { 'cloud-reality': 0, governance: 1, network: 2 };
+const BRANCH_RANK: Record<string, number> = { 'cloud-reality': 0, governance: 1, network: 2, compliance: 3 };
 
 const canvasNodes: CanvasNode[] = [
   ...GROUP_NODES,
@@ -77,7 +110,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
              + from tags (Networking, Identity, Security, FinOps, Landing Zones)
 ──────────────────────────────────────────────────────────────── */
 const PLATFORM_CATS = new Set(['azure', 'oci', 'gcp', 'multicloud']);
-const TOPIC_CATS = new Set(['networking', 'identity', 'security', 'finops', 'devops', 'bpm']);
+const TOPIC_CATS = new Set(['networking', 'identity', 'security', 'finops', 'devops', 'bpm', 'compliance']);
 const TAG_TO_TOPIC: Record<string, string> = {
   'Networking':    'networking',
   'Identity':      'identity',
@@ -86,6 +119,7 @@ const TAG_TO_TOPIC: Record<string, string> = {
   'Landing Zones': 'landing-zones',
   'DevOps':        'devops',
   'BPM':           'bpm',
+  'Compliance':    'compliance',
 };
 
 function getArticlePlatforms(article: typeof sorted[0]): string {
