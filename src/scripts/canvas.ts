@@ -341,7 +341,7 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
           'shadow-blur': 8, 'shadow-color': '#323232',
           'shadow-opacity': 0.05, 'shadow-offset-x': 0, 'shadow-offset-y': 2,
           label: '', cursor: 'pointer',
-        } as cytoscape.Css.Node,
+        } as unknown as cytoscape.Css.Node,
       },
       {
         selector: 'node[nodeType = "group"]',
@@ -353,7 +353,7 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
           'border-opacity': 0.75, 'border-style': 'solid',
           'shadow-blur': 0, 'shadow-opacity': 0,
           label: '', cursor: 'default',
-        } as cytoscape.Css.Node,
+        } as unknown as cytoscape.Css.Node,
       },
       {
         selector: 'node[nodeType = "article"]:hover',
@@ -440,7 +440,7 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
       return el;
     });
     const t0 = performance.now();
-    let rafId: number, released = false, releaseTime = 0, atomActivated = false;
+    let released = false, releaseTime = 0, atomActivated = false;
     const holdTimer = setTimeout(() => { atomActivated = true; container.classList.add('kbc-atom--active'); }, ATOM_HOLD_MS);
     function frame(now: number) {
       const elapsed = (now - t0) / 1000;
@@ -455,10 +455,10 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
         const opacity = Math.max(0, 1 - p);
         container.style.opacity = String(opacity);
         if (atomActivated) container.style.transform = `scale(${1 + p * 0.12})`;
-        if (opacity > 0.01) rafId = requestAnimationFrame(frame); else container.remove();
-      } else { rafId = requestAnimationFrame(frame); }
+        if (opacity > 0.01) requestAnimationFrame(frame); else container.remove();
+      } else { requestAnimationFrame(frame); }
     }
-    rafId = requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
     return {
       update:  (x: number, y: number) => { container.style.left = `${x - ATOM_HALF}px`; container.style.top = `${y - ATOM_HALF}px`; },
       release: () => { clearTimeout(holdTimer); released = true; releaseTime = performance.now(); },
