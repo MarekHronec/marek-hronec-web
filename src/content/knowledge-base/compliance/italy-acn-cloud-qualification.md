@@ -3,7 +3,7 @@ title: "Italy — ACN Qualificazione: The Most Procedural Cloud Framework in the
 category: compliance
 tags: ["Italy", "ACN", "Qualificazione", "NIS2", "Compliance", "Data Security", "PSN", "Sovereignty"]
 date: 2026-04-30
-updated: 2026-04-30
+updated: 2026-05-16
 readTime: 11
 level: intermediate
 excerpt: "Italy's qualification framework is the most formally structured in the EU — statutory timelines, four levels, mandatory public catalogue, and a state-controlled Polo Strategico Nazionale for the strictest workloads."
@@ -147,6 +147,8 @@ The catalogue lock-out is the operational consequence — same model as the Slov
 
 :::tip[Architectural Pro Tip]
 For a CSP targeting the Italian public-sector market, the realistic strategic question is which qualification level to target. QC1 and QC2 cover the bulk of ordinary public-administration workloads and are achievable for international CSPs operating standard EU regions. QC3 introduces stricter sovereignty-adjacent requirements. **QC4 / LIV4 is effectively PSN territory** — the framework expects strategic workloads to land on state-controlled infrastructure, and commercial providers participate through partnerships rather than independent qualification. Plan the qualification roadmap accordingly: QC2 for breadth, QC3 selectively, QC4 only via PSN partnership.
+
+The multi-tier qualification spread is visible in practice: **Aruba S.p.A.** — Italy's largest hosting and cloud provider — holds qualifications across all three commercial tiers simultaneously. Virtual Private Cloud and Hosted Private Cloud are qualified at **QC3**; Red Hat Open Hybrid Cloud at **QC2**; and Object Storage, Cloud Pro/Server, DBaaS, Managed Kubernetes, and several other services at **QC1**. This reflects the catena di qualificazione doctrine in practice: a provider with broad service breadth must qualify each service at the tier matching its intended use, and the substrate must be qualified at least as strictly.
 :::
 
 ## Sovereignty posture
@@ -186,4 +188,4 @@ The catena di qualificazione doctrine catches CSPs off-guard more often than it 
 - 6-monthly consumer reporting (MON-01) is a unique operational requirement. Plan a process to assemble and submit the consumer list.
 - Sanctions are catalogue-based: suspension or revocation removes the service from the catalogue, ending public-administration access. NIS2 sanctions under D.Lgs. 138/2024 apply independently.
 - The framework is operationally tractable for hyperscalers at QC1–QC2, requires sovereignty-adjacent work at QC3, and is effectively PSN-only at QC4. Plan the roadmap accordingly.
-- **What to read next:** [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for PSN partnership routes and sovereign cloud landscape; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for D.Lgs. 138/2024 supply-chain obligations running parallel to QC qualification; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline ACN audit reuses.
+- **What to read next:** [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the broader EU-native landscape including Aruba and other ACN-qualified providers; [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for PSN partnership routes and sovereign cloud landscape; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for D.Lgs. 138/2024 supply-chain obligations running parallel to QC qualification; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline ACN audit reuses.

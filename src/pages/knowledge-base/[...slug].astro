@@ -497,6 +497,24 @@ const categoryLabel = category.toUpperCase();
     background-color: var(--color-surface-container-low);
   }
 
+  .prose :global(th:first-child) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: var(--color-surface-container);
+  }
+
+  .prose :global(td:first-child) {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: var(--color-surface-container-lowest);
+  }
+
+  .prose :global(tbody tr:hover td:first-child) {
+    background-color: var(--color-surface-container-low);
+  }
+
   /* Code blocks — inverse-surface dark bg for high contrast */
   .prose :global(pre) {
     background-color: var(--color-inverse-surface);

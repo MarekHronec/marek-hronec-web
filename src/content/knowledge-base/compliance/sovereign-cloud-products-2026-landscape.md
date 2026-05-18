@@ -3,7 +3,7 @@ title: "Sovereign Cloud Products in 2026 — The European Landscape"
 category: compliance
 tags: ["Sovereign Cloud", "Product Landscape", "Sovereignty", "Compliance", "Data Security", "Vendor"]
 date: 2026-05-09
-updated: 2026-05-09
+updated: 2026-05-16
 readTime: 13
 level: intermediate
 excerpt: "Hyperscaler joint ventures, EU-native operators, partner sovereign clouds, and dedicated sovereign regions. The European sovereign cloud market in 2026 has more options than three years ago, but the variety hides real differences in what each product actually delivers. This article maps the landscape."
@@ -57,6 +57,8 @@ JVs are the operative answer to French SecNumCloud's ownership rules and to simi
 
 **S3NS** is the Google route. Thales is the JV partner; Google Cloud licenses the technology. S3NS PREMI3NS was qualified under SecNumCloud in December 2025 — the first combined IaaS/PaaS/CaaS qualification.
 
+**Clarence** is a Belgium/Luxembourg sovereign cloud arrangement. Proximus NXT and LuxConnect distribute Google Distributed Cloud Hosted (GDC Hosted) — an air-gapped, on-premises version of Google Cloud. Clarence targets Belgian, Luxembourg, and EU institutional workloads requiring air-gapped operation. It does not pursue SecNumCloud qualification; it targets Belgian and EU institutional procurement requirements directly. In April 2026, Clarence (as part of the Proximus + S3NS + Clarence + Mistral consortium) was selected for the **EU Commission €180M sovereign cloud procurement framework**.
+
 **Delos Cloud** is the German-government-specific route. SAP licenses the Microsoft Sovereign Cloud technology; Arvato operates the service for the German federal sector. Targets BSI C5 + German federal procurement requirements.
 
 Operational trade-offs of the JV model:
@@ -72,13 +74,15 @@ For workloads with hard sovereignty requirements and tolerance for feature lag, 
 
 EU-native operators are the longest-established sovereign cloud category. They face neither the feature-lag problem of JVs (they have their own roadmaps) nor the legal-structure constraint that prevents direct hyperscaler qualification. The trade-off is **scale**: most EU-native operators do not match hyperscaler scale on service breadth, global presence, or platform maturity.
 
-**OVHcloud** is the largest EU-native operator. French-headquartered, listed on Euronext Paris, operates across 4 continents with European data residency commitments. OVHcloud holds SecNumCloud qualification for select services. Strong offering for IaaS and VMware-based hosted private cloud; PaaS and managed services portfolio is more limited than hyperscalers.
+**OVHcloud** is the largest EU-native operator. French-headquartered, listed on Euronext Paris, operates across 4 continents with European data residency commitments. OVHcloud holds SecNumCloud qualification for its **Hosted Private Cloud (VMware)** at Roubaix, Gravelines, and Strasbourg — not the full Public Cloud portfolio. Strong offering for IaaS and VMware-based hosted private cloud; PaaS and managed services portfolio is more limited than hyperscalers.
 
-**3DS Outscale** is a Dassault Systèmes subsidiary. SecNumCloud qualified. Targets industrial and defence customers — a smaller scale than OVHcloud but with deep alignment to industrial verticals.
+**3DS Outscale** is a Dassault Systèmes subsidiary. SecNumCloud qualified (first operator to qualify under version 3.2, December 2023). Targets industrial and defence customers — a smaller scale than OVHcloud but with deep alignment to industrial verticals.
 
-**Open Telekom Cloud (T-Systems)** is Deutsche Telekom's enterprise cloud. Built on Huawei FusionCloud / OpenStack. Strong in DACH market, BSI C5 attested. Less internationally adopted than OVHcloud but well-established for German and Austrian enterprises.
+**T Cloud Public (T-Systems, formerly Open Telekom Cloud)** is Deutsche Telekom's enterprise cloud. Built on OpenStack. Strong in DACH market, BSI C5 attested annually since 2018. Less internationally adopted than OVHcloud but well-established for German and Austrian enterprises.
 
-**Cegedim.cloud**, **ITS Integra**, **Numspot**, and others are mid-scale EU-native operators serving specific verticals or geographies under various national-framework qualifications.
+**Numspot** is a French sovereign cloud JV with a different structure than Bleu or S3NS: all four shareholders are French and EU-controlled (Docaposte, Dassault Systèmes, Bouygues Telecom, Banque des Territoires) and the underlying infrastructure is **3DS Outscale** — an already SecNumCloud-qualified, fully EU-native platform. Unlike Bleu (Microsoft technology) and S3NS (Google technology), Numspot has no US hyperscaler in its stack. SecNumCloud qualification filed September 2024; commercial managed services platform launched Q1 2025.
+
+**Cegedim.cloud** and **ITS Integra** are mid-scale EU-native operators serving specific verticals under national-framework qualifications. See the [EU-native cloud providers article](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the broader EU-native landscape.
 
 For workloads in the EU's "sovereign by default" tier where global hyperscaler scale is not required, EU-native operators are competitive and often well-aligned with national framework expectations.
 
@@ -121,7 +125,7 @@ The EU Data Boundary commitments do not address ownership-based sovereignty (the
 | **S3NS (Google + Thales)** | Plausible | Likely | **Qualified (Dec 2025)** | Possible | Possible | Likely | Possible |
 | **OVHcloud** | Likely U2/U3 | Attested | Qualified for select services | Yes | Yes | Yes | Possible |
 | **3DS Outscale** | Possible | Possible | Qualified | Possible | Possible | Possible | Possible |
-| **Open Telekom Cloud** | Possible | Yes | No | Possible | Possible | Yes | Possible |
+| **T Cloud Public** (formerly Open Telekom Cloud) | Possible | Yes | No | Possible | Possible | Yes | Possible |
 | **Delos Cloud** | Tbd | Yes (planned) | No | Tbd | Tbd | Tbd | Tbd |
 
 The table reflects the operative state at mid-2026. "Tbd" entries indicate active development or known plans. "Possible" entries indicate that no public qualification exists but the structural fit is feasible.
@@ -153,24 +157,25 @@ Watch items for the medium-term:
 - **ANSSI/BSI joint statement** (March 2026) — early signal of FR–DE convergence on sovereignty criteria. Could accelerate harmonisation or remain a statement of direction.
 - **AWS European Sovereign Cloud operational launch** — the test case for whether a hyperscaler's dedicated sovereign region can satisfy strict national frameworks without a JV structure.
 - **Hyperscaler EU Data Boundary maturation** — increasing technical specificity of what is and is not in the boundary, with audit-level verification.
+- **EU Commission €180M sovereign cloud framework** (April 2026) — selected four consortia: Post Telecom + Clever Cloud + OVHcloud, STACKIT, Scaleway, and Proximus + S3NS + Clarence + Mistral. Industrial-policy validation of EU-native pure-play providers over hyperscaler EU regions for institutional EU procurement. See the [EU-native cloud providers article](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for context on the winning providers.
 
 :::warning[Reality Check]
 The phrase "sovereign cloud" is doing a lot of work in marketing materials. It means very different things across the four product categories: structural ownership separation in JVs, operational independence in dedicated regions, data residency in EU Data Boundary commitments, full EU operation in EU-native operators. Procurement teams that accept "sovereign cloud" without specifying which sovereignty dimension they need are buying based on a label, not a property. Define what sovereignty means for your workload before evaluating products against it.
 :::
 
 :::tip[Slovak context]
-For Slovak public-sector procurement against [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) tiers, the practical sovereign cloud question maps to specific product candidates: **U1 / U2** workloads are well-served by hyperscaler EU mainline regions ([Microsoft Azure, AWS, Google Cloud Vienna or Frankfurt](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments)) with no sovereign-specific product needed. **U3** workloads benefit from hyperscaler EU regions combined with [customer-controlled key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) — the `EU mainline + BYOK/HYOK` pattern. **U4** is the private government cloud segment — operationally that means state-controlled or state-contracted infrastructure, typically the Slovak national cloud rather than commercial sovereign cloud products. For Slovak commercial entities serving regulated customers (banks under NBS, insurers), Microsoft Cloud for Sovereignty operating on Microsoft Azure Vienna/Frankfurt regions and S3NS PREMI3NS via partnership are the realistic candidates; Bleu is French-focused. OVHcloud and Open Telekom Cloud (T-Systems) are EU-native operators with established Slovak market presence.
+For Slovak public-sector procurement against [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) tiers, the practical sovereign cloud question maps to specific product candidates: **U1 / U2** workloads are well-served by hyperscaler EU mainline regions ([Microsoft Azure, AWS, Google Cloud Vienna or Frankfurt](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments)) with no sovereign-specific product needed. **U3** workloads benefit from hyperscaler EU regions combined with [customer-controlled key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) — the `EU mainline + BYOK/HYOK` pattern. **U4** is the private government cloud segment — operationally that means state-controlled or state-contracted infrastructure, typically the Slovak national cloud rather than commercial sovereign cloud products. For Slovak commercial entities serving regulated customers (banks under NBS, insurers), Microsoft Cloud for Sovereignty operating on Microsoft Azure Vienna/Frankfurt regions and S3NS PREMI3NS via partnership are the realistic candidates; Bleu is French-focused. OVHcloud and T Cloud Public (T-Systems, formerly Open Telekom Cloud) are EU-native operators with established Slovak market presence.
 :::
 
 ## Closing checklist
 
 - Four operational patterns: Joint Ventures, EU-Native operators, Partner Sovereign Clouds, Dedicated Sovereign Regions. Each delivers a different sovereignty posture.
-- JVs (Bleu, S3NS, Delos Cloud) are the operative answer to strict national frameworks like SecNumCloud. Feature lag and cost premium are the trade-offs.
-- EU-Native operators (OVHcloud, 3DS Outscale, Open Telekom Cloud) offer full structural independence at smaller scale than hyperscalers.
+- JVs (Bleu, S3NS, Delos Cloud) are the operative answer to strict national frameworks like SecNumCloud. Feature lag and cost premium are the trade-offs. **Clarence** (Proximus + LuxConnect + Google GDC Hosted) targets Belgian/Luxembourg/EU institutional workloads via air-gapped on-premises deployment rather than SecNumCloud.
+- EU-Native operators (OVHcloud, 3DS Outscale, T Cloud Public) offer full structural independence at smaller scale than hyperscalers. **Numspot** is an EU-native JV (no US hyperscaler) built on 3DS Outscale's SecNumCloud-qualified infrastructure.
 - Dedicated Sovereign Regions (AWS European Sovereign Cloud, Microsoft Cloud for Sovereignty) are the emerging hyperscaler-led approach. SecNumCloud-qualification remains a test case.
 - Hyperscaler EU Data Boundary commitments address operational data residency on mainline regions — not ownership-based sovereignty. See the [dedicated article](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments).
 - Cost premium is real: 30-100% for JVs vs mainline; varies for other patterns.
 - Sovereignty has multiple dimensions (ownership, jurisdiction, residency, foreign-law immunity). Define which apply before evaluating products.
 - Watch items: EUCS High+ if adopted, ANSSI/BSI joint statement maturation, AWS European Sovereign Cloud launch, EU Data Boundary technical specificity.
 - See the per-country articles for which products hold which national framework qualifications. The qualifications change; always verify against trust centres and national registers.
-- **What to read next:** [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) for mainline-region data-location commitments that complement sovereign cloud products; [BYOK/HYOK](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the customer-controlled cryptographic patterns that work with both sovereign and mainline regions; [France SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) and [Italy ACN](/knowledge-base/compliance/italy-acn-cloud-qualification) for the national qualification frameworks driving JV and PSN product structures; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context shaping the sovereign cloud market.
+- **What to read next:** [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the pure-play EU-native landscape (OVHcloud, Scaleway, Hetzner, IONOS, STACKIT, and more) that sits alongside but distinct from the sovereign JVs in this article; [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) for mainline-region data-location commitments that complement sovereign cloud products; [BYOK/HYOK](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the customer-controlled cryptographic patterns that work with both sovereign and mainline regions; [France SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) and [Italy ACN](/knowledge-base/compliance/italy-acn-cloud-qualification) for the national qualification frameworks driving JV and PSN product structures; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context shaping the sovereign cloud market.

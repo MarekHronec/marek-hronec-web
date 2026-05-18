@@ -110,6 +110,10 @@ The voting math in ECCG and the Council favours the sceptical block over the pro
 
 **Mid-2026 (current)**: EUCS remains in draft. No formal adoption is imminent. The CSA review and ANSSI/BSI statement are watch items.
 
+:::warning[Reality Check]
+EUCS has been "imminent" in industry analyst reports continuously since 2022. Every year produces a fresh round of "this is the year EUCS adopts" coverage. The empirical pattern is that EUCS slips. Build compliance and procurement strategy against the regimes that are in force, treat EUCS as upside rather than base case, and plan to absorb EUCS when it eventually arrives rather than waiting for it. Cloud strategies that have depended on EUCS arrival have aged poorly for five consecutive years.
+:::
+
 ## What the ANSSI/BSI March 2026 joint statement actually says
 
 The joint statement (referenced in the [France](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) and [Germany](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) articles) is a public statement of direction rather than a substantive policy agreement. It addresses:
@@ -215,10 +219,6 @@ For the sovereignty question (in Scenario B):
 
 :::tip[Architectural Pro Tip]
 For a cloud provider preparing for EUCS, the **substantive controls work** that will support eventual EUCS certification at the Substantial level is already underway through [BSI C5:2026](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), which is explicitly aligned with EUCS Substantial. A cloud provider building to C5:2026 is most of the way to EUCS Substantial whenever adoption arrives. For potential High+ work (in Scenario B), follow [ANSSI SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) developments closely — SecNumCloud is the substantive base for any future EUCS sovereignty tier. Building portfolio depth on C5 and SecNumCloud is the lowest-regret path against EUCS uncertainty.
-:::
-
-:::warning[Reality Check]
-EUCS has been "imminent" in industry analyst reports continuously since 2022. Every year produces a fresh round of "this is the year EUCS adopts" coverage. The empirical pattern is that EUCS slips. Build compliance and procurement strategy against the regimes that are in force, treat EUCS as upside rather than base case, and plan to absorb EUCS when it eventually arrives rather than waiting for it. Cloud strategies that have depended on EUCS arrival have aged poorly for five consecutive years.
 :::
 
 :::tip[Slovak context]

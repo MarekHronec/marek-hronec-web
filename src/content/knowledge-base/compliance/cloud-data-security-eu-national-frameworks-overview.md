@@ -3,7 +3,7 @@ title: "Data Security in the Cloud — How EU Member States Actually Decide What
 category: compliance
 tags: ["EU", "Compliance", "Data Security", "Sovereignty", "EUCS", "NIS2"]
 date: 2026-04-02
-updated: 2026-05-10
+updated: 2026-05-16
 readTime: 14
 level: beginner
 excerpt: "Every EU member state grades cloud security differently, and the 'European' scheme that was supposed to harmonise them has been stuck for two years. Here is the actual map — who leads, who drifts, and what a multicloud operator has to navigate."
@@ -159,6 +159,8 @@ The Dutch, Swedish, Irish, Finnish, and Polish positions (broadly) oppose strict
 
 The Italian and Spanish positions are mixed. Italy concentrates strictly-sovereign workloads in Polo Strategico Nazionale (state-controlled infrastructure) while allowing hyperscalers to qualify at lower tiers. Spain has explicit cloud profiles in ENS that work for hyperscalers but adds Alta-tier sovereignty considerations.
 
+An industrial-policy signal worth tracking: in April 2026 the EU Commission awarded a **€180 million sovereign cloud framework** to four consortia — Post Telecom + Clever Cloud + OVHcloud, STACKIT (Schwarz Group), Scaleway, and Proximus + S3NS + Clarence + Mistral. The award demonstrates concrete institutional purchasing power flowing to EU-native and sovereign JV operators alongside hyperscaler infrastructure. See [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) and [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for the full landscape.
+
 This split is what blocked EUCS at the High+ level. It is not technical; it is industrial policy.
 
 :::warning[Reality Check]
@@ -196,6 +198,8 @@ Five reading paths depending on your role and immediate question:
 
 **If you are a pan-European compliance lead** — read this overview, then the [ISO baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), then all nine EU country articles (overview-scanned), then [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay), [GDPR + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape), [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments), [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework), and adjacent jurisdictions ([UK](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles), [Switzerland](/knowledge-base/compliance/switzerland-finma-cloud-frameworks), [Norway](/knowledge-base/compliance/norway-nsm-cloud-frameworks)) as needed.
 
+**If you are evaluating EU-native cloud provider alternatives** — start with [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the full landscape, then the relevant country articles for the markets you are entering, then [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) and [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) as the baseline attestation pair most EU-native providers pursue.
+
 ## Closing checklist
 
 - The CIA triad is the universal base. Treat it as common ground, not as the distinguishing feature — the differences are in the control sets, the audit methodology, and the sovereignty posture.
@@ -206,4 +210,4 @@ Five reading paths depending on your role and immediate question:
 - NIS2 and DORA apply on top of everything else. Cloud providers are essential entities; financial sector cloud customers operate under DORA's CTPP regime regardless of national scheme participation.
 - Multicloud CSPs run portfolios of certifications, not single ones. Design controls to the strictest applicable framework and map down. Avoid building separately to each.
 - For Slovak readers: KsVC is mid-pack on rigor and comparable to ENS and ACN in scope, mandatory for public administration, and tied to the national audit framework under `zákon 69/2018`. As of mid-2026 a transitional framework/law alignment gap is open — see the per-country article for detail.
-- **What to read next:** the reading paths section above maps the right entry-point for your role (Slovak architect, financial services, CSP, procurement, pan-European compliance). For depth, the [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework) is the practitioner companion; for the per-country specifics, the 12 country articles cover each national regime; for cross-cutting concepts, the [ISO baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [GDPR + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) articles cover the universal regimes.
+- **What to read next:** the reading paths section above maps the right entry-point for your role (Slovak architect, financial services, CSP, procurement, pan-European compliance, EU-native evaluation). For depth, the [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework) is the practitioner companion; for the per-country specifics, the 12 country articles cover each national regime; for cross-cutting concepts, the [ISO baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [GDPR + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) articles cover the universal regimes; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) covers the pure-play EU operator landscape distinct from hyperscalers and sovereign JVs.

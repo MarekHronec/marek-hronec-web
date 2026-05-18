@@ -675,3 +675,24 @@ All 25 articles were migrated as part of the same one-shot script that handled t
 
 **Consequences.**  
 Article Markdown files contain only prose and directives — no structural HTML. Reference data is queryable as structured data if needed in future (e.g. generating a site-wide reading list). Changing the reference card layout requires editing one template file, not every article. The Zod schema provides build-time validation: a malformed URL in any article's `references` array aborts the build with a clear error.
+
+
+## ADR-028: remark-directive Text Directives and ISO Cert Notation
+
+**Status:** Accepted  
+**Date:** 2026-05-18
+
+**Context.**  
+Knowledge Base compliance articles use ISO certification version notation throughout prose (`ISO 27001:2022`, `ISO/IEC 27001:2023`, etc.). The site uses `remark-directive` v4 to parse `:::tip[...]` / `:::warning[...]` callout blocks. It was discovered that `micromark-extension-directive` v4 (the tokeniser underlying `remark-directive`) parses any inline `:name` token as a text directive — including names starting with a digit. The `factoryName` function accepts any character that is not EOF, line ending, punctuation, or whitespace as a valid name starter; digits pass. `remark-directive` therefore consumed `:2022` in `ISO 27001:2022` as a `textDirective` node with name `2022`.
+
+The `remarkCallouts` plugin only handled `containerDirective` nodes (`:::tip` / `:::warning`). Unhandled `textDirective` nodes were left in the MDAST and serialised by rehype into empty `<div>` elements. A block-level `<div>` inside a `<p>` causes browsers to auto-close the paragraph before the div, splitting prose like `ISO 27001:2022, BSI C5 Type 2.` across three separate HTML elements with visible blank gaps.
+
+A second compounding problem: Astro 6 Content Layer stores pre-processed HTML in a persistent cache at `node_modules/.astro/data-store.json`. Deleting `dist/` and `.astro/` does not clear this cache. Plugin changes have no effect on build output until `node_modules/.astro/` is also deleted.
+
+**Decision.**  
+Added a `visit(tree, 'textDirective', ...)` handler to `remarkCallouts` (before the existing `containerDirective` handler) that converts any unrecognised `textDirective` node to a plain `text` node with its literal colon-name value. `:2022` becomes the text string `:2022`, preserving the original prose. This covers all articles site-wide without requiring content file changes.
+
+**Consequences.**  
+ISO certification notation renders correctly in all prose paragraphs. Any future content using `:YEAR` or other `:word` patterns is handled automatically. The `:::` container directive namespace for callout blocks is unaffected.
+
+**Cache note.** When modifying remark/rehype plugins and build output does not reflect the change: delete `node_modules/.astro/` (the Astro 6 Content Layer data store) in addition to `dist/` and `.astro/`.

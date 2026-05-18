@@ -3,7 +3,7 @@ title: "Finland — PiTuKri: Guidance That Doubles as the Gate for Classified In
 category: compliance
 tags: ["Finland", "PiTuKri", "Traficom", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-08
-updated: 2026-05-08
+updated: 2026-05-16
 readTime: 11
 level: intermediate
 excerpt: "PiTuKri is officially guidance, not statutory. In practice, it is the gate for handling Finnish classified information in the cloud. The Finnish NIS2 transposition (Act 124/2025) has been in force since April 2025; the replacement criteria library is in public consultation and scheduled for finalisation in autumn 2026 — until then, a real gap between the new risk-based law and the 2020 cloud framework exists."
@@ -169,6 +169,8 @@ PiTuKri is one of the more accommodating frameworks for multinational CSPs at TL
 
 For TL III and above, the picture changes. The national cloud preference and third-country authority exclusion narrow the field; sovereign-oriented offerings or partnerships with Finnish-controlled entities become necessary.
 
+Two Finnish EU-native providers operate in this market without holding PiTuKri attestation themselves: **UpCloud** (Helsinki-headquartered, ISO 27001-certified, 14-15 European data centre locations including Denmark and Norway added in 2025-2026) and **Tietoevry** (Espoo-headquartered, Nasdaq Helsinki + Stockholm listed, first Nordic VMware Sovereign Cloud partner). Both serve Finnish enterprise and public-sector customers at TL IV and below via the general ISO + C5 evidence package; neither has pursued a formal PiTuKri ISAE 3000 attestation as of mid-2026. For a broader view of EU-native providers operating in Nordic markets, see the [EU-native cloud providers article](/knowledge-base/compliance/eu-native-cloud-providers-landscape).
+
 :::tip[Architectural Pro Tip]
 For a CSP targeting Finnish public-sector cloud at TL IV and below, the most efficient evidence base is a **combined C5 + PiTuKri ISAE 3000 Type 2 attestation** issued by the same audit firm in a single engagement. The control overlap is approximately 70–80%; the system descriptions are reusable; the marginal cost of producing both attestations from one audit is modest. CSPs that run PiTuKri independently of their C5 audit duplicate work without commensurate gain.
 :::
@@ -206,4 +208,4 @@ The phrase "PiTuKri is guidance, not law" is technically true but operationally 
 - **Kyberturvallisuuslaki (Act 124/2025) — Finnish NIS2 transposition, in force since 8 April 2025.** Risk-management-based; the framework/law gap that this creates against PiTuKri v1.1 is the explicit motivation for the new criteria library.
 - Sovereignty posture differentiates by classification. International CSPs are accepted at TL IV and below; TL III and above prefer national cloud and exclude third-country authority access.
 - For multinational CSPs, run PiTuKri ISAE 3000 jointly with C5 Type 2 from the same audit firm. The overlap is large; the marginal cost is small.
-- **What to read next:** [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) for the joint-audit partner most commonly paired with PiTuKri; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline PiTuKri references; [Slovakia KsVC article](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) for the other EU country with a similar framework/law gap pattern.
+- **What to read next:** [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) for the joint-audit partner most commonly paired with PiTuKri; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the broader landscape including UpCloud and Tietoevry as Finnish market providers; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline PiTuKri references; [Slovakia KsVC article](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) for the other EU country with a similar framework/law gap pattern.

@@ -112,6 +112,7 @@ const ARTICLE_ICON: Record<string, string> = {
   'compliance/gdpr-article-28-and-eu-cloud-code-of-conduct':                              'users',
   'compliance/nis2-supply-chain-cloud-providers':                                          'network',
   'compliance/sovereign-cloud-products-2026-landscape':                                    'server',
+  'compliance/eu-native-cloud-providers-landscape':                                         'cloud',
   'compliance/hyperscaler-eu-data-boundary-commitments':                                   'globe',
   'compliance/cloud-encryption-key-custody-byok-hyok':                                     'database',
   'compliance/eucs-watch-political-tracking-2026':                                          'activity',

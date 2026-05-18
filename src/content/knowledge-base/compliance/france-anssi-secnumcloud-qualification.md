@@ -3,7 +3,7 @@ title: "France — ANSSI SecNumCloud: The Strictest Sovereignty Framework in the
 category: compliance
 tags: ["France", "ANSSI", "SecNumCloud", "NIS2", "Compliance", "Data Security", "Sovereignty"]
 date: 2026-04-22
-updated: 2026-05-15
+updated: 2026-05-16
 readTime: 12
 level: intermediate
 excerpt: "Single qualification level, 350+ requirements, hard caps on non-EU ownership, immunity from extraterritorial law. SecNumCloud is the framework that defined the modern EU sovereignty debate."
@@ -131,7 +131,7 @@ The list of qualified providers is maintained on the **ANSSI website** — verif
 - **Bleu** (Microsoft + Orange + Capgemini) — milestone J0 validated 17 April 2025; full qualification expected during 2025–2026.
 - **ITS Integra** — milestone J1 validated December 2025.
 
-Known holders of qualification 3.2 include **3DS Outscale** (Dassault Systèmes), **OVHcloud**, **Cegedim.cloud**, and **S3NS**.
+Known holders of qualification 3.2 include **3DS Outscale** (Dassault Systèmes), **OVHcloud** (specifically the Hosted Private Cloud powered by VMware at Roubaix, Gravelines, and Strasbourg — not the full Public Cloud portfolio), **Cegedim.cloud** (CegNumCloud Secured IaaS, visa date 4 December 2024), and **S3NS** (PREMI3NS, ~30 services in scope, first US-hyperscaler-tech JV to qualify).
 
 In March 2026 ANSSI and BSI published a **joint statement on harmonised cloud-sovereignty criteria** — a notable bilateral step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS.
 
@@ -200,4 +200,4 @@ The argument that "SecNumCloud is protectionism dressed as cybersecurity" has be
 - The qualified providers list is short and changes as qualifications are granted and renewed — check the ANSSI website for the current count. Known holders include 3DS Outscale, OVHcloud, Cegedim.cloud, and S3NS.
 - For multinational CSPs, the joint-venture model is the practical route: Bleu (Microsoft + Orange + Capgemini), S3NS (Google + Thales). Direct qualification of a US-controlled subsidiary is not a path that works structurally.
 - In the EUCS debate, SecNumCloud is the model for the High+ tier that has been the blocking point since 2024. The French position on sovereignty has not softened and is unlikely to.
-- **What to read next:** [Sovereign Cloud Products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for Bleu, S3NS, and other JV product details; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context of the SecNumCloud-EUCS High+ relationship; [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the cryptographic patterns that complement SecNumCloud qualification.
+- **What to read next:** [Sovereign Cloud Products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for Bleu, S3NS, Clarence, and other JV product details; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the broader EU-native landscape including SecNumCloud-qualified and in-process providers; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context of the SecNumCloud-EUCS High+ relationship; [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the cryptographic patterns that complement SecNumCloud qualification.

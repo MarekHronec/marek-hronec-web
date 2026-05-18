@@ -585,6 +585,10 @@ npm run build
 
 A build error is raised if the slug in `ARTICLE_BRANCH` or `knowledge-graph.ts` does not match a real article file.
 
+**⚠ Silent failure: edges without canvas membership.** If you add an article's slug to `knowledge-graph.ts` edges before (or without) adding it to `ARTICLE_BRANCH`, the build succeeds — `validateEdges()` only checks that slugs match real content files, not that they are registered canvas members. At runtime, Cytoscape receives edges that reference a non-existent node object; the dagre layout algorithm throws and the **entire canvas renders blank** with no browser error message.
+
+Safe order: always add `ARTICLE_BRANCH` (Step 2) before adding edges (Step 4). If the canvas goes blank after adding a new article, the first thing to check is whether the slug is missing from `ARTICLE_BRANCH`.
+
 ---
 
 ### Tweakable settings

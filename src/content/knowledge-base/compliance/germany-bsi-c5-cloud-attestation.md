@@ -3,7 +3,7 @@ title: "Germany — BSI C5: The Attestation That Quietly Became Europe's Referen
 category: compliance
 tags: ["Germany", "BSI C5", "BSI", "NIS2", "Compliance", "Data Security", "Attestation"]
 date: 2026-04-14
-updated: 2026-04-14
+updated: 2026-05-16
 readTime: 12
 level: intermediate
 excerpt: "C5 is not a certification, it is an attestation — and that distinction matters. The framework most adopted by hyperscalers, the de facto reference for EUCS Substantial, and the one that pairs cleanly with SOC 2. C5:2026 was published in March 2026, with C5:2020 remaining operative until audit periods beginning on or after 1 June 2027."
@@ -77,7 +77,7 @@ The obligation pattern is asymmetric:
 - **Commercial sector** — C5 adoption has spread beyond regulated industries because customers ask for it. Most large German enterprises now expect C5 from any cloud provider they consume.
 - **Cloud providers** are voluntary applicants. The voluntary nature is nominal; the procurement pressure makes it effectively required for the German enterprise market.
 
-BSI's own summary as of recent reporting describes "more than a dozen attestations for national, European and global cloud providers." The list includes AWS, Microsoft Azure, Google Cloud, SAP, F5, Cisco, and a long tail of mid-size providers.
+BSI's own summary as of recent reporting describes "more than a dozen attestations for national, European and global cloud providers." The list includes AWS, Microsoft Azure, Google Cloud, SAP, F5, Cisco, and a long tail of mid-size providers. Among EU-native providers, notable C5 holders include: **STACKIT** (Schwarz Group cloud platform, BSI C5 + ISAE 3000 + ISAE 3402, attestation obtained 2024), **IONOS** (United Internet / 1&1, C5 Type 1 covering Compute Engine, Cloud Cubes, and S3 Object Storage), **Hetzner** (C5 Type 2), and **T Cloud Public** (T-Systems / Deutsche Telekom — the platform formerly known as Open Telekom Cloud was rebranded as T Cloud Public in 2025–2026).
 
 ## Classification model
 
@@ -207,4 +207,4 @@ C5 attestation is sometimes treated as the "gold standard" that, once held, sett
 - Run C5 jointly with SOC 2 Type 2. The overlap is large; the marginal cost is low; the operational discipline is shared.
 - For multinational CSPs, C5 is the natural baseline. Layered on top of ISO 27001/27017/27018 and SOC 2, it gives you Germany. For France, Italy PSN tier, or Slovak U4, additional sovereignty-specific work is required.
 - Plan the C5:2020 → C5:2026 transition: align audit scope with the new reference standards (ISO/IEC 27001:2022, CSA CCM v4) ahead of the 1 June 2027 cut-over so the first C5:2026 audit is not a fresh remediation cycle.
-- **What to read next:** [SOC 2 Reports](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for the joint-audit partner most commonly paired with C5; [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) for the practitioner skill of evaluating C5 reports; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context of C5's positioning as the EUCS Substantial reference.
+- **What to read next:** [SOC 2 Reports](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for the joint-audit partner most commonly paired with C5; [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) for the practitioner skill of evaluating C5 reports; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context of C5's positioning as the EUCS Substantial reference; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the landscape of STACKIT, IONOS, Hetzner, T Cloud Public, and other EU-native providers with C5 attestation.

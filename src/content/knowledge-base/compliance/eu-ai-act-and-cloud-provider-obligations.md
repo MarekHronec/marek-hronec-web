@@ -203,6 +203,10 @@ The AI Act establishes administrative fines:
 
 The 7% headline figure for prohibited practices is the highest in EU regulatory regimes — higher than GDPR's 4% and NIS2's 2%. The substantive risk for compliant providers is moderate; the substantive risk for providers operating prohibited AI is significant.
 
+:::warning[Reality Check]
+The AI Act is often discussed as a future regulation, but obligations have been in force since February 2025 and are expanding. Cloud providers that wait until full application (August 2026 / 2027) before building compliance programmes will not have adequate documentation, conformity assessment, or operational capability when the regulations take effect. The "we'll do it when the deadline arrives" approach has worked poorly in past EU regulatory cycles (GDPR, NIS2, DORA); it will work equally poorly for AI Act. Cloud providers and customers should treat full operational readiness as a 2026 priority, not a 2027 one.
+:::
+
 ## What cloud providers must operationally build
 
 For cloud providers preparing for full AI Act application:
@@ -257,10 +261,6 @@ For Slovak public-sector entities deploying AI, the AI Act high-risk system obli
 
 :::tip[Slovak context]
 For Slovak public-sector AI use, the practical compliance stack is **AI Act + [GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) + [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) + Act 95/2019 eGovernment provisions** — applied in parallel, not in alternative. A high-risk AI system deployed by a Slovak ministry must satisfy: AI Act conformity assessment, GDPR Article 22 automated-decision protections where applicable, KsVC catalogue listing for the underlying cloud service at the appropriate U-tier, and Act 95/2019 administrative procedure rules. Build the AI service inventory once; map to all four regimes. The cost of treating these as separate compliance projects is operationally significant.
-:::
-
-:::warning[Reality Check]
-The AI Act is often discussed as a future regulation, but obligations have been in force since February 2025 and are expanding. Cloud providers that wait until full application (August 2026 / 2027) before building compliance programmes will not have adequate documentation, conformity assessment, or operational capability when the regulations take effect. The "we'll do it when the deadline arrives" approach has worked poorly in past EU regulatory cycles (GDPR, NIS2, DORA); it will work equally poorly for AI Act. Cloud providers and customers should treat full operational readiness as a 2026 priority, not a 2027 one.
 :::
 
 ## Closing checklist

@@ -3,7 +3,7 @@ title: "Hyperscaler EU Data Boundary Commitments — What They Actually Mean"
 category: compliance
 tags: ["EU Data Boundary", "Hyperscaler", "Data Residency", "Sovereignty", "Compliance", "Data Security", "Vendor"]
 date: 2026-05-10
-updated: 2026-05-10
+updated: 2026-05-16
 readTime: 11
 level: intermediate
 excerpt: "Microsoft EU Data Boundary, AWS European Sovereign Cloud, Google Workspace EU Data Boundary. Three different commitments, three different scopes, three different things being promised. This article unpacks what each actually covers, what each excludes, and how to read the technical small print."
@@ -30,7 +30,7 @@ references:
     domain: "edpb.europa.eu"
 ---
 
-When a hyperscaler says "we keep your data in the EU," what they actually mean varies a lot. **Microsoft EU Data Boundary** is one commitment with phased scope, **AWS European Sovereign Cloud** is a different one with a different structure, **Google Workspace EU Data Boundary** is a third with a more limited application. None of them are the same as the [sovereign cloud products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) discussed in the parallel article — these are mainline-region commitments about where data physically sits, not separate products. This article unpacks what each commitment actually covers and what it excludes.
+When a hyperscaler says "we keep your data in the EU," what they actually mean varies a lot. **Microsoft EU Data Boundary** is one commitment with phased scope, **AWS European Sovereign Cloud** is a different one with a different structure, **Google Workspace EU Data Boundary** is a third with a more limited application. None of them are the same as the [sovereign cloud products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) discussed in the parallel article — these are mainline-region commitments about where data physically sits, not separate products. A third distinct option is the [EU-native pure-play providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) — organisations such as OVHcloud, Scaleway, IONOS, Hetzner, and STACKIT that are fully EU-domiciled and do not depend on US hyperscaler technology in their stack. The three form a natural triangle of choices: hyperscaler mainline with EU data boundary, sovereign JV or dedicated region, and EU-native operator. This article focuses on the first leg of that triangle. This article unpacks what each commitment actually covers and what it excludes.
 
 ## What "EU Data Boundary" means and what it does not
 
@@ -190,4 +190,4 @@ For Slovak [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-clou
 - For sovereignty above EU Data Boundary, the practical pattern is **EU mainline + customer-held keys** (BYOK / HYOK / XKS / Client-side Encryption) addressing most concerns short of ownership-based foreign-law immunity.
 - Verification relies on contractual commitments, audit reports, public documentation, and Customer Lockbox-style access controls. Real-time cryptographic location guarantees are not standard.
 - GDPR Chapter V transfer mechanisms still apply to residual out-of-boundary flows (telemetry, support, sub-processors).
-- See [Sovereign Cloud Products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for sovereignty-grade alternatives beyond EU Data Boundary, and the [GDPR Article 28 / CoC article](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) for the transfer-mechanism layer.
+- See [Sovereign Cloud Products article](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for sovereignty-grade alternatives beyond EU Data Boundary, [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the third leg of the triangle (EU-domiciled operators without US hyperscaler stacks), and the [GDPR Article 28 / CoC article](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) for the transfer-mechanism layer.

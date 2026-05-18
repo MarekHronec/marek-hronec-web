@@ -3,7 +3,7 @@ title: "Choosing Your Cloud Compliance Posture — A Decision Framework"
 category: compliance
 tags: ["Decision Framework", "Practitioner", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-15
-updated: 2026-05-15
+updated: 2026-05-16
 readTime: 12
 level: intermediate
 excerpt: "The national frameworks, cross-cutting baselines, and regulatory overlays add up to dozens of acronyms. This article is the decision tree that maps 'I am [type of organisation] doing [type of workload] in [geography]' to 'these are the frameworks that actually apply to you'."
@@ -202,7 +202,7 @@ Operational pattern: federated compliance programme with regional compliance lea
 - **Tier 3** for the personal-data workflows.
 - **Single Member State** scope.
 
-Apply: KsVC U3 listing for the cloud provider (citizen-data workflows); ISO 27001/27017/27018; SOC 2 Type 2 or BSI C5 as supporting evidence; GDPR Article 28 contract; EU Cloud CoC Level 2 as supplementary; NIS2 supply-chain assessment of the cloud provider (the ministry is likely an essential entity).
+Apply: KsVC U3 listing for the cloud provider (citizen-data workflows); ISO 27001/27017/27018; SOC 2 Type 2 or BSI C5 as supporting evidence; GDPR Article 28 contract; EU Cloud CoC Level 2 as supplementary; NIS2 supply-chain assessment of the cloud provider (the ministry is likely an essential entity). For lower-sensitivity workflows at U1–U2, EU-native providers (OVHcloud, IONOS, Scaleway, STACKIT) are KsVC-listed candidates — see [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the operational landscape.
 
 Don't apply: DORA (not a financial entity); SecNumCloud (not French); EUCS High+ (not yet operative).
 
@@ -263,7 +263,7 @@ This article references most others in the security section. Use the framework a
 - **Country-specific obligations** — see the country article for your operating jurisdiction(s).
 - **Universal baselines** — [ISO 27001/27017/27018/27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [SOC 2 Reports](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them), [CSA STAR Registry](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer).
 - **Regulatory overlays** — [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) (financial sector), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) (cross-sectoral), [GDPR Article 28 + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) (personal data).
-- **Vendor landscape** — [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape), [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) if sovereignty or data residency matters.
+- **Vendor landscape** — [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape), [Hyperscaler EU Data Boundary](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments) if sovereignty or data residency matters, [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) if evaluating EU-native pure-play alternatives to hyperscalers.
 - **Adjacent jurisdictions** — [UK NCSC](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles), [Switzerland FINMA](/knowledge-base/compliance/switzerland-finma-cloud-frameworks), [Norway NSM](/knowledge-base/compliance/norway-nsm-cloud-frameworks) if your operations extend beyond the EU.
 - **Practitioner skill** — [Reading Attestation Reports](/knowledge-base/compliance/reading-cloud-attestation-reports-practitioner-guide) once you start evaluating actual evidence from providers.
 
