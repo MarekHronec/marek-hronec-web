@@ -443,7 +443,7 @@ The original Knowledge Base listing used a link-based sidebar (`CategorySidebar.
 | Multi-select checkboxes | Standard form pattern | More visual weight; requires state management |
 | Multi-select toggle buttons | Keyboard accessible; visual active state clear; consistent with editorial aesthetic | Requires JS for filter logic |
 
-**Decision.** Replace the link sidebar with a toggle-button filter panel. Two named groups — **Platforms** (Azure, OCI) and **Topics** (Networking, Identity, Security, FinOps, Landing Zones, DevOps, BPM) — use `aria-pressed` toggle buttons. Filter logic is OR within a group, AND across groups. Active filter chips are rendered in a toolbar above the article list. Sort control (Latest first / Oldest first / Title A–Z) added to the toolbar. URL state preserved via `?platforms=&topics=&sort=` query params.
+**Decision.** Replace the link sidebar with a toggle-button filter panel. Two named groups — **Platforms** (Azure, OCI) and **Topics** (Networking, Identity, Security, FinOps, Landing Zones, DevOps, BPM, Compliance) — use `aria-pressed` toggle buttons. Filter logic is OR within a group, AND across groups. Active filter chips are rendered in a toolbar above the article list. Sort control (Latest first / Oldest first / Title A–Z) added to the toolbar. URL state preserved via `?platforms=&topics=&sort=` query params.
 
 Category data derivation: platform is mapped from the article's `category` field (`azure` → platform `azure`); topics are derived from both the `category` field (for topic-category articles like `devops`, `bpm`) and from specific tags (`Networking`, `Landing Zones`, etc.).
 

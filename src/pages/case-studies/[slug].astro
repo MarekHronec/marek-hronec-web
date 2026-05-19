@@ -399,6 +399,12 @@ const { Content } = await render(entry);
     min-width: 0;
   }
 
+  .cs-body__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
   @media (min-width: 1024px) {
     .cs-body__grid {
       grid-template-columns: 1fr 260px;
@@ -513,12 +519,6 @@ const { Content } = await render(entry);
   }
 
   /* ── Sidebar cards ─────────────────────────────────────────────── */
-  .cs-body__sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
   .cs-sidebar-card {
     background-color: var(--color-surface-container-low);
     border-radius: var(--radius-sm);
@@ -554,15 +554,6 @@ const { Content } = await render(entry);
     display: flex;
     flex-direction: column;
     gap: 2px;
-  }
-
-  .cs-glance__item dt {
-    font-family: var(--font-body);
-    font-size: var(--text-label-sm);
-    font-weight: var(--weight-regular);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-meta-label);
   }
 
   .cs-glance__item dd {

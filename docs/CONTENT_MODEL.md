@@ -70,7 +70,7 @@ excerpt: ""
 | Field | Type | Required | Constraints | Description |
 |---|---|---|---|---|
 | `title` | string | Yes | — | Full article title as it appears in the card and article header |
-| `category` | enum | Yes | One of 10 values | Controls sidebar navigation and filtering. See taxonomy. |
+| `category` | enum | Yes | One of 11 values | Controls sidebar navigation and filtering. See taxonomy. |
 | `tags` | string[] | Yes | At least 1 recommended | Technology and topic keywords. All tags shown on article card. Used for filter chip display and article detail header. |
 | `date` | Date | Yes | ISO 8601 string, coerced to Date | Publication date. Articles are sorted newest-first on the listing page. |
 | `updated` | Date | No | ISO 8601 string, coerced to Date | Last-updated date. Displayed as "Updated [date]" in the article header between Published and read time — but only when the date differs from `date`. Omit if the article has never been revised. |
@@ -191,6 +191,7 @@ The `category` field in knowledge base articles must be one of these exact strin
 | `gcp` | GCP | Google Cloud Platform architecture, services, and patterns | Platform |
 | `devops` | DevOps | CI/CD pipelines, GitOps, platform engineering, Infrastructure as Code | Topic |
 | `bpm` | BPM | Business Process Management, Camunda, Oracle BPM, workflow orchestration | Topic |
+| `compliance` | Compliance | EU cloud compliance, DORA, NIS2, GDPR, sovereign cloud, regulatory frameworks | Topic |
 
 The **Filter group** column maps to the KB listing page filter panel. Platform categories (`azure`, `oci`, `gcp`, `multicloud`) appear under the **Platforms** group; topic categories appear under **Topics**. Articles whose category is a platform value (e.g. `azure`) also surface under topics if their tags match a topic (e.g. tag `Networking` → Networking filter).
 
@@ -224,17 +225,19 @@ src/content/knowledge-base/
 │   └── discounts-and-commitments-math-the-salespeople-hope-you-wont-do.md
 ├── identity/
 │   └── rbac-and-iam-authorisation-models-that-look-similar.md
-├── multicloud/       ← largest category; cloud-agnostic foundations + Azure/OCI comparisons
+├── multicloud/       ← cloud-agnostic foundations + Azure/OCI comparisons
 │   ├── how-to-learn-azure-and-oci-without-stale-lists.md
 │   ├── iaas-paas-saas-without-marketing-layer.md
-│   └── … (10 articles)
+│   └── … (11 articles)
 ├── networking/
 │   ├── address-plans-designing-ip-space-for-three-clouds.md
 │   ├── hub-and-spoke-virtual-wan-and-drg-three-topology-choices.md
 │   ├── hybrid-connectivity-expressroute-fastconnect-vpn-reality.md
 │   └── ipam-ip-address-management-before-you-wish-you-had-done-it.md
-└── security/
-    └── policy-as-code-and-quotas-where-governance-stops-being-wiki.md
+├── security/
+│   └── policy-as-code-and-quotas-where-governance-stops-being-wiki.md
+└── compliance/       ← EU regulatory compliance: DORA, NIS2, GDPR, sovereign cloud
+    └── … (31 articles)
 ```
 
 New category subdirectories should be created when the first article for that category is added.
@@ -353,7 +356,7 @@ Standard `##` Markdown headings work fine for all other sections within a case s
 
    | Field | Constraint |
    |---|---|
-   | `category` | Must be one of: `azure \| oci \| multicloud \| networking \| identity \| security \| finops \| gcp \| devops \| bpm` |
+   | `category` | Must be one of: `azure \| oci \| multicloud \| networking \| identity \| security \| finops \| gcp \| devops \| bpm \| compliance` |
    | `level` | Must be one of: `beginner \| intermediate \| advanced` |
    | `date` | Must be a valid date string, e.g. `2025-06-01` |
    | `updated` | Optional. If present, must be a valid date string. When equal to `date`, the "Updated" label is suppressed in the article header. |
@@ -478,7 +481,7 @@ The full 8-step procedure is in [DEVELOPMENT.md §9](DEVELOPMENT.md#9-knowledge-
 
 Find the category enum near the top and add the new value:
 ```ts
-category: z.enum(['azure', 'oci', 'multicloud', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'your-category']),
+category: z.enum(['azure', 'oci', 'multicloud', 'networking', 'identity', 'security', 'finops', 'gcp', 'devops', 'bpm', 'compliance', 'your-category']),
 ```
 
 **File 2 — `src/components/knowledge-base/CategorySidebar.astro`**
@@ -547,7 +550,7 @@ Only one file should have `featured: true` at a time.
 
 Open the article's `.md` file and update the `category` field in the frontmatter to one of the valid values:
 ```
-azure | oci | multicloud | networking | identity | security | finops | gcp | devops | bpm
+azure | oci | multicloud | networking | identity | security | finops | gcp | devops | bpm | compliance
 ```
 The article will automatically move to the new category in the sidebar. The file can stay in its current folder — the folder structure is just for organisation, the `category` field is what the site reads.
 

@@ -553,7 +553,7 @@ const ARTICLE_BRANCH: Record<string, string> = {
 };
 ```
 
-Valid branch values: `'cloud-reality'` | `'governance'` | `'network'`.
+Valid branch values: `'cloud-reality'` | `'governance'` | `'network'` | `'compliance'`.
 
 The article's slug is `category/filename-without-extension`. For example, `src/content/knowledge-base/networking/expressroute-design-patterns.md` → `'networking/expressroute-design-patterns'`.
 
@@ -568,7 +568,7 @@ const ARTICLE_ICON: Record<string, string> = {
 };
 ```
 
-Available icon keys: `book`, `box`, `users`, `globe`, `activity`, `building`, `flag`, `server`, `type`, `tag`, `shield`, `file`, `network`, `database`, `share`, `arrowsLR`, `cloud`.
+Available icon keys: `book`, `box`, `users`, `globe`, `activity`, `building`, `flag`, `server`, `type`, `tag`, `shield`, `file`, `network`, `database`, `share`, `arrowsLR`, `cloud`, `scale`, `layers`.
 
 **Step 4 — Add edges** in `src/data/knowledge-graph.ts` (see "Managing connections" above). At minimum, wire the article into the branch path so it is reachable. Example:
 
@@ -632,6 +632,7 @@ const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: s
   'cloud-reality': { border: '#2c694e', groupBorder: '#83AD9D', bg: '#dce8e3', groupBg: '#F9FAFA', icon: '#2c694e' },
   governance:      { border: '#3e6daa', groupBorder: '#9FB8DA', bg: '#d9e5f4', groupBg: '#F7F8FC', icon: '#3e6daa' },
   network:         { border: '#6354a8', groupBorder: '#9996C8', bg: '#e6e3f4', groupBg: '#F7F6F9', icon: '#6354a8' },
+  compliance:      { border: '#b85c20', groupBorder: '#D4956A', bg: '#f5e4d4', groupBg: '#FAFAF9', icon: '#b85c20' },
 };
 ```
 
