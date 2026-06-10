@@ -394,6 +394,8 @@ See [DEVELOPMENT.md §9](DEVELOPMENT.md#9-knowledge-base-filter-system) for the 
 
 6. **Commit and push** to `main` to deploy.
 
+> **Publishing policy.** Committing content edits directly to `main` is the intended workflow for the site owner — every push to `main` deploys automatically. The "never commit directly to `main`" rule in [DEVELOPMENT.md §8](DEVELOPMENT.md#8-deployment) is a safety measure for code changes and AI-assisted tooling; it does not apply to owner content edits.
+
 ---
 
 ## 8. Adding a New Case Study
@@ -591,7 +593,7 @@ All values are **words per minute**. Higher = shorter read time displayed. Lower
 - `knowledgeBase.default` — fallback used when a category has no specific entry (e.g. `oci`, `multicloud`)
 - Each named key under `knowledgeBase` — overrides the default for that category
 
-Case study read time is not configurable — case studies use the manual `readTime` frontmatter field if present, otherwise fall back to a fixed 200 WPM default calculated inline.
+Read time applies to Knowledge Base articles only — case studies do not display a read time.
 
 ### How to tune a category's reading speed
 
@@ -629,11 +631,18 @@ Not everything on the site lives in `.md` files. This section covers the persona
 
 ---
 
-### Update your contact email or LinkedIn URL
+### Update the LinkedIn URL or contact cards
 
 **File:** `src/components/contact/ContactChannels.astro`
 
-Open the file and find the `channels` array near the top. Each entry has a `label`, `value`, and `href`. Change the `value` and `href` for the Email or LinkedIn entry.
+The contact page renders two hand-written cards — there is no data array:
+- **LinkedIn** — update the `href` on the "Message me on LinkedIn" link in the primary card.
+- **Location** — edit the "Bratislava, Slovakia" heading and the body text in the location card.
+- **Email** — not currently shown; the primary card displays an "Email channel: coming soon" note. To add email later, replace that note with a `mailto:` link.
+
+The LinkedIn URL also appears in two other files — when it changes, update all three:
+- `src/components/layout/Footer.astro` — the footer LinkedIn link
+- `src/layouts/BaseLayout.astro` — the JSON-LD `sameAs` entry (read by search engines)
 
 ---
 
@@ -641,7 +650,7 @@ Open the file and find the `channels` array near the top. Each entry has a `labe
 
 **File:** `src/components/contact/ContactHero.astro`
 
-Find the text that says something like "Available from Q3 2025" and update the quarter and year.
+The availability statement is the hero body paragraph ("Available for complex cloud transformations, …"). Edit that paragraph text directly — there is no separate availability field or quarter/year placeholder.
 
 ---
 
@@ -702,4 +711,4 @@ Find the `columns` array. Each column has a `title` and an `items` list. Add or 
 
 **File:** `src/components/about/ExperienceTimeline.astro`
 
-Find the `experiences` array near the top. Each entry has `role`, `org`, `period`, `summary`, and `bullets` (the extra detail that expands on click). Edit the relevant entry directly.
+Find the `entries` array near the top. Each entry has `client`, `title`, `subtitle`, `description`, and an optional `bullets` array of `{ label, text }` items — the first bullet is always visible; the remaining bullets expand on click. Edit the relevant entry directly.

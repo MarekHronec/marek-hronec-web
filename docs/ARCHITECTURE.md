@@ -92,20 +92,14 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── ContactHero.astro
     │   │   ├── ContactChannels.astro
     │   │   └── ContactServices.astro
-    │   ├── icons/                # Standalone SVG icon components (Lucide-based; BpmMerge is custom)
+    │   ├── icons/                # Standalone SVG icon components (Lucide-based)
     │   │   ├── Activity.astro
     │   │   ├── BadgeCheck.astro
     │   │   ├── BookOpen.astro
-    │   │   ├── BpmMerge.astro    # Custom — two bezier-connected nodes converging to one output
     │   │   ├── Briefcase.astro
     │   │   ├── Building.astro
-    │   │   ├── CheckCircle.astro # Case study "The Outcome" heading icon
-    │   │   ├── CircleCheck.astro
-    │   │   ├── Cloud.astro
     │   │   ├── Factory.astro
     │   │   ├── GridAppsIcon.astro
-    │   │   ├── Info.astro
-    │   │   ├── InfoCircle.astro  # Case study "The Problem" heading icon
     │   │   ├── Layers.astro
     │   │   ├── ListText.astro
     │   │   ├── Shield.astro
@@ -113,12 +107,12 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── SortIcon.astro
     │   │   ├── Tag.astro
     │   │   ├── Target.astro
-    │   │   ├── UserCircle.astro  # Case study "My Role" heading icon
     │   │   └── Workflow.astro
     │   ├── knowledge-base/
     │   │   ├── ArticleCard.astro
     │   │   ├── ArticleOutline.astro  # Floating TOC with scroll-spy
     │   │   ├── CategorySidebar.astro
+    │   │   ├── KBSearch.astro        # Pagefind full-text search — lazy-loads the bundle on first focus
     │   │   └── KnowledgeCanvas.astro # Learning Map canvas wrapper; lazy-loads canvas.ts on activation
     │   ├── layout/
     │   │   ├── Header.astro      # Sticky glassmorphism nav
@@ -133,10 +127,11 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   └── knowledge-base/       # Subdirectories map to categories (9 subdirs, 54 articles)
     │       ├── azure/
     │       ├── bpm/
+    │       ├── compliance/   # largest category — EU regulatory compliance, sovereign cloud
     │       ├── devops/
     │       ├── finops/
     │       ├── identity/
-    │       ├── multicloud/   # largest category — cloud-agnostic foundations + Azure/OCI comparisons
+    │       ├── multicloud/   # cloud-agnostic foundations + Azure/OCI comparisons
     │       ├── networking/
     │       └── security/
     ├── layouts/
@@ -205,6 +200,7 @@ BaseLayout.astro
 │   │
 │   ├── knowledge-base/index.astro (/knowledge-base)
 │   │   ├── [inline <script>]  ← multi-select filter (platform/topic/level), sort, pagination, URL state
+│   │   ├── KBSearch.astro           ← Pagefind full-text search; loads the bundle on first input focus
 │   │   ├── CategorySidebar.astro    ← data-driven filter panel (Platforms, Topics, Difficulty groups)
 │   │   │   ├── GridAppsIcon.astro (icon)
 │   │   │   └── [inline <script>]  ← mobile sheet: open/close, focus management, ESC, Tab trap
@@ -244,7 +240,7 @@ interface Props {
 }
 ```
 
-Icons are drawn on a 24×24 viewBox and scale to any `size` value. All are based on the Lucide icon set, except `BpmMerge.astro` which is a custom icon representing two process nodes merging into one output — used for the BPM category in the knowledge base sidebar.
+Icons are drawn on a 24×24 viewBox and scale to any `size` value. All are based on the Lucide icon set.
 
 ---
 
@@ -330,7 +326,7 @@ The knowledge base uses a rest parameter (`[...slug]`) rather than a simple `[sl
 
 ## 7. Styling Architecture
 
-All CSS custom properties are defined in `src/styles/tokens.css` and imported globally via `src/styles/global.css`. No component hardcodes a colour, font, or spacing value — all reference tokens. For the design rationale behind every token — colour philosophy, typography choices, tonal layering — see [DESIGN.md](DESIGN.md).
+All CSS custom properties are defined in `src/styles/tokens.css` and imported globally via `src/styles/global.css`. No component hardcodes a colour, font, or spacing value — all reference tokens. For the design rationale behind every token — colour philosophy, typography choices, tonal layering — see DESIGN.md.
 
 ### Token reference
 
@@ -455,7 +451,8 @@ flowchart TD
     subgraph Build["Build Job"]
         B1["actions/checkout@v4"] --> B2["actions/setup-node@v4\nNode 22 + npm cache"]
         B2 --> B3["npm ci"]
-        B3 --> B4["astro build → dist/"]
+        B3 --> B3b["npx astro check"]
+        B3b --> B4["astro build → dist/"]
         B4 --> B4b["npx pagefind --site dist → dist/pagefind/"]
         B4b --> B5["upload-pages-artifact@v3"]
     end

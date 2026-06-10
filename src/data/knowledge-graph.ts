@@ -1,8 +1,8 @@
 /**
  * Knowledge graph — edge definitions for the KB Learning Map canvas.
  *
- * The canvas renders a curated three-branch learning tree:
- *   Cloud Reality & Thinking  |  Platform Organisation & Governance  |  Network Architecture
+ * The canvas renders a curated four-branch learning tree:
+ *   Cloud Reality & Thinking  |  Platform Organisation & Governance  |  Network Architecture  |  EU Cloud Compliance
  *
  * "group:" prefixed IDs are synthetic group-header nodes (not real articles).
  * validateEdges() skips them automatically.

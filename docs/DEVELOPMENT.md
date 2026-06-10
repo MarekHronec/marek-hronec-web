@@ -177,7 +177,7 @@ The returned entries are passed as props to components. Components do not call `
 
 ## 6. CSS Conventions
 
-The full design system rationale — colour philosophy, typography scale, surface tier system, interactive states — is in [DESIGN.md](DESIGN.md). The complete token reference is in [ARCHITECTURE.md — Styling Architecture](ARCHITECTURE.md#7-styling-architecture).
+The full design system rationale — colour philosophy, typography scale, surface tier system, interactive states — is in DESIGN.md. The complete token reference is in [ARCHITECTURE.md — Styling Architecture](ARCHITECTURE.md#7-styling-architecture).
 
 ### Token use
 
@@ -274,7 +274,7 @@ Deployment status is visible in the Actions tab of the repository. A successful 
 
 ### Branch strategy
 
-Feature branches follow the pattern `feature/<kebab-case-name>`. No direct commits to `main`. Merge to `main` only after:
+Feature branches follow the pattern `feature/<kebab-case-name>`. No direct commits to `main` for code changes — this rule is a safety measure that applies to AI-assisted tooling in particular. Content-only edits by the site owner (Markdown articles, case studies) may be committed straight to `main`; see [CONTENT_MODEL.md §7](CONTENT_MODEL.md#7-adding-a-new-article). Merge code branches to `main` only after:
 1. `npm run build` passes locally
 2. `npm run preview` confirms the changes look correct
 3. `npx astro check` reports no TypeScript errors

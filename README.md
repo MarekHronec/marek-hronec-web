@@ -28,7 +28,7 @@ The technical approach is equally intentional. Astro's static output mode means 
 | Language | TypeScript | 5.9.3 | Strict mode catches schema mismatches and missing props at build time. [→](docs/DECISIONS.md#adr-008-typescript--strict-mode) |
 | Styling | Vanilla CSS + custom properties | — | Bespoke token system required for the editorial aesthetic; utility classes would fight the tonal layering design. [→](docs/DECISIONS.md#adr-002-styling--vanilla-css-with-custom-properties-over-tailwind-and-css-in-js) |
 | Content | Markdown + Zod via Content Collections | — | Compile-time frontmatter validation with no CMS dependency. [→](docs/DECISIONS.md#adr-003-content--astro-content-collections-over-importmetaglob) |
-| Fonts | Google Fonts CDN | — | Manrope (display), Inter (body), JetBrains Mono (code) — three fonts, three content roles. [→](docs/DECISIONS.md#adr-009-typography--manrope--inter--jetbrains-mono) |
+| Fonts | Self-hosted via Fontsource (Vite-bundled) | — | Manrope (display), Inter (body), JetBrains Mono (code) — three fonts, three content roles; served same-origin with metric-matched fallbacks. [→](docs/DECISIONS.md#adr-025-fonts--self-hosted-via-fontsource-over-google-fonts-cdn) |
 | Search | Pagefind (static index) | 1.5.x | Full-text search; index built at build time from rendered HTML; ~25 KB bundle loaded lazily on first interaction. [→](docs/DECISIONS.md#adr-020-full-text-search--pagefind-over-client-side-alternatives) |
 | Graph | Cytoscape.js + cytoscape-dagre + cytoscape-node-html-label | 3.33 / 2.5 / 2.0 | Knowledge Map canvas on the KB listing page — lazy-loaded (~200 KB) only when the Map view is opened. [→](docs/DECISIONS.md#adr-023-knowledge-map-canvas) |
 | Sitemap | @astrojs/sitemap | 3.7.2 | Automatic sitemap generation on every build. |
@@ -148,7 +148,7 @@ Node ≥ 22 required.
 | Document | Contents |
 |---|---|
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design, component map, content model, CSS token reference, routing, deployment pipeline |
-| [docs/DESIGN.md](docs/DESIGN.md) | Visual design philosophy — colour, typography, tonal layering, glassmorphism, spacing |
+| docs/DESIGN.md | Visual design philosophy — colour, typography, tonal layering, glassmorphism, spacing |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Architecture Decision Records — every significant technical choice with context, options, and rationale |
 | [docs/CONTENT_MODEL.md](docs/CONTENT_MODEL.md) | Content schemas, taxonomy, file organisation, how to add articles and case studies |
 | [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Developer setup, project conventions, file naming, build process |
