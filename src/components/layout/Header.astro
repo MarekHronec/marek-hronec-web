@@ -3,10 +3,11 @@
  * 3-column grid: [logo (1fr)] | [nav links (auto)] | [cta + hamburger (1fr)]
  * The equal 1fr outer columns push the auto-width center column into the
  * true visual middle of the bar regardless of logo or CTA width.
- * Glass: surface at 80% opacity + 24px backdrop-blur per DESIGN.md.
+ * Opaque surface + a single hairline rule — no glass (DESIGN.md §2).
  */
 
 import { base } from '../../utils/base';
+import Logo from './Logo.astro';
 
 const navLinks = [
   { label: 'About',          href: `${base}/` },
@@ -30,7 +31,11 @@ const isActive = (href: string): boolean => {
   <nav class="header__nav container" aria-label="Main navigation">
 
     <a class="header__logo" href={`${base}/`}>
-      Marek Hronec
+      <Logo size={38} class="header__mark" />
+      <span class="header__wordmark">
+        <span class="header__name">Marek Hronec</span>
+        <span class="header__role">Cloud Architect</span>
+      </span>
     </a>
 
     <!-- Center column — hidden on mobile, always visually centered on desktop because of the 1fr/auto/1fr grid -->
@@ -52,7 +57,12 @@ const isActive = (href: string): boolean => {
 
     <!-- CTA (desktop) and hamburger (mobile) share this column; CSS shows/hides each at the right breakpoint -->
     <div class="header__actions">
-      <a class="header__cta" href={`${base}/contact`}>Get in Touch</a>
+      <a class="header__cta" href={`${base}/contact`}>
+        Get in Touch
+        <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
 
       <button
         class="header__hamburger"
@@ -109,10 +119,8 @@ const isActive = (href: string): boolean => {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-bottom: 1px solid var(--glass-border);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-divider);
   }
 
   /* Mobile: logo left, hamburger right — no centering needed */
@@ -120,7 +128,7 @@ const isActive = (href: string): boolean => {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    height: 4rem;
+    height: var(--nav-height);
   }
 
   /* Desktop: 1fr / auto / 1fr keeps nav links perfectly centered */
@@ -130,19 +138,54 @@ const isActive = (href: string): boolean => {
     }
   }
 
+  /* Lockup: brand mark + two-line wordmark */
   .header__logo {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: var(--weight-bold);
-    color: var(--color-on-surface);
-    letter-spacing: -0.0625rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
     justify-self: start;
+    color: var(--color-navy);
     white-space: nowrap;
   }
 
   .header__logo:hover {
     opacity: 1;
     color: var(--color-primary);
+  }
+
+  .header__mark {
+    flex-shrink: 0;
+  }
+
+  .header__wordmark {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .header__name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-flat);
+  }
+
+  .header__role {
+    display: none;
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+    line-height: var(--leading-flat);
+  }
+
+  @media (min-width: 480px) {
+    .header__role {
+      display: block;
+    }
   }
 
   .header__links {
@@ -188,17 +231,16 @@ const isActive = (href: string): boolean => {
 
   .header__cta {
     display: none;
+    gap: var(--space-2);
     padding: var(--space-2) var(--space-5);
-    background: var(--gradient-cta);
+    background-color: var(--color-navy);
     color: var(--color-on-primary);
     font-family: var(--font-body);
     font-size: var(--text-body-md);
     font-weight: var(--weight-semibold);
     border-radius: var(--radius-sm);
     white-space: nowrap;
-    transition:
-      transform var(--duration-fast) var(--ease-standard),
-      opacity var(--duration-fast) var(--ease-standard);
+    transition: background-color var(--duration-fast) var(--ease-standard);
   }
 
   @media (min-width: 768px) {
@@ -210,10 +252,10 @@ const isActive = (href: string): boolean => {
 
   .header__cta:hover {
     opacity: 1;
-    transform: translateY(-2px);
+    background-color: var(--color-primary);
   }
 
-  /* Three bars animate into an ✕ when open */
+  /* Three bars animate into a cross when open */
   .header__hamburger {
     display: flex;
     flex-direction: column;
@@ -232,7 +274,6 @@ const isActive = (href: string): boolean => {
     width: 22px;
     height: 2px;
     background-color: var(--color-on-surface);
-    border-radius: var(--radius-full);
     transition:
       transform var(--duration-normal) var(--ease-standard),
       opacity  var(--duration-normal) var(--ease-standard);
@@ -250,10 +291,8 @@ const isActive = (href: string): boolean => {
 
   .header__mobile-menu {
     display: none;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-top: 1px solid var(--glass-border);
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-divider);
   }
 
   /* Only show when open on mobile; always hidden on desktop via the base display:none */
@@ -273,7 +312,6 @@ const isActive = (href: string): boolean => {
     display: flex;
     flex-direction: column;
     padding: var(--space-4) var(--gutter) var(--space-6);
-    gap: var(--space-1);
   }
 
   .header__mobile-link {
@@ -283,7 +321,7 @@ const isActive = (href: string): boolean => {
     font-size: var(--text-title-md);
     font-weight: var(--weight-medium);
     color: var(--color-on-surface-muted);
-    border-bottom: 1px solid var(--color-outline-variant);
+    border-bottom: 1px solid var(--color-divider);
   }
 
   .header__mobile-link:hover,
@@ -294,9 +332,9 @@ const isActive = (href: string): boolean => {
 
   .header__mobile-cta {
     display: inline-flex;
-    margin-top: var(--space-4);
+    margin-top: var(--space-5);
     padding: var(--space-3) var(--space-6);
-    background: var(--gradient-cta);
+    background-color: var(--color-navy);
     color: var(--color-on-primary);
     font-size: var(--text-body-lg);
     font-weight: var(--weight-semibold);
@@ -305,12 +343,5 @@ const isActive = (href: string): boolean => {
 
   .header__mobile-cta:hover {
     opacity: 0.9;
-  }
-
-  @supports not (backdrop-filter: blur(1px)) {
-    .header,
-    .header__mobile-menu {
-      background: var(--color-surface);
-    }
   }
 </style>

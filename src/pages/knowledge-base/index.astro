@@ -144,7 +144,6 @@ const totalCount = sorted.length;
 <BaseLayout
   title="Knowledge Base"
   description="Technical articles on cloud architecture, Azure, DevOps, and infrastructure patterns."
-  ogImage="/images/og-image.webp"
 >
   <!-- Runs synchronously before first paint — prevents canvas→list blink on page load / navigation -->
   <script is:inline>
@@ -166,7 +165,6 @@ const totalCount = sorted.length;
 
             <!-- Page header -->
             <header class="kb-header">
-              <p class="kb-header__label">Knowledge Base</p>
               <h1 class="kb-header__title">Technical Notes<span class="kb-header__period">.</span></h1>
               <p class="kb-header__subtitle">
                 In-depth architecture patterns, implementation guides, and
@@ -368,14 +366,6 @@ const totalCount = sorted.length;
     padding-top: var(--space-4);
   }
 
-  .kb-header__label {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
 
   .kb-header__title {
     font-family: var(--font-display);
@@ -529,7 +519,7 @@ const totalCount = sorted.length;
   .kb-sort:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   .kb-sort-chevron {

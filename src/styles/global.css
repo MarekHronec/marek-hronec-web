@@ -189,6 +189,24 @@ code {
   max-width: var(--container-narrow);
 }
 
+/* Section rule — a hairline spanning the container's content width.
+   Sections are full-width so their backgrounds can run edge to edge, but their
+   rules must line up with the text. Only the header and footer are full-bleed. */
+
+.section-rule {
+  position: relative;
+}
+
+.section-rule::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--container-inset);
+  right: var(--container-inset);
+  height: 1px;
+  background-color: var(--color-divider);
+}
+
 /* ---------- Skip Link ---------- */
 
 .skip-link {

@@ -1,0 +1,178 @@
+---
+/*
+ * Three connected steps. Each column carries a numbered token, a nautical mark
+ * in a ring, and a short body. The dotted rules between the rings are drawn as
+ * a pseudo-element on each well-row after the first, reaching back across the
+ * grid gap to the previous ring — so the connectors track the columns at any
+ * width and simply vanish when the grid collapses to one column.
+ */
+
+import CompassRose from '../icons/CompassRose.astro';
+import Lighthouse from '../icons/Lighthouse.astro';
+import ShipsWheel from '../icons/ShipsWheel.astro';
+
+interface Step {
+  num: string;
+  title: string;
+  body: string;
+}
+
+const steps: Step[] = [
+  {
+    num: '01',
+    title: 'Understand',
+    body: 'I start by listening carefully and mapping the big picture. Clarity on goals, constraints, and context comes first.',
+  },
+  {
+    num: '02',
+    title: 'Design',
+    body: 'I create pragmatic architectures that balance simplicity, scalability, and long-term maintainability.',
+  },
+  {
+    num: '03',
+    title: 'Enable',
+    body: 'I document clearly, transfer knowledge, and partner with teams to operate and evolve with confidence.',
+  },
+];
+---
+
+<div class="how">
+  <p class="how__label">How I Work</p>
+
+  <ol class="how__steps" role="list">
+    {steps.map((step, i) => (
+      <li class="how__step">
+        <span class="how__num" aria-hidden="true">{step.num}</span>
+
+        <div class="how__well-row">
+          <span class="how__well">
+            {i === 0 && <CompassRose size={38} aria-hidden="true" />}
+            {i === 1 && <Lighthouse size={36} aria-hidden="true" />}
+            {i === 2 && <ShipsWheel size={38} aria-hidden="true" />}
+          </span>
+        </div>
+
+        <h3 class="how__title">{step.title}</h3>
+        <p class="how__body">{step.body}</p>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .how {
+    /* Shared by the ring geometry and the connector maths below */
+    --well-size: 5rem;
+    --how-gap: var(--space-5);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+  }
+
+  .how__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  .how__label::after {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: var(--space-3);
+    background-color: var(--color-primary);
+  }
+
+  .how__steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  @media (min-width: 640px) {
+    .how__steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--how-gap);
+    }
+  }
+
+  .how__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  .how__num {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-divider-strong);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-primary);
+  }
+
+  .how__well-row {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+
+  /*
+   * Reaches back one column: right edge stops at this ring, left edge starts at
+   * the previous ring. 50% resolves against the well-row, which is exactly one
+   * grid column wide.
+   */
+  @media (min-width: 640px) {
+    .how__step:not(:first-child) .how__well-row::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: calc(50% + var(--well-size) / 2 + var(--space-3));
+      left: calc(-1 * var(--how-gap) - 50% + var(--well-size) / 2 + var(--space-3));
+      border-top: 2px dotted var(--color-warm-gray);
+    }
+  }
+
+  .how__well {
+    display: grid;
+    place-items: center;
+    width: var(--well-size);
+    height: var(--well-size);
+    border: 1px solid var(--color-divider-strong);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+    color: var(--color-navy);
+  }
+
+  .how__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    margin-top: var(--space-2);
+  }
+
+  .how__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 32ch;
+  }
+</style>

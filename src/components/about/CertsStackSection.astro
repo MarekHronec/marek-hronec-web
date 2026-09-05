@@ -1,12 +1,11 @@
 ---
 /*
- * Certifications + Technical Stack side by side.
- * align-items: stretch keeps both cards the same height.
- * The section has no background of its own — it merges visually
- * with NarrativeSection above because the card surface tones match.
+ * Certifications + Technical Stack, split by a single vertical hairline
+ * instead of two tonal trays. Each credential is sealed with the drafting
+ * compass in a ring — the same ring geometry as the process steps above.
  */
 
-import BadgeCheck from "../icons/BadgeCheck.astro";
+import DraftingCompass from "../icons/DraftingCompass.astro";
 
 import { base } from '../../utils/base';
 
@@ -79,7 +78,7 @@ const columns: TechColumn[] = [
 ];
 ---
 
-<section class="cs">
+<section class="cs section-rule">
   <div class="cs__inner container">
     <div class="cs__certs">
       <p class="cs__label">Certifications</p>
@@ -87,8 +86,8 @@ const columns: TechColumn[] = [
         {
           certifications.map((cert) => (
             <li class="cs__cert-item">
-              <span class="cs__cert-check" aria-hidden="true">
-                <BadgeCheck size={20} aria-hidden="true" />
+              <span class="cs__cert-seal" aria-hidden="true">
+                <DraftingCompass size={20} />
               </span>
               <div class="cs__cert-text">
                 <span class="cs__cert-name">{cert.name}</span>
@@ -145,49 +144,55 @@ const columns: TechColumn[] = [
 </section>
 
 <style>
-  .cs {
-    padding-block: 0 var(--space-6);
-  }
-
-  /* align-items: stretch so both cards always share the same height */
   .cs__inner {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-5);
-    align-items: stretch;
+    gap: var(--space-7);
+    padding-block: var(--space-7);
   }
 
   @media (min-width: 768px) {
     .cs__inner {
-      /* 320px cert card is wide enough that long cert names don't wrap */
-      grid-template-columns: 320px 1fr;
+      /* 340px cert column is wide enough that long cert names don't wrap */
+      grid-template-columns: 340px 1fr;
+      gap: 0;
     }
   }
 
-  /* The two cards use slightly different surface tones so they read as separate
-     without needing a border between them. */
   .cs__certs {
-    background-color: var(--color-surface-container);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
     display: flex;
     flex-direction: column;
   }
 
-  .cs__stack {
-    background-color: var(--color-surface-container-high);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
+  /* The hairline that used to be a tonal tray edge */
+  @media (min-width: 768px) {
+    .cs__certs {
+      padding-right: var(--space-6);
+    }
+
+    .cs__stack {
+      padding-left: var(--space-7);
+      border-left: 1px solid var(--color-divider);
+    }
   }
 
   .cs__label {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-on-surface);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .cs__label::after {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: var(--space-3);
+    background-color: var(--color-primary);
   }
 
   .cs__cert-list {
@@ -198,14 +203,20 @@ const columns: TechColumn[] = [
 
   .cs__cert-item {
     display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
+    align-items: center;
+    gap: var(--space-4);
   }
 
-  .cs__cert-check {
-    color: var(--color-primary);
+  /* Ring seal — same geometry as the process steps, two stops smaller */
+  .cs__cert-seal {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
     flex-shrink: 0;
-    margin-top: 1px; /* optical alignment with the cert name text */
+    border: 1px solid var(--color-divider-strong);
+    border-radius: var(--radius-full);
+    color: var(--color-primary);
   }
 
   .cs__cert-text {
@@ -251,7 +262,7 @@ const columns: TechColumn[] = [
   }
 
   .cs__stack-section {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
   }
 
   .cs__stack-section:last-child {
@@ -264,7 +275,7 @@ const columns: TechColumn[] = [
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     color: var(--color-primary);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .cs__stack-items {
@@ -285,7 +296,7 @@ const columns: TechColumn[] = [
     align-items: center;
     gap: var(--space-1);
     margin-top: auto;
-    padding-top: var(--space-5);
+    padding-top: var(--space-6);
     align-self: flex-end;
     font-family: var(--font-display);
     font-size: var(--text-label-md);

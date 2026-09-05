@@ -1,11 +1,20 @@
 ---
+/*
+ * Navy plate closing the page. The lighthouse is a flex item rather than an
+ * absolutely-positioned watermark, so the plate edge can never clip it and it
+ * holds its own column in the row. It drops out below 768px, where the plate
+ * goes single-column and there is no room beside the copy.
+ */
+
 import { base } from '../../utils/base';
+import Lighthouse from '../icons/Lighthouse.astro';
 ---
 
-<!-- Section has no background so the green card stays bounded by container max-width — no full-bleed color at wide viewports. -->
 <section class="cta-section">
   <div class="cta-section__container container">
     <div class="cta-banner">
+      <Lighthouse size={104} class="cta-banner__mark" aria-hidden="true" />
+
       <div class="cta-banner__content">
         <h2 class="cta-banner__heading">Let's simplify the complex.</h2>
         <p class="cta-banner__body">
@@ -13,8 +22,12 @@ import { base } from '../../utils/base';
           complexity into clear and practical decisions.
         </p>
       </div>
+
       <a class="cta-banner__button" href={`${base}/contact`}>
         Schedule a Consultation
+        <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
       </a>
     </div>
   </div>
@@ -22,7 +35,7 @@ import { base } from '../../utils/base';
 
 <style>
   .cta-section {
-    padding-block: 0 var(--space-6);
+    padding-block: 0 var(--space-8);
   }
 
   .cta-section__container {
@@ -30,9 +43,8 @@ import { base } from '../../utils/base';
   }
 
   .cta-banner {
-    background-color: var(--color-cta-surface);
-    border-radius: var(--radius-lg);
-    padding: var(--space-8) var(--space-10);
+    background-color: var(--color-navy);
+    padding: var(--space-8) var(--space-6);
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
@@ -43,8 +55,24 @@ import { base } from '../../utils/base';
     .cta-banner {
       flex-direction: row;
       align-items: center;
-      justify-content: space-between;
-      padding: var(--space-10);
+      gap: var(--space-7);
+      padding: var(--space-8) var(--space-10);
+    }
+  }
+
+  .cta-banner__mark {
+    display: none;
+  }
+
+  /*
+   * 1024, not 768: between those widths the row is only just wide enough for
+   * the copy and the button, and a third item crushes the heading to four lines.
+   */
+  @media (min-width: 1024px) {
+    .cta-banner__mark {
+      display: block;
+      flex-shrink: 0;
+      color: var(--color-on-dark-muted);
     }
   }
 
@@ -55,39 +83,52 @@ import { base } from '../../utils/base';
     max-width: 52ch;
   }
 
+  /* margin-right rather than justify-content: space-between, which would also
+     space out the lighthouse and leave it stranded */
+  @media (min-width: 768px) {
+    .cta-banner__content {
+      margin-right: auto;
+    }
+  }
+
   .cta-banner__heading {
     font-family: var(--font-display);
     font-size: clamp(1.5rem, 3vw, var(--text-headline-md));
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-tight);
-    color: var(--color-primary);
+    color: var(--color-on-inverse-surface);
     line-height: var(--leading-tight);
   }
 
   .cta-banner__body {
     font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
-    /* Change B: was rgba(29,92,66,0.8) — opaque token gives 6.0:1 on #b1f0ce, WCAG AA */
-    color: var(--color-primary-dim);
+    color: var(--color-on-dark-muted);
   }
 
+  /* Outlined on the plate — a filled button would flatten against the navy */
   .cta-banner__button {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-2);
     white-space: nowrap;
     flex-shrink: 0;
     padding: var(--space-3) var(--space-7);
-    background-color: var(--color-primary);
+    border: 1px solid var(--color-on-dark-border);
+    background-color: transparent;
     color: var(--color-on-cta);
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     font-weight: var(--weight-semibold);
     border-radius: var(--radius-xs);
-    transition: transform var(--duration-fast) var(--ease-standard),
-                opacity var(--duration-fast) var(--ease-standard);
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard);
   }
 
   .cta-banner__button:hover {
-    transform: translateY(-2px);
+    opacity: 1;
+    background-color: var(--color-on-inverse-surface);
+    color: var(--color-navy);
   }
 </style>

@@ -1,4 +1,6 @@
 ---
+import CompassRose from '../icons/CompassRose.astro';
+
 const year = new Date().getFullYear();
 ---
 
@@ -7,6 +9,9 @@ const year = new Date().getFullYear();
     <p class="footer__copy">
       &copy; {year} Marek Hronec. All rights reserved.
     </p>
+
+    <CompassRose size={20} class="footer__rose" aria-hidden="true" />
+
     <a
       class="footer__linkedin"
       href="https://www.linkedin.com/in/marekhronec"
@@ -21,7 +26,7 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    background-color: var(--color-surface-container-low);
+    background-color: var(--color-navy);
     padding-block: var(--space-5);   /* 24px — compact */
     margin-top: 0;                   /* CTA section bottom padding handles the gap */
   }
@@ -35,24 +40,30 @@ const year = new Date().getFullYear();
     }
   }
 
+  /* 1fr / auto / 1fr keeps the rose optically centred regardless of copy width */
   .footer__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-4);
-    flex-wrap: wrap;
   }
 
   .footer__copy {
     font-size: var(--text-label-md);
     font-weight: var(--weight-medium);
-    color: var(--color-on-surface-muted);
+    color: var(--color-on-dark-muted);
+  }
+
+  .footer__rose {
+    color: var(--color-on-inverse-surface);
+    opacity: 0.35;
   }
 
   .footer__linkedin {
+    justify-self: end;
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
-    color: var(--color-primary);
+    color: var(--color-on-cta);
     transition: opacity var(--duration-fast) var(--ease-standard);
   }
 

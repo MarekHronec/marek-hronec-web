@@ -150,9 +150,9 @@ interface Props {
 
 Import and use:
 ```astro
-import BadgeCheck from '../icons/BadgeCheck.astro';
+import ShieldCheck from '../icons/ShieldCheck.astro';
 
-<BadgeCheck size={20} aria-hidden="true" />
+<ShieldCheck size={20} aria-hidden="true" />
 ```
 
 Always set `aria-hidden="true"` on decorative icons. If an icon is the sole content of an interactive element, provide an `aria-label` on the parent.
@@ -190,7 +190,7 @@ padding: var(--space-4);
 font-size: var(--text-body-md);
 
 /* Wrong */
-color: #2c694e;
+color: #1c4d7c;
 padding: 16px;
 font-size: 0.9375rem;
 ```
@@ -629,7 +629,7 @@ If you change either value, update the matching rule in the `<style is:global>` 
 
 ```ts
 const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: string; groupBg: string; icon: string }> = {
-  'cloud-reality': { border: '#2c694e', groupBorder: '#83AD9D', bg: '#dce8e3', groupBg: '#F9FAFA', icon: '#2c694e' },
+  'cloud-reality': { border: '#1c4d7c', groupBorder: '#8FAAC4', bg: '#dbe6f1', groupBg: '#F9FAFB', icon: '#1c4d7c' },
   governance:      { border: '#3e6daa', groupBorder: '#9FB8DA', bg: '#d9e5f4', groupBg: '#F7F8FC', icon: '#3e6daa' },
   network:         { border: '#6354a8', groupBorder: '#9996C8', bg: '#e6e3f4', groupBg: '#F7F6F9', icon: '#6354a8' },
   compliance:      { border: '#b85c20', groupBorder: '#D4956A', bg: '#f5e4d4', groupBg: '#FAFAF9', icon: '#b85c20' },
@@ -645,8 +645,8 @@ Each branch has five colour roles:
 
 ```ts
 // Path edges:
-'line-color': '#2c694e',          // = --color-primary (teal)
-'target-arrow-color': '#2c694e',
+'line-color': '#1c4d7c',          // = --color-primary (marine)
+'target-arrow-color': '#1c4d7c',
 
 // Related edges:
 'line-color': '#b3b2b1',          // neutral grey

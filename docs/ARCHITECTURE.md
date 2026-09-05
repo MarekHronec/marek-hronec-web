@@ -81,7 +81,9 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     ├── components/
     │   ├── about/                # Components exclusive to the About/Landing page
     │   │   ├── HeroSection.astro
-    │   │   ├── NarrativeSection.astro
+    │   │   ├── NarrativeSection.astro   # Grid wrapper: HowIWork + CoreExpertise
+    │   │   ├── HowIWork.astro           # Three connected process steps
+    │   │   ├── CoreExpertise.astro      # Navy plate, ruled discipline rows
     │   │   ├── CertsStackSection.astro   # Certifications list + tech stack grid, links to /credentials
     │   │   ├── ExperienceTimeline.astro
     │   │   └── CtaBanner.astro
@@ -92,18 +94,20 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── ContactHero.astro
     │   │   ├── ContactChannels.astro
     │   │   └── ContactServices.astro
-    │   ├── icons/                # Standalone SVG icon components (Lucide-based)
+    │   ├── icons/                # Standalone SVG icon components (Lucide-based + nautical marks)
     │   │   ├── Activity.astro
-    │   │   ├── BadgeCheck.astro
-    │   │   ├── BookOpen.astro
     │   │   ├── Briefcase.astro
     │   │   ├── Building.astro
+    │   │   ├── CompassRose.astro     # Nautical mark — How I Work 01, footer, 404, section ornament
+    │   │   ├── DraftingCompass.astro # Nautical mark — credential seal
     │   │   ├── Factory.astro
     │   │   ├── GridAppsIcon.astro
     │   │   ├── Layers.astro
+    │   │   ├── Lighthouse.astro      # Nautical mark — How I Work 02, CTA watermark
     │   │   ├── ListText.astro
     │   │   ├── Shield.astro
     │   │   ├── ShieldCheck.astro
+    │   │   ├── ShipsWheel.astro      # Nautical mark — How I Work 03 (hand-drawn)
     │   │   ├── SortIcon.astro
     │   │   ├── Tag.astro
     │   │   ├── Target.astro
@@ -115,8 +119,9 @@ All component props use TypeScript interfaces. All content schemas use Zod. All 
     │   │   ├── KBSearch.astro        # Pagefind full-text search — lazy-loads the bundle on first focus
     │   │   └── KnowledgeCanvas.astro # Learning Map canvas wrapper; lazy-loads canvas.ts on activation
     │   ├── layout/
-    │   │   ├── Header.astro      # Sticky glassmorphism nav
-    │   │   └── Footer.astro
+    │   │   ├── Header.astro      # Sticky opaque nav + logo lockup
+    │   │   ├── Logo.astro        # MH anchor monogram (vector master) — currentColor
+    │   │   └── Footer.astro      # Navy plate with centred compass rose
     │   └── shared/               # Domain-agnostic reusable components
     │       └── TagBadge.astro    # Neutral tag chip — used by CaseStudyCard, ArticleCard, credentials
     ├── content/
@@ -181,13 +186,18 @@ BaseLayout.astro
 │   ├── index.astro (/)
 │   │   ├── HeroSection.astro
 │   │   ├── NarrativeSection.astro
-│   │   │   └── BookOpen.astro (icon)
+│   │   │   ├── HowIWork.astro
+│   │   │   │   └── CompassRose / Lighthouse / ShipsWheel (icons)
+│   │   │   └── CoreExpertise.astro
+│   │   │       └── Layers / Workflow / ShieldCheck / Activity / GridAppsIcon (icons)
 │   │   ├── CertsStackSection.astro
-│   │   │   ├── BadgeCheck.astro (icon, ×3)
+│   │   │   ├── DraftingCompass.astro (icon, ×3)
 │   │   │   └── → links to /credentials
 │   │   ├── ExperienceTimeline.astro
+│   │   │   ├── CompassRose.astro (heading ornament)
 │   │   │   └── [inline <script>]  ← expand/collapse extra bullets
 │   │   └── CtaBanner.astro
+│   │       └── Lighthouse.astro (watermark)
 │   │
 │   ├── case-studies/index.astro (/case-studies)
 │   │   ├── CaseStudyMetrics.astro    ← featured card metrics panel
@@ -334,10 +344,13 @@ All CSS custom properties are defined in `src/styles/tokens.css` and imported gl
 
 | Token | Value | Usage |
 |---|---|---|
-| `--color-primary` | `#2c694e` | Links, CTAs, active states, structural accents |
-| `--color-primary-dim` | `#1e5d43` | CTA gradient endpoint, callout label text |
+| `--color-primary` | `#1c4d7c` | Links, CTAs, active states, structural accents |
+| `--color-primary-dim` | `#14395c` | CTA gradient endpoint, callout label text |
 | `--color-on-primary` | `#ffffff` | Text on primary-coloured backgrounds |
-| `--color-primary-container` | `#c0ddd1` | Text selection highlight |
+| `--color-primary-container` | `#cddeee` | Text selection highlight, icons on navy |
+| `--color-primary-tint` | `#e3edf6` | Active filter pills, pressed sheet rows |
+| `--color-navy` | `#14315c` | Brand plate — logo ground, Core Expertise, CTA, footer, header button |
+| `--color-navy-dim` | `#0f2647` | Reserved darker plate |
 | `--color-surface` | `#fcf9f8` | Page background (warm off-white) |
 | `--color-surface-container-lowest` | `#ffffff` | Featured card inner surface |
 | `--color-surface-container-low` | `#f6f3f2` | Article cards, outer trays |
@@ -345,19 +358,21 @@ All CSS custom properties are defined in `src/styles/tokens.css` and imported gl
 | `--color-surface-container-high` | `#eae8e7` | Hover states on interactive surface items |
 | `--color-on-surface` | `#323232` | Body text (never pure black) |
 | `--color-on-surface-muted` | `#5f5f5f` | Secondary text, captions |
-| `--color-inverse-surface` | `#0e0e0e` | Code block backgrounds |
+| `--color-inverse-surface` | `#0b1c2f` | Code block backgrounds (near-black marine) |
 | `--color-on-inverse-surface` | `#f4f1f0` | Code block body text |
 | `--color-secondary-container` | `#e4e2e2` | Tag badges, inline code backgrounds |
 | `--color-outline-variant` | `rgba(50,50,50,0.15)` | Ghost borders (felt, not seen) |
-| `--color-warm-gray` | `rgba(179,178,177,1)` | Hairline dividers, arrows |
+| `--color-warm-gray` | `rgba(179,178,177,1)` | Ornaments, arrows, dotted connectors |
+| `--color-divider` | `rgba(50,50,50,0.12)` | Row rules inside a register or table |
+| `--color-divider-strong` | `rgba(50,50,50,0.22)` | Section rules, column splits, icon-ring outlines |
 | `--color-meta-label` | `rgba(100,100,100,1)` | Metadata label text — raised for WCAG AA (ADR-021) |
-| `--color-cta-surface` | `#dce8e3` | CTA banner background |
-| `--color-on-cta` | `rgba(225,255,236,1)` | Text on primary-coloured banner |
-| `--glass-bg` | `rgba(252,249,248,0.80)` | Header and TOC glass surface |
-| `--glass-blur` | `blur(24px)` | Header and TOC backdrop filter |
+| `--color-on-cta` | `rgba(223,235,246,1)` | Text and outlined buttons on a navy plate |
+| `--glass-bg` | `rgba(252,249,248,0.80)` | TOC and mobile-sheet glass surface |
+| `--glass-blur` | `blur(24px)` | TOC and mobile-sheet backdrop filter |
 | `--gradient-cta` | `linear-gradient(145deg, primary, primary-dim)` | Primary buttons |
-| `--color-on-dark-muted` | `rgba(244,241,240,0.65)` | Body text on inverse-surface (dark card) — WCAG AA 7.6:1 |
-| `--color-on-dark-dim` | `rgba(244,241,240,0.60)` | De-emphasised text on inverse-surface — WCAG AA 6.6:1 |
+| `--color-on-dark-muted` | `rgba(244,241,240,0.65)` | Body text on a navy plate — WCAG AA 5.8:1 |
+| `--color-on-dark-dim` | `rgba(244,241,240,0.60)` | De-emphasised text on a navy plate — WCAG AA 5.2:1 |
+| `--color-on-dark-border` | `rgba(255,255,255,0.14)` | Hairline rules on a navy plate |
 | `--color-kb-text` | `rgba(113,113,122,1)` | KB chrome: sidebar labels, TOC links, nav items |
 | `--color-kb-text-muted` | `rgba(107,107,115,1)` | KB chrome: breadcrumbs, count labels, sub-items — raised for WCAG AA (ADR-021) |
 | `--color-level-beginner-bg/text` | mint green pair | Article level badge — beginner |
@@ -414,9 +429,17 @@ Section boundaries are established through background-colour shifts across the s
                     └── --color-surface-container-lowest (#ffffff)  ← featured card inner
 ```
 
+### Containment
+
+Only the header and footer render full-bleed. Section elements span the viewport so their backgrounds *can*, but every plate, banner and rule inside them stops at the container's content edge. Section hairlines use the `.section-rule` utility in `global.css` rather than a `border-top`, which would otherwise draw the full viewport width — see [DESIGN.md](DESIGN.md#8-component-patterns).
+
+### Border radius
+
+`--radius-xs`, `--radius-sm`, `--radius-md` and `--radius-lg` all resolve to `0`; only `--radius-full` (`9999px`) carries a value, and it is reserved for genuinely circular marks — icon wells, bullet dots, hamburger bars. Keeping the four named tokens rather than deleting them means the intent of each call site survives, and a future change of mind is a four-line edit in `tokens.css` rather than a site-wide sweep.
+
 ### Glassmorphism scope
 
-The header navigation and the floating article TOC are the only two elements that use glassmorphism. The values come from tokens:
+The floating article TOC and the mobile filter sheet are the only two elements that use glassmorphism. The sticky header is deliberately opaque (ADR-029). The values come from tokens:
 
 ```css
 background: var(--glass-bg);            /* rgba(252,249,248, 0.80) */
@@ -424,7 +447,7 @@ backdrop-filter: var(--glass-blur);     /* blur(24px) */
 -webkit-backdrop-filter: var(--glass-blur);
 ```
 
-This scope is deliberate. Applying glassmorphism broadly reduces its perceptual impact. Restricting it to structural chrome (nav) and navigation aids (TOC) makes it legible without becoming decorative.
+This scope is deliberate. Applying glassmorphism broadly reduces its perceptual impact. Restricting it to elements that genuinely float over scrolling content — a document outline and a bottom sheet — makes it legible without becoming decorative.
 
 ### Scroll offset
 

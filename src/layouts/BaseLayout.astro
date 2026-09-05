@@ -14,7 +14,7 @@ interface Props {
 const {
   title,
   description = 'Senior Cloud Architect — Azure, OCI. Architecting clarity in the cloud.',
-  ogImage,
+  ogImage = '/images/og-image.webp',
   canonicalURL = Astro.url.href,
 } = Astro.props;
 
@@ -31,6 +31,7 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} />
 
     <!-- Primary Meta -->
     <title>{fullTitle}</title>
@@ -42,14 +43,14 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    {ogImage && <meta property="og:image" content={`${base}${ogImage}`} />}
+    <meta property="og:image" content={`${base}${ogImage}`} />
     <meta property="og:site_name" content={siteName} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    {ogImage && <meta name="twitter:image" content={`${base}${ogImage}`} />}
+    <meta name="twitter:image" content={`${base}${ogImage}`} />
 
     <!-- JSON-LD structured data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify({

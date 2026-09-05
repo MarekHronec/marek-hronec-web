@@ -18,13 +18,13 @@ export async function getStaticPaths() {
     if (!a.data.featured && b.data.featured) return 1;
     return a.data.title.localeCompare(b.data.title);
   });
-  return sorted.map((entry, index) => ({
+  return sorted.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, caseStudyNumber: String(index + 1).padStart(2, '0') },
+    props: { entry },
   }));
 }
 
-const { entry, caseStudyNumber } = Astro.props;
+const { entry } = Astro.props;
 const {
   title, context, industry, role, tags, metrics, excerpt,
   heroImage, titleHighlight,
@@ -37,7 +37,7 @@ const titleAfter   = hasHighlight ? title.slice(title.indexOf(titleHighlight!) +
 const { Content } = await render(entry);
 ---
 
-<BaseLayout title={title} description={excerpt} ogImage="/images/og-image.webp">
+<BaseLayout title={title} description={excerpt}>
 
   <!-- ── Hero ─────────────────────────────────────────────────────── -->
   <section class="cs-hero">
@@ -45,7 +45,6 @@ const { Content } = await render(entry);
 
       <!-- Full-width: eyebrow + title -->
       <div class="cs-hero__header">
-        <p class="cs-hero__eyebrow">Case Study {caseStudyNumber}</p>
         <h1 class="cs-hero__title">
           {hasHighlight
             ? <>{titleBefore}<span class="cs-hero__title-accent">{titleHighlight}</span>{titleAfter}</>
@@ -251,14 +250,6 @@ const { Content } = await render(entry);
     gap: var(--space-4);
   }
 
-  .cs-hero__eyebrow {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
 
   .cs-hero__title {
     font-family: var(--font-display);
@@ -488,7 +479,7 @@ const { Content } = await render(entry);
   }
 
   .prose :global(blockquote) {
-    border-left: 3px solid var(--color-quote-accent);
+    border-left: 3px solid var(--color-primary);
     background-color: var(--color-surface-container-low);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: var(--space-5) var(--space-6);

@@ -29,3 +29,6 @@ CLAUDE.md
 DESIGN.md
 .claude/
 .vscode
+
+# Local image backups — public/ is served verbatim, so these must never ship
+public/images/Backup/

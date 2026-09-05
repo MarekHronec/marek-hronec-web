@@ -32,11 +32,11 @@ export interface CanvasEdge {
 }
 
 // ── Branch colours ────────────────────────────────────────────────────────
-// Deliberately distinct: teal (site primary) / slate-blue / purple
+// Deliberately distinct: marine (site primary) / teal / purple / rust
 
 const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: string; groupBg: string; icon: string }> = {
-  'cloud-reality': { border: '#2c694e', groupBorder: '#83AD9D', bg: '#dce8e3', groupBg: '#F9FAFA', icon: '#2c694e' },
-  governance:      { border: '#3e6daa', groupBorder: '#9FB8DA', bg: '#d9e5f4', groupBg: '#F7F8FC', icon: '#3e6daa' },
+  'cloud-reality': { border: '#1c4d7c', groupBorder: '#8FAAC4', bg: '#dbe6f1', groupBg: '#F9FAFB', icon: '#1c4d7c' },
+  governance:      { border: '#2f7d8c', groupBorder: '#97BEC5', bg: '#d9ecef', groupBg: '#F7FBFB', icon: '#2f7d8c' },
   network:         { border: '#6354a8', groupBorder: '#9996C8', bg: '#e6e3f4', groupBg: '#F7F6F9', icon: '#6354a8' },
   compliance:      { border: '#b85c20', groupBorder: '#D4956A', bg: '#f5e4d4', groupBg: '#FAFAF9', icon: '#b85c20' },
 };
@@ -44,7 +44,7 @@ const BRANCH_COLORS: Record<string, { border: string; groupBorder: string; bg: s
 function branchBorder     (branch: string): string { return BRANCH_COLORS[branch]?.border      ?? '#5f5f5f'; }
 function branchGroupBorder(branch: string): string { return BRANCH_COLORS[branch]?.groupBorder ?? '#83AD9D'; }
 function branchGroupBg    (branch: string): string { return BRANCH_COLORS[branch]?.groupBg     ?? '#F9FAFA'; }
-function branchIcon       (branch: string): string { return BRANCH_COLORS[branch]?.icon        ?? '#2c694e'; }
+function branchIcon       (branch: string): string { return BRANCH_COLORS[branch]?.icon        ?? '#1c4d7c'; }
 
 // ── Inline SVG icons (Lucide-compatible, 16×16 on 24×24 viewBox) ──────────
 
@@ -192,7 +192,7 @@ function nodeTemplate(data: Record<string, unknown>, isEntry: boolean): string {
 
   const aIconKey = ARTICLE_ICON[id] ?? 'book';
   const aIcon    = icon(aIconKey, color, 20);
-  const iconBg   = BRANCH_COLORS[branch]?.bg ?? '#dce8e3';
+  const iconBg   = BRANCH_COLORS[branch]?.bg ?? '#dbe6f1';
 
   return `<div class="kbc-node${isEntry ? ' kbc-node--entry' : ''}" data-level="${level}" data-branch="${branch}">
     ${isEntry ? '<span class="kbc-node__start">START HERE</span>' : ''}
@@ -365,8 +365,8 @@ export function initCanvas(wrapperId: string, canvasId: string, panelId: string)
       {
         selector: 'edge[type = "path"]',
         style: {
-          width: 1.5, 'line-color': '#2c694e',
-          'target-arrow-color': '#2c694e', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8,
+          width: 1.5, 'line-color': '#1c4d7c',
+          'target-arrow-color': '#1c4d7c', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8,
           'curve-style': 'round-taxi', 'taxi-direction': 'downward', opacity: 0.5,
         } as cytoscape.Css.Edge,
       },

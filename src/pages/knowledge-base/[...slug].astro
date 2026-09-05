@@ -39,7 +39,7 @@ const updatedStr = (updated && updated.getTime() !== date.getTime()) ? formatDat
 const categoryLabel = category.toUpperCase();
 ---
 
-<BaseLayout title={title} description={excerpt} ogImage="/images/og-image.webp">
+<BaseLayout title={title} description={excerpt}>
   <div class="kb-page">
 
     <CategorySidebar />
@@ -295,7 +295,7 @@ const categoryLabel = category.toUpperCase();
     letter-spacing: -0.03em;
     text-transform: uppercase;
     padding: 4px var(--space-2);
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   .kb-article__badge--advanced {
@@ -547,7 +547,7 @@ const categoryLabel = category.toUpperCase();
     padding: var(--space-5);
     background-color: var(--color-surface-container-low);
     border-left: 4px solid var(--color-primary);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 
   .prose :global(.callout-tip__icon) {
@@ -580,7 +580,7 @@ const categoryLabel = category.toUpperCase();
     padding: var(--space-5);
     background-color: var(--color-callout-warning-bg);
     border-left: 4px solid var(--color-callout-warning-accent);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 
   .prose :global(.callout-warning__icon) {

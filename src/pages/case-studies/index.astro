@@ -18,7 +18,6 @@ const others     = allStudies.filter((s) => !s.data.featured);
 <BaseLayout
   title="Case Studies"
   description="Real-world cloud architecture engagements — outcomes, metrics, and technical decisions."
-  ogImage="/images/og-image.webp"
 >
 
   <!-- ── Hero — same spacing tokens as About page for consistent rhythm ── -->
@@ -26,7 +25,6 @@ const others     = allStudies.filter((s) => !s.data.featured);
     <div class="cs-hero__inner container">
 
       <div class="cs-hero__content">
-        <p class="cs-hero__label">Proven Cloud Solutions</p>
         <h1 class="cs-hero__heading">Case Studies<span class="cs-hero__period">.</span></h1>
         <p class="cs-hero__subtitle">
            Exploring real-world challenges and innovative solutions, these projects showcase my 
@@ -165,15 +163,6 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     max-width: var(--container-narrow); /* keep subtitle to a readable width */
   }
 
-  /* ← identical to .hero__label */
-  .cs-hero__label {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
 
   /* ← identical to .hero__heading */
   .cs-hero__heading {
@@ -288,9 +277,9 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
     letter-spacing: 0.045em;
     text-transform: uppercase;
     color: var(--color-primary-dim);
-    background-color: var(--color-cta-surface);
+    background-color: var(--color-primary-tint);
     padding: 2px var(--space-2);
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   .cs-featured__title {
@@ -384,7 +373,7 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
   /* ── Diagram ────────────────────────────────────────────────── */
   .cs-featured__diagram {
     background-color: var(--color-surface-container-low);
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
     position: relative;
     min-height: 180px;
     max-height: 220px;
@@ -431,7 +420,7 @@ document.querySelector<HTMLImageElement>('.cs-featured__diagram-img')
   }
 
   .cs-featured__report-btn:hover {
-    background-color: var(--color-cta-surface);
+    background-color: var(--color-primary-tint);
     transform: translateY(-2px);
   }
 

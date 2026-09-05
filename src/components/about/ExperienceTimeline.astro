@@ -1,4 +1,6 @@
 ---
+import CompassRose from '../icons/CompassRose.astro';
+
 interface Bullet {
   label: string;
   text: string;
@@ -43,22 +45,23 @@ const entries: ExperienceEntry[] = [
 ];
 ---
 
-<section class="experience">
+<section class="experience section-rule">
   <div class="experience__inner container">
     <!-- The hairline rule is the one place we break the no-divider rule — it frames the section heading, not content rows. -->
     <div class="experience__heading-row">
       <h2 class="experience__heading">Selected Experience</h2>
       <div class="experience__heading-rule" aria-hidden="true"></div>
+      <CompassRose size={20} class="experience__heading-rose" aria-hidden="true" />
     </div>
     <div class="experience__list">
       {entries.map((entry) => (
         <article class="experience__entry">
           <div class="experience__meta">
             <span class="experience__client">{entry.client}</span>
+            <span class="experience__subtitle">{entry.subtitle}</span>
           </div>
           <div class="experience__detail">
             <h3 class="experience__title">{entry.title}</h3>
-            <p class="experience__subtitle">{entry.subtitle}</p>
             <p class="experience__body">{entry.description}</p>
             {entry.bullets && (
               <div class="experience__bullets-wrapper">
@@ -105,7 +108,7 @@ const entries: ExperienceEntry[] = [
 
 <style>
   .experience {
-    padding-block: 0 var(--space-6);
+    padding-block: var(--space-7) var(--space-8);
     background-color: var(--color-surface);
   }
 
@@ -132,39 +135,109 @@ const entries: ExperienceEntry[] = [
     background-color: var(--color-warm-gray-30);
   }
 
-  .experience__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+  .experience__heading-rose {
+    flex-shrink: 0;
+    color: var(--color-warm-gray);
   }
 
-  .experience__entry {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
+  /*
+   * The rail runs down the middle of its own grid column, between the employer
+   * and the role. --meta-w and --rail-col drive both the entry grid and the
+   * rail geometry, so the line stays centred at every breakpoint. On mobile the
+   * meta column collapses to zero and the rail sits at the left instead.
+   */
+  .experience__list {
+    --meta-w: 0px;
+    --rail-col: 2rem;
+    --node: 9px;
+    --rail-x: calc(var(--meta-w) + var(--rail-col) / 2);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
   }
 
   @media (min-width: 640px) {
-    .experience__entry {
-      grid-template-columns: 160px 1fr;
-      gap: var(--space-8);
+    .experience__list {
+      --meta-w: 170px;
+      --rail-col: 3rem;
     }
   }
 
   @media (min-width: 1024px) {
+    .experience__list {
+      --meta-w: 200px;
+      --rail-col: 3.5rem;
+    }
+  }
+
+  /*
+   * Anchored top and bottom on the list itself, so expanding an entry
+   * lengthens the rail with it — no measuring, no script.
+   */
+  .experience__list::before {
+    content: '';
+    position: absolute;
+    top: 0.6rem;
+    bottom: 0;
+    left: calc(var(--rail-x) - 0.5px);
+    width: 1px;
+    background-color: var(--color-divider-strong);
+  }
+
+  .experience__entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding-left: var(--rail-col);
+  }
+
+  /* Node: an open ring centred on the rail, punched out of the page surface */
+  .experience__entry::before {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    left: calc(var(--rail-x) - var(--node) / 2 - 1px);
+    width: var(--node);
+    height: var(--node);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+    z-index: 1;
+  }
+
+  @media (min-width: 640px) {
     .experience__entry {
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: var(--meta-w) var(--rail-col) 1fr;
+      grid-template-areas: 'meta rail detail';
+      column-gap: 0;
+      padding-left: 0;
+    }
+
+    .experience__meta {
+      grid-area: meta;
+      padding-right: var(--space-5);
+    }
+
+    .experience__detail {
+      grid-area: detail;
     }
   }
 
   .experience__meta {
-    padding-top: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-top: 1px;
   }
 
   .experience__client {
     font-family: var(--font-body);
     font-size: var(--text-body-md);
-    color: var(--color-on-surface-muted);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
     line-height: var(--leading-snug);
   }
 
@@ -185,9 +258,10 @@ const entries: ExperienceEntry[] = [
 
   .experience__subtitle {
     font-family: var(--font-body);
-    font-size: var(--text-body-md);
+    font-size: var(--text-label-md);
     color: var(--color-on-surface-muted);
     font-style: italic;
+    line-height: var(--leading-snug);
   }
 
   .experience__body {
@@ -195,7 +269,7 @@ const entries: ExperienceEntry[] = [
     line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
     max-width: 68ch;
-    margin-top: var(--space-2);
+    margin-top: var(--space-1);
   }
 
   .experience__bullets {

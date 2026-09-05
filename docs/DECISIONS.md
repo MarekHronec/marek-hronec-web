@@ -99,6 +99,8 @@ The layout reads as a series of stacked paper surfaces, consistent with the phys
 
 ## ADR-005: Glassmorphism — Scoped to Navigation and TOC Only
 
+> **Status:** Superseded by ADR-029 — the header is now opaque; glass is scoped to the article TOC and the mobile filter sheet.
+
 **Status:** Accepted  
 **Date:** 2025-03-20
 
@@ -380,6 +382,8 @@ Footer height is unchanged on all pages except KB listing and article detail (mo
 ---
 
 ## ADR-017: CTA Banner Surface — `#dce8e3` over `#b1f0ce`
+
+> **Status:** Superseded by ADR-029 — the CTA banner is now a navy plate; the token was renamed `--color-primary-tint`.
 
 **Status:** Accepted  
 **Date:** 2025-04-16
@@ -696,3 +700,61 @@ Added a `visit(tree, 'textDirective', ...)` handler to `remarkCallouts` (before 
 ISO certification notation renders correctly in all prose paragraphs. Any future content using `:YEAR` or other `:word` patterns is handled automatically. The `:::` container directive namespace for callout blocks is unaffected.
 
 **Cache note.** When modifying remark/rehype plugins and build output does not reflect the change: delete `node_modules/.astro/` (the Astro 6 Content Layer data store) in addition to `dist/` and `.astro/`.
+## ADR-029: Marine Blue Identity — Drawn Structure, Square Corners, Opaque Header
+
+**Status:** Accepted
+**Date:** 2026-08-30
+**Supersedes:** ADR-005 (glassmorphism on the header), ADR-017 (mint CTA surface)
+
+**Context.**
+The site read as generically machine-generated despite each individual decision being defensible. Four patterns were doing the damage, all of them house style in AI-authored marketing pages:
+
+1. **Muted teal on warm paper.** A green accent over off-white is the single most common palette in generated portfolio sites. The colour carried no connection to the owner or the subject matter.
+2. **Tonal blocks everywhere.** The "no-line" rule (ADR-002 / DESIGN.md §2) pushed every separation into a tinted panel. Stacked pastel cards is a recognisable generated-page signature, and the effect compounds down a long page.
+3. **Rounded corners on everything.** `--radius-md` (`0.5rem`) on cards and `--radius-lg` (`0.75rem`) on banners produced the soft-bubble look the design system explicitly claimed to reject.
+4. **All-caps eyebrow labels above headings.** "INTRODUCTION", "PROVEN CLOUD SOLUTIONS", "DIRECT COMMUNICATIONS", "PROFESSIONAL CREDENTIALS". Each sat above a heading that already said the same thing. They are pure filler and read as machine boilerplate.
+
+A brand mark existed independently of the site — an MH anchor monogram on a deep navy plate — which had never been used anywhere in the design. The site had a latent nautical vocabulary (the ship illustrations, the 404 chart background and compass rose) that the palette and chrome were not supporting.
+
+**Decision.**
+
+*Colour.* One hue carries the whole site, drawn from the mark: `--color-primary` `#1c4d7c` (marine blue, 8.4:1 on the page surface) for links, icons and structural accents; `--color-navy` `#14315c` for brand plates; `--color-primary-tint` `#e3edf6` for active washes. Depth comes from the marine ramp, never from a second hue. `--color-inverse-surface` moved from neutral `#0e0e0e` to `#0b1c2f` so code blocks sit inside the colour story, and `--color-code-accent` moved from emerald to pale sky. The article level badges collapsed from a green/yellow/green set to a single marine ramp, so difficulty reads as depth. `--color-quote-accent` (`#2e5c7a`, previously reserved for blockquote left borders as a deliberate contrast to the teal) was retired: with a marine primary the two hues are indistinguishable, and one hue with one meaning is the stronger rule. Blockquotes now use `--color-primary`.
+
+*Structure.* Hairline rules replace tonal blocks as the primary means of separation. Two weights: `--color-divider` (12%) for rows inside a register, `--color-divider-strong` (22%) for section rules, column splits and icon rings; `--color-on-dark-border` (white 14%) does both jobs on navy. Rules are strategic, not systematic — they never appear between every item of a content list. The About page now carries no tinted panel at all: the process steps, certifications and technical stack sit directly on the page surface, split by one vertical hairline, with a single navy plate beside them.
+
+*Corners.* `--radius-xs/sm/md/lg` all resolve to `0`. `--radius-full` survives for circular marks only. The tokens were kept rather than deleted so each call site's intent stays legible.
+
+*Header.* Glassmorphism removed. The header is opaque `--color-surface` with one `--color-divider` bottom rule, and carries the brand lockup (mark + name + role). Glass remains only on the floating article TOC and the mobile filter sheet — elements that genuinely float over scrolling content. ADR-005 restricted glass to "structural chrome and navigation aids"; the header is chrome, but a blurred bar reads as an application, and this site is a document.
+
+*Eyebrows.* All six removed (hero, case studies listing, case study detail, credentials, contact, knowledge base), along with the two `contact-card__label` chips. The `caseStudyNumber` prop that fed the case study eyebrow was removed from `getStaticPaths`. Small-caps labels survive only where they *name* a section — CERTIFICATIONS, TECHNICAL STACK, HOW I WORK, CORE EXPERTISE — each now underscored by a 2.5rem primary rule.
+
+*Nautical marks.* Four icon components carry the maritime vocabulary into the page: `CompassRose`, `Lighthouse` and `DraftingCompass` are third-party SVGs cleaned of generator comments, DOCTYPE declarations and hardcoded fills, with `currentColor` applied at the root; `ShipsWheel` is hand-drawn to match their optical weight because no suitable source was available. They appear in ringed wells whose geometry is shared between the process steps (5rem) and the credential seals (2.5rem), so the two sections read as one system.
+
+*Brand mark.* The vectorised master artwork is used verbatim. `src/components/layout/Logo.astro` carries the two emblem paths (ring + anchor + monogram) on a square `203 136 845 845` viewBox, painted in `currentColor` so one file serves the navy-on-paper header and any white-on-navy plate.
+
+The trace's thinnest element — the ring — is about 10 units in that 845-unit box, which resolves to under half a CSS pixel at the 38px header size and antialiases to grey. Rather than redraw it, the component strokes the shapes in their own fill colour, which dilates every edge outward, and solves the width per render so the ring never falls below 1.1 CSS px: `max(0, (1.1 x 845) / size - 10)`. At 38px that is a 14.5-unit dilation; past roughly 93px it resolves to zero and the artwork renders exactly as traced. `public/favicon.svg` applies the same trick at a fixed 24-unit dilation, chosen by rendering candidates at 16/32/64px — a browser tab needs a different optical weight than a header lockup.
+
+`public/apple-touch-icon.png` (180px) and `public/images/og-image.png` (1200x630) are generated from the same master with `sharp`, which is already present as an Astro dependency. The share card is the full lockup at true proportions — emblem over the real wordmark glyph paths, not typeset text. `ogImage` became a `BaseLayout` default rather than a prop repeated on seven pages.
+
+*How I Work.* The narrative section was rebuilt as three connected steps — Understand / Design / Enable — each a numbered token above a ringed mark, joined by dotted connectors. Connectors are drawn as a `::before` on every well-row after the first, reaching back across the grid gap; because the well-row is exactly one grid column wide, the `50%` in that calculation resolves to the column centre at any viewport, and the connector is suppressed below 640px where the grid collapses.
+
+**Alternatives considered.**
+
+| Option | Why not |
+|---|---|
+| Keep the teal, change only the chrome | The palette was the loudest generic signal; changing corners alone would not have moved the page |
+| Adopt navy but keep tonal blocks | Navy panels stacked on tinted panels is heavier, not cleaner — the restraint is what makes the one plate read as deliberate |
+| Rule every list for consistency | A rule between every item is as noisy as a panel around every section; whitespace still separates content within a block |
+| Embed the logo PNG | Vector geometry is crisp at 16px, recolours with `currentColor`, and costs ~2KB against a raster's tens of KB |
+| Redraw the ring thicker for small sizes | Two divergent versions of the mark to keep in sync; dilating the real geometry keeps one source of truth |
+
+**Consequences.**
+Almost all of the change landed in `src/styles/tokens.css`, because colour and radius were already fully tokenised — no component hardcoded either. The exceptions were `src/scripts/canvas.ts` and `KnowledgeCanvas.astro`, where the Learning Map's categorical branch palette is necessarily literal: `cloud-reality` moved to marine and `governance` moved from slate-blue `#3e6daa` to teal-cyan `#2f7d8c` to stay distinguishable from it.
+
+`BadgeCheck.astro` and `BookOpen.astro` became unused and were deleted. `--color-cta-surface` was renamed `--color-primary-tint`: the CTA banner it was named for is now a navy plate, while its four other call sites were always using it as an active-state wash.
+
+`public/images/og-image.webp` is no longer referenced. It is retained rather than deleted because it contains the ship illustration; it needs recolouring or removal.
+
+**Open follow-up.** No `site.webmanifest` yet — the apple-touch-icon is linked directly from `BaseLayout`.
+
+**Colour note.** The supplied logo file paints its plate `#041f42`, appreciably darker than the `#14315c` this ADR adopts. `#14315c` was sampled from the logo as rendered and is what every contrast ratio here was checked against; the site and the brand assets both use it. If the artwork's value is the canonical one, changing `--color-navy` is a one-token edit, but the on-dark text ratios need re-checking.

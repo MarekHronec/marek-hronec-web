@@ -6,13 +6,20 @@
 :root {
   /* ---------- Colors ---------- */
 
-  /* Primary — Muted Teal */
-  --color-primary: #2c694e;
-  --color-primary-dim: #1e5d43;
+  /* Primary — Marine Blue. One hue carries the whole site: links, icons,
+     active markers, accents. Derived from the brand navy in the logo. */
+  --color-primary: #1c4d7c;
+  --color-primary-dim: #14395c;
   --color-on-primary: #ffffff;
-  --color-primary-container: #c0ddd1;
+  --color-primary-container: #cddeee;
 
-  /* Surface layers (tonal layering — no 1px borders) */
+  /* Deep navy — the brand plate. Logo ground, dark panels, CTA, footer.
+     Same hue family as primary, two stops darker. */
+  --color-navy: #14315c;
+  --color-navy-dim: #0f2647;
+
+  /* Surface layers — warm paper tones, unchanged. Structure now comes from
+     hairline rules (--color-divider), not from stacked tonal blocks. */
   --color-surface: #fcf9f8;
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #f6f3f2;
@@ -23,21 +30,22 @@
   --color-on-surface: #323232;
   --color-on-surface-muted: #5f5f5f;
 
-  /* Inverse (code blocks) */
-  --color-inverse-surface: #0e0e0e;
+  /* Inverse (code blocks) — near-black marine, so terminals stay on-brand */
+  --color-inverse-surface: #0b1c2f;
   --color-on-inverse-surface: #f4f1f0;
 
-  /* Dark card text hierarchy — for elements on inverse-surface (#0e0e0e) backgrounds.
-     Change A: --color-on-dark-dim raised from 0.40 to 0.60 to meet WCAG AA 4.5:1.
-     Ratios on #0e0e0e: muted ≈ 7.6:1 | dim ≈ 6.6:1 */
+  /* Dark card text hierarchy — for elements on navy / inverse-surface grounds.
+     Ratios on #14315c: muted ≈ 5.8:1 | dim ≈ 5.2:1 */
   --color-on-dark-muted: rgba(244, 241, 240, 0.65);
   --color-on-dark-dim:   rgba(244, 241, 240, 0.60);
-  --color-on-dark-border: rgba(255, 255, 255, 0.08);  /* hairline separator on inverse-surface */
+  --color-on-dark-border: rgba(255, 255, 255, 0.14);  /* hairline rule on navy */
 
-  /* Quote accent — muted steel blue, same tonal weight as --color-primary.
-     EXCLUSIVE USE: blockquote left-border only. Never use for links, CTAs,
-     headings, icons, or any other element. One hue, one meaning. */
-  --color-quote-accent: #2e5c7a;
+  /* ---------- Rules & dividers ----------
+     Structure is drawn, not shaded. Hairlines replace the old tonal-block
+     separation: --color-divider between rows, --color-divider-strong to
+     underline a section heading or split two columns of content. */
+  --color-divider:        rgba(50, 50, 50, 0.12);
+  --color-divider-strong: rgba(50, 50, 50, 0.22);
 
   /* Secondary */
   --color-secondary-container: #e4e2e2;
@@ -46,7 +54,7 @@
   /* Ghost border — felt, not seen */
   --color-outline-variant: rgba(50, 50, 50, 0.15);
 
-  /* Warm gray — used for dividers, arrows, separators */
+  /* Warm gray — arrows, ornaments, muted separators */
   --color-warm-gray: rgba(179, 178, 177, 1);
   --color-warm-gray-30: rgba(179, 178, 177, 0.3);
   --color-warm-gray-20: rgba(179, 178, 177, 0.2);
@@ -56,8 +64,8 @@
   /* Muted warm gray — meta labels */
   --color-meta-label: rgba(100, 100, 100, 1);
 
-  /* Light mint — used on primary-colored backgrounds */
-  --color-on-cta: rgba(225, 255, 236, 1);
+  /* Pale marine — used on navy grounds for secondary text on CTAs */
+  --color-on-cta: rgba(223, 235, 246, 1);
 
 
   /* ---------- Typography ---------- */
@@ -117,13 +125,24 @@
   --gutter: var(--space-4);             /* 16px mobile — overridden at wider breakpoints */
   --nav-height: 4rem;                   /* sticky header height — used in calc() offsets */
 
-  /* ---------- Border Radius ---------- */
+  /* Distance from a full-width section's edge to the container's content edge.
+     Only valid on a property whose containing block is that full-width section
+     — e.g. left/right on .section-rule::before. Do NOT use it as a width. */
+  --container-inset: max(
+    var(--gutter),
+    calc((100% - var(--container-max)) / 2 + var(--gutter))
+  );
 
-  --radius-xs: 0.125rem;  /* tag badges, expand button, sharp CTA button */
-  --radius-sm: 0.25rem;   /* buttons */
-  --radius-md: 0.5rem;    /* code blocks, cards */
-  --radius-lg: 0.75rem;
-  --radius-full: 9999px;  /* chips, tags */
+  /* ---------- Border Radius ----------
+     The layout is drafted, not bubbled: panels, buttons, badges and inputs
+     all square off. --radius-full stays for genuinely circular marks
+     (icon wells, bullet dots, hamburger bars). */
+
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-full: 9999px;
 
   /* ---------- Elevation & Shadows ---------- */
 
@@ -131,7 +150,9 @@
   --shadow-float: 0px 20px 40px rgba(50, 50, 50, 0.06);
   --shadow-card: 0px 4px 16px rgba(50, 50, 50, 0.05);
 
-  /* ---------- Glassmorphism ---------- */
+  /* ---------- Glassmorphism ----------
+     Floating overlays only (article TOC, mobile filter sheet). The header is
+     deliberately opaque — see DESIGN.md §2. */
 
   --glass-bg: rgba(252, 249, 248, 0.80);
   --glass-blur: blur(24px);
@@ -144,37 +165,38 @@
   --duration-normal: 250ms;
   --duration-slow: 400ms;
 
-  /* CTA banner surface — mint green */
-  --color-cta-surface: #dce8e3;
+  /* Pale marine tint — active filter pills, pressed sheet rows, hover plates */
+  --color-primary-tint: #e3edf6;
 
   /* KB interface neutrals — cool-gray scale for sidebar, outline, and article chrome.
      These are intentionally cool-toned to distinguish KB UI chrome from content text. */
   --color-kb-text:       rgba(113, 113, 122, 1);   /* section labels, nav items, TOC links */
   --color-kb-text-muted: rgba(107, 107, 115, 1);   /* breadcrumbs, count labels, sub-items */
 
-  /* Article level badge colors — shared by ArticleCard and article detail page */
-  --color-level-beginner-bg:         rgba(220, 252, 231, 1);
-  --color-level-beginner-text:       rgba(22, 101, 52, 1);
-  --color-level-intermediate-bg:     rgba(254, 249, 195, 1);
-  --color-level-intermediate-text:   rgba(113, 63, 18, 1);
-  --color-level-advanced-bg:         rgba(236, 253, 245, 1);
-  --color-level-advanced-bg-dim:     rgba(236, 253, 245, 0.6);   /* mobile sheet active — 60% */
-  --color-level-advanced-text:       rgba(6, 95, 70, 1);
+  /* Article level badge colors — a single marine ramp, so difficulty reads as
+     depth: pale shallows → open water → deep navy. */
+  --color-level-beginner-bg:         rgba(224, 237, 248, 1);
+  --color-level-beginner-text:       rgba(21, 66, 105, 1);
+  --color-level-intermediate-bg:     rgba(205, 222, 238, 1);
+  --color-level-intermediate-text:   rgba(17, 55, 89, 1);
+  --color-level-advanced-bg:         rgba(20, 49, 92, 1);
+  --color-level-advanced-bg-dim:     rgba(205, 222, 238, 0.6);   /* mobile sheet active — 60% */
+  --color-level-advanced-text:       rgba(240, 246, 251, 1);
 
   /* Prose callout — warning variant (destructive red-tinted palette) */
   --color-callout-warning-bg:     rgba(254, 137, 131, 0.1);
   --color-callout-warning-accent: rgba(159, 64, 61, 1);
 
   /* Code syntax highlight — inside inverse-surface (dark) code blocks only */
-  --color-code-accent: rgba(52, 211, 153, 1);
+  --color-code-accent: rgba(125, 195, 240, 1);
 
   /* Diagram panel stage labels — on inverse-surface dark panels */
   --color-diagram-stage-border:        rgba(255, 255, 255, 0.10);
   --color-diagram-stage-bg:            rgba(255, 255, 255, 0.05);
   --color-diagram-stage-text:          rgba(255, 255, 255, 0.20);
-  --color-diagram-stage-active-border: rgba(44, 105, 78, 0.40);
-  --color-diagram-stage-active-bg:     rgba(44, 105, 78, 0.05);
-  --color-diagram-stage-active-text:   rgba(163, 226, 192, 1);
+  --color-diagram-stage-active-border: rgba(28, 77, 124, 0.55);
+  --color-diagram-stage-active-bg:     rgba(28, 77, 124, 0.18);
+  --color-diagram-stage-active-text:   rgba(158, 200, 232, 1);
 
   /* Modal/sheet overlay backdrop */
   --color-overlay: rgba(50, 50, 50, 0.4);

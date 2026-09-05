@@ -1,188 +1,44 @@
 ---
 /*
- * Two cards side by side: light left (career text) + dark right (expertise list).
- * No section background — the cards carry their own tonal surfaces so they
- * stay bounded at wide viewports rather than bleeding full-width.
- * align-items: stretch keeps both cards the same height regardless of content.
+ * The process band: three connected steps on paper, disciplines on the navy
+ * plate. Both stay inside .container — only the header and footer are
+ * full-bleed. The hairline above the band comes from .section-rule, which
+ * spans the container's content width rather than the viewport.
+ * align-items: stretch keeps the plate the full height of the steps beside it.
  */
 
-import BookOpen from "../icons/BookOpen.astro";
-
-const expertise = [
-  "Cloud Architecture",
-  "Process Orchestration",
-  "Governance & Compliance",
-  "Cost Optimization (FinOps)",
-  "Multi-Cloud Strategy",
-];
+import HowIWork from './HowIWork.astro';
+import CoreExpertise from './CoreExpertise.astro';
 ---
 
-<section class="narrative">
+<section class="narrative section-rule">
   <div class="narrative__inner container">
-    <div class="narrative__text">
-      <h2 class="narrative__heading">
-        <BookOpen size={20} class="narrative__icon" aria-hidden="true" />
-        How I Work
-      </h2>
-
-      <div class="narrative__body">
-        <p>
-          My path to cloud architecture spans analysis, operations, and
-          IT/business design, shaping my focus on creating systems that are not
-          only well-designed but also easy to implement, operate, and maintain.
-          I prioritize solutions that teams can fully understand and work with
-          effectively.
-        </p>
-        <p>
-          I view architecture as both a technical and communication discipline.
-          Clear, well-documented designs align teams and stakeholders, reduce
-          silos, and make decisions traceable. This approach minimizes risk,
-          controls costs, and ensures long-term success.
-        </p>
-      </div>
-    </div>
-
-    <aside class="narrative__expertise">
-      <p class="narrative__expertise-label">Core Expertise</p>
-
-      <ul class="narrative__expertise-list" role="list">
-        {
-          expertise.map((item) => (
-            <li class="narrative__expertise-item">
-              <span class="narrative__expertise-dot" aria-hidden="true" />
-              {item.toUpperCase()}
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="narrative__expertise-footer">
-        "Complexity is the enemy of reliability."
-      </p>
-    </aside>
+    <HowIWork />
+    <CoreExpertise />
   </div>
 </section>
 
 <style>
-  .narrative {
-    padding-block: 0 var(--space-3);
-  }
-
-  /* align-items: stretch so both cards grow to the same height */
   .narrative__inner {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-5);
     align-items: stretch;
   }
 
-  @media (min-width: 768px) {
-    .narrative__inner {
-      grid-template-columns: 1fr 300px;
-      gap: var(--space-5);
-    }
-  }
-
+  /*
+   * Splits at 1024, not 768: below that the left column is too narrow to hold
+   * three step columns without the body copy breaking to two words a line.
+   */
   @media (min-width: 1024px) {
     .narrative__inner {
-      grid-template-columns: 1fr 320px;
+      grid-template-columns: 1fr minmax(300px, 360px);
+      column-gap: var(--space-6);
     }
   }
 
-  .narrative__text {
-    background-color: var(--color-surface-container-low);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .narrative__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-title-lg);
-    font-weight: var(--weight-semibold);
-    color: var(--color-on-surface);
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-bottom: var(--space-5);
-  }
-
-  .narrative__icon {
-    color: var(--color-primary);
-    flex-shrink: 0;
-  }
-
-  .narrative__body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  .narrative__body p {
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-  }
-
-  /* Dark card — inverse-surface creates maximum contrast against the light left card */
-  .narrative__expertise {
-    background-color: var(--color-inverse-surface);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  .narrative__expertise-label {
-    font-family: var(--font-display);
-    font-size: var(--text-title-lg);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-on-inverse-surface);
-  }
-
-  .narrative__expertise-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    flex: 1; /* pushes the closing quote to the card bottom */
-  }
-
-  .narrative__expertise-item {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-on-dark-muted);
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .narrative__expertise-dot {
-    display: block;
-    width: 6px;
-    height: 6px;
-    border-radius: var(--radius-full);
-    background-color: var(--color-primary);
-    flex-shrink: 0;
-  }
-
-  /*
-   * Hairline before the quote — one exception to the no-divider rule.
-   * Inside a dark card, tonal shift can't create separation, so a very
-   * low-opacity white line is used instead.
-   */
-  .narrative__expertise-footer {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-style: italic;
-    color: var(
-      --color-on-dark-dim
-    ); /* Change A: raised from 0.40 → 0.60 for WCAG AA */
-    border-top: 1px solid var(--color-on-dark-border);
-    padding-top: var(--space-4);
+  @media (min-width: 1280px) {
+    .narrative__inner {
+      column-gap: var(--space-8);
+    }
   }
 </style>

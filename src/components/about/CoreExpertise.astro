@@ -1,0 +1,114 @@
+---
+/*
+ * Navy plate. This is the one place hairlines are allowed to do all the work
+ * on a dark ground — tonal shifts can't separate rows at this value, so each
+ * discipline is split by a low-opacity white rule (DESIGN.md §4).
+ */
+
+import Layers from '../icons/Layers.astro';
+import Workflow from '../icons/Workflow.astro';
+import ShieldCheck from '../icons/ShieldCheck.astro';
+import Activity from '../icons/Activity.astro';
+import GridAppsIcon from '../icons/GridAppsIcon.astro';
+
+const expertise = [
+  'Cloud Architecture',
+  'Process Orchestration',
+  'Governance & Compliance',
+  'Cost Optimization (FinOps)',
+  'Multi-Cloud Strategy',
+];
+---
+
+<aside class="expertise">
+  <p class="expertise__label">Core Expertise</p>
+
+  <ul class="expertise__list" role="list">
+    {expertise.map((item, i) => (
+      <li class="expertise__item">
+        <span class="expertise__icon" aria-hidden="true">
+          {i === 0 && <Layers size={18} />}
+          {i === 1 && <Workflow size={18} />}
+          {i === 2 && <ShieldCheck size={18} />}
+          {i === 3 && <Activity size={18} />}
+          {i === 4 && <GridAppsIcon size={18} />}
+        </span>
+        {item}
+      </li>
+    ))}
+  </ul>
+
+  <p class="expertise__quote">&ldquo;Complexity is the enemy of reliability.&rdquo;</p>
+</aside>
+
+<style>
+  .expertise {
+    background-color: var(--color-navy);
+    padding: var(--space-5) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 1024px) {
+    .expertise {
+      padding: var(--space-6);
+    }
+  }
+
+  .expertise__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-on-inverse-surface);
+  }
+
+  .expertise__label::after {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: var(--space-3);
+    background-color: var(--color-primary-container);
+  }
+
+  .expertise__list {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* pushes the closing quote to the plate bottom */
+  }
+
+  .expertise__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding-block: var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-on-inverse-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .expertise__item:not(:last-child) {
+    border-bottom: 1px solid var(--color-on-dark-border);
+  }
+
+  .expertise__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    color: var(--color-primary-container);
+  }
+
+  .expertise__quote {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-style: italic;
+    color: var(--color-on-dark-muted);
+    border-top: 1px solid var(--color-on-dark-border);
+    padding-top: var(--space-4);
+  }
+</style>
