@@ -1,333 +1,546 @@
 ---
 /*
- * What C, I, A and U mean — explained through draught.
+ * What C, I, A and U mean — four diagrams, one per concept.
  *
- * A ship's draught decides which berths it can enter. Confidentiality,
- * integrity and availability are the cargo: the more the asset carries, the
- * deeper it sits, and the deeper it sits the higher the cloud service level
- * it needs. That is exactly the relationship the workbook encodes, so the
- * metaphor is load-bearing rather than decorative.
+ * Each panel animates the idea rather than labelling it:
+ *   C — a harbour boom closing until only one boat can reach the hold
+ *   I — a compass drifting off true, so the plotted course and the real track
+ *       diverge: the instrument works, the answer is wrong
+ *   A — a lighthouse beam sweeping, then going dark, leaving the ship unguided
+ *   U — the result: cargo settles the hull, and the draught picks the berth
  *
- * Animated with inline SVG and CSS keyframes — no library, no raster, scales
- * to any width, themeable through currentColor, and honours
- * prefers-reduced-motion. A JS animation runtime would cost ~30kB for the
- * same result on a site whose default is zero client-side JS.
+ * Inline SVG with CSS keyframes. No library, no raster, scales to any width,
+ * themes through currentColor. A JS animation runtime would cost ~30kB on a
+ * site whose default is zero client-side JS. Only the visible panel animates,
+ * so switching tabs restarts its sequence and nothing runs off-screen.
  */
 
-const LEGEND = [
-  { k: 'C', name: 'Confidentiality', sk: 'Dôvernosť', text: 'How damaging a leak would be. Public data sits light; strictly protected data sits heavy.' },
-  { k: 'I', name: 'Integrity', sk: 'Integrita', text: 'How damaging wrong data would be, even while the system keeps running.' },
-  { k: 'A', name: 'Availability', sk: 'Dostupnosť', text: 'How damaging an outage would be, and whether any fallback exists.' },
+const TABS = [
+  { key: 'c', letter: 'C', name: 'Confidentiality', sk: 'Dôvernosť' },
+  { key: 'i', letter: 'I', name: 'Integrity', sk: 'Integrita' },
+  { key: 'a', letter: 'A', name: 'Availability', sk: 'Dostupnosť' },
+  { key: 'u', letter: 'U', name: 'Service level', sk: 'Úroveň služby' },
+];
+
+/* Seven boats on an arc around the hold; tier decides when each is turned away. */
+const BOATS = [
+  { x: 112, y: 124, tier: 4 },
+  { x: 124, y: 80,  tier: 3 },
+  { x: 156, y: 48,  tier: 2 },
+  { x: 200, y: 36,  tier: 1 },
+  { x: 244, y: 48,  tier: 2 },
+  { x: 276, y: 80,  tier: 3 },
+  { x: 288, y: 124, tier: 4 },
 ];
 ---
 
-<div class="cia">
-  <div class="cia__intro">
-    <h3 class="cia__title">Reading the result: C, I, A and U</h3>
-    <p class="cia__lede">
-      A ship's draught decides which berths it can enter. Classification works the
-      same way — confidentiality, integrity and availability are the cargo, and
-      together they settle how deep the asset sits. <strong>U</strong> is the depth
-      of berth it needs: the minimum cloud service level allowed to host it.
+<div class="ex">
+  <div class="ex__head">
+    <h3 class="ex__title">Reading the result: C, I, A and U</h3>
+    <p class="ex__lede">
+      Three questions about an asset, and one answer. Pick a letter to see what it means.
     </p>
   </div>
 
-  <figure class="cia__figure">
-    <svg
-      class="cia__svg"
-      viewBox="0 0 620 300"
-      role="img"
-      aria-labelledby="cia-svg-title cia-svg-desc"
-    >
-      <title id="cia-svg-title">Classification shown as a ship's draught</title>
-      <desc id="cia-svg-desc">
-        Three cargo blocks marked C, I and A load onto a hull. As they load, the hull
-        settles deeper in the water and the draught marker moves down the scale from
-        U1 to U4, showing the cloud service level the asset requires.
-      </desc>
-
-      <!-- Depth scale — berths U1 to U4 -->
-      <g class="cia__scale">
-        {[1, 2, 3, 4].map((u, i) => (
-          <g transform={`translate(0 ${168 + i * 30})`}>
-            <line x1="40" y1="0" x2="580" y2="0" stroke-dasharray="2 5" />
-            <text x="28" y="4" class="cia__scale-label">U{u}</text>
-          </g>
-        ))}
-      </g>
-
-      <!-- Waterline -->
-      <path
-        class="cia__water"
-        d="M40 158 q 22 -7 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0"
-      />
-
-      <!-- Ship: hull plus the cargo that settles it -->
-      <g class="cia__ship">
-        <!-- Cargo, loading in sequence -->
-        <g class="cia__cargo" data-i="0">
-          <rect x="252" y="86" width="34" height="26" />
-          <text x="269" y="104" class="cia__cargo-label">C</text>
-        </g>
-        <g class="cia__cargo" data-i="1">
-          <rect x="292" y="86" width="34" height="26" />
-          <text x="309" y="104" class="cia__cargo-label">I</text>
-        </g>
-        <g class="cia__cargo" data-i="2">
-          <rect x="332" y="86" width="34" height="26" />
-          <text x="349" y="104" class="cia__cargo-label">A</text>
-        </g>
-
-        <!-- Mast and pennant -->
-        <line class="cia__mast" x1="309" y1="86" x2="309" y2="40" />
-        <path class="cia__flag" d="M309 42 L344 51 L309 60 Z" />
-
-        <!-- Deck and hull -->
-        <rect class="cia__deck" x="236" y="112" width="146" height="10" />
-        <path class="cia__hull" d="M228 122 H390 L366 176 H252 Z" />
-
-        <!-- Draught mark on the hull -->
-        <g class="cia__mark">
-          <line x1="252" y1="152" x2="272" y2="152" />
-          <line x1="262" y1="146" x2="262" y2="158" />
-        </g>
-      </g>
-
-      <!-- Draught pointer, travelling down the scale as the hull settles -->
-      <g class="cia__pointer">
-        <path d="M596 0 l-10 -7 v14 z" />
-        <text x="582" y="4" class="cia__pointer-label" text-anchor="end">draught</text>
-      </g>
-    </svg>
-
-    <figcaption class="cia__caption">
-      Light cargo, shallow draught, a berth at U1. Heavy cargo, deep draught, and only
-      the deepest berths will take it.
-    </figcaption>
-  </figure>
-
-  <dl class="cia__legend">
-    {LEGEND.map((l) => (
-      <div class="cia__legend-row">
-        <dt class="cia__legend-key">
-          <span class="cia__legend-letter">{l.k}</span>
-          <span class="cia__legend-name">{l.name}</span>
-          <span class="cia__legend-sk">{l.sk}</span>
-        </dt>
-        <dd class="cia__legend-text">{l.text}</dd>
-      </div>
+  <div class="ex__tabs" role="tablist" aria-label="Classification parameters">
+    {TABS.map((t, i) => (
+      <button
+        type="button"
+        role="tab"
+        class:list={['ex__tab', { 'ex__tab--active': i === 0 }]}
+        id={`ex-tab-${t.key}`}
+        aria-controls={`ex-panel-${t.key}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        data-tab={t.key}
+      >
+        <span class="ex__tab-letter">{t.letter}</span>
+        <span class="ex__tab-name">{t.name}</span>
+        <span class="ex__tab-sk">{t.sk}</span>
+      </button>
     ))}
-    <div class="cia__legend-row cia__legend-row--out">
-      <dt class="cia__legend-key">
-        <span class="cia__legend-letter cia__legend-letter--out">U</span>
-        <span class="cia__legend-name">Cloud service level</span>
-        <span class="cia__legend-sk">Úroveň cloudovej služby</span>
-      </dt>
-      <dd class="cia__legend-text">
-        The result, not an input. U1 to U4 — the minimum level a Government Cloud
-        service must hold to be allowed to host the asset.
-      </dd>
-    </div>
-  </dl>
+  </div>
+
+  <div class="ex__stage">
+
+    <!-- ── C ─────────────────────────────────────────────────────────── -->
+    <section class="ex__panel ex__panel--active" id="ex-panel-c" role="tabpanel" aria-labelledby="ex-tab-c" data-panel="c">
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A harbour boom closing until only one boat can reach the hold">
+        <g class="exc">
+          <!-- approach lines -->
+          {BOATS.map((b) => (
+            <line class={`exc__line exc__line--t${b.tier}`} x1={b.x} y1={b.y} x2="200" y2="124" />
+          ))}
+          <!-- closing boom -->
+          <circle class="exc__boom" cx="200" cy="124" r="72" />
+          <!-- boats -->
+          {BOATS.map((b) => (
+            <g class={`exc__boat exc__boat--t${b.tier}`} transform={`translate(${b.x} ${b.y})`}>
+              <path d="M-9 3 H9 L6 9 H-6 Z" />
+              <line x1="0" y1="3" x2="0" y2="-7" />
+            </g>
+          ))}
+          <!-- the hold -->
+          <rect class="exc__hold" x="180" y="106" width="40" height="36" />
+          <circle class="exc__lock" cx="200" cy="122" r="4" />
+          <line class="exc__lock-stem" x1="200" y1="124" x2="200" y2="133" />
+        </g>
+        <text class="ex__cap ex__cap--open" x="200" y="212">C0 — anyone may see it</text>
+        <text class="ex__cap ex__cap--shut" x="200" y="212">C3 — named individuals only</text>
+      </svg>
+      <div class="ex__copy">
+        <h4>Who is allowed to see it</h4>
+        <p>
+          Confidentiality asks how damaging a leak would be, which in practice means
+          how far the boom is closed. Public data lets everyone alongside. Strictly
+          protected data admits named individuals and nobody else.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── I ─────────────────────────────────────────────────────────── -->
+    <section class="ex__panel" id="ex-panel-i" role="tabpanel" aria-labelledby="ex-tab-i" data-panel="i" hidden>
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A compass needle drifting off true north while the ship's track curves away from its plotted course">
+        <!-- compass -->
+        <g class="exi__compass" transform="translate(84 116)">
+          <circle class="exi__dial" r="46" />
+          <circle class="exi__dial exi__dial--inner" r="34" />
+          {[0, 90, 180, 270].map((d) => (
+            <line class="exi__tick" x1="0" y1="-46" x2="0" y2="-38" transform={`rotate(${d})`} />
+          ))}
+          <text class="exi__n" x="0" y="-52">N</text>
+          <line class="exi__true" x1="0" y1="0" x2="0" y2="-32" />
+          <g class="exi__needle">
+            <path d="M0 -32 L5 4 L0 -2 L-5 4 Z" />
+          </g>
+          <circle class="exi__hub" r="3" />
+        </g>
+
+        <!-- plotted course versus actual track -->
+        <path class="exi__plot" d="M150 150 H370" />
+        <text class="exi__plot-label" x="370" y="140">plotted</text>
+        <path class="exi__track" d="M150 150 C 218 150, 268 138, 370 96" />
+        <g class="exi__hazard" transform="translate(370 92)">
+          <line x1="-7" y1="-7" x2="7" y2="7" />
+          <line x1="7" y1="-7" x2="-7" y2="7" />
+        </g>
+        <g class="exi__ship"><path d="M-10 0 H10 L7 7 H-7 Z" /></g>
+
+        <text class="ex__cap ex__cap--still" x="200" y="214">The instrument still turns. The reading is wrong.</text>
+      </svg>
+      <div class="ex__copy">
+        <h4>Whether the data can be trusted</h4>
+        <p>
+          Integrity is not about outages. The system runs, the needle swings, everything
+          looks healthy — but the value is off true, and every decision made downstream
+          drifts with it. High integrity means an error would immediately threaten the
+          service that depends on it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── A ─────────────────────────────────────────────────────────── -->
+    <section class="ex__panel" id="ex-panel-a" role="tabpanel" aria-labelledby="ex-tab-a" data-panel="a" hidden>
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A lighthouse beam sweeping and then going dark, leaving a ship unguided">
+        <!-- beam, behind everything -->
+        <g class="exa__beam" transform="translate(96 74)">
+          <path d="M0 0 L250 -46 L250 46 Z" />
+        </g>
+
+        <!-- lighthouse -->
+        <g class="exa__tower">
+          <path class="exa__rock" d="M56 186 q 40 -22 80 0 z" />
+          <path d="M84 186 L88 96 H104 L108 186 Z" />
+          <rect class="exa__lamp" x="86" y="80" width="20" height="16" />
+          <path d="M84 80 L96 68 L108 80 Z" />
+        </g>
+        <circle class="exa__light" cx="96" cy="88" r="5" />
+
+        <!-- sea and ship -->
+        <path class="exa__sea" d="M0 190 q 25 -6 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" />
+        <g class="exa__ship" transform="translate(300 176)">
+          <path d="M-14 0 H14 L10 10 H-10 Z" />
+          <line x1="0" y1="0" x2="0" y2="-16" />
+          <path d="M0 -15 L11 -9 L0 -3 Z" />
+        </g>
+
+        <text class="ex__cap ex__cap--lit" x="200" y="222">A1 — guidance holds, or a fallback exists</text>
+        <text class="ex__cap ex__cap--dark" x="200" y="222">A3 — the light is out and nothing replaces it</text>
+      </svg>
+      <div class="ex__copy">
+        <h4>Whether it is there when needed</h4>
+        <p>
+          Availability asks what an outage costs. If people can still get the service
+          another way, the light going out is survivable. If nothing replaces it, the
+          asset is critical and an outage stops the essential service outright.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── U ─────────────────────────────────────────────────────────── -->
+    <section class="ex__panel" id="ex-panel-u" role="tabpanel" aria-labelledby="ex-tab-u" data-panel="u" hidden>
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="Cargo loading onto a hull, settling it deeper until the draught marker reaches the required berth">
+        <g class="exu__scale">
+          {[1, 2, 3, 4].map((u, i) => (
+            <g transform={`translate(0 ${132 + i * 24})`}>
+              <line x1="40" y1="0" x2="372" y2="0" stroke-dasharray="2 5" />
+              <text x="30" y="4">U{u}</text>
+            </g>
+          ))}
+        </g>
+
+        <path class="exu__sea" d="M40 126 q 21 -6 42 0 t 42 0 t 42 0 t 42 0 t 42 0 t 42 0 t 42 0 t 42 0" />
+
+        <g class="exu__ship">
+          {[
+            { x: 168, l: 'C' },
+            { x: 196, l: 'I' },
+            { x: 224, l: 'A' },
+          ].map((c, i) => (
+            <g class={`exu__cargo exu__cargo--${i}`}>
+              <rect x={c.x} y="66" width="24" height="20" />
+              <text x={c.x + 12} y="81">{c.l}</text>
+            </g>
+          ))}
+          <rect class="exu__deck" x="156" y="86" width="104" height="8" />
+          <path class="exu__hull" d="M150 94 H266 L249 138 H167 Z" />
+        </g>
+
+        <g class="exu__pointer">
+          <path d="M386 0 l-9 -6 v12 z" />
+        </g>
+
+        <text class="ex__cap ex__cap--still" x="206" y="220">Cargo sets the draught. Draught picks the berth.</text>
+      </svg>
+      <div class="ex__copy">
+        <h4>The berth the asset needs</h4>
+        <p>
+          U is the only value you do not choose. C, I and A together settle how deep the
+          asset sits, and that draught decides the minimum cloud service level — U1 to U4 —
+          that a Government Cloud service must hold to be allowed to host it.
+        </p>
+      </div>
+    </section>
+  </div>
 </div>
 
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.ex__tab');
+  const panels = document.querySelectorAll<HTMLElement>('.ex__panel');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const key = tab.dataset.tab;
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle('ex__tab--active', on);
+        t.setAttribute('aria-selected', String(on));
+      });
+      panels.forEach((p) => {
+        const on = p.dataset.panel === key;
+        p.hidden = !on;
+        // Toggling the class restarts the panel's keyframes from the top.
+        p.classList.remove('ex__panel--active');
+        if (on) void p.offsetWidth;
+        p.classList.toggle('ex__panel--active', on);
+      });
+    });
+  });
+</script>
+
 <style>
-  .cia {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-    padding: var(--space-6) 0;
+  .ex {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
   }
 
-  @media (min-width: 1024px) {
-    .cia {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-      column-gap: var(--space-8);
-    }
-
-    .cia__intro { grid-column: 1 / -1; }
-  }
-
-  .cia__title {
+  .ex__title {
     font-family: var(--font-display);
     font-size: var(--text-title-lg);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-tight);
     color: var(--color-on-surface);
-    margin-bottom: var(--space-3);
   }
 
-  .cia__lede {
+  .ex__lede {
     font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
-    max-width: 72ch;
+    margin-top: var(--space-2);
+    max-width: 68ch;
   }
 
-  .cia__lede strong { color: var(--color-primary); }
-
-  /* ── Figure ────────────────────────────────────────────────────────── */
-  .cia__figure {
-    margin: 0;
-    border: 1px solid var(--color-divider);
-    padding: var(--space-4);
-  }
-
-  .cia__svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    overflow: visible;
-  }
-
-  .cia__caption {
-    margin-top: var(--space-3);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--color-divider);
-    font-size: var(--text-label-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-  }
-
-  /* Scale, water, hull */
-  .cia__scale line { stroke: var(--color-divider-strong); stroke-width: 1; }
-
-  .cia__scale-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    fill: var(--color-meta-label);
-    text-anchor: end;
-  }
-
-  .cia__water {
-    fill: none;
-    stroke: var(--color-primary);
-    stroke-width: 1.5;
-    opacity: 0.7;
-  }
-
-  .cia__deck,
-  .cia__hull { fill: var(--color-navy); }
-  .cia__mast { stroke: var(--color-navy); stroke-width: 2.5; }
-  .cia__flag { fill: var(--color-primary); }
-  .cia__mark line { stroke: var(--color-surface); stroke-width: 1.5; }
-
-  .cia__cargo rect {
-    fill: none;
-    stroke: var(--color-primary);
-    stroke-width: 1.5;
-  }
-
-  .cia__cargo-label {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 700;
-    fill: var(--color-primary);
-    text-anchor: middle;
-  }
-
-  .cia__pointer path { fill: var(--color-primary); }
-
-  .cia__pointer-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    fill: var(--color-meta-label);
-  }
-
-  /*
-   * The loop: cargo loads one block at a time, the hull settles, the pointer
-   * tracks it down the scale, then everything lifts and the cycle repeats.
-   */
-  .cia__ship { animation: cia-settle 9s var(--ease-standard) infinite; }
-  .cia__pointer { animation: cia-point 9s var(--ease-standard) infinite; }
-  .cia__cargo { opacity: 0; animation: cia-load 9s var(--ease-standard) infinite; }
-  .cia__cargo[data-i='1'] { animation-delay: 0.45s; }
-  .cia__cargo[data-i='2'] { animation-delay: 0.9s; }
-
-  @keyframes cia-settle {
-    0%,  8%   { transform: translateY(0); }
-    38%, 72%  { transform: translateY(58px); }
-    92%, 100% { transform: translateY(0); }
-  }
-
-  @keyframes cia-point {
-    0%,  8%   { transform: translateY(168px); }
-    38%, 72%  { transform: translateY(226px); }
-    92%, 100% { transform: translateY(168px); }
-  }
-
-  @keyframes cia-load {
-    0%, 4%    { opacity: 0; transform: translateY(-14px); }
-    16%, 78%  { opacity: 1; transform: translateY(0); }
-    88%, 100% { opacity: 0; transform: translateY(-14px); }
-  }
-
-  /* Motion is explanatory, not decorative — so hold the loaded state rather
-     than removing the illustration entirely. */
-  @media (prefers-reduced-motion: reduce) {
-    .cia__ship { animation: none; transform: translateY(58px); }
-    .cia__pointer { animation: none; transform: translateY(226px); }
-    .cia__cargo { animation: none; opacity: 1; }
-  }
-
-  /* ── Legend ────────────────────────────────────────────────────────── */
-  .cia__legend { display: flex; flex-direction: column; }
-
-  .cia__legend-row {
+  /* ── Tabs ──────────────────────────────────────────────────────────── */
+  .ex__tabs {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-1);
-    padding-block: var(--space-3);
-    border-bottom: 1px solid var(--color-divider);
-  }
-
-  .cia__legend-row:first-child { border-top: 1px solid var(--color-divider); }
-
-  .cia__legend-row--out { border-bottom: none; }
-
-  .cia__legend-key {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
   }
 
-  .cia__legend-letter {
-    display: grid;
-    place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1px solid var(--color-primary);
+  @media (min-width: 768px) {
+    .ex__tabs { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .ex__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: var(--space-3) var(--space-4);
+    background: none;
+    border: 1px solid var(--color-divider);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .ex__tab:hover { background-color: var(--color-surface-container-low); }
+
+  .ex__tab--active {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-tint);
+  }
+
+  .ex__tab-letter {
     font-family: var(--font-mono);
-    font-size: var(--text-label-md);
+    font-size: var(--text-title-md);
     font-weight: var(--weight-bold);
     color: var(--color-primary);
   }
 
-  .cia__legend-letter--out {
-    background-color: var(--color-navy);
-    border-color: var(--color-navy);
-    color: var(--color-on-inverse-surface);
-  }
-
-  .cia__legend-name {
+  .ex__tab-name {
     font-size: var(--text-body-md);
     font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
   }
 
-  .cia__legend-sk {
+  .ex__tab-sk {
     font-size: var(--text-label-md);
     font-style: italic;
     color: var(--color-on-surface-muted);
   }
 
-  .cia__legend-text {
+  /* ── Stage ─────────────────────────────────────────────────────────── */
+  .ex__panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    border: 1px solid var(--color-divider);
+    padding: var(--space-4);
+  }
+
+  /* display:grid above outranks the UA's [hidden]{display:none}, so say it here */
+  .ex__panel[hidden] { display: none; }
+
+  @media (min-width: 900px) {
+    .ex__panel {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: center;
+      column-gap: var(--space-7);
+    }
+  }
+
+  .ex__svg { width: 100%; height: auto; display: block; }
+
+  .ex__copy h4 {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+    margin-bottom: var(--space-3);
+  }
+
+  .ex__copy p {
     font-size: var(--text-body-md);
     line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
-    margin: 0;
+  }
+
+  /* ── Shared SVG vocabulary ─────────────────────────────────────────── */
+  .ex__cap {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    fill: var(--color-meta-label);
+    text-anchor: middle;
+  }
+
+  .ex__cap--open, .ex__cap--shut, .ex__cap--lit, .ex__cap--dark { opacity: 0; }
+  .ex__cap--still { opacity: 1; }
+
+  /* ── C: the closing boom ───────────────────────────────────────────── */
+  .exc__hold { fill: var(--color-navy); }
+  .exc__lock { fill: none; stroke: var(--color-surface); stroke-width: 2; }
+  .exc__lock-stem { stroke: var(--color-surface); stroke-width: 2; }
+  .exc__boat path { fill: var(--color-navy); }
+  .exc__boat line { stroke: var(--color-navy); stroke-width: 1.5; }
+  .exc__line { stroke: var(--color-primary); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0.5; }
+  .exc__boom {
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 6;
+    opacity: 0.5;
+    /* scale about the hold, not the SVG origin */
+    transform-origin: 200px 124px;
+  }
+
+  .ex__panel--active .exc__boom { animation: exc-boom 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exc__boat--t4,
+  .ex__panel--active .exc__line--t4 { animation: exc-t4 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exc__boat--t3,
+  .ex__panel--active .exc__line--t3 { animation: exc-t3 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exc__boat--t2,
+  .ex__panel--active .exc__line--t2 { animation: exc-t2 9s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--open { animation: exc-open 9s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--shut { animation: exc-shut 9s var(--ease-standard) infinite; }
+
+  @keyframes exc-boom {
+    0%, 12%   { transform: scale(1); opacity: 0.5; }
+    62%, 84%  { transform: scale(0.46); opacity: 0.9; }
+    96%, 100% { transform: scale(1); opacity: 0.5; }
+  }
+  @keyframes exc-t4 { 0%, 14% { opacity: 1; } 26%, 88% { opacity: 0.1; } 96%, 100% { opacity: 1; } }
+  @keyframes exc-t3 { 0%, 30% { opacity: 1; } 42%, 88% { opacity: 0.1; } 96%, 100% { opacity: 1; } }
+  @keyframes exc-t2 { 0%, 46% { opacity: 1; } 58%, 88% { opacity: 0.1; } 96%, 100% { opacity: 1; } }
+  @keyframes exc-open { 0%, 14% { opacity: 1; } 24%, 100% { opacity: 0; } }
+  @keyframes exc-shut { 0%, 56% { opacity: 0; } 66%, 88% { opacity: 1; } 96%, 100% { opacity: 0; } }
+
+  /* ── I: drift off true ─────────────────────────────────────────────── */
+  .exi__dial { fill: none; stroke: var(--color-divider-strong); stroke-width: 1.5; }
+  .exi__dial--inner { stroke: var(--color-divider); }
+  .exi__tick { stroke: var(--color-divider-strong); stroke-width: 1.5; }
+  .exi__n { font-family: var(--font-mono); font-size: 11px; fill: var(--color-meta-label); text-anchor: middle; }
+  .exi__true { stroke: var(--color-divider-strong); stroke-width: 1.5; stroke-dasharray: 3 3; }
+  .exi__needle path { fill: var(--color-primary); }
+  .exi__hub { fill: var(--color-navy); }
+  .exi__plot { fill: none; stroke: var(--color-divider-strong); stroke-width: 1.5; stroke-dasharray: 4 5; }
+  .exi__plot-label { font-family: var(--font-mono); font-size: 10px; fill: var(--color-meta-label); text-anchor: end; }
+  .exi__track { fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-dasharray: 260; stroke-dashoffset: 260; }
+  .exi__hazard line { stroke: var(--color-primary); stroke-width: 2; opacity: 0; }
+  .exi__ship path { fill: var(--color-navy); }
+
+  .ex__panel--active .exi__needle { animation: exi-drift 8s var(--ease-standard) infinite; transform-origin: 0 0; }
+  .ex__panel--active .exi__track  { animation: exi-draw 8s var(--ease-standard) infinite; }
+  .ex__panel--active .exi__ship   { animation: exi-sail 8s var(--ease-standard) infinite; }
+  .ex__panel--active .exi__hazard line { animation: exi-hit 8s var(--ease-standard) infinite; }
+
+  @keyframes exi-drift {
+    0%, 10%   { transform: rotate(0deg); }
+    70%, 86%  { transform: rotate(24deg); }
+    96%, 100% { transform: rotate(0deg); }
+  }
+  @keyframes exi-draw {
+    0%, 10%   { stroke-dashoffset: 260; }
+    72%, 86%  { stroke-dashoffset: 0; }
+    95%, 100% { stroke-dashoffset: 260; }
+  }
+  @keyframes exi-sail {
+    0%, 10%   { transform: translate(150px, 150px); }
+    72%, 86%  { transform: translate(366px, 96px); }
+    95%, 100% { transform: translate(150px, 150px); }
+  }
+  @keyframes exi-hit {
+    0%, 70%   { opacity: 0; }
+    78%, 88%  { opacity: 1; }
+    94%, 100% { opacity: 0; }
+  }
+
+  /* ── A: the light going out ────────────────────────────────────────── */
+  .exa__beam path { fill: var(--color-primary); opacity: 0.14; }
+  .exa__tower path { fill: var(--color-navy); }
+  .exa__lamp { fill: none; stroke: var(--color-navy); stroke-width: 2; }
+  .exa__rock { fill: var(--color-navy); opacity: 0.35; }
+  .exa__light { fill: var(--color-primary); }
+  .exa__sea { fill: none; stroke: var(--color-primary); stroke-width: 1.5; opacity: 0.6; }
+  .exa__ship path:first-child { fill: var(--color-navy); }
+  .exa__ship line { stroke: var(--color-navy); stroke-width: 2; }
+  .exa__ship path:last-child { fill: var(--color-primary); }
+
+  .ex__panel--active .exa__beam  { animation: exa-sweep 9s var(--ease-standard) infinite; transform-box: fill-box; transform-origin: 0 50%; }
+  .ex__panel--active .exa__light { animation: exa-pulse 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exa__ship  { animation: exa-adrift 9s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--lit  { animation: exa-lit 9s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--dark { animation: exa-dark 9s var(--ease-standard) infinite; }
+
+  @keyframes exa-sweep {
+    0%        { transform: rotate(-12deg); opacity: 1; }
+    26%       { transform: rotate(10deg);  opacity: 1; }
+    46%       { transform: rotate(-4deg);  opacity: 0; }
+    82%       { transform: rotate(-4deg);  opacity: 0; }
+    100%      { transform: rotate(-12deg); opacity: 1; }
+  }
+  @keyframes exa-pulse {
+    0%, 40%   { opacity: 1; r: 5; }
+    50%, 84%  { opacity: 0.15; }
+    96%, 100% { opacity: 1; }
+  }
+  @keyframes exa-adrift {
+    0%, 40%   { transform: translate(300px, 176px) rotate(0deg); }
+    64%, 84%  { transform: translate(316px, 182px) rotate(7deg); }
+    100%      { transform: translate(300px, 176px) rotate(0deg); }
+  }
+  @keyframes exa-lit  { 0%, 34% { opacity: 1; } 44%, 100% { opacity: 0; } }
+  @keyframes exa-dark { 0%, 52% { opacity: 0; } 62%, 86% { opacity: 1; } 94%, 100% { opacity: 0; } }
+
+  /* ── U: draught picks the berth ────────────────────────────────────── */
+  .exu__scale line { stroke: var(--color-divider-strong); }
+  .exu__scale text { font-family: var(--font-mono); font-size: 10px; fill: var(--color-meta-label); text-anchor: end; }
+  .exu__sea { fill: none; stroke: var(--color-primary); stroke-width: 1.5; opacity: 0.7; }
+  .exu__deck, .exu__hull { fill: var(--color-navy); }
+  .exu__cargo rect { fill: none; stroke: var(--color-primary); stroke-width: 1.5; }
+  .exu__cargo text { font-family: var(--font-mono); font-size: 12px; font-weight: 700; fill: var(--color-primary); text-anchor: middle; }
+  .exu__pointer path { fill: var(--color-primary); }
+
+  .ex__panel--active .exu__ship    { animation: exu-settle 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__pointer { animation: exu-point 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__cargo   { opacity: 0; animation: exu-load 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__cargo--1 { animation-delay: 0.4s; }
+  .ex__panel--active .exu__cargo--2 { animation-delay: 0.8s; }
+
+  @keyframes exu-settle {
+    0%, 10%   { transform: translateY(0); }
+    46%, 80%  { transform: translateY(48px); }
+    94%, 100% { transform: translateY(0); }
+  }
+  @keyframes exu-point {
+    0%, 10%   { transform: translateY(132px); }
+    46%, 80%  { transform: translateY(180px); }
+    94%, 100% { transform: translateY(132px); }
+  }
+  @keyframes exu-load {
+    0%, 4%    { opacity: 0; transform: translateY(-12px); }
+    18%, 84%  { opacity: 1; transform: translateY(0); }
+    92%, 100% { opacity: 0; transform: translateY(-12px); }
+  }
+
+  /* The motion carries the explanation, so hold the end state rather than
+     dropping the diagram entirely. */
+  @media (prefers-reduced-motion: reduce) {
+    .ex__panel--active :is(
+      .exc__boom, .exc__boat--t4, .exc__boat--t3, .exc__boat--t2,
+      .exc__line--t4, .exc__line--t3, .exc__line--t2,
+      .exi__needle, .exi__track, .exi__ship, .exi__hazard line,
+      .exa__beam, .exa__light, .exa__ship,
+      .exu__ship, .exu__pointer, .exu__cargo,
+      .ex__cap--open, .ex__cap--shut, .ex__cap--lit, .ex__cap--dark
+    ) { animation: none; }
+
+    .exc__boat--t4, .exc__boat--t3, .exc__boat--t2,
+    .exc__line--t4, .exc__line--t3, .exc__line--t2 { opacity: 0.1; }
+    .exc__boom { transform: scale(0.46); }
+    .ex__cap--shut, .ex__cap--dark { opacity: 1; }
+    .exi__needle { transform: rotate(24deg); }
+    .exi__track { stroke-dashoffset: 0; }
+    .exi__ship { transform: translate(366px, 96px); }
+    .exi__hazard line { opacity: 1; }
+    .exa__beam { opacity: 0; }
+    .exa__light { opacity: 0.15; }
+    .exu__cargo { opacity: 1; }
+    .exu__ship { transform: translateY(48px); }
+    .exu__pointer { transform: translateY(180px); }
   }
 </style>
