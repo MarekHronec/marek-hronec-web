@@ -1,0 +1,620 @@
+---
+/*
+ * Slovak ISVS classification calculator.
+ *
+ * All questions, weights and thresholds live in src/data/security-calculator.ts
+ * so the model can be tuned without touching this file. This component renders
+ * the steps and wires up a small client script; nothing is sent anywhere, the
+ * whole calculation runs in the browser.
+ */
+
+import { AXES } from '../../data/security-calculator';
+---
+
+<section class="calc" id="calculator">
+  <div class="calc__inner container">
+    <p class="calc__label">Placement calculator</p>
+    <h2 class="calc__heading">Where can this system run, and under which controls?</h2>
+    <p class="calc__intro">
+      Four questions derive the C, I and A classification of an information asset,
+      the security category it falls into, and the cloud service level
+      <strong>U</strong> required of any service hosting it. The model is a direct
+      transcription of the MIRRI <em>Určenie parametrov UxCxIxAx</em> workbook and
+      its methodological guidance. Nothing leaves your browser.
+    </p>
+
+    <ol class="calc__steps" role="list">
+      {AXES.map((axis, ai) => (
+        <li class="calc__step" data-step={ai}>
+          <div class="calc__step-head">
+            <span class="calc__step-num" aria-hidden="true">{`0${ai + 1}`}</span>
+            <div>
+              <h3 class="calc__step-title">
+                {axis.name} <span class="calc__step-sk">{axis.nameSk}</span>
+              </h3>
+              <p class="calc__step-q">{axis.question}</p>
+            </div>
+          </div>
+
+          <div class="calc__levels" role="radiogroup" aria-label={axis.name}>
+            {axis.levels.map((lvl) => (
+              <label class="calc__level">
+                <input
+                  type="radio"
+                  name={`axis-${axis.key}`}
+                  value={String(lvl.value)}
+                  data-axis={axis.key}
+                />
+                <span class="calc__level-body">
+                  <span class="calc__level-head">
+                    <span class="calc__level-code">{axis.letter}{lvl.value}</span>
+                    <span class="calc__level-term">{lvl.term}</span>
+                    <span class="calc__level-sk">{lvl.termSk}</span>
+                  </span>
+                  <span class="calc__level-reqs">
+                    {lvl.requirements.map((r) => <span class="calc__req">{r}</span>)}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </li>
+      ))}
+
+      <li class="calc__step" data-step="3" id="calc-step-criteria" hidden>
+        <div class="calc__step-head">
+          <span class="calc__step-num" aria-hidden="true">04</span>
+          <div>
+            <h3 class="calc__step-title">Category criteria</h3>
+            <p class="calc__step-q" id="calc-criteria-lead">
+              Confirm which of these apply. Everything derivable from C, I and A is
+              already answered.
+            </p>
+          </div>
+        </div>
+        <div class="calc__criteria" id="calc-criteria"></div>
+      </li>
+    </ol>
+
+    <div class="calc__result" id="calc-result" aria-live="polite"></div>
+
+    <p class="calc__note">
+      An aid for orientation, not a substitute for the official workbook or a
+      formal risk analysis. The determination of an ISVS classification remains
+      with its operator.
+    </p>
+  </div>
+</section>
+
+<script>
+  import {
+    matchCategories, evaluate,
+    type Cia, type Level,
+  } from '../../data/security-calculator';
+
+  const selected: Partial<Record<'c' | 'i' | 'a', Level>> = {};
+  const answers: Record<string, boolean> = {};
+
+  const criteriaStep = document.getElementById('calc-step-criteria') as HTMLElement;
+  const criteriaBox  = document.getElementById('calc-criteria') as HTMLElement;
+  const lead         = document.getElementById('calc-criteria-lead') as HTMLElement;
+  const resultBox    = document.getElementById('calc-result') as HTMLElement;
+
+  document.querySelectorAll<HTMLInputElement>('input[data-axis]').forEach((input) => {
+    input.addEventListener('change', () => {
+      const axis = input.dataset.axis as 'c' | 'i' | 'a';
+      selected[axis] = Number(input.value) as Level;
+      Object.keys(answers).forEach((k) => delete answers[k]);
+      render();
+    });
+  });
+
+  function complete(): Cia | null {
+    if (selected.c === undefined || selected.i === undefined || selected.a === undefined) return null;
+    return { c: selected.c, i: selected.i, a: selected.a };
+  }
+
+  function render() {
+    const cia = complete();
+    if (!cia) {
+      criteriaStep.hidden = true;
+      resultBox.innerHTML = '';
+      return;
+    }
+
+    const cats = matchCategories(cia);
+
+    if (cats.length === 0) {
+      criteriaStep.hidden = true;
+      resultBox.innerHTML = `
+        <div class="calc__verdict calc__verdict--none">
+          <p class="calc__verdict-label">No supported combination</p>
+          <p class="calc__verdict-body">
+            <strong>C${cia.c} I${cia.i} A${cia.a}</strong> is not among the combinations the
+            methodology recognises. The workbook treats this as a signal to revisit the
+            classification — for example, an asset with confidentiality C3 should not
+            carry integrity or availability below 2.
+          </p>
+        </div>`;
+      return;
+    }
+
+    criteriaStep.hidden = false;
+    lead.textContent = cats.length > 1
+      ? `This C${cia.c} I${cia.i} A${cia.a} combination is covered by ${cats.length} categories. Answering below narrows it.`
+      : `This C${cia.c} I${cia.i} A${cia.a} combination falls under ${cats[0].name}.`;
+
+    criteriaBox.innerHTML = '';
+    cats.forEach((cat) => {
+      const group = document.createElement('div');
+      group.className = 'calc__criteria-group';
+      const h = document.createElement('p');
+      h.className = 'calc__criteria-heading';
+      h.textContent = `${cat.name} — ${cat.summary}`;
+      group.appendChild(h);
+
+      cat.criteria.forEach((cr, idx) => {
+        const key = `${cat.id}-${idx}`;
+        const row = document.createElement('label');
+        row.className = 'calc__criterion';
+        if (cr.auto) {
+          const met = cr.auto(cia);
+          row.classList.add('calc__criterion--auto');
+          row.innerHTML = `
+            <span class="calc__criterion-state" aria-hidden="true">${met ? '✓' : '—'}</span>
+            <span class="calc__criterion-text">${cr.text}</span>
+            <span class="calc__criterion-tag">from C${cia.c} I${cia.i} A${cia.a}</span>`;
+        } else {
+          const box = document.createElement('input');
+          box.type = 'checkbox';
+          box.checked = answers[key] === true;
+          box.addEventListener('change', () => {
+            answers[key] = box.checked;
+            showResult();
+          });
+          row.appendChild(box);
+          const t = document.createElement('span');
+          t.className = 'calc__criterion-text';
+          t.textContent = cr.text;
+          row.appendChild(t);
+          const w = document.createElement('span');
+          w.className = 'calc__criterion-tag';
+          w.textContent = `U${cr.weight}`;
+          row.appendChild(w);
+        }
+        group.appendChild(row);
+      });
+      criteriaBox.appendChild(group);
+    });
+
+    showResult();
+  }
+
+  function showResult() {
+    const cia = complete();
+    if (!cia) return;
+    const out = evaluate(cia, answers);
+
+    if (out.u === null || !out.governing) {
+      resultBox.innerHTML = `
+        <div class="calc__verdict calc__verdict--pending">
+          <p class="calc__verdict-label">C${cia.c} I${cia.i} A${cia.a} — awaiting criteria</p>
+          <p class="calc__verdict-body">
+            Tick the criteria that describe this system to determine its cloud
+            service level.
+          </p>
+        </div>`;
+      return;
+    }
+
+    const mandatory = out.controls.filter((c) => c.obligation === 'mandatory');
+    const recommended = out.controls.filter((c) => c.obligation === 'recommended');
+
+    resultBox.innerHTML = `
+      <div class="calc__verdict">
+        <div class="calc__params">
+          ${[['U', out.u], ['C', cia.c], ['I', cia.i], ['A', cia.a]].map(([k, v]) => `
+            <div class="calc__param">
+              <span class="calc__param-letter">${k}</span>
+              <span class="calc__param-value">${v}</span>
+            </div>`).join('')}
+        </div>
+        <p class="calc__verdict-label">Security ${out.governing.name} &middot; ${out.governing.nameSk}</p>
+        <p class="calc__verdict-body">
+          Look up services at level <strong>U${out.u}</strong> or higher in the
+          Government Cloud service catalogue. Of the 17 measures under §20 of Act
+          69/2018, <strong>${mandatory.length}</strong> are mandatory for this
+          category and ${recommended.length} are recommended.
+        </p>
+        <div class="calc__controls">
+          <div class="calc__control-col">
+            <p class="calc__control-head">Mandatory</p>
+            <ul class="calc__control-list" role="list">
+              ${mandatory.map((c) => `<li>${c.area.name}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="calc__control-col">
+            <p class="calc__control-head">Recommended</p>
+            <ul class="calc__control-list" role="list">
+              ${recommended.length
+                ? recommended.map((c) => `<li>${c.area.name}</li>`).join('')
+                : '<li class="calc__control-none">All measures are mandatory at this category.</li>'}
+            </ul>
+          </div>
+        </div>
+      </div>`;
+  }
+</script>
+
+<style>
+  .calc {
+    scroll-margin-top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  .calc__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--space-8);
+  }
+
+  .calc__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  .calc__label::after {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: var(--space-3);
+    background-color: var(--color-primary);
+  }
+
+  .calc__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-headline-md);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .calc__intro,
+  .calc__note {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 68ch;
+  }
+
+  .calc__note {
+    font-size: var(--text-body-md);
+    font-style: italic;
+    border-top: 1px solid var(--color-divider);
+    padding-top: var(--space-4);
+  }
+
+  /* ── Steps ─────────────────────────────────────────────────────────── */
+  .calc__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin-top: var(--space-3);
+  }
+
+  .calc__step-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-divider-strong);
+    margin-bottom: var(--space-5);
+  }
+
+  .calc__step-num {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-divider-strong);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-md);
+    color: var(--color-primary);
+  }
+
+  .calc__step-title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  .calc__step-sk {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-regular);
+    font-style: italic;
+    color: var(--color-on-surface-muted);
+    margin-left: var(--space-2);
+  }
+
+  .calc__step-q {
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface-muted);
+    margin-top: var(--space-1);
+  }
+
+  /* ── Level cards ───────────────────────────────────────────────────── */
+  .calc__levels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 900px) {
+    .calc__levels {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .calc__level {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--color-divider);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .calc__level:hover {
+    background-color: var(--color-surface-container-low);
+  }
+
+  .calc__level:has(input:checked) {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-tint);
+  }
+
+  .calc__level input {
+    margin-top: 3px;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .calc__level-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .calc__level-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .calc__level-code {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+  }
+
+  .calc__level-term {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  .calc__level-sk {
+    font-size: var(--text-label-md);
+    font-style: italic;
+    color: var(--color-on-surface-muted);
+  }
+
+  .calc__level-reqs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .calc__req {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface-muted);
+  }
+
+  .calc__req::before {
+    content: '— ';
+    color: var(--color-warm-gray);
+  }
+
+  /* ── Criteria ──────────────────────────────────────────────────────── */
+  .calc__criteria {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .calc__criteria-heading {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-divider);
+    margin-bottom: var(--space-2);
+  }
+
+  :global(.calc__criterion) {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-divider);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface);
+    cursor: pointer;
+  }
+
+  :global(.calc__criterion--auto) {
+    cursor: default;
+    color: var(--color-on-surface-muted);
+  }
+
+  :global(.calc__criterion input) {
+    accent-color: var(--color-primary);
+  }
+
+  :global(.calc__criterion-state) {
+    font-family: var(--font-mono);
+    color: var(--color-primary);
+    width: 1em;
+  }
+
+  :global(.calc__criterion-tag) {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
+    white-space: nowrap;
+  }
+
+  /* ── Result ────────────────────────────────────────────────────────── */
+  :global(.calc__verdict) {
+    background-color: var(--color-navy);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  :global(.calc__params) {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  :global(.calc__param) {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-on-dark-border);
+    font-family: var(--font-mono);
+  }
+
+  :global(.calc__param-letter) {
+    font-size: var(--text-label-md);
+    color: var(--color-primary-container);
+  }
+
+  :global(.calc__param-value) {
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-inverse-surface);
+  }
+
+  :global(.calc__verdict-label) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary-container);
+  }
+
+  :global(.calc__verdict-body) {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-dark-muted);
+    max-width: 68ch;
+  }
+
+  :global(.calc__verdict-body strong) {
+    color: var(--color-on-inverse-surface);
+  }
+
+  :global(.calc__controls) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-on-dark-border);
+  }
+
+  @media (min-width: 768px) {
+    :global(.calc__controls) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  :global(.calc__control-head) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary-container);
+    margin-bottom: var(--space-3);
+  }
+
+  :global(.calc__control-list) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.calc__control-list li) {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-snug);
+    color: var(--color-on-dark-muted);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-on-dark-border);
+  }
+
+  :global(.calc__control-list li:last-child) {
+    border-bottom: none;
+  }
+
+  :global(.calc__control-none) {
+    font-style: italic;
+  }
+
+  :global(.calc__verdict--none),
+  :global(.calc__verdict--pending) {
+    background-color: var(--color-surface-container-low);
+    border-left: 3px solid var(--color-primary);
+  }
+
+  :global(.calc__verdict--none .calc__verdict-label),
+  :global(.calc__verdict--pending .calc__verdict-label) {
+    color: var(--color-primary);
+  }
+
+  :global(.calc__verdict--none .calc__verdict-body),
+  :global(.calc__verdict--pending .calc__verdict-body) {
+    color: var(--color-on-surface-muted);
+  }
+
+  :global(.calc__verdict--none .calc__verdict-body strong),
+  :global(.calc__verdict--pending .calc__verdict-body strong) {
+    color: var(--color-on-surface);
+  }
+</style>
