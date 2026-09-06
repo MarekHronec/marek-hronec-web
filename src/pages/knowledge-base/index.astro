@@ -106,12 +106,19 @@ const canvasNodes: CanvasNode[] = [
 const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 /* ── Platform / topic derivation ─────────────────────────────────
-   Platform: articles whose category is a cloud platform (azure, oci, gcp)
-   Topics:   derived from category (for topic-category articles)
-             + from tags (Networking, Identity, Security, FinOps, Landing Zones)
+   Both derive from category *and* tags. Category alone is far too narrow
+   for platforms: only one article is filed under `azure` and none under
+   `oci`, but 24 of each carry the tag — a compliance or multicloud article
+   that covers Azure in depth is still an Azure article to a reader.
 ──────────────────────────────────────────────────────────────── */
 const PLATFORM_CATS = new Set(['azure', 'oci', 'gcp', 'multicloud']);
 const TOPIC_CATS = new Set(['networking', 'identity', 'security', 'finops', 'devops', 'bpm', 'compliance']);
+const TAG_TO_PLATFORM: Record<string, string> = {
+  'Azure':      'azure',
+  'OCI':        'oci',
+  'GCP':        'gcp',
+  'Multicloud': 'multicloud',
+};
 const TAG_TO_TOPIC: Record<string, string> = {
   'Networking':    'networking',
   'Identity':      'identity',
@@ -124,7 +131,14 @@ const TAG_TO_TOPIC: Record<string, string> = {
 };
 
 function getArticlePlatforms(article: typeof sorted[0]): string {
-  return PLATFORM_CATS.has(article.data.category) ? article.data.category : '';
+  const platforms = new Set<string>();
+  const cat = article.data.category;
+  if (PLATFORM_CATS.has(cat)) platforms.add(cat);
+  for (const tag of article.data.tags) {
+    const mapped = TAG_TO_PLATFORM[tag];
+    if (mapped) platforms.add(mapped);
+  }
+  return Array.from(platforms).join(',');
 }
 
 function getArticleTopics(article: typeof sorted[0]): string {
@@ -184,7 +198,6 @@ const totalCount = sorted.length;
             <span id="kb-article-count">{totalCount}</span>
             <span id="kb-article-count-label">{totalCount === 1 ? 'article' : 'articles'}</span>
           </p>
-          <div class="kb-toolbar__chips" id="kb-chips" hidden></div>
 
           <!-- View toggle — desktop only (hidden on mobile via CSS) -->
           <div class="kb-view-toggle" aria-label="View mode" role="group">
@@ -219,6 +232,12 @@ const totalCount = sorted.length;
               </svg>
             </div>
           </div>
+        </div>
+
+        <!-- Active filters — their own row, so chips are never squeezed
+             behind the view toggle. Overflow collapses into a dropdown. -->
+        <div class="kb-filterbar" id="kb-filterbar" hidden>
+          <div class="kb-filterbar__chips" id="kb-chips"></div>
         </div>
 
         <!-- List view — hidden as a unit when map view is active -->
@@ -309,7 +328,7 @@ const totalCount = sorted.length;
   }
 
   .kb-page--canvas .kb-toolbar__count,
-  .kb-page--canvas .kb-toolbar__chips,
+  .kb-page--canvas .kb-filterbar,
   .kb-page--canvas .kb-toolbar__sort {
     display: none;
   }
@@ -408,18 +427,62 @@ const totalCount = sorted.length;
     gap: 0.3em;
   }
 
-  .kb-toolbar__chips {
+  /* ── Active filter bar ───────────────────────────────────────────
+     Chips used to sit inside .kb-toolbar with overflow-x: auto and a
+     hidden scrollbar, so any chip past the view toggle was unreachable.
+     They now own a row and wrap; anything past MAX_INLINE_CHIPS folds
+     into the "+N" dropdown below. */
+  .kb-filterbar {
     display: flex;
-    gap: var(--space-2);
     align-items: center;
-    flex: 1;
-    min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
+    padding-top: var(--space-3);
   }
 
-  .kb-toolbar__chips::-webkit-scrollbar {
+  .kb-filterbar__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  /* Chips and the overflow button ease in rather than snapping */
+  @keyframes kb-chip-in {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── Overflow dropdown ───────────────────────────────────────────── */
+  .kb-overflow {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .kb-overflow__panel {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    min-width: 11rem;
+    padding: var(--space-3);
+    background-color: var(--color-surface-container-lowest);
+    border: 1px solid var(--color-divider-strong);
+    border-radius: var(--radius-xs);
+    box-shadow: var(--shadow-float);
+    animation: kb-panel-in var(--duration-fast) var(--ease-standard);
+  }
+
+  .kb-overflow__panel[hidden] {
     display: none;
+  }
+
+  @keyframes kb-panel-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ── View toggle (desktop only) ──────────────────────────────────── */
@@ -558,7 +621,9 @@ const totalCount = sorted.length;
     padding: 3px var(--space-3);
     background: var(--color-level-advanced-bg);
     color: var(--color-level-advanced-text);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-xs);
+    border: none;
+    animation: kb-chip-in var(--duration-fast) var(--ease-standard);
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
@@ -570,6 +635,28 @@ const totalCount = sorted.length;
 
   :global(.kb-chip:hover) {
     background: var(--color-primary-container);
+  }
+
+  :global(.kb-chip--more) {
+    background: var(--color-surface-container-high);
+    color: var(--color-on-surface);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.kb-chip--more:hover) {
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
+  }
+
+  :global(.kb-chip__caret) {
+    font-size: 1em;
+    line-height: 1;
+    transform: translateY(-2px);
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  :global(.kb-chip--more[aria-expanded='true'] .kb-chip__caret) {
+    transform: translateY(-1px) rotate(180deg);
   }
 
   :global(.kb-chip--clear) {
@@ -723,7 +810,7 @@ const totalCount = sorted.length;
   html.kb-canvas-init .kb-preflight         { display: none; }
   html.kb-canvas-init .kb-filter            { display: none; }
   html.kb-canvas-init .kb-toolbar__count,
-  html.kb-canvas-init .kb-toolbar__chips,
+  html.kb-canvas-init .kb-filterbar,
   html.kb-canvas-init .kb-toolbar__sort     { display: none; }
   html.kb-canvas-init .kb-toolbar {
     justify-content: flex-end;
@@ -778,6 +865,7 @@ const totalCount = sorted.length;
     const countEl       = document.getElementById('kb-article-count');
     const countLabelEl  = document.getElementById('kb-article-count-label');
     const chipsEl       = document.getElementById('kb-chips') as HTMLElement | null;
+    const filterbarEl   = document.getElementById('kb-filterbar') as HTMLElement | null;
     const allArticlesBtn  = document.getElementById('kb-all-articles');
     const allCountEl      = document.getElementById('kb-all-count');
     const mobileAllBtn    = document.getElementById('kb-mobile-all-articles');
@@ -950,7 +1038,33 @@ const totalCount = sorted.length;
       if (emptyEl) emptyEl.hidden = !(hasFilters && n === 0);
     }
 
-    /* ── Chips ──────────────────────────────────────────────────── */
+    /* ── Chips ──────────────────────────────────────────────────────
+       Chips live on their own row. Past MAX_INLINE_CHIPS the remainder
+       folds into a "+N" dropdown, so a long filter set never runs off
+       the edge into unreachable space. */
+    const MAX_INLINE_CHIPS = 4;
+    let overflowOpen = false;
+
+    function makeChip(group: string, value: string): HTMLButtonElement {
+      const label = LABELS[group]?.[value] ?? value;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'kb-chip';
+      btn.setAttribute('aria-label', `Remove filter: ${label}`);
+      btn.appendChild(document.createTextNode(label));
+      const x = document.createElement('span');
+      x.setAttribute('aria-hidden', 'true');
+      x.textContent = '×';
+      btn.appendChild(x);
+      btn.addEventListener('click', () => {
+        activeFilters[group]?.delete(value);
+        currentPage = 1;
+        overflowOpen = false;
+        apply();
+      });
+      return btn;
+    }
+
     function updateChips() {
       if (!chipsEl) return;
       chipsEl.innerHTML = '';
@@ -958,38 +1072,75 @@ const totalCount = sorted.length;
         [...active].map(value => ({ group, value }))
       );
 
-      if (chips.length > 0) {
-        const clearAll = document.createElement('button');
-        clearAll.className = 'kb-chip kb-chip--clear';
-        clearAll.setAttribute('aria-label', 'Clear all filters');
-        clearAll.innerHTML = `Clear filters <span aria-hidden="true">×</span>`;
-        clearAll.addEventListener('click', () => {
-          Object.values(activeFilters).forEach(s => s.clear());
-          currentPage = 1;
-          apply();
-        });
-        chipsEl.appendChild(clearAll);
+      if (filterbarEl) filterbarEl.hidden = chips.length === 0;
+      if (chips.length === 0) {
+        overflowOpen = false;
+        return;
       }
 
-      chips.forEach(({ group, value }) => {
-        const label = LABELS[group]?.[value] ?? value;
-        const btn = document.createElement('button');
-        btn.className = 'kb-chip';
-        btn.setAttribute('aria-label', `Remove filter: ${label}`);
-        btn.appendChild(document.createTextNode(label));
-        const x = document.createElement('span');
-        x.setAttribute('aria-hidden', 'true');
-        x.textContent = '×';
-        btn.appendChild(x);
-        btn.addEventListener('click', () => {
-          activeFilters[group]?.delete(value);
-          currentPage = 1;
-          apply();
-        });
-        chipsEl.appendChild(btn);
+      const clearAll = document.createElement('button');
+      clearAll.type = 'button';
+      clearAll.className = 'kb-chip kb-chip--clear';
+      clearAll.setAttribute('aria-label', 'Clear all filters');
+      clearAll.innerHTML = `Clear filters <span aria-hidden="true">×</span>`;
+      clearAll.addEventListener('click', () => {
+        Object.values(activeFilters).forEach(s => s.clear());
+        currentPage = 1;
+        overflowOpen = false;
+        apply();
       });
-      chipsEl.hidden = chips.length === 0;
+      chipsEl.appendChild(clearAll);
+
+      const inline = chips.slice(0, MAX_INLINE_CHIPS);
+      const rest   = chips.slice(MAX_INLINE_CHIPS);
+      inline.forEach(({ group, value }) => chipsEl.appendChild(makeChip(group, value)));
+
+      if (rest.length === 0) return;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'kb-overflow';
+
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'kb-chip kb-chip--more';
+      toggle.setAttribute('aria-expanded', String(overflowOpen));
+      toggle.setAttribute('aria-label', `Show ${rest.length} more active filters`);
+      toggle.appendChild(document.createTextNode(`+${rest.length}`));
+      const caret = document.createElement('span');
+      caret.className = 'kb-chip__caret';
+      caret.setAttribute('aria-hidden', 'true');
+      caret.textContent = '\u2304';
+      toggle.appendChild(caret);
+
+      const panel = document.createElement('div');
+      panel.className = 'kb-overflow__panel';
+      panel.hidden = !overflowOpen;
+      rest.forEach(({ group, value }) => panel.appendChild(makeChip(group, value)));
+
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        overflowOpen = !overflowOpen;
+        panel.hidden = !overflowOpen;
+        toggle.setAttribute('aria-expanded', String(overflowOpen));
+      });
+
+      wrap.appendChild(toggle);
+      wrap.appendChild(panel);
+      chipsEl.appendChild(wrap);
     }
+
+    /* Close the overflow panel on outside click or Escape */
+    document.addEventListener('click', () => {
+      if (!overflowOpen) return;
+      overflowOpen = false;
+      updateChips();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overflowOpen) {
+        overflowOpen = false;
+        updateChips();
+      }
+    });
 
     /* ── URL state ──────────────────────────────────────────────── */
     function updateURL() {
