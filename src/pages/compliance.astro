@@ -131,24 +131,32 @@ const countryCount = LAYERS[1].slugs.length;
         </a>
       </div>
 
-      <aside class="ca-disclaimer">
-        <p class="ca-disclaimer__head">Sources, and what this is not</p>
-        <p>
-          The calculator on this page is a transcription of documents published by
-          the Slovak Republic. It reproduces their logic; it does not replace them,
-          and it carries no official standing.
+      <aside class="ca-colophon">
+        <p class="ca-colophon__note">
+          <strong>Not an official tool.</strong> The calculator transcribes documents
+          published by the Slovak Republic and reproduces their logic. It does not
+          replace them. Classifying an ISVS is the operator’s responsibility and the
+          binding answer is the one in the sources — treat any result here as an
+          orientation aid to be checked against the workbook and a formal risk analysis.
         </p>
-        <ul class="ca-disclaimer__list" role="list">
-          <li>MIRRI SR — <em>Určenie parametrov UxCxIxAx</em>, príloha č. 1, workbook v10.0</li>
-          <li>MIRRI SR — <em>Metodické usmernenie pre klasifikáciu ISVS</em>, ref. 023107/2023/oSBATA-1</li>
-          <li>Zákon č. 69/2018 Z. z. o kybernetickej bezpečnosti, §20</li>
-          <li>Vyhláška č. 165/2018 Z. z. — identifikačné kritériá kategórií incidentov</li>
-        </ul>
-        <p>
-          Treat any result as an orientation aid to be checked against the official
-          workbook and a formal risk analysis. Classifying an ISVS is the operator’s
-          responsibility, and the binding answer is the one in the source documents.
-        </p>
+        <dl class="ca-colophon__sources">
+          <div>
+            <dt>Workbook</dt>
+            <dd>MIRRI SR — <em>Určenie parametrov UxCxIxAx</em>, príloha č. 1, v10.0</dd>
+          </div>
+          <div>
+            <dt>Guidance</dt>
+            <dd>MIRRI SR — <em>Metodické usmernenie pre klasifikáciu ISVS</em>, 023107/2023/oSBATA-1</dd>
+          </div>
+          <div>
+            <dt>Act</dt>
+            <dd>Zákon č. 69/2018 Z. z. o kybernetickej bezpečnosti, §20</dd>
+          </div>
+          <div>
+            <dt>Decree</dt>
+            <dd>Vyhláška č. 165/2018 Z. z. — kritériá kategórií incidentov</dd>
+          </div>
+        </dl>
       </aside>
     </div>
   </section>
@@ -301,45 +309,68 @@ const countryCount = LAYERS[1].slugs.length;
     color: var(--color-primary);
   }
 
-  /* ── Disclaimer ────────────────────────────────────────────────────── */
-  .ca-disclaimer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-5);
-    border-left: 3px solid var(--color-primary);
-    background-color: var(--color-surface-container-low);
-    max-width: 76ch;
+  /* ── Colophon ──────────────────────────────────────────────────────────
+     Ruled, not boxed. The old grey panel read as a browser alert, capped at
+     76ch so it stranded the right half of the row. This runs the full width
+     as a two-column register: the caution reads as prose, the sources as a
+     ruled list the eye can scan. */
+  .ca-colophon {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-divider-strong);
+    border-bottom: 1px solid var(--color-divider);
   }
 
-  .ca-disclaimer p {
+  @media (min-width: 900px) {
+    .ca-colophon {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      column-gap: var(--space-8);
+    }
+  }
+
+  .ca-colophon__note {
     font-size: var(--text-body-md);
     line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
   }
 
-  .ca-disclaimer__head {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
+  .ca-colophon__note strong {
     color: var(--color-on-surface);
   }
 
-  .ca-disclaimer__list {
+  .ca-colophon__sources {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
   }
 
-  .ca-disclaimer__list li {
-    font-family: var(--font-body);
+  .ca-colophon__sources > div {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .ca-colophon__sources > div:first-child {
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .ca-colophon__sources dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .ca-colophon__sources dd {
+    margin: 0;
     font-size: var(--text-label-md);
-    line-height: var(--leading-relaxed);
+    line-height: var(--leading-snug);
     color: var(--color-on-surface-muted);
-    padding-left: var(--space-3);
-    border-left: 1px solid var(--color-divider);
   }
 
   .ca-hero__meta {

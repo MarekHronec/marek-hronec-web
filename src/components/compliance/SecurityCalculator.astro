@@ -9,10 +9,13 @@
  */
 
 import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
+import CiaExplainer from './CiaExplainer.astro';
 ---
 
 <section class="calc" id="calculator">
   <div class="calc__inner container">
+
+    <CiaExplainer />
 
     <!-- Running readout — fills in as the classification is made -->
     <div class="calc__readout" id="calc-readout">
@@ -89,12 +92,17 @@ import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
               <legend class="calc__q-title">{q.question}</legend>
               <p class="calc__q-help">{q.help}</p>
               <div class="calc__q-options">
-                {q.options.map((o, oi) => (
-                  <label class="calc__opt">
+                {q.options.map((o) => (
+                  <label class="calc__opt" data-degree={o.degree}>
                     <input type="radio" name={`inc-${q.id}`} value={String(o.degree)} data-incident={q.id} />
                     <span class="calc__opt-body">
                       <span class="calc__opt-label">{o.label}</span>
                       {o.detail && <span class="calc__opt-detail">{o.detail}</span>}
+                    </span>
+                    <span class="calc__gauge" aria-hidden="true">
+                      {[1, 2, 3].map((step) => (
+                        <span class:list={['calc__gauge-bar', { 'calc__gauge-bar--on': o.degree >= step }]} />
+                      ))}
                     </span>
                   </label>
                 ))}
@@ -566,8 +574,9 @@ import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
   }
 
   .calc__opt {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
     gap: var(--space-3);
     padding: var(--space-3) var(--space-4);
     border: 1px solid var(--color-divider);
@@ -594,6 +603,27 @@ import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
     font-size: var(--text-label-sm);
     color: var(--color-meta-label);
   }
+
+  /* Severity at a glance — three bars, filled to the incident degree the
+     option carries under Decree 165/2018. */
+  .calc__gauge {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding-top: 5px;
+  }
+
+  .calc__gauge-bar {
+    display: block;
+    width: 4px;
+    height: 12px;
+    background-color: var(--color-divider);
+  }
+
+  .calc__gauge-bar--on { background-color: var(--color-primary); }
+
+  .calc__opt:has(input:checked) .calc__gauge-bar { background-color: var(--color-divider-strong); }
+  .calc__opt:has(input:checked) .calc__gauge-bar--on { background-color: var(--color-primary); }
 
   .calc__degree {
     font-size: var(--text-body-md);

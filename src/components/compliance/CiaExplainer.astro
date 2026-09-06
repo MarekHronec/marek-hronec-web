@@ -1,0 +1,333 @@
+---
+/*
+ * What C, I, A and U mean — explained through draught.
+ *
+ * A ship's draught decides which berths it can enter. Confidentiality,
+ * integrity and availability are the cargo: the more the asset carries, the
+ * deeper it sits, and the deeper it sits the higher the cloud service level
+ * it needs. That is exactly the relationship the workbook encodes, so the
+ * metaphor is load-bearing rather than decorative.
+ *
+ * Animated with inline SVG and CSS keyframes — no library, no raster, scales
+ * to any width, themeable through currentColor, and honours
+ * prefers-reduced-motion. A JS animation runtime would cost ~30kB for the
+ * same result on a site whose default is zero client-side JS.
+ */
+
+const LEGEND = [
+  { k: 'C', name: 'Confidentiality', sk: 'Dôvernosť', text: 'How damaging a leak would be. Public data sits light; strictly protected data sits heavy.' },
+  { k: 'I', name: 'Integrity', sk: 'Integrita', text: 'How damaging wrong data would be, even while the system keeps running.' },
+  { k: 'A', name: 'Availability', sk: 'Dostupnosť', text: 'How damaging an outage would be, and whether any fallback exists.' },
+];
+---
+
+<div class="cia">
+  <div class="cia__intro">
+    <h3 class="cia__title">Reading the result: C, I, A and U</h3>
+    <p class="cia__lede">
+      A ship's draught decides which berths it can enter. Classification works the
+      same way — confidentiality, integrity and availability are the cargo, and
+      together they settle how deep the asset sits. <strong>U</strong> is the depth
+      of berth it needs: the minimum cloud service level allowed to host it.
+    </p>
+  </div>
+
+  <figure class="cia__figure">
+    <svg
+      class="cia__svg"
+      viewBox="0 0 620 300"
+      role="img"
+      aria-labelledby="cia-svg-title cia-svg-desc"
+    >
+      <title id="cia-svg-title">Classification shown as a ship's draught</title>
+      <desc id="cia-svg-desc">
+        Three cargo blocks marked C, I and A load onto a hull. As they load, the hull
+        settles deeper in the water and the draught marker moves down the scale from
+        U1 to U4, showing the cloud service level the asset requires.
+      </desc>
+
+      <!-- Depth scale — berths U1 to U4 -->
+      <g class="cia__scale">
+        {[1, 2, 3, 4].map((u, i) => (
+          <g transform={`translate(0 ${168 + i * 30})`}>
+            <line x1="40" y1="0" x2="580" y2="0" stroke-dasharray="2 5" />
+            <text x="28" y="4" class="cia__scale-label">U{u}</text>
+          </g>
+        ))}
+      </g>
+
+      <!-- Waterline -->
+      <path
+        class="cia__water"
+        d="M40 158 q 22 -7 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0 t 45 0"
+      />
+
+      <!-- Ship: hull plus the cargo that settles it -->
+      <g class="cia__ship">
+        <!-- Cargo, loading in sequence -->
+        <g class="cia__cargo" data-i="0">
+          <rect x="252" y="86" width="34" height="26" />
+          <text x="269" y="104" class="cia__cargo-label">C</text>
+        </g>
+        <g class="cia__cargo" data-i="1">
+          <rect x="292" y="86" width="34" height="26" />
+          <text x="309" y="104" class="cia__cargo-label">I</text>
+        </g>
+        <g class="cia__cargo" data-i="2">
+          <rect x="332" y="86" width="34" height="26" />
+          <text x="349" y="104" class="cia__cargo-label">A</text>
+        </g>
+
+        <!-- Mast and pennant -->
+        <line class="cia__mast" x1="309" y1="86" x2="309" y2="40" />
+        <path class="cia__flag" d="M309 42 L344 51 L309 60 Z" />
+
+        <!-- Deck and hull -->
+        <rect class="cia__deck" x="236" y="112" width="146" height="10" />
+        <path class="cia__hull" d="M228 122 H390 L366 176 H252 Z" />
+
+        <!-- Draught mark on the hull -->
+        <g class="cia__mark">
+          <line x1="252" y1="152" x2="272" y2="152" />
+          <line x1="262" y1="146" x2="262" y2="158" />
+        </g>
+      </g>
+
+      <!-- Draught pointer, travelling down the scale as the hull settles -->
+      <g class="cia__pointer">
+        <path d="M596 0 l-10 -7 v14 z" />
+        <text x="582" y="4" class="cia__pointer-label" text-anchor="end">draught</text>
+      </g>
+    </svg>
+
+    <figcaption class="cia__caption">
+      Light cargo, shallow draught, a berth at U1. Heavy cargo, deep draught, and only
+      the deepest berths will take it.
+    </figcaption>
+  </figure>
+
+  <dl class="cia__legend">
+    {LEGEND.map((l) => (
+      <div class="cia__legend-row">
+        <dt class="cia__legend-key">
+          <span class="cia__legend-letter">{l.k}</span>
+          <span class="cia__legend-name">{l.name}</span>
+          <span class="cia__legend-sk">{l.sk}</span>
+        </dt>
+        <dd class="cia__legend-text">{l.text}</dd>
+      </div>
+    ))}
+    <div class="cia__legend-row cia__legend-row--out">
+      <dt class="cia__legend-key">
+        <span class="cia__legend-letter cia__legend-letter--out">U</span>
+        <span class="cia__legend-name">Cloud service level</span>
+        <span class="cia__legend-sk">Úroveň cloudovej služby</span>
+      </dt>
+      <dd class="cia__legend-text">
+        The result, not an input. U1 to U4 — the minimum level a Government Cloud
+        service must hold to be allowed to host the asset.
+      </dd>
+    </div>
+  </dl>
+</div>
+
+<style>
+  .cia {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding: var(--space-6) 0;
+  }
+
+  @media (min-width: 1024px) {
+    .cia {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      column-gap: var(--space-8);
+    }
+
+    .cia__intro { grid-column: 1 / -1; }
+  }
+
+  .cia__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    margin-bottom: var(--space-3);
+  }
+
+  .cia__lede {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 72ch;
+  }
+
+  .cia__lede strong { color: var(--color-primary); }
+
+  /* ── Figure ────────────────────────────────────────────────────────── */
+  .cia__figure {
+    margin: 0;
+    border: 1px solid var(--color-divider);
+    padding: var(--space-4);
+  }
+
+  .cia__svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .cia__caption {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-divider);
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  /* Scale, water, hull */
+  .cia__scale line { stroke: var(--color-divider-strong); stroke-width: 1; }
+
+  .cia__scale-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-meta-label);
+    text-anchor: end;
+  }
+
+  .cia__water {
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 1.5;
+    opacity: 0.7;
+  }
+
+  .cia__deck,
+  .cia__hull { fill: var(--color-navy); }
+  .cia__mast { stroke: var(--color-navy); stroke-width: 2.5; }
+  .cia__flag { fill: var(--color-primary); }
+  .cia__mark line { stroke: var(--color-surface); stroke-width: 1.5; }
+
+  .cia__cargo rect {
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 1.5;
+  }
+
+  .cia__cargo-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--color-primary);
+    text-anchor: middle;
+  }
+
+  .cia__pointer path { fill: var(--color-primary); }
+
+  .cia__pointer-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    fill: var(--color-meta-label);
+  }
+
+  /*
+   * The loop: cargo loads one block at a time, the hull settles, the pointer
+   * tracks it down the scale, then everything lifts and the cycle repeats.
+   */
+  .cia__ship { animation: cia-settle 9s var(--ease-standard) infinite; }
+  .cia__pointer { animation: cia-point 9s var(--ease-standard) infinite; }
+  .cia__cargo { opacity: 0; animation: cia-load 9s var(--ease-standard) infinite; }
+  .cia__cargo[data-i='1'] { animation-delay: 0.45s; }
+  .cia__cargo[data-i='2'] { animation-delay: 0.9s; }
+
+  @keyframes cia-settle {
+    0%,  8%   { transform: translateY(0); }
+    38%, 72%  { transform: translateY(58px); }
+    92%, 100% { transform: translateY(0); }
+  }
+
+  @keyframes cia-point {
+    0%,  8%   { transform: translateY(168px); }
+    38%, 72%  { transform: translateY(226px); }
+    92%, 100% { transform: translateY(168px); }
+  }
+
+  @keyframes cia-load {
+    0%, 4%    { opacity: 0; transform: translateY(-14px); }
+    16%, 78%  { opacity: 1; transform: translateY(0); }
+    88%, 100% { opacity: 0; transform: translateY(-14px); }
+  }
+
+  /* Motion is explanatory, not decorative — so hold the loaded state rather
+     than removing the illustration entirely. */
+  @media (prefers-reduced-motion: reduce) {
+    .cia__ship { animation: none; transform: translateY(58px); }
+    .cia__pointer { animation: none; transform: translateY(226px); }
+    .cia__cargo { animation: none; opacity: 1; }
+  }
+
+  /* ── Legend ────────────────────────────────────────────────────────── */
+  .cia__legend { display: flex; flex-direction: column; }
+
+  .cia__legend-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .cia__legend-row:first-child { border-top: 1px solid var(--color-divider); }
+
+  .cia__legend-row--out { border-bottom: none; }
+
+  .cia__legend-key {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .cia__legend-letter {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+  }
+
+  .cia__legend-letter--out {
+    background-color: var(--color-navy);
+    border-color: var(--color-navy);
+    color: var(--color-on-inverse-surface);
+  }
+
+  .cia__legend-name {
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+  }
+
+  .cia__legend-sk {
+    font-size: var(--text-label-md);
+    font-style: italic;
+    color: var(--color-on-surface-muted);
+  }
+
+  .cia__legend-text {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    margin: 0;
+  }
+</style>
