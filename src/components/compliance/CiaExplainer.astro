@@ -4,10 +4,11 @@
  *
  * Each panel animates the idea rather than labelling it:
  *   C — a harbour boom closing until only one boat can reach the hold
- *   I — a compass drifting off true, so the plotted course and the real track
- *       diverge: the instrument works, the answer is wrong
+ *   I — the chart still reads 12 fathoms; the rock is at 3. The instrument is
+ *       fine, the recorded value is not, and the ship grounds on the difference
  *   A — a lighthouse beam sweeping, then going dark, leaving the ship unguided
- *   U — the result: cargo settles the hull, and the draught picks the berth
+ *   U — the result: C, I and A decide which berths may accept the ship. Higher
+ *       classification does not burden the asset, it narrows where it may go
  *
  * Inline SVG with CSS keyframes. No library, no raster, scales to any width,
  * themes through currentColor. A JS animation runtime would cost ~30kB on a
@@ -71,7 +72,7 @@ const BOATS = [
             <line class={`exc__line exc__line--t${b.tier}`} x1={b.x} y1={b.y} x2="200" y2="124" />
           ))}
           <!-- closing boom -->
-          <circle class="exc__boom" cx="200" cy="124" r="72" />
+          <circle class="exc__boom" cx="200" cy="124" r="100" />
           <!-- boats -->
           {BOATS.map((b) => (
             <g class={`exc__boat exc__boat--t${b.tier}`} transform={`translate(${b.x} ${b.y})`}>
@@ -99,77 +100,83 @@ const BOATS = [
 
     <!-- ── I ─────────────────────────────────────────────────────────── -->
     <section class="ex__panel" id="ex-panel-i" role="tabpanel" aria-labelledby="ex-tab-i" data-panel="i" hidden>
-      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A compass needle drifting off true north while the ship's track curves away from its plotted course">
-        <!-- compass -->
-        <g class="exi__compass" transform="translate(84 116)">
-          <circle class="exi__dial" r="46" />
-          <circle class="exi__dial exi__dial--inner" r="34" />
-          {[0, 90, 180, 270].map((d) => (
-            <line class="exi__tick" x1="0" y1="-46" x2="0" y2="-38" transform={`rotate(${d})`} />
-          ))}
-          <text class="exi__n" x="0" y="-52">N</text>
-          <line class="exi__true" x1="0" y1="0" x2="0" y2="-32" />
-          <g class="exi__needle">
-            <path d="M0 -32 L5 4 L0 -2 L-5 4 Z" />
-          </g>
-          <circle class="exi__hub" r="3" />
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A chart records twelve fathoms where the seabed is actually three, and the ship grounds on the difference">
+        <!-- the recorded value -->
+        <g class="exi__chart">
+          <rect x="24" y="24" width="104" height="62" />
+          <text class="exi__chart-label" x="36" y="44">SOUNDING</text>
+          <text class="exi__reading" x="36" y="74">12</text>
+          <text class="exi__unit" x="74" y="74">fathoms</text>
+        </g>
+        <line class="exi__leader" x1="128" y1="60" x2="286" y2="112" />
+
+        <!-- sea, seabed and the rock the chart does not know about -->
+        <path class="exi__sea" d="M16 112 q 24 -6 48 0 t 48 0 t 48 0 t 48 0 t 48 0 t 48 0 t 48 0 t 48 0" />
+        <path class="exi__bed" d="M16 208 H236 C 268 208, 276 130, 300 130 C 324 130, 332 208, 384 208 V240 H16 Z" />
+        <text class="exi__truth" x="300" y="152">3</text>
+
+        <!-- depth the chart promises, drawn against the real bed -->
+        <g class="exi__gauge">
+          <line x1="300" y1="116" x2="300" y2="126" />
+          <path d="M300 126 l-4 -6 h8 z" />
         </g>
 
-        <!-- plotted course versus actual track -->
-        <path class="exi__plot" d="M150 150 H370" />
-        <text class="exi__plot-label" x="370" y="140">plotted</text>
-        <path class="exi__track" d="M150 150 C 218 150, 268 138, 370 96" />
-        <g class="exi__hazard" transform="translate(370 92)">
-          <line x1="-7" y1="-7" x2="7" y2="7" />
-          <line x1="7" y1="-7" x2="-7" y2="7" />
+        <g class="exi__ship">
+          <path d="M-16 0 H16 L11 11 H-11 Z" />
+          <line x1="0" y1="0" x2="0" y2="-18" />
+          <path d="M0 -17 L13 -10 L0 -3 Z" />
         </g>
-        <g class="exi__ship"><path d="M-10 0 H10 L7 7 H-7 Z" /></g>
+        <g class="exi__impact">
+          <line x1="-10" y1="-10" x2="10" y2="10" />
+          <line x1="10" y1="-10" x2="-10" y2="10" />
+        </g>
 
-        <text class="ex__cap ex__cap--still" x="200" y="214">The instrument still turns. The reading is wrong.</text>
+        <text class="ex__cap ex__cap--sail" x="200" y="230">The chart reads 12. Nothing looks wrong.</text>
+        <text class="ex__cap ex__cap--ground" x="200" y="230">The rock is at 3. The chart was never corrected.</text>
       </svg>
       <div class="ex__copy">
         <h4>Whether the data can be trusted</h4>
         <p>
-          Integrity is not about outages. The system runs, the needle swings, everything
-          looks healthy — but the value is off true, and every decision made downstream
-          drifts with it. High integrity means an error would immediately threaten the
-          service that depends on it.
+          Integrity is not about outages. The chart is legible, the system is up, and
+          the sounding it records is simply wrong — so the ship sails a route that
+          looks safe and grounds anyway. High integrity means an error in the data
+          would immediately threaten the service that relies on it.
         </p>
       </div>
     </section>
 
     <!-- ── A ─────────────────────────────────────────────────────────── -->
     <section class="ex__panel" id="ex-panel-a" role="tabpanel" aria-labelledby="ex-tab-a" data-panel="a" hidden>
-      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A lighthouse beam sweeping and then going dark, leaving a ship unguided">
-        <!-- beam, behind everything -->
-        <g class="exa__beam" transform="translate(96 74)">
-          <path d="M0 0 L250 -46 L250 46 Z" />
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A lighthouse beam sweeping across the water, then going dark and leaving a ship without guidance">
+        <!-- Beam rotates about the lamp itself, so it always emanates from it -->
+        <g class="exa__beam">
+          <path d="M100 74 L370 34 L370 118 Z" />
         </g>
-
         <!-- lighthouse -->
         <g class="exa__tower">
-          <path class="exa__rock" d="M56 186 q 40 -22 80 0 z" />
-          <path d="M84 186 L88 96 H104 L108 186 Z" />
-          <rect class="exa__lamp" x="86" y="80" width="20" height="16" />
-          <path d="M84 80 L96 68 L108 80 Z" />
+          <path class="exa__rock" d="M58 194 q 42 -26 84 0 z" />
+          <path d="M86 194 L90 92 H110 L114 194 Z" />
+          <path class="exa__gallery" d="M84 92 H116" />
+          <rect class="exa__lamp" x="90" y="64" width="20" height="28" />
+          <path d="M86 64 L100 48 L114 64 Z" />
         </g>
-        <circle class="exa__light" cx="96" cy="88" r="5" />
+        <g class="exa__glow"><circle cx="100" cy="74" r="16" /></g>
+        <circle class="exa__light" cx="100" cy="74" r="6" />
 
-        <!-- sea and ship -->
-        <path class="exa__sea" d="M0 190 q 25 -6 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" />
-        <g class="exa__ship" transform="translate(300 176)">
-          <path d="M-14 0 H14 L10 10 H-10 Z" />
-          <line x1="0" y1="0" x2="0" y2="-16" />
-          <path d="M0 -15 L11 -9 L0 -3 Z" />
+        <path class="exa__sea" d="M0 196 q 25 -6 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" />
+        <g class="exa__ship">
+          <path d="M-15 0 H15 L11 11 H-11 Z" />
+          <line x1="0" y1="0" x2="0" y2="-18" />
+          <path d="M0 -17 L12 -10 L0 -3 Z" />
         </g>
 
-        <text class="ex__cap ex__cap--lit" x="200" y="222">A1 — guidance holds, or a fallback exists</text>
-        <text class="ex__cap ex__cap--dark" x="200" y="222">A3 — the light is out and nothing replaces it</text>
+        <text class="ex__cap ex__cap--lit" x="200" y="230">A1 — the light holds, or something else guides the ship</text>
+        <text class="ex__cap ex__cap--dark" x="200" y="230">A3 — the light is out and nothing replaces it</text>
       </svg>
       <div class="ex__copy">
         <h4>Whether it is there when needed</h4>
         <p>
-          Availability asks what an outage costs. If people can still get the service
+          Availability asks what an outage costs. If people can still reach the service
           another way, the light going out is survivable. If nothing replaces it, the
           asset is critical and an outage stops the essential service outright.
         </p>
@@ -178,45 +185,56 @@ const BOATS = [
 
     <!-- ── U ─────────────────────────────────────────────────────────── -->
     <section class="ex__panel" id="ex-panel-u" role="tabpanel" aria-labelledby="ex-tab-u" data-panel="u" hidden>
-      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="Cargo loading onto a hull, settling it deeper until the draught marker reaches the required berth">
-        <g class="exu__scale">
-          {[1, 2, 3, 4].map((u, i) => (
-            <g transform={`translate(0 ${132 + i * 24})`}>
-              <line x1="40" y1="0" x2="372" y2="0" stroke-dasharray="2 5" />
-              <text x="30" y="4">U{u}</text>
-            </g>
-          ))}
-        </g>
+      <svg class="ex__svg" viewBox="0 0 400 240" role="img" aria-label="A ship carrying a classification is turned away from the two least protected berths and accepted at the third">
+        <path class="exu__sea" d="M0 104 q 25 -5 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" />
 
-        <path class="exu__sea" d="M40 126 q 21 -6 42 0 t 42 0 t 42 0 t 42 0 t 42 0 t 42 0 t 42 0 t 42 0" />
+        <!-- Four berths, each better protected than the last -->
+        {[
+          { x: 58,  u: 1, wall: false, gate: false, tower: false },
+          { x: 148, u: 2, wall: true,  gate: false, tower: false },
+          { x: 238, u: 3, wall: true,  gate: true,  tower: false },
+          { x: 328, u: 4, wall: true,  gate: true,  tower: true  },
+        ].map((b) => (
+          <g class={`exu__berth exu__berth--${b.u}`} transform={`translate(${b.x} 0)`}>
+            <rect class="exu__slot" x="-34" y="92" width="68" height="76" />
+            <line class="exu__quay" x1="-34" y1="168" x2="34" y2="168" />
+            {b.wall && <path class="exu__wall" d="M-34 168 V134 M34 168 V134" />}
+            {b.gate && <path class="exu__gate" d="M-34 134 H-18 M18 134 H34" />}
+            {b.tower && <path class="exu__tower" d="M-7 134 h14 v-20 h-14 z M0 114 v-9" />}
+            <text class="exu__label" x="0" y="188">U{b.u}</text>
+          </g>
+        ))}
 
+        <!-- Refused at the berths that cannot take this classification -->
+        {[58, 148].map((x, i) => (
+          <g class={`exu__refuse exu__refuse--${i}`} transform={`translate(${x} 118)`}>
+            <line x1="-13" y1="-13" x2="13" y2="13" />
+            <line x1="13" y1="-13" x2="-13" y2="13" />
+          </g>
+        ))}
+
+        <!-- The ship, carrying its classification -->
         <g class="exu__ship">
-          {[
-            { x: 168, l: 'C' },
-            { x: 196, l: 'I' },
-            { x: 224, l: 'A' },
-          ].map((c, i) => (
-            <g class={`exu__cargo exu__cargo--${i}`}>
-              <rect x={c.x} y="66" width="24" height="20" />
-              <text x={c.x + 12} y="81">{c.l}</text>
-            </g>
-          ))}
-          <rect class="exu__deck" x="156" y="86" width="104" height="8" />
-          <path class="exu__hull" d="M150 94 H266 L249 138 H167 Z" />
+          <line class="exu__mast" x1="0" y1="-28" x2="0" y2="-56" />
+          <path d="M-24 -28 H24 L18 -8 H-18 Z" />
+          <!-- drawn last so the mast does not run through the classification -->
+          <g class="exu__badge">
+            <rect x="-32" y="-52" width="64" height="22" />
+            <text x="0" y="-37">C2 I2 A2</text>
+          </g>
         </g>
 
-        <g class="exu__pointer">
-          <path d="M386 0 l-9 -6 v12 z" />
-        </g>
-
-        <text class="ex__cap ex__cap--still" x="206" y="220">Cargo sets the draught. Draught picks the berth.</text>
+        <text class="ex__cap ex__cap--refused" x="200" y="228">U1 and U2 are not assured enough to take it</text>
+        <text class="ex__cap ex__cap--berthed" x="200" y="228">U3 is the lowest berth allowed to accept it</text>
       </svg>
       <div class="ex__copy">
-        <h4>The berth the asset needs</h4>
+        <h4>Which environments may host it</h4>
         <p>
-          U is the only value you do not choose. C, I and A together settle how deep the
-          asset sits, and that draught decides the minimum cloud service level — U1 to U4 —
-          that a Government Cloud service must hold to be allowed to host it.
+          U is the only value you do not choose. C, I and A together decide how well
+          protected a berth has to be before it is allowed to take the ship — and the
+          less assured berths are simply closed to it. The result is a floor, not a
+          burden: U1 to U4 is the minimum level a Government Cloud service must hold
+          to host the asset at all.
         </p>
       </div>
     </section>
@@ -224,8 +242,13 @@ const BOATS = [
 </div>
 
 <script>
-  const tabs = document.querySelectorAll<HTMLButtonElement>('.ex__tab');
-  const panels = document.querySelectorAll<HTMLElement>('.ex__panel');
+  // Scoped per instance rather than document-wide, so a second explainer on
+  // a page cannot cross-wire this one's panel state.
+  document.querySelectorAll<HTMLElement>('.ex').forEach(setup);
+
+  function setup(root: HTMLElement) {
+  const tabs = root.querySelectorAll<HTMLButtonElement>('.ex__tab');
+  const panels = root.querySelectorAll<HTMLElement>('.ex__panel');
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -245,6 +268,7 @@ const BOATS = [
       });
     });
   });
+  }
 </script>
 
 <style>
@@ -335,7 +359,7 @@ const BOATS = [
   /* display:grid above outranks the UA's [hidden]{display:none}, so say it here */
   .ex__panel[hidden] { display: none; }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     .ex__panel {
       grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
       align-items: center;
@@ -368,8 +392,10 @@ const BOATS = [
     text-anchor: middle;
   }
 
-  .ex__cap--open, .ex__cap--shut, .ex__cap--lit, .ex__cap--dark { opacity: 0; }
-  .ex__cap--still { opacity: 1; }
+  .ex__cap--open, .ex__cap--shut,
+  .ex__cap--lit, .ex__cap--dark,
+  .ex__cap--sail, .ex__cap--ground,
+  .ex__cap--refused, .ex__cap--berthed { opacity: 0; }
 
   /* ── C: the closing boom ───────────────────────────────────────────── */
   .exc__hold { fill: var(--color-navy); }
@@ -400,7 +426,7 @@ const BOATS = [
 
   @keyframes exc-boom {
     0%, 12%   { transform: scale(1); opacity: 0.5; }
-    62%, 84%  { transform: scale(0.46); opacity: 0.9; }
+    62%, 84%  { transform: scale(0.32); opacity: 0.9; }
     96%, 100% { transform: scale(1); opacity: 0.5; }
   }
   @keyframes exc-t4 { 0%, 14% { opacity: 1; } 26%, 88% { opacity: 0.1; } 96%, 100% { opacity: 1; } }
@@ -409,138 +435,180 @@ const BOATS = [
   @keyframes exc-open { 0%, 14% { opacity: 1; } 24%, 100% { opacity: 0; } }
   @keyframes exc-shut { 0%, 56% { opacity: 0; } 66%, 88% { opacity: 1; } 96%, 100% { opacity: 0; } }
 
-  /* ── I: drift off true ─────────────────────────────────────────────── */
-  .exi__dial { fill: none; stroke: var(--color-divider-strong); stroke-width: 1.5; }
-  .exi__dial--inner { stroke: var(--color-divider); }
-  .exi__tick { stroke: var(--color-divider-strong); stroke-width: 1.5; }
-  .exi__n { font-family: var(--font-mono); font-size: 11px; fill: var(--color-meta-label); text-anchor: middle; }
-  .exi__true { stroke: var(--color-divider-strong); stroke-width: 1.5; stroke-dasharray: 3 3; }
-  .exi__needle path { fill: var(--color-primary); }
-  .exi__hub { fill: var(--color-navy); }
-  .exi__plot { fill: none; stroke: var(--color-divider-strong); stroke-width: 1.5; stroke-dasharray: 4 5; }
-  .exi__plot-label { font-family: var(--font-mono); font-size: 10px; fill: var(--color-meta-label); text-anchor: end; }
-  .exi__track { fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-dasharray: 260; stroke-dashoffset: 260; }
-  .exi__hazard line { stroke: var(--color-primary); stroke-width: 2; opacity: 0; }
-  .exi__ship path { fill: var(--color-navy); }
-
-  .ex__panel--active .exi__needle { animation: exi-drift 8s var(--ease-standard) infinite; transform-origin: 0 0; }
-  .ex__panel--active .exi__track  { animation: exi-draw 8s var(--ease-standard) infinite; }
-  .ex__panel--active .exi__ship   { animation: exi-sail 8s var(--ease-standard) infinite; }
-  .ex__panel--active .exi__hazard line { animation: exi-hit 8s var(--ease-standard) infinite; }
-
-  @keyframes exi-drift {
-    0%, 10%   { transform: rotate(0deg); }
-    70%, 86%  { transform: rotate(24deg); }
-    96%, 100% { transform: rotate(0deg); }
+  /* ── I: the chart is wrong ─────────────────────────────────────────── */
+  .exi__chart rect { fill: var(--color-surface-container-low); stroke: var(--color-divider-strong); stroke-width: 1.5; }
+  .exi__chart-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; fill: var(--color-meta-label); }
+  .exi__reading { font-family: var(--font-mono); font-size: 26px; font-weight: 700; fill: var(--color-primary); }
+  .exi__unit { font-family: var(--font-mono); font-size: 10px; fill: var(--color-meta-label); }
+  .exi__leader { stroke: var(--color-divider-strong); stroke-width: 1; stroke-dasharray: 3 4; }
+  .exi__sea { fill: none; stroke: var(--color-primary); stroke-width: 1.5; opacity: 0.7; }
+  .exi__bed { fill: var(--color-navy); opacity: 0.14; }
+  .exi__truth {
+    font-family: var(--font-mono); font-size: 15px; font-weight: 700;
+    fill: var(--color-navy); text-anchor: middle; opacity: 0;
   }
-  @keyframes exi-draw {
-    0%, 10%   { stroke-dashoffset: 260; }
-    72%, 86%  { stroke-dashoffset: 0; }
-    95%, 100% { stroke-dashoffset: 260; }
+  .exi__gauge line { stroke: var(--color-navy); stroke-width: 1.5; }
+  .exi__gauge path { fill: var(--color-navy); }
+  .exi__gauge { opacity: 0; }
+  /* Without these the default origin is 50% 50% of the *view box*, so a
+     combined translate+rotate pivots about (200,120) and lands ~40 units off.
+     Pinning the origin to the viewBox corner makes translate() absolute and
+     rotates each group about its own local origin. */
+  .exi__ship, .exi__impact, .exa__ship, .exu__ship {
+    transform-box: view-box;
+    transform-origin: 0 0;
   }
+
+  .exi__ship path:first-child { fill: var(--color-navy); }
+  .exi__ship line { stroke: var(--color-navy); stroke-width: 2; }
+  .exi__ship path:last-child { fill: var(--color-primary); }
+  .exi__impact line { stroke: var(--color-primary); stroke-width: 2.5; }
+  .exi__impact { opacity: 0; }
+
+  .ex__panel--active .exi__ship    { animation: exi-sail 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exi__impact  { animation: exi-hit 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exi__truth,
+  .ex__panel--active .exi__gauge   { animation: exi-reveal 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exi__reading { animation: exi-flicker 9s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--sail   { animation: exi-cap-a 9s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--ground { animation: exi-cap-b 9s var(--ease-standard) infinite; }
+
   @keyframes exi-sail {
-    0%, 10%   { transform: translate(150px, 150px); }
-    72%, 86%  { transform: translate(366px, 96px); }
-    95%, 100% { transform: translate(150px, 150px); }
+    0%, 6%    { transform: translate(40px, 106px) rotate(0deg); }
+    52%       { transform: translate(268px, 106px) rotate(0deg); }
+    62%, 86%  { transform: translate(286px, 102px) rotate(-11deg); }
+    96%, 100% { transform: translate(40px, 106px) rotate(0deg); }
   }
-  @keyframes exi-hit {
-    0%, 70%   { opacity: 0; }
-    78%, 88%  { opacity: 1; }
-    94%, 100% { opacity: 0; }
-  }
+  @keyframes exi-hit    { 0%, 56% { opacity: 0; transform: translate(300px, 114px) scale(0.6); }
+                          66%, 86% { opacity: 1; transform: translate(300px, 114px) scale(1); }
+                          92%, 100% { opacity: 0; transform: translate(300px, 114px) scale(0.6); } }
+  @keyframes exi-reveal { 0%, 54% { opacity: 0; } 66%, 88% { opacity: 1; } 95%, 100% { opacity: 0; } }
+  @keyframes exi-flicker{ 0%, 54% { opacity: 1; } 62% { opacity: 0.35; } 70%, 100% { opacity: 1; } }
+  @keyframes exi-cap-a  { 0%, 44% { opacity: 1; } 54%, 100% { opacity: 0; } }
+  @keyframes exi-cap-b  { 0%, 58% { opacity: 0; } 68%, 88% { opacity: 1; } 95%, 100% { opacity: 0; } }
 
   /* ── A: the light going out ────────────────────────────────────────── */
-  .exa__beam path { fill: var(--color-primary); opacity: 0.14; }
+  .exa__beam path { fill: var(--color-primary); opacity: 0.16; }
+  /* Rotating about the lamp keeps the beam attached to its source */
+  .exa__beam { transform-origin: 100px 74px; }
+  .exa__glow circle { fill: var(--color-primary); opacity: 0.22; }
+  .exa__glow { transform-origin: 100px 74px; }
   .exa__tower path { fill: var(--color-navy); }
-  .exa__lamp { fill: none; stroke: var(--color-navy); stroke-width: 2; }
-  .exa__rock { fill: var(--color-navy); opacity: 0.35; }
+  .exa__gallery { stroke: var(--color-navy); stroke-width: 3; }
+  .exa__lamp { fill: var(--color-surface); stroke: var(--color-navy); stroke-width: 2.5; }
+  .exa__rock { fill: var(--color-navy); opacity: 0.3; }
   .exa__light { fill: var(--color-primary); }
   .exa__sea { fill: none; stroke: var(--color-primary); stroke-width: 1.5; opacity: 0.6; }
   .exa__ship path:first-child { fill: var(--color-navy); }
   .exa__ship line { stroke: var(--color-navy); stroke-width: 2; }
   .exa__ship path:last-child { fill: var(--color-primary); }
 
-  .ex__panel--active .exa__beam  { animation: exa-sweep 9s var(--ease-standard) infinite; transform-box: fill-box; transform-origin: 0 50%; }
-  .ex__panel--active .exa__light { animation: exa-pulse 9s var(--ease-standard) infinite; }
-  .ex__panel--active .exa__ship  { animation: exa-adrift 9s var(--ease-standard) infinite; }
-  .ex__panel--active .ex__cap--lit  { animation: exa-lit 9s var(--ease-standard) infinite; }
-  .ex__panel--active .ex__cap--dark { animation: exa-dark 9s var(--ease-standard) infinite; }
+  .ex__panel--active .exa__beam  { animation: exa-sweep 10s var(--ease-standard) infinite; }
+  .ex__panel--active .exa__glow  { animation: exa-glow 10s var(--ease-standard) infinite; }
+  .ex__panel--active .exa__light { animation: exa-pulse 10s var(--ease-standard) infinite; }
+  .ex__panel--active .exa__ship  { animation: exa-adrift 10s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--lit  { animation: exa-lit 10s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--dark { animation: exa-dark 10s var(--ease-standard) infinite; }
 
   @keyframes exa-sweep {
-    0%        { transform: rotate(-12deg); opacity: 1; }
-    26%       { transform: rotate(10deg);  opacity: 1; }
-    46%       { transform: rotate(-4deg);  opacity: 0; }
-    82%       { transform: rotate(-4deg);  opacity: 0; }
-    100%      { transform: rotate(-12deg); opacity: 1; }
+    0%        { transform: rotate(-4deg);  opacity: 1; }
+    20%       { transform: rotate(16deg);  opacity: 1; }
+    40%       { transform: rotate(2deg);   opacity: 1; }
+    48%       { transform: rotate(2deg);   opacity: 0; }
+    88%       { transform: rotate(2deg);   opacity: 0; }
+    96%, 100% { transform: rotate(-4deg);  opacity: 1; }
   }
-  @keyframes exa-pulse {
-    0%, 40%   { opacity: 1; r: 5; }
-    50%, 84%  { opacity: 0.15; }
-    96%, 100% { opacity: 1; }
+  @keyframes exa-glow {
+    0%, 40%   { opacity: 1; transform: scale(1); }
+    46%, 88%  { opacity: 0; transform: scale(0.4); }
+    97%, 100% { opacity: 1; transform: scale(1); }
   }
+  @keyframes exa-pulse { 0%, 42% { opacity: 1; } 50%, 88% { opacity: 0.15; } 97%, 100% { opacity: 1; } }
   @keyframes exa-adrift {
-    0%, 40%   { transform: translate(300px, 176px) rotate(0deg); }
-    64%, 84%  { transform: translate(316px, 182px) rotate(7deg); }
-    100%      { transform: translate(300px, 176px) rotate(0deg); }
+    0%, 42%   { transform: translate(304px, 184px) rotate(0deg); }
+    66%, 86%  { transform: translate(322px, 190px) rotate(9deg); }
+    100%      { transform: translate(304px, 184px) rotate(0deg); }
   }
   @keyframes exa-lit  { 0%, 34% { opacity: 1; } 44%, 100% { opacity: 0; } }
-  @keyframes exa-dark { 0%, 52% { opacity: 0; } 62%, 86% { opacity: 1; } 94%, 100% { opacity: 0; } }
+  @keyframes exa-dark { 0%, 54% { opacity: 0; } 64%, 86% { opacity: 1; } 92%, 100% { opacity: 0; } }
 
-  /* ── U: draught picks the berth ────────────────────────────────────── */
-  .exu__scale line { stroke: var(--color-divider-strong); }
-  .exu__scale text { font-family: var(--font-mono); font-size: 10px; fill: var(--color-meta-label); text-anchor: end; }
-  .exu__sea { fill: none; stroke: var(--color-primary); stroke-width: 1.5; opacity: 0.7; }
-  .exu__deck, .exu__hull { fill: var(--color-navy); }
-  .exu__cargo rect { fill: none; stroke: var(--color-primary); stroke-width: 1.5; }
-  .exu__cargo text { font-family: var(--font-mono); font-size: 12px; font-weight: 700; fill: var(--color-primary); text-anchor: middle; }
-  .exu__pointer path { fill: var(--color-primary); }
-
-  .ex__panel--active .exu__ship    { animation: exu-settle 9s var(--ease-standard) infinite; }
-  .ex__panel--active .exu__pointer { animation: exu-point 9s var(--ease-standard) infinite; }
-  .ex__panel--active .exu__cargo   { opacity: 0; animation: exu-load 9s var(--ease-standard) infinite; }
-  .ex__panel--active .exu__cargo--1 { animation-delay: 0.4s; }
-  .ex__panel--active .exu__cargo--2 { animation-delay: 0.8s; }
-
-  @keyframes exu-settle {
-    0%, 10%   { transform: translateY(0); }
-    46%, 80%  { transform: translateY(48px); }
-    94%, 100% { transform: translateY(0); }
-  }
-  @keyframes exu-point {
-    0%, 10%   { transform: translateY(132px); }
-    46%, 80%  { transform: translateY(180px); }
-    94%, 100% { transform: translateY(132px); }
-  }
-  @keyframes exu-load {
-    0%, 4%    { opacity: 0; transform: translateY(-12px); }
-    18%, 84%  { opacity: 1; transform: translateY(0); }
-    92%, 100% { opacity: 0; transform: translateY(-12px); }
+  /* ── U: which berths may accept it ─────────────────────────────────── */
+  .exu__sea { fill: none; stroke: var(--color-primary); stroke-width: 1.5; opacity: 0.6; }
+  .exu__slot { fill: var(--color-surface-container-low); stroke: none; }
+  .exu__quay { stroke: var(--color-navy); stroke-width: 3; }
+  .exu__wall, .exu__gate, .exu__tower { fill: none; stroke: var(--color-navy); stroke-width: 2.5; }
+  .exu__label { font-family: var(--font-mono); font-size: 12px; fill: var(--color-meta-label); text-anchor: middle; }
+  .exu__refuse line { stroke: var(--color-primary); stroke-width: 3; }
+  .exu__refuse { opacity: 0; }
+  .exu__ship path { fill: var(--color-navy); }
+  .exu__mast { stroke: var(--color-navy); stroke-width: 2; }
+  .exu__badge rect { fill: var(--color-surface); stroke: var(--color-primary); stroke-width: 1.5; }
+  .exu__badge text {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    fill: var(--color-primary); text-anchor: middle;
   }
 
-  /* The motion carries the explanation, so hold the end state rather than
-     dropping the diagram entirely. */
+  .ex__panel--active .exu__ship       { animation: exu-sail 11s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__refuse--0  { animation: exu-refuse-a 11s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__refuse--1  { animation: exu-refuse-b 11s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__berth--3 .exu__slot { animation: exu-accept 11s var(--ease-standard) infinite; }
+  .ex__panel--active .exu__berth--3 .exu__quay,
+  .ex__panel--active .exu__berth--3 .exu__wall,
+  .ex__panel--active .exu__berth--3 .exu__gate { animation: exu-accept-line 11s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--refused { animation: exu-cap-a 11s var(--ease-standard) infinite; }
+  .ex__panel--active .ex__cap--berthed { animation: exu-cap-b 11s var(--ease-standard) infinite; }
+
+  @keyframes exu-sail {
+    0%, 20%   { transform: translate(58px, 128px); }
+    32%, 44%  { transform: translate(148px, 128px); }
+    58%, 92%  { transform: translate(238px, 128px); }
+    100%      { transform: translate(58px, 128px); }
+  }
+  @keyframes exu-refuse-a { 0%, 6%  { opacity: 0; } 12%, 18% { opacity: 1; } 24%, 100% { opacity: 0; } }
+  @keyframes exu-refuse-b { 0%, 32% { opacity: 0; } 36%, 40% { opacity: 1; } 46%, 100% { opacity: 0; } }
+  @keyframes exu-accept   { 0%, 50% { fill: var(--color-surface-container-low); }
+                            60%, 90% { fill: var(--color-primary-tint); }
+                            97%, 100% { fill: var(--color-surface-container-low); } }
+  @keyframes exu-accept-line { 0%, 50% { stroke: var(--color-navy); }
+                               60%, 90% { stroke: var(--color-primary); }
+                               97%, 100% { stroke: var(--color-navy); } }
+  @keyframes exu-cap-a { 0%, 8%  { opacity: 0; } 14%, 42% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes exu-cap-b { 0%, 56% { opacity: 0; } 64%, 90% { opacity: 1; } 97%, 100% { opacity: 0; } }
+
+  /* The motion carries the explanation, so hold each diagram's end state
+     rather than dropping the illustration entirely. */
   @media (prefers-reduced-motion: reduce) {
+    /* :is() carries the specificity of its heaviest argument, so this matches
+       the (0,2,0) of the animation rules above and wins on source order —
+       no !important needed. */
     .ex__panel--active :is(
-      .exc__boom, .exc__boat--t4, .exc__boat--t3, .exc__boat--t2,
-      .exc__line--t4, .exc__line--t3, .exc__line--t2,
-      .exi__needle, .exi__track, .exi__ship, .exi__hazard line,
-      .exa__beam, .exa__light, .exa__ship,
-      .exu__ship, .exu__pointer, .exu__cargo,
-      .ex__cap--open, .ex__cap--shut, .ex__cap--lit, .ex__cap--dark
+      .exc__boom, .exc__boat, .exc__line,
+      .exi__ship, .exi__impact, .exi__truth, .exi__gauge, .exi__reading,
+      .exa__beam, .exa__glow, .exa__light, .exa__ship,
+      .exu__ship, .exu__refuse, .exu__berth .exu__slot,
+      .exu__berth .exu__quay, .exu__berth .exu__wall, .exu__berth .exu__gate,
+      .ex__cap
     ) { animation: none; }
 
     .exc__boat--t4, .exc__boat--t3, .exc__boat--t2,
     .exc__line--t4, .exc__line--t3, .exc__line--t2 { opacity: 0.1; }
-    .exc__boom { transform: scale(0.46); }
-    .ex__cap--shut, .ex__cap--dark { opacity: 1; }
-    .exi__needle { transform: rotate(24deg); }
-    .exi__track { stroke-dashoffset: 0; }
-    .exi__ship { transform: translate(366px, 96px); }
-    .exi__hazard line { opacity: 1; }
-    .exa__beam { opacity: 0; }
+    .exc__boom { transform: scale(0.32); opacity: 0.9; }
+    .ex__cap--shut, .ex__cap--dark, .ex__cap--ground, .ex__cap--berthed { opacity: 1; }
+
+    .exi__ship { transform: translate(286px, 102px) rotate(-11deg); }
+    .exi__reading { opacity: 1; }
+    .exi__impact { opacity: 1; transform: translate(300px, 114px); }
+    .exi__truth, .exi__gauge { opacity: 1; }
+
+    .exa__beam, .exa__glow { opacity: 0; }
     .exa__light { opacity: 0.15; }
-    .exu__cargo { opacity: 1; }
-    .exu__ship { transform: translateY(48px); }
-    .exu__pointer { transform: translateY(180px); }
+    .exa__ship { transform: translate(322px, 190px) rotate(9deg); }
+    .exu__refuse { opacity: 0; }
+
+    .exu__ship { transform: translate(238px, 128px); }
+    .exu__berth--3 .exu__slot { fill: var(--color-primary-tint); }
+    .exu__berth--3 .exu__quay,
+    .exu__berth--3 .exu__wall,
+    .exu__berth--3 .exu__gate { stroke: var(--color-primary); }
   }
 </style>
