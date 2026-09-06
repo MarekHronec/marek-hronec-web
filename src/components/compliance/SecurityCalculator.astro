@@ -1,59 +1,66 @@
 ---
 /*
- * Slovak ISVS classification calculator.
+ * ISVS placement calculator.
  *
- * All questions, weights and thresholds live in src/data/security-calculator.ts
- * so the model can be tuned without touching this file. This component renders
- * the steps and wires up a small client script; nothing is sent anywhere, the
- * whole calculation runs in the browser.
+ * The model — questions, thresholds, weights, control obligations and the
+ * combination-viability rules — lives in src/data/security-calculator.ts.
+ * This component renders it and wires up the client script. Nothing is
+ * transmitted; the whole calculation runs in the browser.
  */
 
-import { AXES } from '../../data/security-calculator';
+import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
 ---
 
 <section class="calc" id="calculator">
   <div class="calc__inner container">
-    <p class="calc__label">Placement calculator</p>
-    <h2 class="calc__heading">Where can this system run, and under which controls?</h2>
-    <p class="calc__intro">
-      Four questions derive the C, I and A classification of an information asset,
-      the security category it falls into, and the cloud service level
-      <strong>U</strong> required of any service hosting it. The model is a direct
-      transcription of the MIRRI <em>Určenie parametrov UxCxIxAx</em> workbook and
-      its methodological guidance. Nothing leaves your browser.
-    </p>
+
+    <!-- Running readout — fills in as the classification is made -->
+    <div class="calc__readout" id="calc-readout">
+      {['C', 'I', 'A', 'U'].map((k) => (
+        <div class="calc__tile" data-tile={k}>
+          <span class="calc__tile-letter">{k}</span>
+          <span class="calc__tile-value" data-tile-value={k}>·</span>
+        </div>
+      ))}
+      <p class="calc__readout-note" id="calc-readout-note">
+        Answer the questions below to determine the cloud service level.
+      </p>
+    </div>
 
     <ol class="calc__steps" role="list">
       {AXES.map((axis, ai) => (
-        <li class="calc__step" data-step={ai}>
+        <li class="calc__step">
           <div class="calc__step-head">
             <span class="calc__step-num" aria-hidden="true">{`0${ai + 1}`}</span>
-            <div>
+            <div class="calc__step-titles">
               <h3 class="calc__step-title">
-                {axis.name} <span class="calc__step-sk">{axis.nameSk}</span>
+                {axis.question}
               </h3>
-              <p class="calc__step-q">{axis.question}</p>
+              <p class="calc__step-help">
+                {axis.help}
+                <span class="calc__step-src">{axis.name} · {axis.nameSk} · {axis.source.short}</span>
+              </p>
             </div>
           </div>
 
           <div class="calc__levels" role="radiogroup" aria-label={axis.name}>
             {axis.levels.map((lvl) => (
-              <label class="calc__level">
-                <input
-                  type="radio"
-                  name={`axis-${axis.key}`}
-                  value={String(lvl.value)}
-                  data-axis={axis.key}
-                />
+              <label class="calc__level" data-axis={axis.key} data-value={lvl.value}>
+                <input type="radio" name={`axis-${axis.key}`} value={String(lvl.value)} data-axis={axis.key} />
                 <span class="calc__level-body">
                   <span class="calc__level-head">
                     <span class="calc__level-code">{axis.letter}{lvl.value}</span>
                     <span class="calc__level-term">{lvl.term}</span>
                     <span class="calc__level-sk">{lvl.termSk}</span>
                   </span>
-                  <span class="calc__level-reqs">
-                    {lvl.requirements.map((r) => <span class="calc__req">{r}</span>)}
-                  </span>
+                  <span class="calc__level-plain">{lvl.plain}</span>
+                  <span class="calc__lock" data-lock hidden></span>
+                  <details class="calc__formal">
+                    <summary>Official wording</summary>
+                    <ul role="list">
+                      {lvl.formal.map((f) => <li>{f}</li>)}
+                    </ul>
+                  </details>
                 </span>
               </label>
             ))}
@@ -61,252 +68,328 @@ import { AXES } from '../../data/security-calculator';
         </li>
       ))}
 
-      <li class="calc__step" data-step="3" id="calc-step-criteria" hidden>
+      <!-- Incident profile — replaces "could this cause a category N incident?" -->
+      <li class="calc__step" id="calc-step-incident" hidden>
         <div class="calc__step-head">
           <span class="calc__step-num" aria-hidden="true">04</span>
-          <div>
-            <h3 class="calc__step-title">Category criteria</h3>
-            <p class="calc__step-q" id="calc-criteria-lead">
-              Confirm which of these apply. Everything derivable from C, I and A is
-              already answered.
+          <div class="calc__step-titles">
+            <h3 class="calc__step-title">What would a bad day actually look like?</h3>
+            <p class="calc__step-help">
+              The workbook asks whether compromise could cause a category I, II or III
+              incident. Rather than assume you know those thresholds, these questions ask
+              the underlying facts and derive the category for you.
+              <span class="calc__step-src">Decree 165/2018 §24(2)</span>
             </p>
           </div>
         </div>
+
+        <div class="calc__incident">
+          {INCIDENT_QUESTIONS.map((q) => (
+            <fieldset class="calc__q">
+              <legend class="calc__q-title">{q.question}</legend>
+              <p class="calc__q-help">{q.help}</p>
+              <div class="calc__q-options">
+                {q.options.map((o, oi) => (
+                  <label class="calc__opt">
+                    <input type="radio" name={`inc-${q.id}`} value={String(o.degree)} data-incident={q.id} />
+                    <span class="calc__opt-body">
+                      <span class="calc__opt-label">{o.label}</span>
+                      {o.detail && <span class="calc__opt-detail">{o.detail}</span>}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ))}
+          <p class="calc__degree" id="calc-degree" hidden></p>
+        </div>
+      </li>
+
+      <!-- Remaining criteria the CIA triple and incident degree cannot settle -->
+      <li class="calc__step" id="calc-step-criteria" hidden>
+        <div class="calc__step-head">
+          <span class="calc__step-num" aria-hidden="true">05</span>
+          <div class="calc__step-titles">
+            <h3 class="calc__step-title">A few things only you can confirm</h3>
+            <p class="calc__step-help" id="calc-criteria-lead"></p>
+          </div>
+        </div>
         <div class="calc__criteria" id="calc-criteria"></div>
+        <details class="calc__derived">
+          <summary>Criteria already settled by your answers</summary>
+          <div id="calc-derived"></div>
+        </details>
       </li>
     </ol>
 
-    <div class="calc__result" id="calc-result" aria-live="polite"></div>
-
-    <p class="calc__note">
-      An aid for orientation, not a substitute for the official workbook or a
-      formal risk analysis. The determination of an ISVS classification remains
-      with its operator.
-    </p>
+    <div id="calc-result" aria-live="polite"></div>
   </div>
 </section>
 
 <script>
   import {
-    matchCategories, evaluate,
-    type Cia, type Level,
+    INCIDENT_QUESTIONS, DEGREE_LABEL,
+    isViable, lockReason, matchCategories, incidentDegree, evaluate,
+    type AxisKey, type Cia, type Ctx, type Level, type Degree, type Selection,
   } from '../../data/security-calculator';
 
-  const selected: Partial<Record<'c' | 'i' | 'a', Level>> = {};
+  const sel: Selection = {};
+  const incident: Record<string, Degree | undefined> = {};
   const answers: Record<string, boolean> = {};
 
-  const criteriaStep = document.getElementById('calc-step-criteria') as HTMLElement;
-  const criteriaBox  = document.getElementById('calc-criteria') as HTMLElement;
-  const lead         = document.getElementById('calc-criteria-lead') as HTMLElement;
-  const resultBox    = document.getElementById('calc-result') as HTMLElement;
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const incidentStep = $('calc-step-incident');
+  const criteriaStep = $('calc-step-criteria');
+  const criteriaBox  = $('calc-criteria');
+  const derivedBox   = $('calc-derived');
+  const lead         = $('calc-criteria-lead');
+  const degreeEl     = $('calc-degree');
+  const resultBox    = $('calc-result');
+  const readoutNote  = $('calc-readout-note');
 
   document.querySelectorAll<HTMLInputElement>('input[data-axis]').forEach((input) => {
     input.addEventListener('change', () => {
-      const axis = input.dataset.axis as 'c' | 'i' | 'a';
-      selected[axis] = Number(input.value) as Level;
+      sel[input.dataset.axis as AxisKey] = Number(input.value) as Level;
       Object.keys(answers).forEach((k) => delete answers[k]);
       render();
     });
   });
 
-  function complete(): Cia | null {
-    if (selected.c === undefined || selected.i === undefined || selected.a === undefined) return null;
-    return { c: selected.c, i: selected.i, a: selected.a };
+  document.querySelectorAll<HTMLInputElement>('input[data-incident]').forEach((input) => {
+    input.addEventListener('change', () => {
+      incident[input.dataset.incident!] = Number(input.value) as Degree;
+      Object.keys(answers).forEach((k) => delete answers[k]);
+      render();
+    });
+  });
+
+  function cia(): Cia | null {
+    return sel.c !== undefined && sel.i !== undefined && sel.a !== undefined
+      ? { c: sel.c, i: sel.i, a: sel.a }
+      : null;
+  }
+
+  /** Grey out values no supported combination can reach, and say why. */
+  function applyLocks() {
+    document.querySelectorAll<HTMLElement>('.calc__level').forEach((card) => {
+      const axis = card.dataset.axis as AxisKey;
+      const value = Number(card.dataset.value) as Level;
+      const probe: Selection = { ...sel };
+      delete probe[axis];
+
+      const viable = isViable(axis, value, probe);
+      const input = card.querySelector('input') as HTMLInputElement;
+      const lockEl = card.querySelector('[data-lock]') as HTMLElement;
+
+      card.classList.toggle('calc__level--locked', !viable);
+      input.disabled = !viable;
+      if (!viable) {
+        if (input.checked) { input.checked = false; delete sel[axis]; }
+        lockEl.textContent = lockReason(axis, value, probe) ?? '';
+        lockEl.hidden = false;
+      } else {
+        lockEl.hidden = true;
+      }
+    });
+  }
+
+  function setTile(k: string, v: string | number) {
+    const el = document.querySelector(`[data-tile-value="${k}"]`) as HTMLElement;
+    const tile = document.querySelector(`[data-tile="${k}"]`) as HTMLElement;
+    el.textContent = String(v);
+    tile.classList.toggle('calc__tile--set', v !== '·');
   }
 
   function render() {
-    const cia = complete();
-    if (!cia) {
+    applyLocks();
+    (['c', 'i', 'a'] as AxisKey[]).forEach((k) => setTile(k.toUpperCase(), sel[k] ?? '·'));
+
+    const triple = cia();
+    incidentStep.hidden = !triple;
+    if (!triple) {
       criteriaStep.hidden = true;
       resultBox.innerHTML = '';
+      setTile('U', '·');
+      readoutNote.textContent = 'Answer the questions below to determine the cloud service level.';
       return;
     }
 
-    const cats = matchCategories(cia);
-
-    if (cats.length === 0) {
+    const answered = INCIDENT_QUESTIONS.every((q) => incident[q.id] !== undefined);
+    const degree = incidentDegree(incident);
+    degreeEl.hidden = !answered;
+    if (answered) {
+      degreeEl.textContent = `Worst credible incident: ${DEGREE_LABEL[degree]}.`;
+    }
+    if (!answered) {
       criteriaStep.hidden = true;
-      resultBox.innerHTML = `
-        <div class="calc__verdict calc__verdict--none">
-          <p class="calc__verdict-label">No supported combination</p>
-          <p class="calc__verdict-body">
-            <strong>C${cia.c} I${cia.i} A${cia.a}</strong> is not among the combinations the
-            methodology recognises. The workbook treats this as a signal to revisit the
-            classification — for example, an asset with confidentiality C3 should not
-            carry integrity or availability below 2.
-          </p>
-        </div>`;
+      resultBox.innerHTML = '';
+      setTile('U', '·');
+      readoutNote.textContent = `Classified C${triple.c} I${triple.i} A${triple.a}. Now describe the worst credible incident.`;
       return;
     }
 
+    const ctx: Ctx = { ...triple, degree };
+    const cats = matchCategories(triple);
     criteriaStep.hidden = false;
     lead.textContent = cats.length > 1
-      ? `This C${cia.c} I${cia.i} A${cia.a} combination is covered by ${cats.length} categories. Answering below narrows it.`
-      : `This C${cia.c} I${cia.i} A${cia.a} combination falls under ${cats[0].name}.`;
+      ? `C${triple.c} I${triple.i} A${triple.a} sits in ${cats.length} categories. These answers decide which governs.`
+      : `C${triple.c} I${triple.i} A${triple.a} sits in ${cats[0].name}. Tick anything that applies.`;
 
     criteriaBox.innerHTML = '';
-    cats.forEach((cat) => {
-      const group = document.createElement('div');
-      group.className = 'calc__criteria-group';
-      const h = document.createElement('p');
-      h.className = 'calc__criteria-heading';
-      h.textContent = `${cat.name} — ${cat.summary}`;
-      group.appendChild(h);
+    derivedBox.innerHTML = '';
 
-      cat.criteria.forEach((cr, idx) => {
-        const key = `${cat.id}-${idx}`;
-        const row = document.createElement('label');
-        row.className = 'calc__criterion';
-        if (cr.auto) {
-          const met = cr.auto(cia);
-          row.classList.add('calc__criterion--auto');
-          row.innerHTML = `
-            <span class="calc__criterion-state" aria-hidden="true">${met ? '✓' : '—'}</span>
-            <span class="calc__criterion-text">${cr.text}</span>
-            <span class="calc__criterion-tag">from C${cia.c} I${cia.i} A${cia.a}</span>`;
-        } else {
+    cats.forEach((cat) => {
+      const manual = cat.criteria.map((cr, idx) => ({ cr, idx })).filter((x) => !x.cr.auto);
+      const auto = cat.criteria.map((cr, idx) => ({ cr, idx })).filter((x) => x.cr.auto);
+
+      if (manual.length) {
+        const g = document.createElement('div');
+        g.className = 'calc__criteria-group';
+        const h = document.createElement('p');
+        h.className = 'calc__criteria-heading';
+        h.textContent = `${cat.name} — ${cat.summary}`;
+        g.appendChild(h);
+        manual.forEach(({ cr, idx }) => {
+          const key = `${cat.id}-${idx}`;
+          const row = document.createElement('label');
+          row.className = 'calc__criterion';
           const box = document.createElement('input');
           box.type = 'checkbox';
           box.checked = answers[key] === true;
-          box.addEventListener('change', () => {
-            answers[key] = box.checked;
-            showResult();
-          });
+          box.addEventListener('change', () => { answers[key] = box.checked; render(); });
           row.appendChild(box);
           const t = document.createElement('span');
           t.className = 'calc__criterion-text';
-          t.textContent = cr.text;
+          t.textContent = cr.plain ?? cr.text;
           row.appendChild(t);
           const w = document.createElement('span');
           w.className = 'calc__criterion-tag';
           w.textContent = `U${cr.weight}`;
           row.appendChild(w);
-        }
-        group.appendChild(row);
-      });
-      criteriaBox.appendChild(group);
+          g.appendChild(row);
+        });
+        criteriaBox.appendChild(g);
+      }
+
+      if (auto.length) {
+        const g = document.createElement('div');
+        g.className = 'calc__criteria-group';
+        const h = document.createElement('p');
+        h.className = 'calc__criteria-heading';
+        h.textContent = cat.name;
+        g.appendChild(h);
+        auto.forEach(({ cr }) => {
+          const met = cr.auto!(ctx);
+          const row = document.createElement('p');
+          row.className = 'calc__criterion calc__criterion--auto';
+          row.innerHTML =
+            `<span class="calc__criterion-state" aria-hidden="true">${met ? '✓' : '—'}</span>` +
+            `<span class="calc__criterion-text">${cr.text}</span>` +
+            `<span class="calc__criterion-tag">${met ? `U${cr.weight}` : 'n/a'}</span>`;
+          g.appendChild(row);
+        });
+        derivedBox.appendChild(g);
+      }
     });
 
-    showResult();
+    showResult(ctx);
   }
 
-  function showResult() {
-    const cia = complete();
-    if (!cia) return;
-    const out = evaluate(cia, answers);
-
+  function showResult(ctx: Ctx) {
+    const out = evaluate(ctx, answers);
     if (out.u === null || !out.governing) {
-      resultBox.innerHTML = `
-        <div class="calc__verdict calc__verdict--pending">
-          <p class="calc__verdict-label">C${cia.c} I${cia.i} A${cia.a} — awaiting criteria</p>
-          <p class="calc__verdict-body">
-            Tick the criteria that describe this system to determine its cloud
-            service level.
-          </p>
-        </div>`;
+      setTile('U', '·');
+      readoutNote.textContent = 'Tick at least one criterion that describes this system.';
+      resultBox.innerHTML = '';
       return;
     }
 
+    setTile('U', out.u);
+    readoutNote.textContent = `Security ${out.governing.name} · ${out.governing.nameSk}`;
+
     const mandatory = out.controls.filter((c) => c.obligation === 'mandatory');
     const recommended = out.controls.filter((c) => c.obligation === 'recommended');
+    const list = (rows: typeof mandatory) =>
+      rows.map((c) => `<li><span>${c.area.name}</span><span class="calc__control-ref">${c.area.ref}</span></li>`).join('');
 
     resultBox.innerHTML = `
       <div class="calc__verdict">
-        <div class="calc__params">
-          ${[['U', out.u], ['C', cia.c], ['I', cia.i], ['A', cia.a]].map(([k, v]) => `
-            <div class="calc__param">
-              <span class="calc__param-letter">${k}</span>
-              <span class="calc__param-value">${v}</span>
-            </div>`).join('')}
-        </div>
-        <p class="calc__verdict-label">Security ${out.governing.name} &middot; ${out.governing.nameSk}</p>
+        <p class="calc__verdict-label">Result &middot; U${out.u} C${ctx.c} I${ctx.i} A${ctx.a}</p>
         <p class="calc__verdict-body">
-          Look up services at level <strong>U${out.u}</strong> or higher in the
-          Government Cloud service catalogue. Of the 17 measures under §20 of Act
-          69/2018, <strong>${mandatory.length}</strong> are mandatory for this
-          category and ${recommended.length} are recommended.
+          This is a <strong>${out.governing.name}</strong> system (${out.governing.nameSk}).
+          Look for services at cloud service level <strong>U${out.u}</strong> or higher in the
+          Government Cloud service catalogue. Of the 17 measures under §20 of Act 69/2018,
+          <strong>${mandatory.length}</strong> are mandatory here and ${recommended.length} are recommended.
         </p>
         <div class="calc__controls">
-          <div class="calc__control-col">
-            <p class="calc__control-head">Mandatory</p>
-            <ul class="calc__control-list" role="list">
-              ${mandatory.map((c) => `<li>${c.area.name}</li>`).join('')}
-            </ul>
+          <div>
+            <p class="calc__control-head">Mandatory &middot; ${mandatory.length}</p>
+            <ul class="calc__control-list" role="list">${list(mandatory)}</ul>
           </div>
-          <div class="calc__control-col">
-            <p class="calc__control-head">Recommended</p>
+          <div>
+            <p class="calc__control-head">Recommended &middot; ${recommended.length}</p>
             <ul class="calc__control-list" role="list">
-              ${recommended.length
-                ? recommended.map((c) => `<li>${c.area.name}</li>`).join('')
-                : '<li class="calc__control-none">All measures are mandatory at this category.</li>'}
+              ${recommended.length ? list(recommended) : '<li><span>All 17 measures are mandatory at this category.</span></li>'}
             </ul>
           </div>
         </div>
       </div>`;
   }
+
+  render();
 </script>
 
 <style>
-  .calc {
-    scroll-margin-top: calc(var(--nav-height) + var(--space-4));
-  }
+  .calc { scroll-margin-top: calc(var(--nav-height) + var(--space-4)); }
 
   .calc__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-    padding-block: var(--space-8);
+    gap: var(--space-6);
+    padding-block: var(--space-7) var(--space-8);
   }
 
-  .calc__label {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-on-surface);
+  /* ── Readout ───────────────────────────────────────────────────────── */
+  .calc__readout {
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background-color: var(--color-navy);
   }
 
-  .calc__label::after {
-    content: '';
-    display: block;
-    width: 2.5rem;
-    height: 2px;
-    margin-top: var(--space-3);
-    background-color: var(--color-primary);
+  .calc__tile {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    min-width: 3.5rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-on-dark-border);
+    font-family: var(--font-mono);
   }
 
-  .calc__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-headline-md);
+  .calc__tile--set { background-color: rgba(255, 255, 255, 0.08); }
+
+  .calc__tile-letter { font-size: var(--text-label-md); color: var(--color-primary-container); }
+
+  .calc__tile-value {
+    font-size: var(--text-title-md);
     font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-on-surface);
-    line-height: var(--leading-snug);
+    color: var(--color-on-inverse-surface);
   }
 
-  .calc__intro,
-  .calc__note {
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-    max-width: 68ch;
-  }
-
-  .calc__note {
+  .calc__readout-note {
     font-size: var(--text-body-md);
-    font-style: italic;
-    border-top: 1px solid var(--color-divider);
-    padding-top: var(--space-4);
+    color: var(--color-on-dark-muted);
+    margin-left: var(--space-2);
   }
 
   /* ── Steps ─────────────────────────────────────────────────────────── */
-  .calc__steps {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-    margin-top: var(--space-3);
-  }
+  .calc__steps { display: flex; flex-direction: column; gap: var(--space-8); }
 
   .calc__step-head {
     display: flex;
@@ -330,39 +413,38 @@ import { AXES } from '../../data/security-calculator';
     color: var(--color-primary);
   }
 
+  .calc__step-titles { display: flex; flex-direction: column; gap: var(--space-2); }
+
   .calc__step-title {
     font-family: var(--font-display);
     font-size: var(--text-title-lg);
     font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
     color: var(--color-on-surface);
+    line-height: var(--leading-snug);
   }
 
-  .calc__step-sk {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-regular);
-    font-style: italic;
-    color: var(--color-on-surface-muted);
-    margin-left: var(--space-2);
-  }
-
-  .calc__step-q {
+  .calc__step-help {
     font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
-    margin-top: var(--space-1);
+    max-width: 72ch;
+  }
+
+  .calc__step-src {
+    display: block;
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
   }
 
   /* ── Level cards ───────────────────────────────────────────────────── */
-  .calc__levels {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-  }
+  .calc__levels { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
 
   @media (min-width: 900px) {
-    .calc__levels {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .calc__levels { grid-template-columns: repeat(2, 1fr); }
   }
 
   .calc__level {
@@ -371,38 +453,31 @@ import { AXES } from '../../data/security-calculator';
     padding: var(--space-4);
     border: 1px solid var(--color-divider);
     cursor: pointer;
-    transition:
-      border-color var(--duration-fast) var(--ease-standard),
-      background-color var(--duration-fast) var(--ease-standard);
+    transition: border-color var(--duration-fast) var(--ease-standard),
+                background-color var(--duration-fast) var(--ease-standard);
   }
 
-  .calc__level:hover {
-    background-color: var(--color-surface-container-low);
-  }
+  .calc__level:hover { background-color: var(--color-surface-container-low); }
 
   .calc__level:has(input:checked) {
     border-color: var(--color-primary);
     background-color: var(--color-primary-tint);
   }
 
-  .calc__level input {
-    margin-top: 3px;
-    accent-color: var(--color-primary);
-    flex-shrink: 0;
+  .calc__level--locked {
+    cursor: not-allowed;
+    opacity: 0.55;
+    background-color: var(--color-surface-container-low);
+    border-style: dashed;
   }
 
-  .calc__level-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
+  .calc__level--locked:hover { background-color: var(--color-surface-container-low); }
 
-  .calc__level-head {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
+  .calc__level input { margin-top: 4px; accent-color: var(--color-primary); flex-shrink: 0; }
+
+  .calc__level-body { display: flex; flex-direction: column; gap: var(--space-2); }
+
+  .calc__level-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-2); }
 
   .calc__level-code {
     font-family: var(--font-mono);
@@ -412,43 +487,127 @@ import { AXES } from '../../data/security-calculator';
   }
 
   .calc__level-term {
-    font-family: var(--font-body);
     font-size: var(--text-body-md);
     font-weight: var(--weight-semibold);
     color: var(--color-on-surface);
   }
 
-  .calc__level-sk {
-    font-size: var(--text-label-md);
-    font-style: italic;
-    color: var(--color-on-surface-muted);
+  .calc__level-sk { font-size: var(--text-label-md); font-style: italic; color: var(--color-on-surface-muted); }
+
+  .calc__level-plain {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface);
   }
 
-  .calc__level-reqs {
+  .calc__lock {
+    font-size: var(--text-label-md);
+    line-height: var(--leading-snug);
+    color: var(--color-primary-dim);
+    border-left: 2px solid var(--color-primary);
+    padding-left: var(--space-3);
+  }
+
+  /* ── Official wording, on demand ───────────────────────────────────── */
+  .calc__formal summary,
+  .calc__derived summary {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .calc__formal ul {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: var(--space-2);
+    margin-top: var(--space-3);
   }
 
-  .calc__req {
-    font-size: var(--text-body-md);
-    line-height: var(--leading-snug);
+  .calc__formal li {
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--color-divider);
   }
 
-  .calc__req::before {
-    content: '— ';
-    color: var(--color-warm-gray);
+  .calc__derived { margin-top: var(--space-5); }
+  .calc__derived > div { margin-top: var(--space-4); }
+
+  /* ── Incident questions ────────────────────────────────────────────── */
+  .calc__incident { display: flex; flex-direction: column; gap: var(--space-6); }
+
+  .calc__q { border: none; padding: 0; }
+
+  .calc__q-title {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+    padding: 0;
+  }
+
+  .calc__q-help {
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    margin: var(--space-2) 0 var(--space-3);
+    max-width: 72ch;
+  }
+
+  .calc__q-options { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+
+  @media (min-width: 768px) {
+    .calc__q-options { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .calc__opt {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-divider);
+    cursor: pointer;
+    transition: border-color var(--duration-fast) var(--ease-standard),
+                background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .calc__opt:hover { background-color: var(--color-surface-container-low); }
+
+  .calc__opt:has(input:checked) {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-tint);
+  }
+
+  .calc__opt input { margin-top: 3px; accent-color: var(--color-primary); }
+
+  .calc__opt-body { display: flex; flex-direction: column; gap: 2px; }
+
+  .calc__opt-label { font-size: var(--text-body-md); color: var(--color-on-surface); }
+
+  .calc__opt-detail {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-meta-label);
+  }
+
+  .calc__degree {
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-primary-tint);
+    border-left: 3px solid var(--color-primary);
   }
 
   /* ── Criteria ──────────────────────────────────────────────────────── */
-  .calc__criteria {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
+  .calc__criteria { display: flex; flex-direction: column; gap: var(--space-6); }
 
-  .calc__criteria-heading {
+  :global(.calc__criteria-heading) {
     font-family: var(--font-body);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
@@ -473,20 +632,9 @@ import { AXES } from '../../data/security-calculator';
     cursor: pointer;
   }
 
-  :global(.calc__criterion--auto) {
-    cursor: default;
-    color: var(--color-on-surface-muted);
-  }
-
-  :global(.calc__criterion input) {
-    accent-color: var(--color-primary);
-  }
-
-  :global(.calc__criterion-state) {
-    font-family: var(--font-mono);
-    color: var(--color-primary);
-    width: 1em;
-  }
+  :global(.calc__criterion--auto) { cursor: default; color: var(--color-on-surface-muted); }
+  :global(.calc__criterion input) { accent-color: var(--color-primary); }
+  :global(.calc__criterion-state) { font-family: var(--font-mono); color: var(--color-primary); width: 1em; }
 
   :global(.calc__criterion-tag) {
     font-family: var(--font-mono);
@@ -496,7 +644,7 @@ import { AXES } from '../../data/security-calculator';
     white-space: nowrap;
   }
 
-  /* ── Result ────────────────────────────────────────────────────────── */
+  /* ── Verdict ───────────────────────────────────────────────────────── */
   :global(.calc__verdict) {
     background-color: var(--color-navy);
     padding: var(--space-6);
@@ -505,36 +653,9 @@ import { AXES } from '../../data/security-calculator';
     gap: var(--space-4);
   }
 
-  :global(.calc__params) {
-    display: flex;
-    gap: var(--space-3);
-    flex-wrap: wrap;
-  }
-
-  :global(.calc__param) {
-    display: flex;
-    align-items: baseline;
-    gap: 2px;
-    padding: var(--space-2) var(--space-4);
-    border: 1px solid var(--color-on-dark-border);
-    font-family: var(--font-mono);
-  }
-
-  :global(.calc__param-letter) {
-    font-size: var(--text-label-md);
-    color: var(--color-primary-container);
-  }
-
-  :global(.calc__param-value) {
-    font-size: var(--text-title-lg);
-    font-weight: var(--weight-bold);
-    color: var(--color-on-inverse-surface);
-  }
-
   :global(.calc__verdict-label) {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--color-primary-container);
@@ -544,12 +665,10 @@ import { AXES } from '../../data/security-calculator';
     font-size: var(--text-body-lg);
     line-height: var(--leading-relaxed);
     color: var(--color-on-dark-muted);
-    max-width: 68ch;
+    max-width: 72ch;
   }
 
-  :global(.calc__verdict-body strong) {
-    color: var(--color-on-inverse-surface);
-  }
+  :global(.calc__verdict-body strong) { color: var(--color-on-inverse-surface); }
 
   :global(.calc__controls) {
     display: grid;
@@ -560,10 +679,7 @@ import { AXES } from '../../data/security-calculator';
   }
 
   @media (min-width: 768px) {
-    :global(.calc__controls) {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-8);
-    }
+    :global(.calc__controls) { grid-template-columns: repeat(2, 1fr); gap: var(--space-8); }
   }
 
   :global(.calc__control-head) {
@@ -576,12 +692,13 @@ import { AXES } from '../../data/security-calculator';
     margin-bottom: var(--space-3);
   }
 
-  :global(.calc__control-list) {
-    display: flex;
-    flex-direction: column;
-  }
+  :global(.calc__control-list) { display: flex; flex-direction: column; }
 
   :global(.calc__control-list li) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
     font-size: var(--text-body-md);
     line-height: var(--leading-snug);
     color: var(--color-on-dark-muted);
@@ -589,32 +706,12 @@ import { AXES } from '../../data/security-calculator';
     border-bottom: 1px solid var(--color-on-dark-border);
   }
 
-  :global(.calc__control-list li:last-child) {
-    border-bottom: none;
-  }
+  :global(.calc__control-list li:last-child) { border-bottom: none; }
 
-  :global(.calc__control-none) {
-    font-style: italic;
-  }
-
-  :global(.calc__verdict--none),
-  :global(.calc__verdict--pending) {
-    background-color: var(--color-surface-container-low);
-    border-left: 3px solid var(--color-primary);
-  }
-
-  :global(.calc__verdict--none .calc__verdict-label),
-  :global(.calc__verdict--pending .calc__verdict-label) {
-    color: var(--color-primary);
-  }
-
-  :global(.calc__verdict--none .calc__verdict-body),
-  :global(.calc__verdict--pending .calc__verdict-body) {
-    color: var(--color-on-surface-muted);
-  }
-
-  :global(.calc__verdict--none .calc__verdict-body strong),
-  :global(.calc__verdict--pending .calc__verdict-body strong) {
-    color: var(--color-on-surface);
+  :global(.calc__control-ref) {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary-container);
+    white-space: nowrap;
   }
 </style>

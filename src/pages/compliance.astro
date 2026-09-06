@@ -110,16 +110,56 @@ const countryCount = LAYERS[1].slugs.length;
         rest on — plus a calculator that works a Slovak ISVS through to its
         required cloud service level.
       </p>
-      <div class="ca-hero__meta">
-        <span>{compliance.length} notes</span>
-        <span>{countryCount} national frameworks</span>
-        <span>Sourced and dated</span>
+      <div class="ca-choice">
+        <a class="ca-choice__card" href="#calculator">
+          <span class="ca-choice__kicker">Tool</span>
+          <span class="ca-choice__title">Classify a system</span>
+          <span class="ca-choice__body">
+            Work an ISVS through to its C, I, A classification, its security
+            category, and the cloud service level and controls that follow.
+          </span>
+          <span class="ca-choice__go">Open the calculator &rarr;</span>
+        </a>
+        <a class="ca-choice__card" href="#reference">
+          <span class="ca-choice__kicker">Reference</span>
+          <span class="ca-choice__title">Read the frameworks</span>
+          <span class="ca-choice__body">
+            {compliance.length} sourced notes: {countryCount} national frameworks,
+            the EU regulation above them, and the assurance they all rest on.
+          </span>
+          <span class="ca-choice__go">Browse the reference &rarr;</span>
+        </a>
       </div>
+
+      <aside class="ca-disclaimer">
+        <p class="ca-disclaimer__head">Sources, and what this is not</p>
+        <p>
+          The calculator on this page is a transcription of documents published by
+          the Slovak Republic. It reproduces their logic; it does not replace them,
+          and it carries no official standing.
+        </p>
+        <ul class="ca-disclaimer__list" role="list">
+          <li>MIRRI SR — <em>Určenie parametrov UxCxIxAx</em>, príloha č. 1, workbook v10.0</li>
+          <li>MIRRI SR — <em>Metodické usmernenie pre klasifikáciu ISVS</em>, ref. 023107/2023/oSBATA-1</li>
+          <li>Zákon č. 69/2018 Z. z. o kybernetickej bezpečnosti, §20</li>
+          <li>Vyhláška č. 165/2018 Z. z. — identifikačné kritériá kategórií incidentov</li>
+        </ul>
+        <p>
+          Treat any result as an orientation aid to be checked against the official
+          workbook and a formal risk analysis. Classifying an ISVS is the operator’s
+          responsibility, and the binding answer is the one in the source documents.
+        </p>
+      </aside>
     </div>
   </section>
 
-  <!-- ── Layers ────────────────────────────────────────────────────── -->
-  <section class="ca-layers section-rule">
+  <!-- ── Calculator ────────────────────────────────────────────────── -->
+  <div class="section-rule">
+    <SecurityCalculator />
+  </div>
+
+  <!-- ── Reference ─────────────────────────────────────────────────── -->
+  <section class="ca-layers section-rule" id="reference">
     <div class="ca-layers__inner container">
       {layers.map((layer) => (
         <div class="ca-layer">
@@ -150,11 +190,6 @@ const countryCount = LAYERS[1].slugs.length;
       )}
     </div>
   </section>
-
-  <!-- ── Calculator ────────────────────────────────────────────────── -->
-  <div class="section-rule">
-    <SecurityCalculator />
-  </div>
 
   <!-- ── Close ─────────────────────────────────────────────────────── -->
   <section class="ca-close section-rule">
@@ -204,6 +239,109 @@ const countryCount = LAYERS[1].slugs.length;
     max-width: 68ch;
   }
 
+  /* ── Choice ────────────────────────────────────────────────────────── */
+  .ca-choice {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .ca-choice {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .ca-choice__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: 1px solid var(--color-divider-strong);
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .ca-choice__card:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-tint);
+    opacity: 1;
+  }
+
+  .ca-choice__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-meta-label);
+  }
+
+  .ca-choice__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+  }
+
+  .ca-choice__body {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .ca-choice__go {
+    margin-top: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+  }
+
+  /* ── Disclaimer ────────────────────────────────────────────────────── */
+  .ca-disclaimer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-left: 3px solid var(--color-primary);
+    background-color: var(--color-surface-container-low);
+    max-width: 76ch;
+  }
+
+  .ca-disclaimer p {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .ca-disclaimer__head {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  .ca-disclaimer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .ca-disclaimer__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--color-divider);
+  }
+
   .ca-hero__meta {
     display: flex;
     flex-wrap: wrap;
@@ -217,6 +355,10 @@ const countryCount = LAYERS[1].slugs.length;
   }
 
   /* ── Layers ────────────────────────────────────────────────────────── */
+  #reference {
+    scroll-margin-top: calc(var(--nav-height) + var(--space-4));
+  }
+
   .ca-layers__inner {
     display: flex;
     flex-direction: column;
