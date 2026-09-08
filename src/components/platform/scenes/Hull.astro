@@ -1,0 +1,23 @@
+---
+/*
+ * A side-on vessel drawn from its deck-left corner, so a parent group can
+ * position it with a transform attribute and leave CSS transforms free for
+ * motion. Deck runs along y=0; the hull hangs below it.
+ */
+interface Props {
+  width?: number;
+  depth?: number;
+  bridge?: boolean;
+}
+const { width = 210, depth = 44, bridge = true } = Astro.props;
+const bow = width - 14;
+---
+<g>
+  <path class="scene__hull" d={`M0 0 H${width} L${bow} ${depth} H14 Z`} />
+  {bridge && (
+    <g>
+      <path class="scene__hull" d="M10 0 V-24 H40 V0 Z" />
+      <path class="scene__line" d="M16 -16 H34 M16 -8 H34" />
+    </g>
+  )}
+</g>

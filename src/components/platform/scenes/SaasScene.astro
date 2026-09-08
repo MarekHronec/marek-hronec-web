@@ -1,0 +1,84 @@
+---
+import Hull from './Hull.astro';
+
+const crew = [40, 72, 104, 136];
+---
+<svg class="scene scene--saas" viewBox="0 0 600 360" role="img" aria-labelledby="saas-scene-title">
+  <title id="saas-scene-title">
+    Handing the operation to a scheduled service transfers the vessel, the crew
+    and the schedule. The cargo and the list of who may sign for it stay with
+    you either way.
+  </title>
+
+  <text class="scene__label sa-cap scene__before" x="300" y="48" text-anchor="middle">YOU RUN THE VESSEL, THE CREW AND THE SCHEDULE</text>
+  <text class="scene__label sa-cap scene__after" x="300" y="48" text-anchor="middle">THE SERVICE RUNS ALL OF IT</text>
+  <text class="scene__text sa-cap scene__before" x="300" y="72" text-anchor="middle">Every part of it is yours to operate, staff and answer for.</text>
+  <text class="scene__text sa-cap scene__after" x="300" y="72" text-anchor="middle">Two things did not go with it. They never do.</text>
+
+  <path class="scene__line scene__quiet" d="M300 100 V286" />
+
+  <!-- ── Your operation ────────────────────────────────────────────── -->
+  <g class="sa-owned">
+    <text class="scene__label" x="24" y="112">YOUR OPERATION</text>
+    <path class="scene__line scene__quiet" d="M24 120 H276" />
+
+    <rect class="scene__paper" x="24" y="132" width="140" height="48" />
+    <text class="scene__label" x="34" y="150">SCHEDULE</text>
+    <path class="scene__line scene__quiet" d="M34 160 H154 M34 170 H120" />
+
+    {crew.map((x) => (
+      <g transform={`translate(${x} 210)`}>
+        <circle class="scene__line" cy="-7" r="4" />
+        <path class="scene__line" d="M-6 8 Q-5 -1 0 -1 Q5 -1 6 8" />
+      </g>
+    ))}
+    <text class="scene__label" x="176" y="214">CREW</text>
+
+    <g transform="translate(24 236)">
+      <g class="sa-heave"><Hull width={160} depth={34} bridge={false} /></g>
+    </g>
+    <path class="scene__line scene__quiet" d="M16 270 H200" />
+  </g>
+
+  <!-- ── The scheduled service ─────────────────────────────────────── -->
+  <text class="scene__label" x="330" y="112">SCHEDULED SERVICE</text>
+  <path class="scene__line scene__quiet" d="M330 120 H576" />
+  <text class="scene__text" x="330" y="146">Runs the vessel, the crew</text>
+  <text class="scene__text" x="330" y="166">and the schedule — none of</text>
+  <text class="scene__text" x="330" y="186">which you see again.</text>
+  <path class="scene__line scene__quiet" d="M330 270 H584" />
+  <path class="scene__heavy" d="M336 270 V250 M572 270 V250" />
+
+  <g class="scene__before">
+    <rect class="scene__line" x="340" y="226" width="216" height="44" stroke-dasharray="4 5" />
+    <text class="scene__label" x="448" y="252" text-anchor="middle">BERTH AVAILABLE</text>
+  </g>
+
+  <g class="scene__after">
+    <g transform="translate(340 226)">
+      <g class="sa-heave sa-heave--offset"><Hull width={216} depth={44} /></g>
+    </g>
+    <path class="scene__line" d="M208 250 H322 M314 245 L322 250 L314 255" />
+  </g>
+
+  <!-- ── What never transfers ──────────────────────────────────────── -->
+  <text class="scene__label" x="24" y="302">NEVER TRANSFERS</text>
+  <path class="scene__line scene__quiet" d="M24 310 H300" />
+  <rect class="scene__crate" x="24" y="318" width="106" height="34" />
+  <text class="scene__label" x="77" y="339" text-anchor="middle">YOUR DATA</text>
+  <rect class="scene__crate" x="146" y="318" width="154" height="34" />
+  <text class="scene__label" x="223" y="339" text-anchor="middle">WHO MAY SIGN FOR IT</text>
+</svg>
+
+<style>
+  .sa-heave { animation: sa-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
+  .sa-heave--offset { animation-delay: -7s; }
+  @keyframes sa-heave {
+    0%, 50%, 100% { transform: translateY(0); }
+    25%, 75% { transform: translateY(-2px); }
+  }
+
+  /* Handing the operation over does not delete it — it stops being yours to run. */
+  .sa-owned { transition: opacity var(--duration-slow) var(--ease-standard); }
+  :global(.cp[data-demonstrate='true']) .sa-owned { opacity: .3; }
+</style>

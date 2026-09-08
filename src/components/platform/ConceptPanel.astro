@@ -1,0 +1,151 @@
+---
+/*
+ * One concept panel: figure on the left, narrative on the right.
+ *
+ * Carries the shared SVG vocabulary the scenes draw with, so a scene file is
+ * only geometry and its own motion. Scenes opt into the story toggle by styling
+ * .scene__before / .scene__after, or by keying off [data-demonstrate="true"].
+ */
+import type { ConceptStory } from '../../data/platform-concepts';
+
+interface Props {
+  story: ConceptStory;
+}
+
+const { story } = Astro.props;
+---
+
+<section
+  class="cp"
+  id={`concept-panel-${story.key}`}
+  role="tabpanel"
+  aria-labelledby={`concept-tab-${story.key}`}
+  tabindex="0"
+  data-panel={story.key}
+  data-demonstrate="false"
+>
+  <div class="cp__visual">
+    <div class="cp__figure-label">
+      <span>Figure {story.ordinal}</span>
+      <span>{story.name}</span>
+    </div>
+    <slot />
+    <div class="cp__playback" data-needs-js hidden>
+      <button type="button" data-pause aria-pressed="false">Pause motion</button>
+      <button type="button" data-replay>Replay motion &#8635;</button>
+    </div>
+  </div>
+
+  <div class="cp__copy">
+    <p class="cp__sequence">{story.model} <span>/</span> {story.cue}</p>
+    <h3>{story.title}</h3>
+    <p class="cp__definition">{story.definition}</p>
+    <p>{story.analogy}</p>
+
+    <div class="cp__interaction" data-needs-js hidden>
+      <button
+        class="cp__action"
+        type="button"
+        data-demonstrate
+        aria-pressed="false"
+        data-action={story.action}
+        data-reset={story.reset}
+      >{story.action}</button>
+      <p class="cp__status" data-status aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
+    </div>
+
+    <div class="cp__question">
+      <span>Ask about your workload</span>
+      <p>{story.question}</p>
+    </div>
+    <p class="cp__lesson">{story.lesson}</p>
+  </div>
+</section>
+
+<style>
+  .cp { display: grid; gap: var(--space-6); padding-block: var(--space-5); }
+  /* Beats the UA [hidden] rule that `display: grid` would otherwise outrank. */
+  .cp[hidden] { display: none; }
+
+  .cp__visual { min-width: 0; align-self: center; }
+  .cp__figure-label {
+    display: flex; justify-content: space-between; gap: var(--space-3);
+    padding-inline: var(--space-3);
+    color: var(--color-meta-label);
+    font: var(--text-label-sm) var(--font-mono);
+    letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  }
+
+  .cp__copy { display: flex; flex-direction: column; gap: var(--space-4); }
+  .cp__sequence { font: var(--text-label-md) var(--font-mono); color: var(--color-primary); }
+  .cp__sequence span { color: var(--color-meta-label); margin-inline: var(--space-2); }
+  h3 {
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-title-lg), 2.4vw, var(--text-headline-md));
+    font-weight: var(--weight-semibold); line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-navy); max-width: 24ch; text-wrap: balance;
+  }
+  .cp__copy > p { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+  .cp__copy .cp__definition { color: var(--color-on-surface); }
+
+  .cp__interaction { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .cp__interaction[hidden], .cp__playback[hidden] { display: none; }
+  button { font: inherit; cursor: pointer; border: 0; }
+  .cp__action {
+    background: var(--color-navy); color: var(--color-on-primary);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-label-md); font-weight: var(--weight-semibold); text-align: left;
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+  .cp__action:hover { background: var(--color-primary); }
+  .cp__status {
+    font-size: var(--text-label-md); line-height: var(--leading-relaxed);
+    color: var(--color-primary); min-height: var(--space-8);
+  }
+
+  .cp__question { padding: var(--space-4) var(--space-5); background: var(--color-primary-tint); }
+  .cp__question span { display: block; font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+  .cp__question p { font-size: var(--text-body-md); font-weight: var(--weight-medium); line-height: var(--leading-relaxed); color: var(--color-navy); }
+  .cp__copy .cp__lesson { font-size: var(--text-label-md); }
+
+  .cp__playback { display: flex; justify-content: flex-end; gap: var(--space-4); padding: var(--space-3); }
+  .cp__playback button { padding: var(--space-2); background: transparent; color: var(--color-primary); font-size: var(--text-label-sm); }
+  .cp__playback button:hover { background: var(--color-primary-tint); }
+
+  /* ── Shared scene vocabulary ─────────────────────────────────────────── */
+  .cp__visual :global(.scene) { display: block; width: 100%; height: auto; overflow: visible; }
+  .cp__visual :global(.scene__line) { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linecap: round; stroke-linejoin: round; }
+  .cp__visual :global(.scene__heavy) { fill: none; stroke: var(--color-navy); stroke-width: var(--nautical-heavy-stroke); stroke-linecap: round; stroke-linejoin: round; }
+  .cp__visual :global(.scene__paper) { fill: var(--color-surface); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linejoin: round; }
+  .cp__visual :global(.scene__solid) { fill: var(--color-navy); stroke: none; }
+  .cp__visual :global(.scene__hull) { fill: var(--color-surface); stroke: var(--color-navy); stroke-width: var(--nautical-heavy-stroke); stroke-linejoin: round; }
+  .cp__visual :global(.scene__crate) { fill: var(--color-primary-tint); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); }
+  .cp__visual :global(.scene__quiet) { opacity: .32; }
+  .cp__visual :global(.scene__route) { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-dasharray: 3 7; stroke-linecap: round; opacity: .45; }
+  .cp__visual :global(.scene__sea-fill) { fill: var(--color-primary-tint); opacity: .6; }
+  .cp__visual :global(.scene__label) { fill: var(--color-primary); font: var(--nautical-label) var(--font-mono); letter-spacing: var(--tracking-wide); stroke: none; }
+  .cp__visual :global(.scene__text) { fill: var(--color-primary); font: var(--nautical-text) var(--font-body); stroke: none; }
+  .cp__visual :global(.scene__number) { fill: var(--color-navy); font: var(--nautical-number) var(--font-mono); stroke: none; }
+  .cp__visual :global(.scene__emphasis) { font-weight: var(--weight-semibold); }
+
+  /* Combined translate+rotate otherwise pivots about the viewBox centre.
+     scene__pinned makes translate() read as absolute viewBox coordinates;
+     scene__pivot rotates an element about its own centre, wherever it sits. */
+  .cp__visual :global(.scene__pinned) { transform-box: view-box; transform-origin: 0 0; }
+  .cp__visual :global(.scene__pivot) { transform-box: fill-box; transform-origin: 50% 50%; }
+
+  .cp__visual :global(.scene__after) { opacity: 0; }
+  .cp__visual :global(.scene__before), .cp__visual :global(.scene__after) { transition: opacity var(--duration-slow) var(--ease-standard); }
+  .cp[data-demonstrate='true'] :global(.scene__before) { opacity: 0; }
+  .cp[data-demonstrate='true'] :global(.scene__after) { opacity: 1; }
+
+  @media (min-width: 1024px) {
+    .cp { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--space-8); align-items: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cp .cp__visual :global(.scene *) { animation-duration: .001ms; animation-iteration-count: 1; animation-delay: 0ms; transition-duration: 0ms; }
+    .cp__playback { display: none; }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import Hull from './Hull.astro';
+
+const stack = [
+  { label: 'APPLICATION', y: 110 },
+  { label: 'RUNTIME + LIBRARIES', y: 150 },
+  { label: 'OS + PACKAGES', y: 190 },
+  { label: 'KERNEL', y: 230 },
+];
+---
+<svg class="scene scene--vm" viewBox="0 0 600 360" role="img" aria-labelledby="vm-scene-title">
+  <title id="vm-scene-title">
+    One workload occupies a whole virtual machine, most of its capacity idle, and
+    every layer above the hypervisor belongs to you. A second workload needs a
+    second machine, with its own kernel, patch cycle and operators.
+  </title>
+
+  <!-- ── Machine 01 ────────────────────────────────────────────────── -->
+  <text class="scene__label" x="40" y="70">MACHINE 01</text>
+  <path class="scene__line scene__quiet" d="M40 80 H290" />
+  <g transform="translate(40 200)">
+    <g class="vm-heave">
+      <Hull width={250} depth={56} />
+      <rect class="scene__crate" x="196" y="-30" width="42" height="30" />
+      <rect class="scene__line" x="64" y="-30" width="124" height="30" stroke-dasharray="3 4" />
+      <text class="scene__label" x="72" y="-11">PAID FOR, IDLE</text>
+    </g>
+  </g>
+  <path class="scene__line scene__quiet" d="M26 256 H304 M52 268 H150 M186 268 H286" />
+  <path class="scene__line scene__quiet" d="M40 292 H290" />
+  <text class="scene__text" x="40" y="312">Its own kernel</text>
+  <text class="scene__text" x="40" y="332">Its own patch cycle</text>
+  <text class="scene__text" x="40" y="352">Its own operators</text>
+
+  <!-- ── What one machine actually contains ────────────────────────── -->
+  <g class="scene__before">
+    <text class="scene__label" x="330" y="70">INSIDE ONE MACHINE</text>
+    <path class="scene__line scene__quiet" d="M330 80 H560" />
+    {stack.map((row) => (
+      <g>
+        <rect class="scene__crate" x="330" y={row.y} width="200" height="34" />
+        <text class="scene__label" x="342" y={row.y + 22}>{row.label}</text>
+      </g>
+    ))}
+    <path class="scene__line" d="M544 110 H552 V264 H544" />
+    <text class="scene__label" x="330" y="292">ALL OF IT YOURS TO PATCH</text>
+  </g>
+
+  <!-- ── Machine 02 — arrives with the second workload ─────────────── -->
+  <g class="scene__after">
+    <text class="scene__label" x="320" y="70">MACHINE 02</text>
+    <path class="scene__line scene__quiet" d="M320 80 H570" />
+    <g transform="translate(320 200)">
+      <g class="vm-heave vm-heave--offset">
+        <Hull width={250} depth={56} />
+        <rect class="scene__crate" x="196" y="-30" width="42" height="30" />
+        <rect class="scene__line" x="64" y="-30" width="124" height="30" stroke-dasharray="3 4" />
+        <text class="scene__label" x="72" y="-11">PAID FOR, IDLE</text>
+      </g>
+    </g>
+    <path class="scene__line scene__quiet" d="M306 256 H584 M332 268 H430 M466 268 H566" />
+    <path class="scene__line scene__quiet" d="M320 292 H570" />
+    <text class="scene__text" x="320" y="312">Its own kernel</text>
+    <text class="scene__text" x="320" y="332">Its own patch cycle</text>
+    <text class="scene__text" x="320" y="352">Its own operators</text>
+  </g>
+</svg>
+
+<style>
+  .vm-heave { animation: vm-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
+  .vm-heave--offset { animation-delay: -6s; }
+  @keyframes vm-heave {
+    0%, 50%, 100% { transform: translateY(0); }
+    25%, 75% { transform: translateY(-2.5px); }
+  }
+</style>

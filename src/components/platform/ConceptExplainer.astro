@@ -1,0 +1,104 @@
+---
+/*
+ * Tabbed explainer for the five rungs. Shell only — the narrative lives in
+ * src/data/platform-concepts.ts and each figure is its own scene component.
+ */
+import { CONCEPT_STORIES } from '../../data/platform-concepts';
+import ConceptPanel from './ConceptPanel.astro';
+import VmScene from './scenes/VmScene.astro';
+import ContainerScene from './scenes/ContainerScene.astro';
+import KubernetesScene from './scenes/KubernetesScene.astro';
+import PaasScene from './scenes/PaasScene.astro';
+import SaasScene from './scenes/SaasScene.astro';
+
+const scenes = [VmScene, ContainerScene, KubernetesScene, PaasScene, SaasScene];
+---
+
+<div class="cx" data-explainer>
+  <div class="cx__head">
+    <h2 class="cx__title">Five ways to run the same application.</h2>
+    <p class="cx__lede">
+      Each rung hands more of the running to somebody else, and takes some of
+      your options away with it. Work through them and the trade becomes
+      concrete — what you stop doing, and what you can no longer change.
+    </p>
+  </div>
+
+  <div class="cx__tabs" role="tablist" aria-label="Abstraction rungs" data-needs-js hidden>
+    {CONCEPT_STORIES.map((story, index) => (
+      <button
+        type="button"
+        role="tab"
+        class="cx__tab"
+        id={`concept-tab-${story.key}`}
+        aria-controls={`concept-panel-${story.key}`}
+        aria-selected={index === 0}
+        tabindex={index === 0 ? 0 : -1}
+        data-tab={story.key}
+      >
+        <span class="cx__tab-ordinal" aria-hidden="true">{story.ordinal}</span>
+        <span class="cx__tab-content">
+          <span class="cx__tab-name">{story.name}</span>
+          <span class="cx__tab-model">{story.model}</span>
+        </span>
+      </button>
+    ))}
+  </div>
+
+  {CONCEPT_STORIES.map((story, index) => {
+    const Scene = scenes[index];
+    return (
+      <ConceptPanel story={story}>
+        <Scene />
+      </ConceptPanel>
+    );
+  })}
+</div>
+
+<script>
+  import { initializeExplainers } from '../../scripts/explainer';
+  initializeExplainers();
+  document.addEventListener('astro:page-load', () => initializeExplainers());
+</script>
+
+<style>
+  .cx { padding-block: var(--space-8); }
+  .cx__head { max-width: var(--container-content); margin-bottom: var(--space-6); }
+  .cx__title {
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-title-lg), 3vw, var(--text-headline-md));
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface);
+    text-wrap: balance;
+  }
+  .cx__lede {
+    margin-top: var(--space-3); max-width: 76ch;
+    font-size: var(--text-body-lg); line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .cx__tabs { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+  .cx__tabs[hidden] { display: none; }
+  .cx__tab {
+    display: flex; align-items: baseline; gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-surface-container-low);
+    border: 0; text-align: left; cursor: pointer;
+    color: var(--color-on-surface);
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+  .cx__tab:hover { background: var(--color-primary-tint); }
+  .cx__tab[aria-selected='true'] { background: var(--color-navy); color: var(--color-on-primary); }
+  .cx__tab-ordinal { font: var(--text-label-sm) var(--font-mono); opacity: .6; }
+  .cx__tab-content { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  .cx__tab-name { font: var(--weight-semibold) var(--text-label-md) var(--font-body); }
+  .cx__tab-model { font: var(--text-label-sm) var(--font-mono); opacity: .75; }
+
+  /* Held until the controller reports ready, so nothing animates behind a hidden panel. */
+  .cx:not([data-ready]) :global(.scene *) { animation-play-state: paused; }
+
+  @media (min-width: 640px) { .cx__tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .cx__tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+</style>

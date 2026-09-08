@@ -1,0 +1,79 @@
+---
+import Hull from './Hull.astro';
+
+const fittings = [
+  { label: 'IDENTITY', y: 136 },
+  { label: 'QUEUE', y: 180 },
+  { label: 'STORE', y: 224 },
+];
+---
+<svg class="scene scene--paas" viewBox="0 0 600 360" role="img" aria-labelledby="paas-scene-title">
+  <title id="paas-scene-title">
+    Your image sails on the platform's vessel, wired to the port's own fittings.
+    Move to another port and the runtime travels, but the managed connectors stay
+    behind on the quay.
+  </title>
+
+  <!-- ── The port's fittings ───────────────────────────────────────── -->
+  <text class="scene__label" x="30" y="112">THE PORT&#8217;S FITTINGS</text>
+  <path class="scene__line scene__quiet" d="M30 120 H256" />
+  {fittings.map((f) => (
+    <g>
+      <rect class="scene__crate" x="30" y={f.y} width="128" height="36" />
+      <text class="scene__label" x="94" y={f.y + 23} text-anchor="middle">{f.label}</text>
+    </g>
+  ))}
+  <path class="scene__heavy" d="M20 272 H256" />
+  <text class="scene__label" x="30" y="290">QUAY</text>
+
+  <!-- ── Your artifact, on their vessel ────────────────────────────── -->
+  <g transform="translate(300 240)">
+    <g class="pa-vessel">
+      <g class="pa-heave">
+        <Hull width={200} depth={44} bridge={false} />
+        <rect class="scene__crate" x="28" y="-34" width="144" height="34" />
+        <text class="scene__label" x="100" y="-13" text-anchor="middle">YOUR IMAGE</text>
+      </g>
+    </g>
+  </g>
+  <path class="scene__line scene__quiet" d="M266 284 H592 M296 298 H400 M436 298 H556" />
+
+  <!-- ── Wired to the quay ─────────────────────────────────────────── -->
+  <g class="scene__before">
+    <text class="scene__label" x="330" y="52" text-anchor="middle">MANAGED CONNECTIONS</text>
+    <text class="scene__text" x="330" y="76" text-anchor="middle">Short to wire, and genuinely faster.</text>
+    <text class="scene__text" x="330" y="94" text-anchor="middle">They belong to the port.</text>
+    <path class="scene__line" d="M158 154 Q244 154 306 244 M158 198 Q254 198 306 254 M158 242 Q262 242 306 264" />
+  </g>
+
+  <!-- ── What travels, and what does not ───────────────────────────── -->
+  <g class="scene__after">
+    <text class="scene__label" x="330" y="52" text-anchor="middle">THE CONNECTORS STAYED AT THE QUAY</text>
+    <text class="scene__text" x="330" y="76" text-anchor="middle">The runtime moved. You did not migrate —</text>
+    <text class="scene__text" x="330" y="94" text-anchor="middle">you reimplemented.</text>
+    <path class="scene__line" d="M158 154 H206 M158 198 H206 M158 242 H206" />
+    {fittings.map((f) => (
+      <g transform={`translate(216 ${f.y + 18})`}>
+        <circle class="scene__paper" r="9" />
+        <path class="scene__line" d="M-3.5 -3.5 L3.5 3.5 M3.5 -3.5 L-3.5 3.5" />
+      </g>
+    ))}
+  </g>
+</svg>
+
+<style>
+  .pa-heave { animation: pa-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
+  @keyframes pa-heave {
+    0%, 50%, 100% { transform: translateY(0); }
+    25%, 75% { transform: translateY(-2px); }
+  }
+
+  :global(.cp[data-demonstrate='true']) .pa-vessel {
+    animation: pa-depart var(--nautical-cycle-duration) var(--ease-standard) infinite;
+  }
+  @keyframes pa-depart {
+    0%, 10%  { transform: translateX(0); }
+    46%, 88% { transform: translateX(84px); }
+    100%     { transform: translateX(0); }
+  }
+</style>

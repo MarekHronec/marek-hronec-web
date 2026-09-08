@@ -1,0 +1,121 @@
+---
+/*
+ * Twelve-Factor as a portability checklist, then the things it never covered.
+ * Registers rather than cards — the whole value is scanning "original" against
+ * "today" across a row.
+ */
+import { FACTOR_GROUPS, BEYOND_FACTORS } from '../../data/platform-portability';
+---
+
+<div class="pp">
+  <div class="pp__head">
+    <h2 class="pp__title">Twelve-Factor, read as a portability checklist.</h2>
+    <p class="pp__lede">
+      It was written at Heroku in 2011 — before Docker, before Kubernetes,
+      before anything called serverless — and it is usually quoted as if none of
+      that happened. It has aged well, because it was never really about a
+      platform: it is a list of the ways an application gets stuck to the machine
+      it was first deployed on. Some factors still carry the whole weight. Some
+      became the platform’s job. A few need a modern reading, and three were
+      missing entirely.
+    </p>
+  </div>
+
+  {FACTOR_GROUPS.map((group) => (
+    <section class="pp__group">
+      <h3 class="pp__group-title">{group.title}</h3>
+      <p class="pp__group-lede">{group.lede}</p>
+      <ul class="pp__list" role="list">
+        {group.factors.map((factor) => (
+          <li class="pp__factor">
+            <p class="pp__factor-head">
+              <span class="pp__numeral">{factor.numeral}</span>
+              <span class="pp__factor-name">{factor.name}</span>
+            </p>
+            <p class="pp__original"><span>2011</span>{factor.original}</p>
+            <p class="pp__today"><span>Today</span>{factor.today}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <section class="pp__group pp__group--beyond">
+    <h3 class="pp__group-title">What decides it that no factor mentions</h3>
+    <p class="pp__group-lede">
+      Every item on the list above is inside the application. These are not, and
+      in practice they are what a migration actually runs into.
+    </p>
+    <ul class="pp__moves" role="list">
+      {BEYOND_FACTORS.map((move, index) => (
+        <li class="pp__move">
+          <p class="pp__move-head">
+            <span class="pp__move-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            {move.title}
+          </p>
+          <p class="pp__move-body">{move.body}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</div>
+
+<style>
+  .pp { padding-block: var(--space-8); }
+  .pp__head { max-width: var(--container-content); margin-bottom: var(--space-8); }
+  .pp__title {
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-title-lg), 3vw, var(--text-headline-md));
+    font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug); color: var(--color-on-surface); text-wrap: balance;
+  }
+  .pp__lede { margin-top: var(--space-3); max-width: 76ch; font-size: var(--text-body-lg); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+
+  .pp__group { margin-bottom: var(--space-10); }
+  .pp__group-title {
+    font-family: var(--font-display); font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight);
+    color: var(--color-navy);
+    padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-divider-strong);
+  }
+  .pp__group-lede { margin-top: var(--space-4); max-width: 72ch; font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+
+  .pp__list { margin-top: var(--space-6); display: flex; flex-direction: column; }
+  .pp__factor { padding-block: var(--space-5); border-bottom: 1px solid var(--color-divider); display: grid; gap: var(--space-3); }
+  .pp__factor-head { display: flex; align-items: baseline; gap: var(--space-3); }
+  .pp__numeral {
+    min-width: 2.5rem;
+    font: var(--weight-medium) var(--text-label-md) var(--font-mono);
+    letter-spacing: var(--tracking-wide); color: var(--color-primary);
+  }
+  .pp__factor-name { font: var(--weight-semibold) var(--text-title-md) var(--font-body); color: var(--color-on-surface); }
+
+  .pp__original, .pp__today { font-size: var(--text-body-md); line-height: var(--leading-relaxed); }
+  .pp__original { color: var(--color-on-surface-muted); }
+  .pp__today { color: var(--color-on-surface); }
+  .pp__original span, .pp__today span {
+    display: inline-block; min-width: 2.5rem; margin-right: var(--space-3);
+    font: var(--text-label-sm) var(--font-mono); text-transform: uppercase;
+    letter-spacing: var(--tracking-wide); color: var(--color-meta-label);
+  }
+  .pp__today span { color: var(--color-primary); }
+
+  .pp__moves { margin-top: var(--space-6); display: grid; gap: var(--space-6); }
+  .pp__move-head {
+    display: flex; align-items: baseline; gap: var(--space-3);
+    font-family: var(--font-display); font-size: var(--text-title-md);
+    font-weight: var(--weight-semibold); line-height: var(--leading-snug);
+    color: var(--color-navy);
+  }
+  .pp__move-num { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
+  .pp__move-body { margin-top: var(--space-3); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+
+  @media (min-width: 768px) {
+    .pp__factor { grid-template-columns: minmax(0, 1fr); }
+    .pp__moves { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7) var(--space-8); }
+  }
+  @media (min-width: 1024px) {
+    .pp__factor { grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); align-items: start; }
+    .pp__factor-head { grid-row: span 2; }
+  }
+</style>

@@ -1,0 +1,284 @@
+---
+/*
+ * Platform architecture — the abstraction ladder and what each rung costs.
+ *
+ * Thesis: portability is a bill you either price up front or get handed later.
+ * The page is deliberately not a recommendation engine for containers — every
+ * rung carries an honest "bad when", and the closing section argues for when
+ * paying the portability tax is the wrong call.
+ *
+ * Content model lives in src/data/platform-*.ts so wording and scoring can be
+ * tuned without touching a component.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResponsibilityLadder from '../components/platform/ResponsibilityLadder.astro';
+import ConceptExplainer from '../components/platform/ConceptExplainer.astro';
+import PlatformChooser from '../components/platform/PlatformChooser.astro';
+import PortabilityPractices from '../components/platform/PortabilityPractices.astro';
+import CompassRose from '../components/icons/CompassRose.astro';
+import { RUNGS } from '../data/platform-ladder';
+import { getCollection } from 'astro:content';
+import { base } from '../utils/base';
+
+/* Reuse rather than restate: these notes already carry the detail this page
+   only has room to summarise. Ordered as a reading path, not alphabetically. */
+const READING = [
+  'multicloud/iaas-paas-saas-without-marketing-layer',
+  'multicloud/shared-responsibility-for-people-who-stopped-believing-marketing',
+  'devops/gitops-with-argocd',
+  'multicloud/landing-zones-what-they-solve-and-the-honest-catch',
+  'security/policy-as-code-and-quotas-where-governance-stops-being-wiki',
+  'identity/rbac-and-iam-authorisation-models-that-look-similar',
+];
+
+const all = await getCollection('knowledgeBase');
+const byId = new Map(all.map((a) => [a.id, a]));
+const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined);
+---
+
+<BaseLayout
+  title="Platform Architecture"
+  description="The abstraction ladder from a bare VM to a SaaS subscription — what each rung hands over, what it takes away, and what it would cost to leave."
+>
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="pf-hero">
+    <div class="pf-hero__inner container">
+      <h1 class="pf-hero__heading">
+        Pick the rung. Then
+        <span class="pf-hero__accent">price the exit</span><span class="pf-hero__period">.</span>
+      </h1>
+      <p class="pf-hero__body">
+        Containers, Kubernetes, PaaS, serverless — the words usually arrive
+        already attached to a recommendation. This page takes them apart instead:
+        what each rung actually hands over, what it quietly takes away, and what
+        it would cost to leave. Portability is not a virtue you either have or
+        lack. It is a bill you either price up front or get handed later.
+      </p>
+
+      <div class="pf-choice">
+        <a class="pf-choice__card" href="#chooser">
+          <span class="pf-choice__kicker">Tool</span>
+          <span class="pf-choice__title">Choose a rung</span>
+          <span class="pf-choice__body">
+            Answer a handful of questions about one workload and get a
+            recommended rung, an honest runner-up, and a straight account of
+            where the lock-in would actually sit.
+          </span>
+          <span class="pf-choice__go">Open the chooser &rarr;</span>
+        </a>
+        <a class="pf-choice__card" href="#ladder">
+          <span class="pf-choice__kicker">Reference</span>
+          <span class="pf-choice__title">Read the ladder</span>
+          <span class="pf-choice__body">
+            {RUNGS.length} rungs, {RUNGS.length} animated figures, and the
+            responsibility register that shows exactly where the line moves —
+            and the two rows where it never does.
+          </span>
+          <span class="pf-choice__go">Walk the ladder &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Responsibility ────────────────────────────────────────────── -->
+  <section class="section-rule" id="ladder">
+    <div class="container">
+      <ResponsibilityLadder />
+    </div>
+  </section>
+
+  <!-- ── Concepts ──────────────────────────────────────────────────── -->
+  <section class="section-rule">
+    <div class="container">
+      <ConceptExplainer />
+    </div>
+  </section>
+
+  <!-- ── Chooser ───────────────────────────────────────────────────── -->
+  <section class="section-rule">
+    <div class="container">
+      <PlatformChooser />
+    </div>
+  </section>
+
+  <!-- ── Portability ───────────────────────────────────────────────── -->
+  <section class="section-rule" id="portability">
+    <div class="container">
+      <PortabilityPractices />
+    </div>
+  </section>
+
+  <!-- ── Reading ───────────────────────────────────────────────────── -->
+  <section class="pf-reading section-rule">
+    <div class="container">
+      <h2 class="pf-reading__title">Where this goes into detail.</h2>
+      <p class="pf-reading__lede">
+        This page is the map. These are the notes underneath it, in the order
+        they are worth reading.
+      </p>
+      <ul class="pf-reading__list" role="list">
+        {reading.map((article) => (
+          <li class="pf-reading__item">
+            <a class="pf-reading__link" href={`${base}/knowledge-base/${article.id}`}>
+              <span class="pf-reading__name">{article.data.title}</span>
+              <span class="pf-reading__excerpt">{article.data.excerpt}</span>
+            </a>
+            <span class="pf-reading__meta">{article.data.readTime ? `${article.data.readTime} min` : ''}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Close ─────────────────────────────────────────────────────── -->
+  <section class="pf-close section-rule">
+    <div class="pf-close__inner container">
+      <CompassRose size={22} class="pf-close__rose" aria-hidden="true" />
+      <p class="pf-close__text">
+        None of this is a recommendation to containerise. It is a recommendation
+        to know which trade you are making before somebody makes it for you —
+        <a href={`${base}/contact`}>get in touch</a> if you want a specific
+        workload assessed rather than a category.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pf-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--space-8) var(--space-7);
+  }
+
+  .pf-hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+    max-width: 18ch;
+  }
+  .pf-hero__accent { color: var(--color-primary); }
+  .pf-hero__period { color: var(--color-meta-label); }
+
+  .pf-hero__body {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 68ch;
+  }
+
+  /* ── Choice ──────────────────────────────────────────────────────── */
+  .pf-choice {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+  @media (min-width: 768px) {
+    .pf-choice { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .pf-choice__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: 1px solid var(--color-divider-strong);
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+  .pf-choice__card:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-tint);
+    opacity: 1;
+  }
+  .pf-choice__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-meta-label);
+  }
+  .pf-choice__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+  }
+  .pf-choice__body {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+  .pf-choice__go {
+    margin-top: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+  }
+
+  /* ── Reading ─────────────────────────────────────────────────────── */
+  .pf-reading { padding-block: var(--space-8); }
+  .pf-reading__title {
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-title-lg), 3vw, var(--text-headline-md));
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface);
+  }
+  .pf-reading__lede {
+    margin-top: var(--space-3);
+    max-width: 68ch;
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+  .pf-reading__list { margin-top: var(--space-6); display: flex; flex-direction: column; }
+  .pf-reading__item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-5);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .pf-reading__link { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; text-decoration: none; }
+  .pf-reading__name {
+    font-family: var(--font-display);
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface);
+  }
+  .pf-reading__link:hover .pf-reading__name { color: var(--color-primary); }
+  .pf-reading__excerpt { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+  .pf-reading__meta {
+    flex-shrink: 0;
+    font: var(--text-label-sm) var(--font-mono);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
+  }
+
+  /* ── Close ───────────────────────────────────────────────────────── */
+  .pf-close__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-block: var(--space-8);
+  }
+  .pf-close__rose { flex-shrink: 0; color: var(--color-primary); }
+  .pf-close__text {
+    max-width: 72ch;
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+</style>

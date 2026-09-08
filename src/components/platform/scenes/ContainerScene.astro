@@ -1,0 +1,90 @@
+---
+import Hull from './Hull.astro';
+---
+<svg class="scene scene--container" viewBox="0 0 600 360" role="img" aria-labelledby="container-scene-title">
+  <title id="container-scene-title">
+    Loose cargo is unpacked and repacked at every transfer between ship, yard and
+    truck. A standard box crosses all three carriers unchanged.
+  </title>
+
+  <!-- ── The transfer route ────────────────────────────────────────── -->
+  <path class="scene__route" d="M110 224 V140 H490 V222" />
+
+  <!-- ── Station 1 — ship ──────────────────────────────────────────── -->
+  <g transform="translate(55 250)">
+    <g class="cn-heave"><Hull width={112} depth={26} bridge={false} /></g>
+  </g>
+  <path class="scene__line scene__quiet" d="M40 278 H180" />
+  <text class="scene__label" x="111" y="298" text-anchor="middle">SHIP</text>
+
+  <!-- ── Station 2 — yard ──────────────────────────────────────────── -->
+  <path class="scene__heavy" d="M300 250 V166 H352" />
+  <path class="scene__line" d="M352 166 V186" />
+  <path class="scene__heavy" d="M248 250 H356" />
+  <text class="scene__label" x="300" y="298" text-anchor="middle">YARD</text>
+
+  <!-- ── Station 3 — truck ─────────────────────────────────────────── -->
+  <path class="scene__heavy" d="M446 250 H524 V222 H548 V250" />
+  <circle class="scene__hull" cx="466" cy="256" r="7" />
+  <circle class="scene__hull" cx="534" cy="256" r="7" />
+  <path class="scene__line scene__quiet" d="M430 266 H564" />
+  <text class="scene__label" x="490" y="298" text-anchor="middle">TRUCK</text>
+
+  <!-- ── Break-bulk: every carrier wants it packed its own way ─────── -->
+  <g class="scene__before">
+    <text class="scene__label" x="300" y="76" text-anchor="middle">REPACKED AT EVERY TRANSFER</text>
+    <text class="scene__text" x="300" y="98" text-anchor="middle">Each handover is hand-work, and each one can go wrong.</text>
+
+    <path class="scene__crate" d="M100 226 Q95 238 100 250 H122 Q127 238 122 226 Z" />
+    <path class="scene__line" d="M98 234 H124 M98 242 H124" />
+    <path class="scene__crate" d="M288 250 Q285 234 296 228 L294 221 H306 L304 228 Q315 234 312 250 Z" />
+    <rect class="scene__crate" x="474" y="226" width="32" height="24" />
+    <path class="scene__line" d="M474 226 L506 250 M506 226 L474 250" />
+
+    <g transform="translate(205 140)">
+      <circle class="scene__paper" r="11" />
+      <path class="scene__line" d="M-4 -4 L4 4 M4 -4 L-4 4" />
+    </g>
+    <g transform="translate(395 140)">
+      <circle class="scene__paper" r="11" />
+      <path class="scene__line" d="M-4 -4 L4 4 M4 -4 L-4 4" />
+    </g>
+  </g>
+
+  <!-- ── One box, unchanged, across all three ──────────────────────── -->
+  <g class="scene__after">
+    <text class="scene__label" x="300" y="76" text-anchor="middle">ONE BOX, EVERY CARRIER</text>
+    <text class="scene__text" x="300" y="98" text-anchor="middle">The transfer stops being work. That is the whole of the idea.</text>
+
+    <g class="cn-box"><rect class="scene__crate" x="96" y="228" width="30" height="22" /><path class="scene__line" d="M96 235 H126" /></g>
+    <g class="cn-box"><rect class="scene__crate" x="285" y="228" width="30" height="22" /><path class="scene__line" d="M285 235 H315" /></g>
+    <g class="cn-box"><rect class="scene__crate" x="475" y="228" width="30" height="22" /><path class="scene__line" d="M475 235 H505" /></g>
+
+    <g class="cn-travel scene__pinned">
+      <rect class="scene__crate" width="30" height="22" />
+      <path class="scene__line" d="M0 7 H30" />
+    </g>
+  </g>
+</svg>
+
+<style>
+  .cn-heave { animation: cn-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
+  @keyframes cn-heave {
+    0%, 50%, 100% { transform: translateY(0); }
+    25%, 75% { transform: translateY(-2px); }
+  }
+
+  /* The travelling box only makes sense once the box has been standardised. */
+  .cn-travel { opacity: 0; }
+  :global(.cp[data-demonstrate='true']) .cn-travel {
+    animation: cn-travel var(--nautical-cycle-duration) var(--ease-standard) infinite;
+  }
+  @keyframes cn-travel {
+    0%       { opacity: 0; transform: translate(96px, 228px); }
+    8%       { opacity: 1; transform: translate(96px, 228px); }
+    22%      { opacity: 1; transform: translate(96px, 129px); }
+    52%      { opacity: 1; transform: translate(475px, 129px); }
+    68%, 88% { opacity: 1; transform: translate(475px, 228px); }
+    96%, 100% { opacity: 0; transform: translate(475px, 228px); }
+  }
+</style>
