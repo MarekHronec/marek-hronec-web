@@ -1,0 +1,73 @@
+---
+import type { ExplainerStory } from '../../data/cia-explainer';
+interface Props { story: ExplainerStory; index: number }
+const { story, index } = Astro.props;
+---
+<section class="ex__panel" id={`ex-panel-${story.key}`} role="tabpanel" aria-labelledby={`ex-tab-${story.key}`} tabindex="0" data-panel={story.key} data-demonstrate="false">
+  <div class="ex__visual">
+    <div class="ex__figure-label"><span>Figure 0{index + 1}</span><span>{story.name} at sea</span></div>
+    <slot />
+    <div class="ex__playback" hidden>
+      <button type="button" data-pause aria-pressed="false">Pause motion</button>
+      <button type="button" data-replay>Replay motion ↻</button>
+    </div>
+  </div>
+  <div class="ex__copy">
+    <p class="ex__sequence">{story.letter} <span>/</span> {story.cue}</p>
+    <h4>{story.title}</h4>
+    <p class="ex__definition">{story.definition}</p>
+    <p>{story.analogy}</p>
+    <div class="ex__interaction" hidden>
+      <button class="ex__action" type="button" data-demonstrate aria-pressed="false" data-action={story.action} data-reset={story.reset}>{story.action}<span aria-hidden="true"> →</span></button>
+      <p class="ex__status" aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
+    </div>
+    <div class="ex__question"><span>Ask about your system</span><p>{story.question}</p></div>
+    <p class="ex__lesson">{story.lesson}</p>
+  </div>
+</section>
+<style>
+  .ex__panel { display: grid; gap: var(--space-6); padding-block: var(--space-5); }
+  .ex__panel[hidden] { display: none; }
+  .ex__visual { min-width: 0; align-self: center; }
+  .ex__figure-label { display: flex; justify-content: space-between; gap: var(--space-3); color: var(--color-meta-label); font: var(--text-label-sm) var(--font-mono); letter-spacing: var(--tracking-wide); padding-inline: var(--space-3); }
+  .ex__copy { display: flex; flex-direction: column; gap: var(--space-4); }
+  .ex__sequence { font: var(--text-label-md) var(--font-mono); color: var(--color-primary); }
+  .ex__sequence span { color: var(--color-warm-gray); margin-inline: var(--space-2); }
+  h4 { font: var(--weight-semibold) clamp(var(--text-title-lg), 2.4vw, var(--text-headline-md)) / var(--leading-snug) var(--font-display); color: var(--color-navy); letter-spacing: var(--tracking-tight); max-width: 25ch; text-wrap: balance; }
+  .ex__copy > p { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+  .ex__copy .ex__definition { color: var(--color-on-surface); }
+  .ex__interaction { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .ex__interaction[hidden], .ex__playback[hidden] { display: none; }
+  button { font: inherit; cursor: pointer; border: 0; }
+  .ex__action { background: var(--color-navy); color: var(--color-on-primary); padding: var(--space-3) var(--space-4); font-size: var(--text-label-md); font-weight: var(--weight-semibold); transition: background var(--duration-fast) var(--ease-standard); text-align: left; }
+  .ex__action:hover { background: var(--color-primary); }
+  .ex__status { font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-primary); min-height: var(--space-8); }
+  .ex__question { padding: var(--space-4) var(--space-5); background: var(--color-primary-tint); }
+  .ex__question span { display: block; font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); margin-bottom: var(--space-2); }
+  .ex__question p { font-size: var(--text-body-md); font-weight: var(--weight-medium); line-height: var(--leading-relaxed); color: var(--color-navy); }
+  .ex__copy .ex__lesson { font-size: var(--text-label-md); }
+  .ex__playback { display: flex; justify-content: flex-end; gap: var(--space-4); padding: var(--space-3); }
+  .ex__playback button { padding: var(--space-2); background: transparent; color: var(--color-primary); font-size: var(--text-label-sm); }
+  .ex__playback button:hover { background: var(--color-primary-tint); }
+  .ex__visual :global(.scene) { display: block; width: 100%; height: auto; overflow: visible; }
+  .ex__visual :global(.scene__line) { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linecap: round; stroke-linejoin: round; }
+  .ex__visual :global(.scene__paper) { fill: var(--color-surface); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linejoin: round; }
+  .ex__visual :global(.scene__quiet) { opacity: .35; }
+  .ex__visual :global(.scene__route) { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-dasharray: 3 7; stroke-linecap: round; opacity: .45; }
+  .ex__visual :global(.scene__sea-fill) { fill: var(--color-primary-tint); opacity: .6; }
+  .ex__visual :global(.scene__label) { fill: var(--color-primary); font: var(--nautical-label) var(--font-mono); letter-spacing: var(--tracking-wide); stroke: none; }
+  .ex__visual :global(.scene__text) { fill: var(--color-primary); font: var(--nautical-text) var(--font-body); stroke: none; }
+  .ex__visual :global(.scene__number) { fill: var(--color-navy); font: var(--nautical-number) var(--font-mono); }
+  .ex__visual :global(.scene__after) { opacity: 0; }
+  .ex__visual :global(.scene__before), .ex__visual :global(.scene__after) { transition: opacity var(--duration-slow) var(--ease-standard); }
+  .ex__panel[data-demonstrate="true"] :global(.scene__before) { opacity: 0; }
+  .ex__panel[data-demonstrate="true"] :global(.scene__after) { opacity: 1; }
+  .ex__visual :global(.scene__emphasis) { font-weight: var(--weight-semibold); }
+  @media (min-width: 1024px) {
+    .ex__panel { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-8); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ex__panel[data-demonstrate] .ex__visual :global(.scene *) { animation-duration: .001ms; animation-iteration-count: 1; animation-delay: 0ms; transition-duration: 0ms; }
+    .ex__playback { display: none; }
+  }
+</style>

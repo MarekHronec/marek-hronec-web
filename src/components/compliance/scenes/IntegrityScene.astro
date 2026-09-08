@@ -1,0 +1,42 @@
+---
+import SailingVessel from './SailingVessel.astro';
+import ChartWater from './ChartWater.astro';
+---
+<svg class="scene scene--integrity" viewBox="0 0 600 360" role="img" aria-labelledby="integrity-scene-title">
+  <title id="integrity-scene-title">The real depth is three metres. An unauthorized change makes the chart say twelve metres, sending a ship into shallow water.</title>
+  <ChartWater id="integrity" />
+  <g transform="translate(55 32)">
+    <path class="scene__paper" d="M0 0 H165 L181 16 V111 H0 Z" /><path class="scene__line" d="M165 0 V16 H181" />
+    <text class="scene__label" x="16" y="26">NAVIGATION RECORD</text>
+    <text class="scene__number scene__before" x="17" y="70">3 m</text>
+    <text class="scene__number scene__after" x="17" y="70">12 m</text>
+    <text class="scene__label scene__before" x="17" y="94">VERIFIED DEPTH</text>
+    <text class="scene__label scene__after" x="17" y="94">ALTERED VALUE</text>
+    <path class="scene__line scene__quiet" d="M111 46 Q139 26 160 46 M108 59 Q139 39 166 60 M110 73 Q145 52 169 76" />
+  </g>
+  <text class="scene__label" x="272" y="82">SHIP DRAFT</text><text class="scene__text" x="272" y="103">Needs 4 m of water</text>
+  <path class="scene__sea-fill" d="M30 211 Q95 205 162 211 T294 211 T426 211 T568 211 V330 H30 Z" />
+  <path class="scene__line" d="M30 211 Q95 205 162 211 T294 211 T426 211 T568 211" />
+  <path class="i-seabed" d="M30 326 Q139 313 233 321 C294 326 321 251 361 245 L390 236 L412 246 Q461 269 568 292 V335 H30 Z" />
+  <path class="scene__line scene__quiet" d="M43 332 Q172 318 231 327 M331 282 L360 266 L380 264 M411 267 L433 277 M361 297 L389 283 L417 289 M452 304 L480 299" />
+  <path class="scene__line" d="M441 214 V258 M435 214 H447 M435 258 H447" />
+  <text class="scene__label" x="457" y="231">ACTUAL</text><text class="scene__text" x="457" y="251">3 m</text>
+  <g class="i-ship"><g transform="scale(.83)"><SailingVessel keel /></g></g>
+  <g class="scene__after i-grounding scene__line" transform="translate(363 244)">
+    <path d="M-13 -1 L-21 -5 M-7 9 L-12 16 M6 11 L9 20" />
+    <circle class="i-ring" r="23" />
+  </g>
+  <text class="scene__label" x="49" y="353">THE WATER DID NOT CHANGE. THE RECORD DID.</text>
+</svg>
+<style>
+  .i-seabed { fill: var(--color-primary-container); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); }
+  .i-ship { transform: translate(150px, 202px); }
+  .i-ring { opacity: .3; }
+  :global(.ex__panel[data-demonstrate="true"]) .i-ship { animation: ground var(--nautical-story-duration) linear both; }
+  :global(.ex__panel[data-demonstrate="true"]) .i-grounding { animation: impact var(--nautical-story-duration) var(--ease-standard) both; }
+  @keyframes ground {
+    from { transform: translate(150px, 202px) rotate(0deg); }
+    to { transform: translate(335px, 220px) rotate(-9deg); }
+  }
+  @keyframes impact { 0%, 75% { opacity: 0; } 90%, 100% { opacity: 1; } }
+</style>

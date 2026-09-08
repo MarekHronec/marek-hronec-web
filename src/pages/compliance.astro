@@ -11,6 +11,7 @@
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SecurityCalculator from '../components/compliance/SecurityCalculator.astro';
+import CalculatorNotice from '../components/compliance/CalculatorNotice.astro';
 import CompassRose from '../components/icons/CompassRose.astro';
 import { getCollection } from 'astro:content';
 import { base } from '../utils/base';
@@ -131,33 +132,7 @@ const countryCount = LAYERS[1].slugs.length;
         </a>
       </div>
 
-      <aside class="ca-colophon">
-        <p class="ca-colophon__note">
-          <strong>Not an official tool.</strong> The calculator transcribes documents
-          published by the Slovak Republic and reproduces their logic. It does not
-          replace them. Classifying an ISVS is the operator’s responsibility and the
-          binding answer is the one in the sources — treat any result here as an
-          orientation aid to be checked against the workbook and a formal risk analysis.
-        </p>
-        <dl class="ca-colophon__sources">
-          <div>
-            <dt>Workbook</dt>
-            <dd>MIRRI SR — <em>Určenie parametrov UxCxIxAx</em>, príloha č. 1, v10.0</dd>
-          </div>
-          <div>
-            <dt>Guidance</dt>
-            <dd>MIRRI SR — <em>Metodické usmernenie pre klasifikáciu ISVS</em>, 023107/2023/oSBATA-1</dd>
-          </div>
-          <div>
-            <dt>Act</dt>
-            <dd>Zákon č. 69/2018 Z. z. o kybernetickej bezpečnosti, §20</dd>
-          </div>
-          <div>
-            <dt>Decree</dt>
-            <dd>Vyhláška č. 165/2018 Z. z. — kritériá kategórií incidentov</dd>
-          </div>
-        </dl>
-      </aside>
+      <CalculatorNotice />
     </div>
   </section>
 
@@ -307,70 +282,6 @@ const countryCount = LAYERS[1].slugs.length;
     font-size: var(--text-label-md);
     font-weight: var(--weight-bold);
     color: var(--color-primary);
-  }
-
-  /* ── Colophon ──────────────────────────────────────────────────────────
-     Ruled, not boxed. The old grey panel read as a browser alert, capped at
-     76ch so it stranded the right half of the row. This runs the full width
-     as a two-column register: the caution reads as prose, the sources as a
-     ruled list the eye can scan. */
-  .ca-colophon {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-    padding-block: var(--space-5);
-    border-top: 1px solid var(--color-divider-strong);
-    border-bottom: 1px solid var(--color-divider);
-  }
-
-  @media (min-width: 900px) {
-    .ca-colophon {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      column-gap: var(--space-8);
-    }
-  }
-
-  .ca-colophon__note {
-    font-size: var(--text-body-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-  }
-
-  .ca-colophon__note strong {
-    color: var(--color-on-surface);
-  }
-
-  .ca-colophon__sources {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ca-colophon__sources > div {
-    display: grid;
-    grid-template-columns: 5.5rem 1fr;
-    gap: var(--space-3);
-    align-items: baseline;
-    padding-block: var(--space-2);
-    border-bottom: 1px solid var(--color-divider);
-  }
-
-  .ca-colophon__sources > div:first-child {
-    border-top: 1px solid var(--color-divider);
-  }
-
-  .ca-colophon__sources dt {
-    font-family: var(--font-mono);
-    font-size: var(--text-label-sm);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-
-  .ca-colophon__sources dd {
-    margin: 0;
-    font-size: var(--text-label-md);
-    line-height: var(--leading-snug);
-    color: var(--color-on-surface-muted);
   }
 
   .ca-hero__meta {

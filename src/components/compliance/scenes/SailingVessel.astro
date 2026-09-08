@@ -1,0 +1,29 @@
+---
+interface Props { small?: boolean; keel?: boolean }
+const { small = false, keel = false } = Astro.props;
+---
+<g class:list={['vessel', { 'vessel--small': small }]}>
+  <path class="vessel__wake" d="M-58 8 Q-35 13 -18 9 M-68 14 Q-35 19 2 14 M-47 21 Q-14 24 20 18" />
+  <path class="vessel__rig" d="M-37 -3 L4 -100 L44 -3 M4 -100 V5 M-23 -13 H39" />
+  <path class="vessel__main" d="M0 -91 C-6 -62 -22 -34 -29 -20 L0 -16 Z" />
+  <path class="vessel__jib" d="M9 -83 L38 -17 Q24 -13 9 -15 Z" />
+  <path class="vessel__seam" d="M-5 -71 L-7 -18 M-11 -52 L-14 -19 M16 -64 L20 -17" />
+  <path class="vessel__flag" d="M5 -100 Q17 -106 25 -100 L19 -94 L5 -97 Z" />
+  <path class="vessel__deck" d="M-22 -8 H17 L26 -2 H-30 Z" />
+  {keel && <path class="vessel__hull" d="M-5 9 L-3 39 L9 37 L15 9 Z" />}
+  <path class="vessel__hull" d="M-43 -3 Q-9 3 48 -5 L34 10 Q5 19 -28 9 Z" />
+  <path class="vessel__edge" d="M-38 0 Q6 8 42 -2 M-25 8 Q3 16 30 9" />
+  <circle cx="-13" cy="5" r="1.5" /><circle cx="-3" cy="7" r="1.5" /><circle cx="7" cy="7" r="1.5" />
+</g>
+<style>
+  .vessel { fill: var(--color-surface); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linecap: round; stroke-linejoin: round; }
+  .vessel__wake { fill: none; opacity: .3; }
+  .vessel__main, .vessel__deck { fill: var(--color-surface); }
+  .vessel__jib, .vessel__hull, .vessel__flag { fill: var(--color-navy); }
+  .vessel__rig { fill: none; opacity: .75; stroke-width: var(--nautical-fine-stroke); }
+  .vessel__seam { fill: none; opacity: .3; }
+  .vessel__edge { fill: none; stroke: var(--color-surface); opacity: .65; stroke-width: var(--nautical-fine-stroke); }
+  .vessel--small { stroke-width: var(--nautical-heavy-stroke); }
+</style>
+
+

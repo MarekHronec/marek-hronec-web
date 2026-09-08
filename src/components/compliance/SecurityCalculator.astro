@@ -10,12 +10,14 @@
 
 import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
 import CiaExplainer from './CiaExplainer.astro';
+import CalculatorGuide from './CalculatorGuide.astro';
 ---
 
 <section class="calc" id="calculator">
   <div class="calc__inner container">
 
     <CiaExplainer />
+    <CalculatorGuide />
 
     <!-- Running readout — fills in as the classification is made -->
     <div class="calc__readout" id="calc-readout">
@@ -32,34 +34,36 @@ import CiaExplainer from './CiaExplainer.astro';
 
     <ol class="calc__steps" role="list">
       {AXES.map((axis, ai) => (
-        <li class="calc__step">
+        <li class="calc__step" data-classification-step={axis.key}>
           <div class="calc__step-head">
-            <span class="calc__step-num" aria-hidden="true">{`0${ai + 1}`}</span>
+            <span class="calc__step-num" aria-hidden="true">{axis.letter}</span>
             <div class="calc__step-titles">
+              <p class="calc__step-label">Property {ai + 1} of 3 · {axis.name}</p>
               <h3 class="calc__step-title">
                 {axis.question}
               </h3>
               <p class="calc__step-help">
                 {axis.help}
-                <span class="calc__step-src">{axis.name} · {axis.nameSk} · {axis.source.short}</span>
+                <span class="calc__step-src">{axis.nameSk} · {axis.source.short}</span>
               </p>
             </div>
           </div>
 
+          <div class="calc__answer-guide"><span>Choose one level</span><span data-axis-selection={axis.key}>No answer selected</span></div>
           <div class="calc__levels" role="radiogroup" aria-label={axis.name}>
             {axis.levels.map((lvl) => (
               <label class="calc__level" data-axis={axis.key} data-value={lvl.value}>
                 <input type="radio" name={`axis-${axis.key}`} value={String(lvl.value)} data-axis={axis.key} />
                 <span class="calc__level-body">
                   <span class="calc__level-head">
-                    <span class="calc__level-code">{axis.letter}{lvl.value}</span>
+                    <span class="calc__level-code">{axis.letter}{lvl.value}</span><span class="calc__chosen" aria-hidden="true">✓ Selected</span>
                     <span class="calc__level-term">{lvl.term}</span>
                     <span class="calc__level-sk">{lvl.termSk}</span>
                   </span>
                   <span class="calc__level-plain">{lvl.plain}</span>
                   <span class="calc__lock" data-lock hidden></span>
                   <details class="calc__formal">
-                    <summary>Official wording</summary>
+                    <summary>Read the official definition</summary>
                     <ul role="list">
                       {lvl.formal.map((f) => <li>{f}</li>)}
                     </ul>
@@ -74,8 +78,9 @@ import CiaExplainer from './CiaExplainer.astro';
       <!-- Incident profile — replaces "could this cause a category N incident?" -->
       <li class="calc__step" id="calc-step-incident" hidden>
         <div class="calc__step-head">
-          <span class="calc__step-num" aria-hidden="true">04</span>
+          <span class="calc__step-num" aria-hidden="true">2</span>
           <div class="calc__step-titles">
+            <p class="calc__step-label">Incident impact · Stage 2</p>
             <h3 class="calc__step-title">What would a bad day actually look like?</h3>
             <p class="calc__step-help">
               The workbook asks whether compromise could cause a category I, II or III
@@ -116,8 +121,9 @@ import CiaExplainer from './CiaExplainer.astro';
       <!-- Remaining criteria the CIA triple and incident degree cannot settle -->
       <li class="calc__step" id="calc-step-criteria" hidden>
         <div class="calc__step-head">
-          <span class="calc__step-num" aria-hidden="true">05</span>
+          <span class="calc__step-num" aria-hidden="true">3</span>
           <div class="calc__step-titles">
+            <p class="calc__step-label">Hosting requirements · Stage 3</p>
             <h3 class="calc__step-title">A few things only you can confirm</h3>
             <p class="calc__step-help" id="calc-criteria-lead"></p>
           </div>
@@ -210,6 +216,20 @@ import CiaExplainer from './CiaExplainer.astro';
 
   function render() {
     applyLocks();
+    document.querySelectorAll<HTMLElement>('[data-axis-selection]').forEach((status) => {
+      const axis = status.dataset.axisSelection as AxisKey;
+      const selected = document.querySelector<HTMLInputElement>('input[name="axis-' + axis + '"]:checked');
+      const term = selected?.closest('.calc__level')?.querySelector('.calc__level-term')?.textContent;
+      status.textContent = selected ? axis.toUpperCase() + selected.value + ' · ' + term : 'No answer selected';
+      status.dataset.selected = String(Boolean(selected));
+    });
+    const phase = !cia() ? 1 : INCIDENT_QUESTIONS.every((q) => incident[q.id] !== undefined) ? 3 : 2;
+    document.querySelectorAll<HTMLElement>('[data-assessment-phase]').forEach((step) => {
+      const current = Number(step.dataset.assessmentPhase) === phase;
+      step.dataset.current = String(current);
+      if (current) step.setAttribute('aria-current', 'step');
+      else step.removeAttribute('aria-current');
+    });
     (['c', 'i', 'a'] as AxisKey[]).forEach((k) => setTile(k.toUpperCase(), sel[k] ?? '·'));
 
     const triple = cia();
@@ -397,28 +417,16 @@ import CiaExplainer from './CiaExplainer.astro';
   }
 
   /* ── Steps ─────────────────────────────────────────────────────────── */
-  .calc__steps { display: flex; flex-direction: column; gap: var(--space-8); }
+  .calc__steps {
+    display: flex; flex-direction: column; gap: var(--space-6);
+  }
 
   .calc__step-head {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-4);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--color-divider-strong);
-    margin-bottom: var(--space-5);
+    display: flex; align-items: flex-start; gap: var(--space-4); margin-bottom: var(--space-5);
   }
 
   .calc__step-num {
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid var(--color-divider-strong);
-    border-radius: var(--radius-full);
-    font-family: var(--font-mono);
-    font-size: var(--text-label-md);
-    color: var(--color-primary);
+    display: grid; place-items: center; flex-shrink: 0; width: var(--space-8); height: var(--space-8); background: var(--color-navy); color: var(--color-on-primary); font: var(--text-title-lg) var(--font-mono);
   }
 
   .calc__step-titles { display: flex; flex-direction: column; gap: var(--space-2); }
@@ -456,51 +464,44 @@ import CiaExplainer from './CiaExplainer.astro';
   }
 
   .calc__level {
-    display: flex;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    border: 1px solid var(--color-divider);
-    cursor: pointer;
-    transition: border-color var(--duration-fast) var(--ease-standard),
-                background-color var(--duration-fast) var(--ease-standard);
+    display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-5); background: var(--color-surface-container-lowest); cursor: pointer; transition: background var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
   }
 
-  .calc__level:hover { background-color: var(--color-surface-container-low); }
+  .calc__level:hover {
+    background: var(--color-primary-tint);
+  }
 
   .calc__level:has(input:checked) {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary-tint);
+    background: var(--color-primary-tint); box-shadow: inset var(--space-1) 0 0 var(--color-primary);
   }
 
   .calc__level--locked {
-    cursor: not-allowed;
-    opacity: 0.55;
-    background-color: var(--color-surface-container-low);
-    border-style: dashed;
+    cursor: not-allowed; background: var(--color-surface-container);
   }
 
   .calc__level--locked:hover { background-color: var(--color-surface-container-low); }
 
-  .calc__level input { margin-top: 4px; accent-color: var(--color-primary); flex-shrink: 0; }
+  .calc__level input {
+    margin-top: var(--space-1); align-self: flex-start; accent-color: var(--color-primary); flex-shrink: 0; width: var(--space-4); height: var(--space-4);
+  }
 
-  .calc__level-body { display: flex; flex-direction: column; gap: var(--space-2); }
+  .calc__level-body {
+    display: flex; flex-direction: column; gap: var(--space-3); flex: 1; min-width: 0;
+  }
 
-  .calc__level-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-2); }
+  .calc__level-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: var(--space-1) var(--space-3); }
 
   .calc__level-code {
-    font-family: var(--font-mono);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    color: var(--color-primary);
+    display: inline-block; padding: var(--space-1) var(--space-2); background: var(--color-navy); color: var(--color-on-primary); font: var(--weight-medium) var(--text-label-md) var(--font-mono);
   }
 
   .calc__level-term {
-    font-size: var(--text-body-md);
-    font-weight: var(--weight-semibold);
-    color: var(--color-on-surface);
+    grid-column: 2; grid-row: 1; font-size: var(--text-title-md); font-weight: var(--weight-semibold); color: var(--color-navy);
   }
 
-  .calc__level-sk { font-size: var(--text-label-md); font-style: italic; color: var(--color-on-surface-muted); }
+  .calc__level-sk {
+    font-size: var(--text-label-md); color: var(--color-on-surface-muted);
+  }
 
   .calc__level-plain {
     font-size: var(--text-body-md);
@@ -549,22 +550,16 @@ import CiaExplainer from './CiaExplainer.astro';
   /* ── Incident questions ────────────────────────────────────────────── */
   .calc__incident { display: flex; flex-direction: column; gap: var(--space-6); }
 
-  .calc__q { border: none; padding: 0; }
+  .calc__q {
+    min-width: 0; border: 0; padding: var(--space-4); background: var(--color-surface-container-lowest);
+  }
 
   .calc__q-title {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    font-weight: var(--weight-semibold);
-    color: var(--color-on-surface);
-    padding: 0;
+    float: left; width: 100%; font-family: var(--font-display); font-size: var(--text-title-md); font-weight: var(--weight-semibold); color: var(--color-navy); padding: 0; margin-bottom: var(--space-2);
   }
 
   .calc__q-help {
-    font-size: var(--text-label-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-    margin: var(--space-2) 0 var(--space-3);
-    max-width: 72ch;
+    clear: both; font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); margin-bottom: var(--space-4); max-width: 72ch;
   }
 
   .calc__q-options { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
@@ -574,22 +569,13 @@ import CiaExplainer from './CiaExplainer.astro';
   }
 
   .calc__opt {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: start;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--color-divider);
-    cursor: pointer;
-    transition: border-color var(--duration-fast) var(--ease-standard),
-                background-color var(--duration-fast) var(--ease-standard);
+    display: grid; grid-template-columns: auto 1fr auto; align-items: start; gap: var(--space-3); padding: var(--space-4); background: var(--color-surface-container-low); cursor: pointer; transition: background var(--duration-fast) var(--ease-standard);
   }
 
   .calc__opt:hover { background-color: var(--color-surface-container-low); }
 
   .calc__opt:has(input:checked) {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary-tint);
+    background: var(--color-primary-tint); box-shadow: inset var(--space-1) 0 0 var(--color-primary);
   }
 
   .calc__opt input { margin-top: 3px; accent-color: var(--color-primary); }
@@ -638,28 +624,11 @@ import CiaExplainer from './CiaExplainer.astro';
   .calc__criteria { display: flex; flex-direction: column; gap: var(--space-6); }
 
   :global(.calc__criteria-heading) {
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-primary);
-    padding-bottom: var(--space-2);
-    border-bottom: 1px solid var(--color-divider);
-    margin-bottom: var(--space-2);
+    font: var(--weight-semibold) var(--text-title-md) / var(--leading-snug) var(--font-display); color: var(--color-navy); margin-bottom: var(--space-4);
   }
 
   :global(.calc__criterion) {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: baseline;
-    gap: var(--space-3);
-    padding-block: var(--space-3);
-    border-bottom: 1px solid var(--color-divider);
-    font-size: var(--text-body-md);
-    line-height: var(--leading-snug);
-    color: var(--color-on-surface);
-    cursor: pointer;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: var(--space-3); padding: var(--space-4); margin-top: var(--space-2); background: var(--color-surface-container-lowest); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface); cursor: pointer;
   }
 
   :global(.calc__criterion--auto) { cursor: default; color: var(--color-on-surface-muted); }
@@ -744,4 +713,21 @@ import CiaExplainer from './CiaExplainer.astro';
     color: var(--color-primary-container);
     white-space: nowrap;
   }
+  /* Questions, choices, and selected answers have distinct visual roles. */
+  .calc__step { padding: var(--space-4); background: var(--color-surface-container-low); }
+  .calc__step[hidden] { display: none; }
+  .calc__step-label { font: var(--weight-medium) var(--text-label-md) var(--font-mono); color: var(--color-primary); }
+  .calc__answer-guide { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-3); font-size: var(--text-label-md); color: var(--color-on-surface-muted); }
+  .calc__answer-guide > span:first-child { color: var(--color-navy); font-weight: var(--weight-semibold); }
+  [data-axis-selection][data-selected="true"] { color: var(--color-primary); font-weight: var(--weight-semibold); }
+  .calc__chosen { display: none; grid-column: 2; grid-row: 3; font-size: var(--text-label-md); font-weight: var(--weight-semibold); color: var(--color-primary); }
+  .calc__level-code { grid-row: 1 / 3; align-self: start; }
+  .calc__level-sk { grid-column: 2; grid-row: 2; }
+  .calc__level:has(input:checked) .calc__chosen { display: inline; }
+  .calc__level:has(input:focus-visible), .calc__opt:has(input:focus-visible) { outline: var(--space-1) solid var(--color-primary-container); outline-offset: var(--space-1); }
+  .calc__level--locked .calc__level-code { background: var(--color-meta-label); }
+  .calc__formal summary { text-transform: none; letter-spacing: var(--tracking-normal); font-weight: var(--weight-regular); color: var(--color-on-surface-muted); }
+  .calc__formal[open] { padding: var(--space-3); background: var(--color-surface-container-low); }
+  :global(.calc__criterion:has(input:checked)) { background: var(--color-primary-tint); box-shadow: inset var(--space-1) 0 0 var(--color-primary); }
+  @media (min-width: 768px) { .calc__step { padding: var(--space-6); } }
 </style>

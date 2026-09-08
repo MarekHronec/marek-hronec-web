@@ -1,0 +1,30 @@
+---
+interface Props { id: string }
+const { id } = Astro.props;
+---
+<defs>
+  <pattern id={`${id}-water`} width="74" height="34" patternUnits="userSpaceOnUse">
+    <path d="M5 18 Q14 15 23 18 M44 29 H57" fill="none" stroke="currentColor" stroke-width=".7" opacity=".13" />
+  </pattern>
+</defs>
+<ellipse class="water__wash" cx="300" cy="221" rx="264" ry="110" />
+<ellipse class="water__texture" cx="300" cy="221" rx="264" ry="110" fill={`url(#${id}-water)`} />
+<g class="water__contours">
+  <path d="M30 241 C53 151 157 126 254 138 S450 113 561 177" />
+  <path d="M42 260 C92 164 171 155 270 161 S459 136 573 201" />
+  <path d="M51 280 C98 248 143 278 203 298 S387 330 511 294" />
+</g>
+<g class="water__compass" transform="translate(537 49)">
+  <circle r="19" /><path d="M0 -27 V27 M-27 0 H27 M-13 -13 L13 13 M13 -13 L-13 13" />
+  <path class="water__needle" d="M0 -17 L4 0 L0 15 L-4 0 Z" />
+  <text x="0" y="-32">N</text>
+</g>
+<style>
+  .water__wash { fill: var(--color-primary-tint); opacity: .55; }
+  .water__texture { color: var(--color-primary); }
+  .water__contours { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-fine-stroke); opacity: .16; }
+  .water__compass { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-fine-stroke); opacity: .45; }
+  .water__needle { fill: var(--color-primary); }
+  .water__compass text { fill: var(--color-primary); stroke: none; text-anchor: middle; font: var(--nautical-label) var(--font-mono); }
+</style>
+
