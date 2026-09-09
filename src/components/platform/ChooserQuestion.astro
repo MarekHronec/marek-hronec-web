@@ -1,0 +1,142 @@
+---
+/*
+ * One question block, styled to match the ISVS calculator on /compliance:
+ * a tonal tray, a navy numbered badge, a category line above the question,
+ * and white option cards that take a primary bar when selected.
+ *
+ * Radio semantics come from role="radiogroup" + aria-labelledby rather than a
+ * fieldset, so the badge and label can sit in the heading without fighting
+ * legend layout — the same approach the compliance calculator takes.
+ */
+import type { ChooserQuestion } from '../../data/platform-chooser';
+
+interface Props {
+  question: ChooserQuestion;
+  index: number;
+  total: number;
+}
+
+const { question, index, total } = Astro.props;
+const titleId = `pc-q-${question.key}`;
+---
+
+<li class="pcq" data-question={question.key}>
+  <div class="pcq__head">
+    <span class="pcq__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+    <div class="pcq__titles">
+      <p class="pcq__label">Question {index + 1} of {total} &middot; {question.label}</p>
+      <h3 class="pcq__title" id={titleId}>{question.prompt}</h3>
+      <p class="pcq__help">{question.help}</p>
+    </div>
+  </div>
+
+  <div class="pcq__guide">
+    <span>Choose one</span>
+    <span data-q-selection={question.key}>No answer selected</span>
+  </div>
+
+  <div class="pcq__opts" role="radiogroup" aria-labelledby={titleId}>
+    {question.options.map((option) => (
+      <label class="pcq__opt">
+        <input type="radio" name={question.key} value={option.value} />
+        <span class="pcq__opt-body">
+          <span class="pcq__opt-label">{option.label}</span>
+          {option.detail && <span class="pcq__opt-detail">{option.detail}</span>}
+          <span class="pcq__chosen" aria-hidden="true">&#10003; Selected</span>
+        </span>
+      </label>
+    ))}
+  </div>
+</li>
+
+<style>
+  .pcq { padding: var(--space-4); background: var(--color-surface-container-low); }
+
+  .pcq__head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .pcq__num {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: var(--space-8);
+    height: var(--space-8);
+    background: var(--color-navy);
+    color: var(--color-on-primary);
+    font: var(--text-title-lg) var(--font-mono);
+  }
+
+  .pcq__titles { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+  .pcq__label { font: var(--weight-medium) var(--text-label-md) var(--font-mono); color: var(--color-primary); }
+  .pcq__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface);
+    text-wrap: balance;
+  }
+  .pcq__help {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 72ch;
+  }
+
+  .pcq__guide {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-label-md);
+    color: var(--color-on-surface-muted);
+  }
+  .pcq__guide > span:first-child { color: var(--color-navy); font-weight: var(--weight-semibold); }
+  [data-q-selection][data-selected='true'] { color: var(--color-primary); font-weight: var(--weight-semibold); }
+
+  .pcq__opts { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+
+  .pcq__opt {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--color-surface-container-lowest);
+    cursor: pointer;
+    transition:
+      background var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  .pcq__opt:hover { background: var(--color-primary-tint); }
+  .pcq__opt:has(input:checked) {
+    background: var(--color-primary-tint);
+    box-shadow: inset var(--space-1) 0 0 var(--color-primary);
+  }
+  .pcq__opt:has(input:focus-visible) {
+    outline: var(--space-1) solid var(--color-primary-container);
+    outline-offset: var(--space-1);
+  }
+  .pcq__opt input { margin-top: 3px; accent-color: var(--color-primary); flex-shrink: 0; }
+
+  .pcq__opt-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .pcq__opt-label { font-size: var(--text-body-md); line-height: var(--leading-normal); color: var(--color-on-surface); }
+  .pcq__opt-detail { font-family: var(--font-mono); font-size: var(--text-label-sm); line-height: var(--leading-normal); color: var(--color-meta-label); }
+
+  .pcq__chosen {
+    display: none;
+    margin-top: var(--space-1);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+  }
+  .pcq__opt:has(input:checked) .pcq__chosen { display: inline; }
+  .pcq__opt:has(input:checked) .pcq__opt-label { font-weight: var(--weight-semibold); color: var(--color-navy); }
+
+  @media (min-width: 768px) { .pcq { padding: var(--space-6); } }
+</style>

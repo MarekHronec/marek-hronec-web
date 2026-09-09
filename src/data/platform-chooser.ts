@@ -1,9 +1,15 @@
 /*
  * Chooser model — every question, weight and exclusion reason is config.
  *
- * Two mechanisms, deliberately kept apart:
- *   excludes  a hard constraint. The rung is ruled out and the reason is shown.
+ * Three mechanisms, deliberately kept apart:
+ *   excludes  a hard constraint. The option is ruled out and the reason shown.
  *   scores    a preference nudge. Never decisive on its own.
+ *   note      a caveat about the answer itself, surfaced beside the verdict.
+ *
+ * Question order is purpose → constraints → shape → capacity → economics →
+ * strategy. "Should you run this at all" comes first because a yes to buying
+ * makes the remaining six moot, and it is cheaper to find that out on question
+ * one than on question seven.
  *
  * The weights are judgement, not arithmetic truth — they encode "what would a
  * reviewer say", and the output always shows its reasoning so a reader can
@@ -18,10 +24,13 @@ export interface ChooserOption {
   detail?: string;
   excludes?: { rung: RungKey; reason: string }[];
   scores?: Partial<Record<RungKey, number>>;
+  note?: string;
 }
 
 export interface ChooserQuestion {
   key: string;
+  /** Short category name, shown as "Question N of 7 · <label>". */
+  label: string;
   prompt: string;
   help: string;
   options: ChooserOption[];
@@ -29,50 +38,10 @@ export interface ChooserQuestion {
 
 export const QUESTIONS: ChooserQuestion[] = [
   {
-    key: 'host',
-    prompt: 'Does the software need something only the host can give it?',
-    help: 'This is the one question that can settle the answer on its own.',
-    options: [
-      {
-        value: 'kernel',
-        label: 'A kernel module, a driver, or a kernel-level agent',
-        detail: 'Storage drivers, kernel-level security agents, specialised networking.',
-        excludes: [
-          { rung: 'paas', reason: 'A platform service never grants access to the kernel it runs on.' },
-          { rung: 'saas', reason: 'There is no host to configure — you would be buying a different product.' },
-        ],
-        scores: { vm: 6, container: -5, orchestrated: -5 },
-      },
-      {
-        value: 'licence',
-        label: 'A licence bound to a host ID, MAC address or physical socket',
-        detail: 'Common with older commercial software and appliance vendors.',
-        excludes: [
-          { rung: 'paas', reason: 'Instances are replaced without notice, so a host-bound licence cannot hold.' },
-          { rung: 'saas', reason: 'You would be replacing the licensed product, not hosting it.' },
-        ],
-        scores: { vm: 6, container: -4, orchestrated: -4 },
-      },
-      {
-        value: 'os',
-        label: 'An OS or runtime version no managed platform still offers',
-        detail: 'Old distributions, superseded runtimes, vendor appliances.',
-        excludes: [
-          { rung: 'paas', reason: 'Runtime versions are deprecated on the provider’s schedule, which is the opposite of what this workload needs.' },
-        ],
-        scores: { vm: 5, container: 2 },
-      },
-      {
-        value: 'none',
-        label: 'None of these — it is an ordinary process that listens on a port',
-        scores: { container: 2, orchestrated: 1, paas: 2 },
-      },
-    ],
-  },
-  {
     key: 'build',
-    prompt: 'Should your organisation be building this capability at all?',
-    help: 'The cheapest architecture is often the one you do not write.',
+    label: 'Purpose',
+    prompt: 'Should your organisation be running this at all?',
+    help: 'The cheapest architecture is the one you never write. Worth settling before anything else.',
     options: [
       {
         value: 'core',
@@ -81,30 +50,74 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'mixed',
-        label: 'A standard capability, but our workflow around it is genuinely unusual',
+        label: 'A standard capability, but the way we work around it is genuinely unusual',
         scores: { saas: -2, paas: 1 },
       },
       {
         value: 'plumbing',
-        label: 'Every company has one: mail, CRM, ticketing, BI, identity',
+        label: 'Every company has one: mail, CRM, ticketing, reporting, identity',
         detail: 'Nobody was ever promoted for running their own mail server.',
-        // Deliberately dominant. The remaining questions all ask *how* to run
+        // Deliberately dominant. The other six questions all ask *how* to run
         // something; this one asks whether to run it at all, and when the
-        // answer is "no", the others are moot. A genuine blocker still
-        // overrides it, because those are modelled as exclusions rather than
-        // weights — "needs a kernel module" rules SaaS out regardless.
+        // answer is "no" the rest are moot. A genuine blocker still overrides
+        // it, because blockers are modelled as exclusions rather than weights.
         scores: { saas: 20 },
+        note: 'You said a product already does this. The remaining questions describe how to run something yourself — they only change the answer if you decide to run it anyway.',
+      },
+    ],
+  },
+  {
+    key: 'host',
+    label: 'Constraints',
+    prompt: 'Does the software need something only the host machine can give it?',
+    help: 'The one technical question that can settle the answer on its own.',
+    options: [
+      {
+        value: 'kernel',
+        label: 'A kernel module, a driver, or an agent that loads into the kernel',
+        detail: 'Storage drivers, kernel-level security agents, specialised networking.',
+        excludes: [
+          { rung: 'paas', reason: 'A platform service never gives you access to the kernel underneath it.' },
+          { rung: 'saas', reason: 'A finished product cannot load a module into a kernel you do not control. If a different product would do the job instead, that is question 01.' },
+        ],
+        scores: { vm: 6, container: -5, orchestrated: -5 },
+      },
+      {
+        value: 'licence',
+        label: 'A licence tied to a host ID, a MAC address or a physical socket',
+        detail: 'Common with older commercial software and appliance vendors.',
+        excludes: [
+          { rung: 'paas', reason: 'Instances are replaced without warning, so a licence pinned to one host cannot hold.' },
+          { rung: 'saas', reason: 'You would be replacing the licensed product rather than hosting it, which is question 01.' },
+        ],
+        scores: { vm: 6, container: -4, orchestrated: -4 },
+      },
+      {
+        value: 'os',
+        label: 'An operating system or runtime version no managed platform still offers',
+        detail: 'Old distributions, superseded runtimes, vendor appliances.',
+        excludes: [
+          { rung: 'paas', reason: 'Runtime versions are retired on the provider’s schedule, which is the opposite of what this workload needs.' },
+          { rung: 'saas', reason: 'A hosted product does not run your operating system at all. Replacing the software is question 01.' },
+        ],
+        scores: { vm: 5, container: 2 },
+      },
+      {
+        value: 'none',
+        label: 'None of these — it is an ordinary program that listens on a port',
+        scores: { container: 2, orchestrated: 1, paas: 2 },
       },
     ],
   },
   {
     key: 'state',
-    prompt: 'Where does the application keep state between requests?',
-    help: 'The single most reliable predictor of how painful a move will be.',
+    label: 'Storage',
+    prompt: 'Where does the application store data between one request and the next?',
+    help: 'Data written to a local disk is the most common reason a move turns out harder than planned.',
     options: [
       {
         value: 'external',
-        label: 'In a database or object store. The process itself holds nothing',
+        label: 'In a database or file store. The program itself stores nothing',
         scores: { container: 3, orchestrated: 2, paas: 3 },
       },
       {
@@ -114,9 +127,9 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'stuck',
-        label: 'On local disk, and it genuinely cannot move',
+        label: 'On local disk, and it genuinely cannot be moved',
         excludes: [
-          { rung: 'paas', reason: 'There is no durable local disk you can rely on across a restart.' },
+          { rung: 'paas', reason: 'Where a platform service offers persistent storage at all, it is network-attached rather than local disk — different latency, different file-locking behaviour. Software that truly depends on a local filesystem tends to break on it.' },
         ],
         scores: { vm: 4, orchestrated: -3 },
       },
@@ -124,8 +137,9 @@ export const QUESTIONS: ChooserQuestion[] = [
   },
   {
     key: 'estate',
-    prompt: 'How many independently deployable services are there?',
-    help: 'Orchestration earns its cost by the number of things it places.',
+    label: 'Scale',
+    prompt: 'How many separate services deploy on their own schedule?',
+    help: 'Orchestration earns its cost by the number of things it has to place and keep running.',
     options: [
       { value: 'one', label: 'One', scores: { vm: 2, paas: 3, orchestrated: -6 } },
       { value: 'few', label: 'Two to five', scores: { container: 2, paas: 2, orchestrated: -2 } },
@@ -135,63 +149,66 @@ export const QUESTIONS: ChooserQuestion[] = [
   },
   {
     key: 'ops',
-    prompt: 'Who is on call for the infrastructure, and what do they already run?',
+    label: 'Operations',
+    prompt: 'Who looks after the infrastructure once this is live?',
     help: 'The question most decision documents skip, and most post-mortems reach.',
     options: [
       {
         value: 'nobody',
-        label: 'Nobody in particular. Deploys happen in office hours',
+        label: 'Nobody in particular. Things get fixed during office hours',
         excludes: [
           {
             rung: 'orchestrated',
-            reason: 'Kubernetes with nobody owning it is a second product you did not plan to build — one that needs an upgrade every few months.',
+            reason: 'Kubernetes with nobody owning it is a second product you did not plan to build — one that needs a version upgrade at least once a year, on the provider’s schedule rather than yours.',
           },
         ],
         scores: { paas: 5, saas: 3, vm: -3 },
       },
       {
         value: 'devs',
-        label: 'A couple of developers who also own the application',
+        label: 'A couple of developers who also build the application',
         scores: { paas: 4, container: 2, orchestrated: -4 },
       },
       {
         value: 'platform',
-        label: 'A platform team that already runs shared infrastructure',
+        label: 'A dedicated team that already runs shared infrastructure',
         scores: { orchestrated: 5, container: 2 },
       },
     ],
   },
   {
+    key: 'load',
+    label: 'Load',
+    prompt: 'What does the traffic actually look like?',
+    help: 'Shape matters more than volume here — a busy hour is a different problem from a busy year.',
+    options: [
+      { value: 'idle', label: 'Close to nothing most of the time, with occasional bursts', scores: { paas: 5, vm: -4, orchestrated: -2 } },
+      { value: 'steady', label: 'Steady and predictable', scores: { vm: 2, container: 2, orchestrated: 1 } },
+      { value: 'spiky', label: 'Sudden peaks that are hard to predict', scores: { orchestrated: 3, paas: 3, vm: -2 } },
+    ],
+  },
+  {
     key: 'exit',
+    label: 'Exit',
     prompt: 'How real is the possibility of moving to another provider?',
     help: 'Be honest here. Most people overstate it, and a few badly understate it.',
     options: [
       {
         value: 'required',
-        label: 'Required — a regulator or contract asks us to demonstrate an exit',
+        label: 'Required — a regulator or a contract asks us to show we could leave',
         detail: 'DORA Article 30 and several national frameworks ask for a tested exit plan.',
         scores: { container: 4, orchestrated: 3, paas: -5, saas: -4 },
       },
       {
         value: 'plausible',
-        label: 'Plausible within three to five years. We want the option',
+        label: 'Possible within three to five years. We would like to keep the option',
         scores: { container: 3, orchestrated: 2, paas: -2 },
       },
       {
         value: 'no',
-        label: 'Not realistically. We are committed and would rather move fast',
+        label: 'Not realistically. We are committed and would rather move quickly',
         scores: { paas: 4, saas: 3, container: -1 },
       },
-    ],
-  },
-  {
-    key: 'load',
-    prompt: 'What does the load actually look like?',
-    help: 'Shape matters more than volume when you are picking a rung.',
-    options: [
-      { value: 'idle', label: 'Near zero most of the time, with occasional bursts', scores: { paas: 5, vm: -4, orchestrated: -2 } },
-      { value: 'steady', label: 'Steady and predictable', scores: { vm: 2, container: 2, orchestrated: 1 } },
-      { value: 'spiky', label: 'Spiky and hard to predict', scores: { orchestrated: 3, paas: 3, vm: -2 } },
     ],
   },
 ];
@@ -210,6 +227,7 @@ const RUNG_KEYS: RungKey[] = ['vm', 'container', 'orchestrated', 'paas', 'saas']
 export function evaluate(selection: Selection) {
   const score: Record<string, number> = { vm: 0, container: 0, orchestrated: 0, paas: 0, saas: 0 };
   const reasons: Record<string, string[]> = { vm: [], container: [], orchestrated: [], paas: [], saas: [] };
+  const notes: string[] = [];
 
   let answered = 0;
   for (const question of QUESTIONS) {
@@ -220,6 +238,7 @@ export function evaluate(selection: Selection) {
     answered += 1;
     for (const [rung, delta] of Object.entries(option.scores ?? {})) score[rung] += delta as number;
     for (const rule of option.excludes ?? []) reasons[rule.rung].push(rule.reason);
+    if (option.note) notes.push(option.note);
   }
 
   const verdicts: RungVerdict[] = RUNG_KEYS.map((key) => ({
@@ -229,8 +248,8 @@ export function evaluate(selection: Selection) {
     reasons: reasons[key],
   }));
 
-  // Viable rungs first, then by score. Ties keep the declared ladder order,
-  // which biases toward the simpler rung — the right default when it is close.
+  // Viable options first, then by score. Ties keep the declared order, which
+  // biases toward the simpler choice — the right default when it is close.
   const ranked = [...verdicts].sort((a, b) => {
     if (a.excluded !== b.excluded) return a.excluded ? 1 : -1;
     return b.score - a.score;
@@ -243,6 +262,7 @@ export function evaluate(selection: Selection) {
     complete: answered === QUESTIONS.length,
     verdicts,
     ranked,
+    notes,
     top: viable[0],
     runnerUp: viable[1],
     /** True when the top two are close enough that the tool should not pretend to be sure. */
@@ -252,9 +272,9 @@ export function evaluate(selection: Selection) {
 
 export const LOCK_IN_NOTE: Record<string, string> = {
   required:
-    'You told us an exit has to be demonstrable. That rules the decision, not the convenience of any one platform: keep the artifact portable, reach backing services through ordinary protocols, and rehearse the exit at least once. An exit plan nobody has tested is a document, not a capability.',
+    'You said an exit has to be demonstrable. That rules the decision, not the convenience of any one platform: keep the artifact portable, reach backing services through ordinary protocols, and rehearse the move at least once. An exit plan nobody has tested is a document, not a capability.',
   plausible:
-    'You want the option to move without paying for it every day. That is the reasonable middle: take the managed service, but keep the provider-specific pieces in a layer of their own so a move rewrites that layer instead of the application.',
+    'You want the option to move without paying for it every day. That is the reasonable middle: take the managed service, but keep the provider-specific pieces in a layer of their own, so a move rewrites that layer instead of the application.',
   no:
-    'You have decided not to keep the door open, and that is a legitimate choice — it is usually the cheaper one. Make it deliberately: write down what you would have to rebuild, price it once, and revisit when the contract or the regulator changes.',
+    'You have decided not to keep the door open, and that is a legitimate choice — usually the cheaper one. Make it deliberately: write down what you would have to rebuild, price it once, and revisit when the contract or the regulator changes.',
 };

@@ -1,5 +1,5 @@
 /*
- * The abstraction ladder — five rungs from a bare VM to a SaaS subscription.
+ * Five ways to run an application, from a bare VM to a SaaS subscription.
  *
  * Every field here is copy. Nothing in src/components/platform holds a
  * hard-coded string, so wording, ordering and the responsibility split can all
@@ -56,7 +56,7 @@ export const RUNGS: Rung[] = [
       'The provider rents you an isolated machine and stops there. Everything above the hypervisor is yours, including the parts you would rather not think about.',
     owns: { physical: 'provider', virtualisation: 'provider', os: 'you', runtime: 'you', code: 'you', config: 'you', data: 'you' },
     note:
-      'The widest rung, and the one people underestimate. Kernel CVEs, log shipping, certificate rotation and backup restores are all yours, and none of them appear on the pricing page.',
+      'The most work of the five, and the one people underestimate. Kernel CVEs, log shipping, certificate rotation and backup restores are all yours, and none of them appear on the pricing page.',
     goodWhen: [
       'The software needs a specific kernel, a kernel module, or a driver it can only load with host access.',
       'A licence is bound to a physical host, a MAC address, or a hardware identifier.',
@@ -81,10 +81,10 @@ export const RUNGS: Rung[] = [
     key: 'container',
     ordinal: '02',
     name: 'Container',
-    model: 'Standard box',
+    model: 'Packaging',
     cue: 'You standardise the box.',
     oneLine:
-      'The application and its dependencies become one image that runs identically wherever there is a compatible kernel. This is the rung that buys portability, and it is the reason the ladder is worth climbing at all.',
+      'The application and its dependencies become one image that runs identically wherever there is a compatible kernel. This is the step that buys portability, and it is the reason the rest of this page exists.',
     owns: { physical: 'provider', virtualisation: 'provider', os: 'you', runtime: 'you', code: 'you', config: 'you', data: 'you' },
     note:
       'Packaging changed; ownership did not. Run containers on your own VMs and you still own the host OS. What moved is the dependency surface — now explicit, versioned, and shipped with the application instead of installed beside it.',
@@ -99,7 +99,7 @@ export const RUNGS: Rung[] = [
       'Nobody owns base images. You have just adopted the CVEs of every layer you inherited.',
     ],
     lockIn: {
-      level: 'Lowest of any rung',
+      level: 'Lowest of the five',
       where:
         'The OCI image format is a real, implemented standard rather than a promise, and an image built for one registry runs from another. The genuine caveat is architecture, not vendor: an arm64 image will not run on amd64 nodes.',
     },
@@ -110,8 +110,8 @@ export const RUNGS: Rung[] = [
   {
     key: 'orchestrated',
     ordinal: '03',
-    name: 'Orchestrated',
-    model: 'Kubernetes',
+    name: 'Kubernetes',
+    model: 'Orchestration',
     cue: 'You declare, it reconciles.',
     oneLine:
       'You write down what should be running. A controller compares that against what is actually running and closes the gap, continuously — not once at deploy time.',
@@ -177,7 +177,7 @@ export const RUNGS: Rung[] = [
       'Somebody else runs the product. You configure it, integrate it, govern it — and remain entirely accountable for the data inside it and for who is allowed to read it.',
     owns: { physical: 'provider', virtualisation: 'provider', os: 'provider', runtime: 'provider', code: 'provider', config: 'you', data: 'you' },
     note:
-      'Read the bottom two rows again. Configuration and data never transfer, at any rung, including this one. Most SaaS incidents are not the provider being breached — they are a permission the customer left open.',
+      'Read the bottom two rows again. Configuration and data never transfer, at any level, including this one. Most SaaS incidents are not the provider being breached — they are a permission the customer left open.',
     goodWhen: [
       'The capability is not your differentiator. Nobody was ever promoted for running their own mail server.',
       'The problem is well understood and a mature product already solves it.',

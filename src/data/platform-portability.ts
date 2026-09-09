@@ -56,7 +56,7 @@ export const FACTOR_GROUPS: FactorGroup[] = [
         numeral: 'IX',
         name: 'Disposability',
         original: 'Fast startup, and graceful shutdown when the process is asked to stop.',
-        today: 'Now a literal contract: Kubernetes sends SIGTERM and waits a fixed grace period. Ignore it and rolling updates drop live requests — the most common cause of "deploys cause errors" that nobody has traced.',
+        today: 'Now a literal contract: Kubernetes sends SIGTERM and waits out a grace period you configure. Ignore it and rolling updates drop live requests — the most common cause of "deploys cause errors" that nobody has traced.',
       },
     ],
   },
@@ -80,7 +80,7 @@ export const FACTOR_GROUPS: FactorGroup[] = [
         numeral: 'XI',
         name: 'Logs as event streams',
         original: 'Write to stdout and let the execution environment handle routing and storage.',
-        today: 'Universal. The remaining decision is structure — a JSON line with a trace ID is worth more than ten lines of prose, and costs the same to ship.',
+        today: 'Universal. The remaining decision is structure — one JSON line carrying a trace ID is worth more at three in the morning than ten lines of prose.',
       },
     ],
   },
@@ -116,7 +116,7 @@ export const FACTOR_GROUPS: FactorGroup[] = [
   },
   {
     title: 'The ones it never covered',
-    lede: 'Added by Kevin Hoffman in “Beyond the Twelve-Factor App” (2016). Two of the three are now among the deepest hooks a provider has into an application.',
+    lede: 'Added by Kevin Hoffman in “Beyond the Twelve-Factor App” (2016). He also reorders the original twelve, so the numbering here is ours, not his. Two of the three are now among the deepest hooks a provider has into an application.',
     factors: [
       {
         numeral: 'XIII',
@@ -164,7 +164,7 @@ export const BEYOND_FACTORS: PortabilityMove[] = [
   },
   {
     title: 'An exit plan you have never run is fiction',
-    body: 'DORA Article 30 requires financial entities to hold one, and several national frameworks ask the same. Regulation aside, the test is simple: could you stand up this workload somewhere else, with real data, this quarter? If nobody has tried, you have a document rather than a capability.',
+    body: 'DORA Article 30 requires financial entities to write exit strategies into contracts covering critical or important functions, and several national frameworks ask the same. Regulation aside, the test is simple: could you stand up this workload somewhere else, with real data, this quarter? If nobody has tried, you have a document rather than a capability.',
   },
   {
     title: 'The portability tax is real — pay it deliberately',

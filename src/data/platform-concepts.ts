@@ -47,7 +47,7 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     key: 'container',
     ordinal: '02',
     name: 'Container',
-    model: 'Standard box',
+    model: 'Packaging',
     cue: 'You standardise the box.',
     title: 'One box, any carrier.',
     definition:
@@ -66,7 +66,7 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     key: 'kubernetes',
     ordinal: '03',
     name: 'Kubernetes',
-    model: 'Orchestrated',
+    model: 'Orchestration',
     cue: 'You declare, it reconciles.',
     title: 'The loop that never stops watching.',
     definition:
@@ -79,7 +79,7 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     before: 'Declared 3. Observed 3. The controller has nothing to do.',
     after: 'Observed 2 against a declared 3. The controller schedules a replacement — no ticket, no pager, no human in the loop.',
     lesson:
-      'Self-healing is a property of the loop, not a feature you switch on. What it costs is a control plane, an upgrade every few months, and somebody who genuinely understands it.',
+      'Self-healing is a property of the loop, not a feature you switch on. What it costs is a control plane, a version upgrade at least once a year, and somebody who genuinely understands it.',
   },
   {
     key: 'paas',
@@ -117,6 +117,6 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     before: 'You run the vessel, the crew and the schedule, alongside the cargo itself.',
     after: 'The service runs the vessel, the crew and the schedule. Two things do not transfer: the cargo, and the list of who may sign for it.',
     lesson:
-      'A provider’s compliance certificate covers their platform, not your configuration. Data and access stay yours at every rung — this one included.',
+      'A provider’s compliance certificate covers their platform, not your configuration. Data and access stay yours at every level — this one included.',
   },
 ];

@@ -1,8 +1,8 @@
 ---
 /*
- * The full account of one rung: what it is for, what it is not for, and where
- * the lock-in sits. Rendered server-side for all five and revealed by the
- * chooser, so the content exists without scripting.
+ * The full account of one option: what it is for, what it is not for, and
+ * where the lock-in sits. Rendered server-side for all five and revealed by
+ * the chooser, so the content exists without scripting.
  */
 import type { Rung } from '../../data/platform-ladder';
 
@@ -15,13 +15,16 @@ const { rung, hidden = false } = Astro.props;
 ---
 
 <div class="rd" data-detail={rung.key} hidden={hidden}>
-  <p class="rd__kicker">Recommended rung &middot; {rung.model}</p>
+  <!-- No model here: "Best fit · Packaging" reads as a category claim, and
+       Container is a packaging decision rather than a hosting tier. The model
+       appears where it has context — the tab and the register column. -->
+  <p class="rd__kicker">Best fit</p>
   <h3 class="rd__name">{rung.name}</h3>
   <p class="rd__line">{rung.oneLine}</p>
 
   <div class="rd__cols">
     <div class="rd__col">
-      <h4 class="rd__col-head">Reaches for it when</h4>
+      <h4 class="rd__col-head">Right when</h4>
       <ul role="list">{rung.goodWhen.map((item) => <li>{item}</li>)}</ul>
     </div>
     <div class="rd__col rd__col--against">

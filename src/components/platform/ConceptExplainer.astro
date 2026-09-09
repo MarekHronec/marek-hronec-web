@@ -1,6 +1,6 @@
 ---
 /*
- * Tabbed explainer for the five rungs. Shell only — the narrative lives in
+ * Tabbed explainer for the five options. Shell only — the narrative lives in
  * src/data/platform-concepts.ts and each figure is its own scene component.
  */
 import { CONCEPT_STORIES } from '../../data/platform-concepts';
@@ -18,13 +18,13 @@ const scenes = [VmScene, ContainerScene, KubernetesScene, PaasScene, SaasScene];
   <div class="cx__head">
     <h2 class="cx__title">Five ways to run the same application.</h2>
     <p class="cx__lede">
-      Each rung hands more of the running to somebody else, and takes some of
-      your options away with it. Work through them and the trade becomes
-      concrete — what you stop doing, and what you can no longer change.
+      Each one hands more of the running to somebody else, and takes some of
+      your freedom with it. Work through them and the trade becomes concrete —
+      what you stop doing, and what you can no longer change.
     </p>
   </div>
 
-  <div class="cx__tabs" role="tablist" aria-label="Abstraction rungs" data-needs-js hidden>
+  <div class="cx__tabs" role="tablist" aria-label="Ways to run an application" data-needs-js hidden>
     {CONCEPT_STORIES.map((story, index) => (
       <button
         type="button"

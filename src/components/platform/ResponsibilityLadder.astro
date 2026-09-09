@@ -1,7 +1,8 @@
 ---
 /*
- * Who owns what, at each rung. A register rather than a panel — scanning across
- * columns needs the guide, which is exactly what DESIGN.md reserves rules for.
+ * Who owns what, for each of the five. A register rather than a panel —
+ * scanning across columns needs the guide, which is what DESIGN.md reserves
+ * rules for.
  *
  * The staircase down the middle is the point: the boundary slides as you climb.
  * So are the bottom two rows, which never move.
@@ -14,16 +15,16 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
     <h2 class="rl__title">The line moves. Two rows never do.</h2>
     <p class="rl__lede">
       Every provider publishes a version of this chart, and every one of them
-      draws its own column slightly larger than reality. Read it as a shape
-      rather than a contract: the boundary slides as you climb, and configuration
-      and data stay on your side of it at every rung — including the one where
-      you run nothing at all.
+      draws its own share slightly larger than it really is. Read it as a shape
+      rather than a contract: the boundary slides as you hand more over, and
+      configuration and data stay on your side of it every time — including
+      where you run nothing at all.
     </p>
   </div>
 
   <div class="rl__scroll">
     <table class="rl__table">
-      <caption class="rl__caption">Responsibility by rung. Actual boundaries are service-by-service; this is the shape, not the contract.</caption>
+      <caption class="rl__caption">Who is responsible for what. Real boundaries are service-by-service; this is the shape, not the contract.</caption>
       <thead>
         <tr>
           <th scope="col" class="rl__corner">Layer</th>
@@ -54,7 +55,7 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
   <p class="rl__foot">
     “Shared” is where the outages live. A managed control plane still leaves you
     the node upgrade; a managed runtime still leaves you the tracing, the alert
-    logic and the incident. Read the specific service, not the tier.
+    logic and the incident. Read the specific service, not the category.
   </p>
 </div>
 

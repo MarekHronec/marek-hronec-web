@@ -1,41 +1,74 @@
 # /platform — Platform Architecture
 
-The abstraction ladder from a bare VM to a SaaS subscription: what each rung
-hands over, what it takes away, and what it would cost to leave.
+Five ways to run an application, from a bare VM to a SaaS subscription: what
+each one hands over, what it takes away, and what it would cost to leave.
+
+## Vocabulary
+
+Reader-facing copy says **option**, **level** or names the thing directly. It
+never says "rung" — the ladder metaphor was obscure, especially for readers
+whose first language is not English. The word survives only in code
+identifiers (`RungKey`, `RUNGS`, `RungDetail.astro`, the branch name), which no
+reader sees; renaming those is churn without benefit. If you add copy, keep to
+plain words — the same rule retired "tier" from the responsibility footnote.
 
 ## Thesis
 
 Portability is a bill you either price up front or get handed later. The page is
-deliberately **not** an argument for containers. Every rung carries a "wrong call
-when", and the closing section argues that the portability tax is real and
+deliberately **not** an argument for containers. Every option carries a "wrong
+call when", and the closing section argues that the portability tax is real and
 sometimes should not be paid. If an edit makes the page read like advocacy for
-one rung, it is off-thesis.
+one option, it is off-thesis.
 
 Voice matches the Knowledge Base titles it links to (*Without the Marketing
 Layer*, *The Honest Catch*): concrete, trade-off first, no buzzwords.
 
 ## Structure
 
+In page order:
+
 | Section | Component | Content source |
 |---|---|---|
 | Hero + choice cards | `src/pages/platform.astro` | inline |
-| Responsibility register | `platform/ResponsibilityLadder.astro` | `data/platform-ladder.ts` |
 | Five animated concepts | `platform/ConceptExplainer.astro` | `data/platform-concepts.ts` |
-| Chooser | `platform/PlatformChooser.astro` | `data/platform-chooser.ts` |
+| Responsibility register | `platform/ResponsibilityLadder.astro` | `data/platform-ladder.ts` |
+| Chooser | `platform/PlatformChooser.astro` + `ChooserQuestion.astro` | `data/platform-chooser.ts` |
 | Twelve-Factor + beyond | `platform/PortabilityPractices.astro` | `data/platform-portability.ts` |
 | Reading, close | `src/pages/platform.astro` | `READING` slug list |
+
+The concepts come **before** the register on purpose: the register's columns are
+the five options, so they have to be introduced first.
+
+`name` is the plain name and `model` the industry category — `Kubernetes` /
+`Orchestration`, not the reverse. Both files must agree; they disagreed once and
+the tabs and the register showed different labels for the same thing. `Container`
+carries the model `Packaging`, which is why the chooser's verdict kicker reads
+just "Best fit" — "Best fit · Packaging" would assert a category that is not one.
 
 No component holds a hard-coded string of content. Wording, ordering, weights
 and the responsibility split are all editable in `src/data/platform-*.ts`.
 
 ## Tuning the chooser
 
-Everything lives in `src/data/platform-chooser.ts`. Two mechanisms, kept apart on
-purpose:
+Everything lives in `src/data/platform-chooser.ts`. Three mechanisms, kept apart
+on purpose:
 
-- **`excludes`** — a hard constraint. The rung is ruled out and the reason is
+- **`excludes`** — a hard constraint. The option is ruled out and the reason is
   shown to the reader. Use this only for things that genuinely cannot work.
 - **`scores`** — a preference nudge, never decisive on its own.
+- **`note`** — a caveat about the answer itself, surfaced beside the verdict.
+  Currently used once, on `build: plumbing`, to say that the remaining questions
+  only matter if you decide to run it anyway.
+
+Question order is purpose → constraints → storage → scale → operations → load →
+exit. "Should you run this at all" is first because a yes to buying makes the
+other six moot, and it is cheaper to discover that on question one than on
+question seven. Exit is last so it hands off to the portability section below it.
+
+Styling matches the ISVS calculator on `/compliance` — tonal tray per question,
+navy numbered badge, category line, "choose one" guide with the answer echoed
+back, and white option cards that take a primary left bar when selected. Keep
+them in step; they read as one tool across two pages.
 
 One deliberate exception: `build: plumbing` carries `saas: 20`. The other six
 questions all ask *how* to run something; that one asks *whether* to run it at
@@ -44,8 +77,8 @@ it, because blockers are exclusions rather than weights — answering "needs a
 kernel module" rules SaaS out no matter how large the weight is. Verify that case
 still holds after changing weights.
 
-`evaluate()` sorts viable rungs first, then by score; ties keep the declared
-ladder order, which biases toward the simpler rung. `close` is true when the top
+`evaluate()` sorts viable options first, then by score; ties keep the declared
+order, which biases toward the simpler choice. `close` is true when the top
 two are within 2 points, and the UI then says so rather than pretending to be
 sure.
 
@@ -81,6 +114,22 @@ composites, and nothing repaints at all while the pane is hidden). Verify motion
 numerically instead: pause the panel's animations, set `currentTime` to a
 percentage of the duration, and read back computed `opacity`/`transform`. That
 checks the keyframes rather than a frame that may or may not have painted.
+
+## Claims that were checked
+
+Several statements were tightened because the first draft overstated them. If
+you edit these, keep them defensible:
+
+- PaaS is excluded for local-disk state because persistent storage there is
+  **network-attached**, not because it does not exist — App Service and
+  Container Apps both offer it.
+- Kubernetes needs a version upgrade **at least once a year** (roughly three
+  minor releases a year upstream, 12–15 month managed support windows). An
+  earlier draft said "every few months".
+- DORA Article 30 requires exit strategies in contracts covering **critical or
+  important functions**, not in every contract.
+- Factors XIII–XV are Hoffman's additions, but the numbering is ours — he
+  reorders the original twelve. The group lede says so.
 
 ## Not done yet
 

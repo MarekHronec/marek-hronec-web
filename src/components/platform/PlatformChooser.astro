@@ -2,20 +2,21 @@
 /*
  * Chooser shell. All scoring lives in src/data/platform-chooser.ts; this file
  * renders the questions and an empty verdict frame that the client script
- * fills. Every rung's detail is rendered server-side and revealed, so the
+ * fills. Every option's detail is rendered server-side and revealed, so the
  * content survives with scripting off.
  */
 import { QUESTIONS } from '../../data/platform-chooser';
 import { RUNGS } from '../../data/platform-ladder';
+import ChooserQuestion from './ChooserQuestion.astro';
 import RungDetail from './RungDetail.astro';
 ---
 
 <div class="pc" id="chooser">
   <div class="pc__head">
-    <h2 class="pc__title">Which rung is this workload actually asking for?</h2>
+    <h2 class="pc__title">What should actually run this workload?</h2>
     <p class="pc__lede">
-      Seven questions about one workload. The result is a recommended rung with
-      its trade-offs stated plainly, an honest runner-up, and any rung that has
+      Seven questions about one workload. You get a recommendation with its
+      trade-offs stated plainly, an honest second choice, and anything that has
       been ruled out — with the reason, so you can disagree with it. It is a
       structured second opinion, not an authority.
     </p>
@@ -23,27 +24,12 @@ import RungDetail from './RungDetail.astro';
 
   <div class="pc__grid">
     <form class="pc__form" data-chooser-form>
-      {QUESTIONS.map((question, index) => (
-        <fieldset class="pc__q">
-          <legend class="pc__q-legend">
-            <span class="pc__q-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            {question.prompt}
-          </legend>
-          <p class="pc__q-help">{question.help}</p>
-          <div class="pc__opts">
-            {question.options.map((option) => (
-              <label class="pc__opt">
-                <input type="radio" name={question.key} value={option.value} />
-                <span class="pc__opt-body">
-                  <span class="pc__opt-label">{option.label}</span>
-                  {option.detail && <span class="pc__opt-detail">{option.detail}</span>}
-                </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      ))}
-      <button type="button" class="pc__reset" data-chooser-reset>Start again</button>
+      <ol class="pc__steps" role="list">
+        {QUESTIONS.map((question, index) => (
+          <ChooserQuestion question={question} index={index} total={QUESTIONS.length} />
+        ))}
+      </ol>
+      <button type="button" class="pc__reset" data-chooser-reset>Clear all answers</button>
     </form>
 
     <aside class="pc__result" aria-live="polite">
@@ -51,31 +37,40 @@ import RungDetail from './RungDetail.astro';
         <p class="pc__progress"><span data-chooser-progress>0</span> of {QUESTIONS.length} answered</p>
 
         <p class="pc__empty" data-chooser-empty>
-          Nothing is assumed until you answer. Each choice narrows the ladder,
-          and anything ruled out will say why.
+          Nothing is assumed until you answer. Each choice narrows the list, and
+          anything ruled out will say why.
         </p>
 
         <div data-chooser-verdict hidden>
+          <p class="pc__partial" data-chooser-partial hidden>
+            Provisional — the order can still change.
+          </p>
+
           {RUNGS.map((rung, index) => <RungDetail rung={rung} hidden={index > 0} />)}
 
           <p class="pc__close" data-chooser-close hidden>
-            The top two are close. Treat this as a tie and let the team that will
+            The top two are close. Treat it as a tie, and let the people who will
             operate it break it.
           </p>
 
-          <div class="pc__runner" data-chooser-runner hidden>
-            <span>Honest runner-up</span>
+          <div class="pc__aside" data-chooser-notes hidden>
+            <span>Worth saying</span>
+            <p data-chooser-notes-body></p>
+          </div>
+
+          <div class="pc__aside" data-chooser-runner hidden>
+            <span>Second choice</span>
             <p data-chooser-runner-name></p>
           </div>
 
-          <div class="pc__lock" data-chooser-lock hidden>
-            <span>On the exit</span>
+          <div class="pc__aside" data-chooser-lock hidden>
+            <span>On leaving</span>
             <p data-chooser-lock-body></p>
           </div>
         </div>
 
         <div class="pc__rank" data-chooser-rank hidden>
-          <h3 class="pc__rank-head">The whole ladder</h3>
+          <h3 class="pc__rank-head">All five, ranked</h3>
           <ul role="list">
             {RUNGS.map((rung) => (
               <li class="pc__rank-row" data-rank-row={rung.key}>
@@ -109,50 +104,49 @@ import RungDetail from './RungDetail.astro';
   .pc__lede { margin-top: var(--space-3); max-width: 76ch; font-size: var(--text-body-lg); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
 
   .pc__grid { display: grid; gap: var(--space-8); align-items: start; }
-
-  /* ── Questions ───────────────────────────────────────────────────── */
-  .pc__q { border: 0; padding: 0; margin-bottom: var(--space-7); }
-  .pc__q-legend {
-    display: flex; gap: var(--space-3); align-items: baseline;
-    font-family: var(--font-display); font-size: var(--text-title-md);
-    font-weight: var(--weight-semibold); line-height: var(--leading-snug);
-    color: var(--color-on-surface); padding-bottom: var(--space-2);
+  .pc__steps { display: flex; flex-direction: column; gap: var(--space-6); }
+  .pc__reset {
+    margin-top: var(--space-5); border: 0; background: transparent; cursor: pointer;
+    padding: var(--space-2) 0; font: var(--text-label-md) var(--font-body);
+    color: var(--color-primary); text-decoration: underline; text-underline-offset: 4px;
   }
-  .pc__q-num { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
-  .pc__q-help { font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-meta-label); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-divider); }
-  .pc__opts { display: flex; flex-direction: column; }
-
-  .pc__opt {
-    display: flex; gap: var(--space-3); align-items: flex-start;
-    padding: var(--space-3) var(--space-3) var(--space-3) 0;
-    cursor: pointer; border-bottom: 1px solid var(--color-divider);
-    transition: background-color var(--duration-fast) var(--ease-standard);
-  }
-  .pc__opt:hover { background-color: var(--color-surface-container-low); }
-  .pc__opt input { margin-top: 0.25em; accent-color: var(--color-primary); flex-shrink: 0; }
-  .pc__opt-body { display: flex; flex-direction: column; gap: var(--space-1); }
-  .pc__opt-label { font-size: var(--text-body-md); line-height: var(--leading-normal); color: var(--color-on-surface); }
-  .pc__opt-detail { font-size: var(--text-label-md); line-height: var(--leading-normal); color: var(--color-meta-label); }
-  .pc__opt:has(input:checked) .pc__opt-label { font-weight: var(--weight-semibold); color: var(--color-navy); }
-  .pc__opt:has(input:focus-visible) { outline: 2px solid var(--color-primary); outline-offset: 2px; }
-
-  .pc__reset { border: 0; background: transparent; cursor: pointer; padding: var(--space-2) 0; font: var(--text-label-md) var(--font-body); color: var(--color-primary); text-decoration: underline; text-underline-offset: 4px; }
 
   /* ── Verdict ─────────────────────────────────────────────────────── */
-  /* Named container so RungDetail can lay itself out against the panel width
-     rather than the viewport. */
-  .pc__panel { border: 1px solid var(--color-divider-strong); padding: var(--space-5); container-type: inline-size; }
-  .pc__progress { font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-divider); margin-bottom: var(--space-4); }
+  /* Named container so RungDetail lays itself out against the panel width
+     rather than the viewport — this column is narrow on desktop, wide on mobile. */
+  .pc__panel {
+    border: 1px solid var(--color-divider-strong);
+    padding: var(--space-5);
+    container-type: inline-size;
+  }
+  .pc__progress {
+    font: var(--text-label-sm) var(--font-mono); text-transform: uppercase;
+    letter-spacing: var(--tracking-wide); color: var(--color-meta-label);
+    padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-divider);
+    margin-bottom: var(--space-4);
+  }
   .pc__empty { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
-  .pc__empty[hidden], .pc__rank[hidden], [data-chooser-verdict][hidden], .pc__runner[hidden], .pc__lock[hidden], .pc__close[hidden] { display: none; }
+  .pc__empty[hidden], .pc__rank[hidden], [data-chooser-verdict][hidden],
+  .pc__aside[hidden], .pc__close[hidden], .pc__partial[hidden] { display: none; }
 
+  .pc__partial {
+    margin-bottom: var(--space-4);
+    font: var(--text-label-sm) var(--font-mono); text-transform: uppercase;
+    letter-spacing: var(--tracking-wide); color: var(--color-primary);
+  }
   .pc__close { margin-top: var(--space-4); font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-primary); }
-  .pc__runner, .pc__lock { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-divider); }
-  .pc__runner span, .pc__lock span { display: block; font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); margin-bottom: var(--space-2); }
-  .pc__runner p, .pc__lock p { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+
+  .pc__aside { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-divider); }
+  .pc__aside span {
+    display: block; font: var(--text-label-sm) var(--font-mono);
+    text-transform: uppercase; letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label); margin-bottom: var(--space-2);
+  }
+  .pc__aside p { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
 
   .pc__rank { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-divider-strong); }
   .pc__rank-head { font: var(--weight-semibold) var(--text-label-md) var(--font-body); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); margin-bottom: var(--space-3); }
+  .pc__rank ul { display: flex; flex-direction: column; }
   .pc__rank-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-divider); }
   .pc__rank-name { font-size: var(--text-body-md); color: var(--color-on-surface); }
   .pc__rank-state { font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); align-self: center; }
@@ -163,11 +157,11 @@ import RungDetail from './RungDetail.astro';
   .pc__rank-reason[hidden] { display: none; }
 
   @media (min-width: 1024px) {
-    .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: var(--space-10); }
+    .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: var(--space-8); }
     .pc__result { position: sticky; top: var(--space-8); }
     .pc__panel { max-height: calc(100vh - var(--space-16)); overflow-y: auto; }
   }
   @media (min-width: 1280px) {
-    .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); }
+    .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--space-10); }
   }
 </style>

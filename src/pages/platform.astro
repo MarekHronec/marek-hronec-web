@@ -1,10 +1,10 @@
 ---
 /*
- * Platform architecture — the abstraction ladder and what each rung costs.
+ * Platform architecture — five ways to run an application, and what each costs.
  *
  * Thesis: portability is a bill you either price up front or get handed later.
  * The page is deliberately not a recommendation engine for containers — every
- * rung carries an honest "bad when", and the closing section argues for when
+ * option carries an honest "bad when", and the closing section argues for when
  * paying the portability tax is the wrong call.
  *
  * Content model lives in src/data/platform-*.ts so wording and scoring can be
@@ -16,7 +16,6 @@ import ConceptExplainer from '../components/platform/ConceptExplainer.astro';
 import PlatformChooser from '../components/platform/PlatformChooser.astro';
 import PortabilityPractices from '../components/platform/PortabilityPractices.astro';
 import CompassRose from '../components/icons/CompassRose.astro';
-import { RUNGS } from '../data/platform-ladder';
 import { getCollection } from 'astro:content';
 import { base } from '../utils/base';
 
@@ -38,19 +37,19 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
 
 <BaseLayout
   title="Platform Architecture"
-  description="The abstraction ladder from a bare VM to a SaaS subscription — what each rung hands over, what it takes away, and what it would cost to leave."
+  description="Five ways to run an application, from a bare VM to a SaaS subscription — what each one hands over, what it takes away, and what it would cost to leave."
 >
   <!-- ── Hero ──────────────────────────────────────────────────────── -->
   <section class="pf-hero">
     <div class="pf-hero__inner container">
       <h1 class="pf-hero__heading">
-        Pick the rung. Then
-        <span class="pf-hero__accent">price the exit</span><span class="pf-hero__period">.</span>
+        Decide how much you
+        <span class="pf-hero__accent">run yourself</span><span class="pf-hero__period">.</span>
       </h1>
       <p class="pf-hero__body">
         Containers, Kubernetes, PaaS, serverless — the words usually arrive
         already attached to a recommendation. This page takes them apart instead:
-        what each rung actually hands over, what it quietly takes away, and what
+        what each one actually hands over, what it quietly takes away, and what
         it would cost to leave. Portability is not a virtue you either have or
         lack. It is a bill you either price up front or get handed later.
       </p>
@@ -58,39 +57,39 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
       <div class="pf-choice">
         <a class="pf-choice__card" href="#chooser">
           <span class="pf-choice__kicker">Tool</span>
-          <span class="pf-choice__title">Choose a rung</span>
+          <span class="pf-choice__title">Find the right fit</span>
           <span class="pf-choice__body">
-            Answer a handful of questions about one workload and get a
-            recommended rung, an honest runner-up, and a straight account of
-            where the lock-in would actually sit.
+            Answer seven questions and get a recommendation, an honest second
+            choice, and a straight account of where the lock-in would actually
+            sit.
           </span>
           <span class="pf-choice__go">Open the chooser &rarr;</span>
         </a>
-        <a class="pf-choice__card" href="#ladder">
+        <a class="pf-choice__card" href="#options">
           <span class="pf-choice__kicker">Reference</span>
-          <span class="pf-choice__title">Read the ladder</span>
+          <span class="pf-choice__title">See the five options</span>
           <span class="pf-choice__body">
-            {RUNGS.length} rungs, {RUNGS.length} animated figures, and the
-            responsibility register that shows exactly where the line moves —
-            and the two rows where it never does.
+            Each of the five, with an animated figure showing what it
+            actually does — and the table of who is responsible for what,
+            including the two rows that never move.
           </span>
-          <span class="pf-choice__go">Walk the ladder &rarr;</span>
+          <span class="pf-choice__go">Walk through them &rarr;</span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ── Responsibility ────────────────────────────────────────────── -->
-  <section class="section-rule" id="ladder">
+  <!-- ── The five options ──────────────────────────────────────────── -->
+  <section class="section-rule" id="options">
     <div class="container">
-      <ResponsibilityLadder />
+      <ConceptExplainer />
     </div>
   </section>
 
-  <!-- ── Concepts ──────────────────────────────────────────────────── -->
+  <!-- ── Responsibility ────────────────────────────────────────────── -->
   <section class="section-rule">
     <div class="container">
-      <ConceptExplainer />
+      <ResponsibilityLadder />
     </div>
   </section>
 
