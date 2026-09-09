@@ -95,7 +95,7 @@ export const APPROACHES: Approach[] = [
     lockIn: {
       level: 'Lowest of the five',
       where:
-        'The open container image format — the OCI spec, no relation to Oracle’s cloud — is implemented rather than promised, and an image built for one registry runs from another. The genuine caveat is architecture, not vendor: an arm64 image will not run on amd64 nodes.',
+        'The open container image format — the OCI spec, no relation to Oracle’s cloud — is implemented rather than promised, and an image built for one registry runs from another. The caveat is architecture, not vendor: an arm64 image will not run on amd64 nodes.',
     },
     examples: { microsoft: 'Azure Container Registry', oracle: 'OCI Container Registry' },
     keepDoorOpen:

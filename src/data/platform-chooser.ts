@@ -53,7 +53,7 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'mixed',
-        label: 'A standard capability, but the way we work around it is genuinely unusual',
+        label: 'A standard capability, but our process around it is unusual',
         scores: { saas: -2, paas: 1 },
       },
       {
@@ -132,7 +132,7 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'stuck',
-        label: 'On local disk, and it genuinely cannot be moved',
+        label: 'On local disk, and it cannot be moved',
         excludes: [
           { approach: 'paas', reason: 'Where a platform service offers persistent storage at all, it is network-attached rather than local disk — different latency, different file-locking behaviour. Software that truly depends on a local filesystem tends to break on it.' },
         ],
@@ -291,7 +291,7 @@ export function evaluate(selection: Selection) {
 
 export const LOCK_IN_NOTE: Record<string, string> = {
   required:
-    'You said an exit has to be demonstrable. That rules the decision, not the convenience of any one platform: keep the artifact portable, reach backing services through ordinary protocols, and rehearse the move at least once. An exit plan nobody has tested is a document, not a capability.',
+    'You said an exit has to be demonstrable. That should drive the decision, not the convenience of any one platform: keep the artifact portable, reach backing services through ordinary protocols, and rehearse the move at least once. An exit plan nobody has tested is a document, not a capability.',
   plausible:
     'You want the option to move without paying for it every day. That is the reasonable middle: take the managed service, but keep the provider-specific pieces in a layer of their own, so a move rewrites that layer instead of the application.',
   no:
