@@ -11,7 +11,7 @@
  * tuned without touching a component.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ResponsibilityLadder from '../components/platform/ResponsibilityLadder.astro';
+import ResponsibilityTable from '../components/platform/ResponsibilityTable.astro';
 import ConceptExplainer from '../components/platform/ConceptExplainer.astro';
 import PlatformChooser from '../components/platform/PlatformChooser.astro';
 import PortabilityPractices from '../components/platform/PortabilityPractices.astro';
@@ -89,7 +89,7 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
   <!-- ── Responsibility ────────────────────────────────────────────── -->
   <section class="section-rule">
     <div class="container">
-      <ResponsibilityLadder />
+      <ResponsibilityTable />
     </div>
   </section>
 

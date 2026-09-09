@@ -11,7 +11,7 @@
  * where the outages live.
  */
 
-export type RungKey = 'vm' | 'container' | 'orchestrated' | 'paas' | 'saas';
+export type ApproachKey = 'vm' | 'container' | 'orchestrated' | 'paas' | 'saas';
 export type Owner = 'provider' | 'shared' | 'you';
 
 /** Read top-down: the physical estate is always theirs, the data is always yours. */
@@ -27,14 +27,14 @@ export const STACK_LAYERS = [
 
 export type LayerKey = (typeof STACK_LAYERS)[number]['key'];
 
-export interface Rung {
-  key: RungKey;
+export interface Approach {
+  key: ApproachKey;
   ordinal: string;
   name: string;
   model: string;
   cue: string;
   oneLine: string;
-  /** Ownership of each STACK_LAYERS entry at this rung. */
+  /** Ownership of each STACK_LAYERS entry at this approach. */
   owns: Record<LayerKey, Owner>;
   /** The caveat the ownership row cannot express on its own. */
   note: string;
@@ -45,7 +45,7 @@ export interface Rung {
   keepDoorOpen: string;
 }
 
-export const RUNGS: Rung[] = [
+export const APPROACHES: Approach[] = [
   {
     key: 'vm',
     ordinal: '01',
@@ -205,4 +205,4 @@ export const OWNER_LABEL: Record<Owner, string> = {
   you: 'Yours',
 };
 
-export const RUNG_BY_KEY = new Map(RUNGS.map((r) => [r.key, r]));
+export const APPROACH_BY_KEY = new Map(APPROACHES.map((a) => [a.key, a]));

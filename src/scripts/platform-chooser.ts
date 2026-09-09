@@ -4,7 +4,7 @@
  */
 
 import { evaluate, QUESTIONS, LOCK_IN_NOTE, type Selection } from '../data/platform-chooser';
-import { RUNG_BY_KEY } from '../data/platform-ladder';
+import { APPROACH_BY_KEY } from '../data/platform-approaches';
 
 export function initializeChooser() {
   document.querySelectorAll<HTMLElement>('.pc:not([data-ready])').forEach((root) => {
@@ -80,8 +80,8 @@ export function initializeChooser() {
         if (runner && runnerName) {
           runner.hidden = !second;
           if (second) {
-            const rung = RUNG_BY_KEY.get(second.key)!;
-            runnerName.textContent = `${rung.name} — ${rung.oneLine}`;
+            const approach = APPROACH_BY_KEY.get(second.key)!;
+            runnerName.textContent = `${approach.name} — ${approach.oneLine}`;
           }
         }
 

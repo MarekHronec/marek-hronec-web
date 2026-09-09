@@ -7,13 +7,13 @@
  * The staircase down the middle is the point: the boundary slides as you climb.
  * So are the bottom two rows, which never move.
  */
-import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
+import { APPROACHES, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-approaches';
 ---
 
-<div class="rl">
-  <div class="rl__head">
-    <h2 class="rl__title">The line moves. Two rows never do.</h2>
-    <p class="rl__lede">
+<div class="resp">
+  <div class="resp__head">
+    <h2 class="resp__title">The line moves. Two rows never do.</h2>
+    <p class="resp__lede">
       Every provider publishes a version of this chart, and every one of them
       draws its own share slightly larger than it really is. Read it as a shape
       rather than a contract: the boundary slides as you hand more over, and
@@ -22,16 +22,16 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
     </p>
   </div>
 
-  <div class="rl__scroll">
-    <table class="rl__table">
-      <caption class="rl__caption">Who is responsible for what. Real boundaries are service-by-service; this is the shape, not the contract.</caption>
+  <div class="resp__scroll">
+    <table class="resp__table">
+      <caption class="resp__caption">Who is responsible for what. Real boundaries are service-by-service; this is the shape, not the contract.</caption>
       <thead>
         <tr>
-          <th scope="col" class="rl__corner">Layer</th>
-          {RUNGS.map((rung) => (
-            <th scope="col" class="rl__col">
-              <span class="rl__col-name">{rung.name}</span>
-              <span class="rl__col-model">{rung.model}</span>
+          <th scope="col" class="resp__corner">Layer</th>
+          {APPROACHES.map((approach) => (
+            <th scope="col" class="resp__col">
+              <span class="resp__col-name">{approach.name}</span>
+              <span class="resp__col-model">{approach.model}</span>
             </th>
           ))}
         </tr>
@@ -39,12 +39,12 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
       <tbody>
         {STACK_LAYERS.map((layer) => (
           <tr>
-            <th scope="row" class="rl__row">
-              <span class="rl__row-label">{layer.label}</span>
-              <span class="rl__row-hint">{layer.hint}</span>
+            <th scope="row" class="resp__row">
+              <span class="resp__row-label">{layer.label}</span>
+              <span class="resp__row-hint">{layer.hint}</span>
             </th>
-            {RUNGS.map((rung) => (
-              <td class={`rl__cell rl__cell--${rung.owns[layer.key]}`}>{OWNER_LABEL[rung.owns[layer.key]]}</td>
+            {APPROACHES.map((approach) => (
+              <td class={`resp__cell resp__cell--${approach.owns[layer.key]}`}>{OWNER_LABEL[approach.owns[layer.key]]}</td>
             ))}
           </tr>
         ))}
@@ -52,7 +52,7 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
     </table>
   </div>
 
-  <p class="rl__foot">
+  <p class="resp__foot">
     “Shared” is where the outages live. A managed control plane still leaves you
     the node upgrade; a managed runtime still leaves you the tracing, the alert
     logic and the incident. Read the specific service, not the category.
@@ -60,9 +60,9 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
 </div>
 
 <style>
-  .rl { padding-block: var(--space-8); }
-  .rl__head { max-width: var(--container-content); margin-bottom: var(--space-6); }
-  .rl__title {
+  .resp { padding-block: var(--space-8); }
+  .resp__head { max-width: var(--container-content); margin-bottom: var(--space-6); }
+  .resp__title {
     font-family: var(--font-display);
     font-size: clamp(var(--text-title-lg), 3vw, var(--text-headline-md));
     font-weight: var(--weight-semibold);
@@ -71,51 +71,51 @@ import { RUNGS, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-ladder';
     color: var(--color-on-surface);
     text-wrap: balance;
   }
-  .rl__lede {
+  .resp__lede {
     margin-top: var(--space-3); max-width: 76ch;
     font-size: var(--text-body-lg); line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
   }
 
   /* Wide content scrolls inside its own container; the page never does. */
-  .rl__scroll { overflow-x: auto; }
-  .rl__table { width: 100%; min-width: 46rem; border-collapse: collapse; text-align: left; }
-  .rl__caption { text-align: left; padding-bottom: var(--space-3); font: var(--text-label-sm) var(--font-mono); color: var(--color-meta-label); }
+  .resp__scroll { overflow-x: auto; }
+  .resp__table { width: 100%; min-width: 46rem; border-collapse: collapse; text-align: left; }
+  .resp__caption { text-align: left; padding-bottom: var(--space-3); font: var(--text-label-sm) var(--font-mono); color: var(--color-meta-label); }
 
-  .rl__corner, .rl__col {
+  .resp__corner, .resp__col {
     padding: var(--space-3) var(--space-3) var(--space-4);
     border-bottom: 1px solid var(--color-divider-strong);
     vertical-align: bottom;
   }
-  .rl__corner { font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); }
-  .rl__col { display: table-cell; }
-  .rl__col-name { display: block; font: var(--weight-semibold) var(--text-label-md) var(--font-body); color: var(--color-on-surface); }
-  .rl__col-model { display: block; margin-top: var(--space-1); font: var(--text-label-sm) var(--font-mono); color: var(--color-meta-label); }
+  .resp__corner { font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); }
+  .resp__col { display: table-cell; }
+  .resp__col-name { display: block; font: var(--weight-semibold) var(--text-label-md) var(--font-body); color: var(--color-on-surface); }
+  .resp__col-model { display: block; margin-top: var(--space-1); font: var(--text-label-sm) var(--font-mono); color: var(--color-meta-label); }
 
-  .rl__row {
+  .resp__row {
     padding: var(--space-4) var(--space-4) var(--space-4) 0;
     border-bottom: 1px solid var(--color-divider);
     vertical-align: top; max-width: 16rem;
   }
-  .rl__row-label { display: block; font: var(--weight-medium) var(--text-body-md) var(--font-body); color: var(--color-on-surface); }
-  .rl__row-hint { display: block; margin-top: var(--space-1); font-size: var(--text-label-sm); line-height: var(--leading-normal); color: var(--color-on-surface-muted); }
+  .resp__row-label { display: block; font: var(--weight-medium) var(--text-body-md) var(--font-body); color: var(--color-on-surface); }
+  .resp__row-hint { display: block; margin-top: var(--space-1); font-size: var(--text-label-sm); line-height: var(--leading-normal); color: var(--color-on-surface-muted); }
 
-  .rl__cell {
+  .resp__cell {
     padding: var(--space-4) var(--space-3);
     border-bottom: 1px solid var(--color-divider);
     font: var(--text-label-md) var(--font-body);
     letter-spacing: var(--tracking-wide);
     white-space: nowrap;
   }
-  .rl__cell--provider { color: var(--color-meta-label); }
-  .rl__cell--shared { color: var(--color-primary); }
-  .rl__cell--you {
+  .resp__cell--provider { color: var(--color-meta-label); }
+  .resp__cell--shared { color: var(--color-primary); }
+  .resp__cell--you {
     color: var(--color-navy);
     font-weight: var(--weight-semibold);
     background-color: var(--color-primary-tint);
   }
 
-  .rl__foot {
+  .resp__foot {
     margin-top: var(--space-5); max-width: 72ch;
     font-size: var(--text-body-md); line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);

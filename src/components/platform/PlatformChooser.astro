@@ -6,9 +6,9 @@
  * content survives with scripting off.
  */
 import { QUESTIONS } from '../../data/platform-chooser';
-import { RUNGS } from '../../data/platform-ladder';
+import { APPROACHES } from '../../data/platform-approaches';
 import ChooserQuestion from './ChooserQuestion.astro';
-import RungDetail from './RungDetail.astro';
+import ApproachDetail from './ApproachDetail.astro';
 ---
 
 <div class="pc" id="chooser">
@@ -46,7 +46,7 @@ import RungDetail from './RungDetail.astro';
             Provisional — the order can still change.
           </p>
 
-          {RUNGS.map((rung, index) => <RungDetail rung={rung} hidden={index > 0} />)}
+          {APPROACHES.map((approach, index) => <ApproachDetail approach={approach} hidden={index > 0} />)}
 
           <p class="pc__close" data-chooser-close hidden>
             The top two are close. Treat it as a tie, and let the people who will
@@ -72,9 +72,9 @@ import RungDetail from './RungDetail.astro';
         <div class="pc__rank" data-chooser-rank hidden>
           <h3 class="pc__rank-head">All five, ranked</h3>
           <ul role="list">
-            {RUNGS.map((rung) => (
-              <li class="pc__rank-row" data-rank-row={rung.key}>
-                <span class="pc__rank-name">{rung.name}</span>
+            {APPROACHES.map((approach) => (
+              <li class="pc__rank-row" data-rank-row={approach.key}>
+                <span class="pc__rank-name">{approach.name}</span>
                 <span class="pc__rank-state" data-rank-state></span>
                 <span class="pc__rank-reason" data-rank-reason hidden></span>
               </li>
@@ -112,7 +112,7 @@ import RungDetail from './RungDetail.astro';
   }
 
   /* ── Verdict ─────────────────────────────────────────────────────── */
-  /* Named container so RungDetail lays itself out against the panel width
+  /* Named container so ApproachDetail lays itself out against the panel width
      rather than the viewport — this column is narrow on desktop, wide on mobile. */
   .pc__panel {
     border: 1px solid var(--color-divider-strong);

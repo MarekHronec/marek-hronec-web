@@ -16,14 +16,14 @@
  * disagree with it. Tune them here; nothing in the component hard-codes any.
  */
 
-import type { RungKey } from './platform-ladder';
+import type { ApproachKey } from './platform-approaches';
 
 export interface ChooserOption {
   value: string;
   label: string;
   detail?: string;
-  excludes?: { rung: RungKey; reason: string }[];
-  scores?: Partial<Record<RungKey, number>>;
+  excludes?: { approach: ApproachKey; reason: string }[];
+  scores?: Partial<Record<ApproachKey, number>>;
   note?: string;
 }
 
@@ -77,8 +77,8 @@ export const QUESTIONS: ChooserQuestion[] = [
         label: 'A kernel module, a driver, or an agent that loads into the kernel',
         detail: 'Storage drivers, kernel-level security agents, specialised networking.',
         excludes: [
-          { rung: 'paas', reason: 'A platform service never gives you access to the kernel underneath it.' },
-          { rung: 'saas', reason: 'A finished product cannot load a module into a kernel you do not control. If a different product would do the job instead, that is question 01.' },
+          { approach: 'paas', reason: 'A platform service never gives you access to the kernel underneath it.' },
+          { approach: 'saas', reason: 'A finished product cannot load a module into a kernel you do not control. If a different product would do the job instead, that is question 01.' },
         ],
         scores: { vm: 6, container: -5, orchestrated: -5 },
       },
@@ -87,8 +87,8 @@ export const QUESTIONS: ChooserQuestion[] = [
         label: 'A licence tied to a host ID, a MAC address or a physical socket',
         detail: 'Common with older commercial software and appliance vendors.',
         excludes: [
-          { rung: 'paas', reason: 'Instances are replaced without warning, so a licence pinned to one host cannot hold.' },
-          { rung: 'saas', reason: 'You would be replacing the licensed product rather than hosting it, which is question 01.' },
+          { approach: 'paas', reason: 'Instances are replaced without warning, so a licence pinned to one host cannot hold.' },
+          { approach: 'saas', reason: 'You would be replacing the licensed product rather than hosting it, which is question 01.' },
         ],
         scores: { vm: 6, container: -4, orchestrated: -4 },
       },
@@ -97,8 +97,8 @@ export const QUESTIONS: ChooserQuestion[] = [
         label: 'An operating system or runtime version no managed platform still offers',
         detail: 'Old distributions, superseded runtimes, vendor appliances.',
         excludes: [
-          { rung: 'paas', reason: 'Runtime versions are retired on the provider’s schedule, which is the opposite of what this workload needs.' },
-          { rung: 'saas', reason: 'A hosted product does not run your operating system at all. Replacing the software is question 01.' },
+          { approach: 'paas', reason: 'Runtime versions are retired on the provider’s schedule, which is the opposite of what this workload needs.' },
+          { approach: 'saas', reason: 'A hosted product does not run your operating system at all. Replacing the software is question 01.' },
         ],
         scores: { vm: 5, container: 2 },
       },
@@ -129,7 +129,7 @@ export const QUESTIONS: ChooserQuestion[] = [
         value: 'stuck',
         label: 'On local disk, and it genuinely cannot be moved',
         excludes: [
-          { rung: 'paas', reason: 'Where a platform service offers persistent storage at all, it is network-attached rather than local disk — different latency, different file-locking behaviour. Software that truly depends on a local filesystem tends to break on it.' },
+          { approach: 'paas', reason: 'Where a platform service offers persistent storage at all, it is network-attached rather than local disk — different latency, different file-locking behaviour. Software that truly depends on a local filesystem tends to break on it.' },
         ],
         scores: { vm: 4, orchestrated: -3 },
       },
@@ -158,7 +158,7 @@ export const QUESTIONS: ChooserQuestion[] = [
         label: 'Nobody in particular. Things get fixed during office hours',
         excludes: [
           {
-            rung: 'orchestrated',
+            approach: 'orchestrated',
             reason: 'Kubernetes with nobody owning it is a second product you did not plan to build — one that needs a version upgrade at least once a year, on the provider’s schedule rather than yours.',
           },
         ],
@@ -215,14 +215,14 @@ export const QUESTIONS: ChooserQuestion[] = [
 
 export type Selection = Record<string, string | undefined>;
 
-export interface RungVerdict {
-  key: RungKey;
+export interface ApproachVerdict {
+  key: ApproachKey;
   score: number;
   excluded: boolean;
   reasons: string[];
 }
 
-const RUNG_KEYS: RungKey[] = ['vm', 'container', 'orchestrated', 'paas', 'saas'];
+const APPROACH_KEYS: ApproachKey[] = ['vm', 'container', 'orchestrated', 'paas', 'saas'];
 
 export function evaluate(selection: Selection) {
   const score: Record<string, number> = { vm: 0, container: 0, orchestrated: 0, paas: 0, saas: 0 };
@@ -236,12 +236,12 @@ export function evaluate(selection: Selection) {
     const option = question.options.find((o) => o.value === chosen);
     if (!option) continue;
     answered += 1;
-    for (const [rung, delta] of Object.entries(option.scores ?? {})) score[rung] += delta as number;
-    for (const rule of option.excludes ?? []) reasons[rule.rung].push(rule.reason);
+    for (const [approach, delta] of Object.entries(option.scores ?? {})) score[approach] += delta as number;
+    for (const rule of option.excludes ?? []) reasons[rule.approach].push(rule.reason);
     if (option.note) notes.push(option.note);
   }
 
-  const verdicts: RungVerdict[] = RUNG_KEYS.map((key) => ({
+  const verdicts: ApproachVerdict[] = APPROACH_KEYS.map((key) => ({
     key,
     score: score[key],
     excluded: reasons[key].length > 0,

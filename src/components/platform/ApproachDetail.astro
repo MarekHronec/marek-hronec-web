@@ -1,0 +1,95 @@
+---
+/*
+ * The full account of one option: what it is for, what it is not for, and
+ * where the lock-in sits. Rendered server-side for all five and revealed by
+ * the chooser, so the content exists without scripting.
+ */
+import type { Approach } from '../../data/platform-approaches';
+
+interface Props {
+  approach: Approach;
+  hidden?: boolean;
+}
+
+const { approach, hidden = false } = Astro.props;
+---
+
+<div class="approach" data-detail={approach.key} hidden={hidden}>
+  <!-- No model here: "Best fit · Packaging" reads as a category claim, and
+       Container is a packaging decision rather than a hosting tier. The model
+       appears where it has context — the tab and the register column. -->
+  <p class="approach__kicker">Best fit</p>
+  <h3 class="approach__name">{approach.name}</h3>
+  <p class="approach__line">{approach.oneLine}</p>
+
+  <div class="approach__cols">
+    <div class="approach__col">
+      <h4 class="approach__col-head">Right when</h4>
+      <ul role="list">{approach.goodWhen.map((item) => <li>{item}</li>)}</ul>
+    </div>
+    <div class="approach__col approach__col--against">
+      <h4 class="approach__col-head">Wrong call when</h4>
+      <ul role="list">{approach.badWhen.map((item) => <li>{item}</li>)}</ul>
+    </div>
+  </div>
+
+  <div class="approach__lock">
+    <p class="approach__lock-head">Lock-in: <span>{approach.lockIn.level}</span></p>
+    <p class="approach__lock-body">{approach.lockIn.where}</p>
+  </div>
+
+  <p class="approach__door"><span>Keep the door open</span> {approach.keepDoorOpen}</p>
+  <p class="approach__examples"><span>Azure</span> {approach.examples.azure} <span>OCI</span> {approach.examples.oci}</p>
+</div>
+
+<style>
+  .approach[hidden] { display: none; }
+  .approach__kicker { font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-primary); }
+  .approach__name {
+    margin-top: var(--space-2);
+    font-family: var(--font-display); font-size: var(--text-headline-md);
+    font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug); color: var(--color-navy);
+  }
+  .approach__line { margin-top: var(--space-3); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface); }
+
+  .approach__cols { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
+  .approach__col-head {
+    font: var(--weight-semibold) var(--text-label-md) var(--font-body);
+    text-transform: uppercase; letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-divider-strong);
+  }
+  .approach__col ul { margin-top: var(--space-3); display: flex; flex-direction: column; gap: var(--space-3); }
+  .approach__col li {
+    position: relative; padding-left: var(--space-4);
+    font-size: var(--text-body-md); line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+  .approach__col li::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 6px; height: 1px; background: var(--color-primary);
+  }
+  .approach__col--against li::before { background: var(--color-meta-label); }
+
+  .approach__lock { margin-top: var(--space-5); padding: var(--space-4) var(--space-5); background: var(--color-primary-tint); }
+  .approach__lock-head { font: var(--weight-semibold) var(--text-label-md) var(--font-body); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-primary); }
+  .approach__lock-head span { text-transform: none; letter-spacing: normal; color: var(--color-navy); }
+  .approach__lock-body { margin-top: var(--space-2); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-navy); }
+
+  .approach__door, .approach__examples { margin-top: var(--space-4); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+  .approach__door span, .approach__examples span {
+    font: var(--text-label-sm) var(--font-mono); text-transform: uppercase;
+    letter-spacing: var(--tracking-wide); color: var(--color-meta-label);
+    margin-right: var(--space-2);
+  }
+  .approach__examples span:not(:first-child) { margin-left: var(--space-4); }
+
+  /* Keyed to the panel, not the viewport — this renders inside a narrow sticky
+     column on desktop and full width on mobile, so the viewport tells us the
+     opposite of what we need to know. */
+  @container (min-width: 34rem) {
+    .approach__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

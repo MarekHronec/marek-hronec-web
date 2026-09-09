@@ -5,12 +5,16 @@ each one hands over, what it takes away, and what it would cost to leave.
 
 ## Vocabulary
 
-Reader-facing copy says **option**, **level** or names the thing directly. It
-never says "rung" — the ladder metaphor was obscure, especially for readers
-whose first language is not English. The word survives only in code
-identifiers (`RungKey`, `RUNGS`, `RungDetail.astro`, the branch name), which no
-reader sees; renaming those is churn without benefit. If you add copy, keep to
-plain words — the same rule retired "tier" from the responsibility footnote.
+Nothing here uses the word "rung", in copy or in code, and the ladder metaphor
+it belonged to went with it. It was obscure — especially for a reader whose
+first language is not English.
+
+Reader-facing copy says **option**, **level**, or names the thing directly.
+Code calls the concept an **approach**: `Approach`, `ApproachKey`, `APPROACHES`,
+`ApproachDetail.astro`, `platform-approaches.ts`. The responsibility component is
+`ResponsibilityTable.astro`. "Tier" is out of the copy for the same reason.
+
+If you add either, keep to plain words.
 
 ## Thesis
 
@@ -31,7 +35,7 @@ In page order:
 |---|---|---|
 | Hero + choice cards | `src/pages/platform.astro` | inline |
 | Five animated concepts | `platform/ConceptExplainer.astro` | `data/platform-concepts.ts` |
-| Responsibility register | `platform/ResponsibilityLadder.astro` | `data/platform-ladder.ts` |
+| Responsibility register | `platform/ResponsibilityTable.astro` | `data/platform-approaches.ts` |
 | Chooser | `platform/PlatformChooser.astro` + `ChooserQuestion.astro` | `data/platform-chooser.ts` |
 | Twelve-Factor + beyond | `platform/PortabilityPractices.astro` | `data/platform-portability.ts` |
 | Reading, close | `src/pages/platform.astro` | `READING` slug list |
