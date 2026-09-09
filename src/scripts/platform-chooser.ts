@@ -6,6 +6,9 @@
 import { evaluate, QUESTIONS, LOCK_IN_NOTE, type Selection } from '../data/platform-chooser';
 import { APPROACH_BY_KEY } from '../data/platform-approaches';
 
+/** Small numbers read better as words in a sentence. */
+const COUNT_WORD: Record<number, string> = { 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five' };
+
 export function initializeChooser() {
   document.querySelectorAll<HTMLElement>('.pc:not([data-ready])').forEach((root) => {
     root.dataset.ready = 'true';
@@ -27,6 +30,10 @@ export function initializeChooser() {
       [...root.querySelectorAll<HTMLElement>('[data-q-selection]')].map((el) => [el.dataset.qSelection!, el]),
     );
 
+    const panelBox = root.querySelector<HTMLElement>('.pc__panel');
+    const headline = root.querySelector<HTMLElement>('[data-chooser-headline]');
+    const tie = root.querySelector<HTMLElement>('[data-chooser-tie]');
+    const tieCount = root.querySelector<HTMLElement>('[data-chooser-tie-count]');
     const partial = root.querySelector<HTMLElement>('[data-chooser-partial]');
     const closeNote = root.querySelector<HTMLElement>('[data-chooser-close]');
     const notes = root.querySelector<HTMLElement>('[data-chooser-notes]');
@@ -68,7 +75,13 @@ export function initializeChooser() {
       if (hasAnswer) {
         details.forEach((el, key) => { el.hidden = key !== result.top!.key; });
 
-        if (partial) partial.hidden = result.complete;
+        // With several options level, the "winner" would be whichever the data
+        // file happens to list first — so say that rather than dress it up.
+        if (panelBox) panelBox.dataset.undecided = String(result.undecided);
+        if (tie) tie.hidden = !result.undecided;
+        if (tieCount) tieCount.textContent = COUNT_WORD[result.tiedTop] ?? String(result.tiedTop);
+
+        if (partial) partial.hidden = result.complete || result.undecided;
         if (closeNote) closeNote.hidden = !result.close;
 
         if (notes && notesBody) {
@@ -78,7 +91,7 @@ export function initializeChooser() {
 
         const second = result.runnerUp;
         if (runner && runnerName) {
-          runner.hidden = !second;
+          runner.hidden = !second || result.undecided;
           if (second) {
             const approach = APPROACH_BY_KEY.get(second.key)!;
             runnerName.textContent = `${approach.name} — ${approach.oneLine}`;
@@ -92,6 +105,14 @@ export function initializeChooser() {
         }
       }
 
+      if (headline) {
+        headline.textContent = !hasAnswer
+          ? ''
+          : result.undecided
+            ? ` — ${COUNT_WORD[result.tiedTop] ?? result.tiedTop} options level`
+            : ` — best fit: ${APPROACH_BY_KEY.get(result.top!.key)!.name}`;
+      }
+
       // The whole list stays visible so a reader can see what was set aside and
       // on what grounds, rather than only the winner. Rows are reordered by
       // moving the nodes — CSS `order` would mean writing inline styles.
@@ -100,13 +121,14 @@ export function initializeChooser() {
         const row = rows.get(verdict.key);
         if (!row) return;
         list?.appendChild(row);
-        row.dataset.state = verdict.excluded ? 'ruled-out' : index === 0 ? 'top' : 'viable';
+        const leads = index === 0 && !verdict.excluded && !result.undecided;
+        row.dataset.state = verdict.excluded ? 'ruled-out' : leads ? 'top' : 'viable';
 
         const label = row.querySelector<HTMLElement>('[data-rank-state]');
         if (label) {
           label.textContent = verdict.excluded
             ? 'Ruled out'
-            : index === 0
+            : leads
               ? 'Best fit'
               : `Score ${verdict.score > 0 ? '+' : ''}${verdict.score}`;
         }

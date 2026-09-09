@@ -21,6 +21,7 @@ const { approach, hidden = false } = Astro.props;
   <p class="approach__kicker">Best fit</p>
   <h3 class="approach__name">{approach.name}</h3>
   <p class="approach__line">{approach.oneLine}</p>
+  <p class="approach__note">{approach.note}</p>
 
   <div class="approach__cols">
     <div class="approach__col">
@@ -39,7 +40,7 @@ const { approach, hidden = false } = Astro.props;
   </div>
 
   <p class="approach__door"><span>Keep the door open</span> {approach.keepDoorOpen}</p>
-  <p class="approach__examples"><span>Azure</span> {approach.examples.azure} <span>OCI</span> {approach.examples.oci}</p>
+  <p class="approach__examples"><span>Microsoft</span> {approach.examples.microsoft} <span>Oracle</span> {approach.examples.oracle}</p>
 </div>
 
 <style>
@@ -52,6 +53,7 @@ const { approach, hidden = false } = Astro.props;
     line-height: var(--leading-snug); color: var(--color-navy);
   }
   .approach__line { margin-top: var(--space-3); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface); }
+  .approach__note { margin-top: var(--space-3); font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
 
   .approach__cols { display: grid; gap: var(--space-5); margin-top: var(--space-5); }
   .approach__col-head {

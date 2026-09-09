@@ -81,10 +81,15 @@ it, because blockers are exclusions rather than weights — answering "needs a
 kernel module" rules SaaS out no matter how large the weight is. Verify that case
 still holds after changing weights.
 
-`evaluate()` sorts viable options first, then by score; ties keep the declared
-order, which biases toward the simpler choice. `close` is true when the top
-two are within 2 points, and the UI then says so rather than pretending to be
-sure.
+`evaluate()` sorts viable options first, then by score. Array order breaks exact
+ties, but that order is the page's narrative order (most you run → least), which
+is no kind of recommendation — so **a tie at the top is reported as a tie**.
+`tiedTop` counts how many share the lead, `undecided` is true when that is more
+than one, and the panel then hides the winner's detail block and says which
+options are level. Without this the tool crowned "Virtual machine" — the most
+operationally expensive option — off a four-way 0–0–0–0 tie, with 200 words
+justifying it. `close` is the separate, milder case: one clear leader, but by
+two points or fewer.
 
 ## The animated scenes
 
@@ -134,6 +139,37 @@ you edit these, keep them defensible:
   important functions**, not in every contract.
 - Factors XIII–XV are Hoffman's additions, but the numbering is ours — he
   reorders the original twelve. The group lede says so.
+- **DORA splits across two articles.** Article 30 requires exit strategies in
+  contracts covering critical or important functions; the requirement that exit
+  plans be documented and periodically *tested* is Article 28(8). An earlier
+  draft attributed the testing to Article 30, and the two files disagreed with
+  each other.
+- A licence counted **per physical socket or core** (Oracle DB, IBM PVU) is not
+  satisfied by an ordinary shared VM — it needs a dedicated host or bare metal.
+  The licence option says so in a note rather than pointing at a plain VM.
+- SaaS examples are labelled by **vendor, not cloud**: Microsoft 365 is not an
+  Azure service and NetSuite is not an OCI one. This also stops "OCI" meaning
+  the Open Container Initiative in one paragraph and Oracle Cloud
+  Infrastructure in the next line.
+- "Most SaaS incidents are misconfiguration" was softened to "a large share of
+  SaaS breaches" — the strong version is a measured claim nobody has measured.
+
+## Known gaps
+
+- **The chooser never asks how long the workload will live**, yet the closing
+  portability argument turns on exactly that ("do not pay it on a workload that
+  will be retired before the contract ends"). Adding an eighth question is the
+  most substantive improvement available; it needs weights designed, not guessed.
+- **The chooser cannot say "replace the software."** All three blockers in
+  question 02 rule SaaS out with reasons that point back to question 01, but if
+  the answer there was "every company has one," the honest verdict for a
+  commodity capability whose current implementation needs a kernel module is
+  often to swap the product. The prompt is scoped ("the software you intend to
+  keep") rather than the tool being taught to say it.
+- **The chooser does not work without JavaScript** — a `<noscript>` says so.
+  The five options' trade-offs live only in the verdict panel, so a no-JS reader
+  cannot reach them. Fixing it properly means shipping the panel expanded and
+  letting the script collapse it, at the cost of a load-time flash.
 
 ## Not done yet
 

@@ -6,10 +6,11 @@
  *   scores    a preference nudge. Never decisive on its own.
  *   note      a caveat about the answer itself, surfaced beside the verdict.
  *
- * Question order is purpose → constraints → shape → capacity → economics →
- * strategy. "Should you run this at all" comes first because a yes to buying
- * makes the remaining six moot, and it is cheaper to find that out on question
- * one than on question seven.
+ * Question order matches the `label` on each question: purpose → constraints →
+ * storage → scale → operations → load → exit. "Should you run this at all"
+ * comes first because a yes to buying makes the remaining six moot, and it is
+ * cheaper to find that out on question one than on question seven. Exit is last
+ * so it hands off to the portability section below the tool.
  *
  * The weights are judgement, not arithmetic truth — they encode "what would a
  * reviewer say", and the output always shows its reasoning so a reader can
@@ -25,6 +26,8 @@ export interface ChooserOption {
   excludes?: { approach: ApproachKey; reason: string }[];
   scores?: Partial<Record<ApproachKey, number>>;
   note?: string;
+  /** Drop the note if this approach has been ruled out — the note assumes it is still on the table. */
+  noteUnlessExcluded?: ApproachKey;
 }
 
 export interface ChooserQuestion {
@@ -63,13 +66,14 @@ export const QUESTIONS: ChooserQuestion[] = [
         // it, because blockers are modelled as exclusions rather than weights.
         scores: { saas: 20 },
         note: 'You said a product already does this. The remaining questions describe how to run something yourself — they only change the answer if you decide to run it anyway.',
+        noteUnlessExcluded: 'saas',
       },
     ],
   },
   {
     key: 'host',
     label: 'Constraints',
-    prompt: 'Does the software need something only the host machine can give it?',
+    prompt: 'Does the software you intend to keep need something only the host machine can give it?',
     help: 'The one technical question that can settle the answer on its own.',
     options: [
       {
@@ -84,13 +88,14 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'licence',
-        label: 'A licence tied to a host ID, a MAC address or a physical socket',
-        detail: 'Common with older commercial software and appliance vendors.',
+        label: 'A licence pinned to a stable host identifier',
+        detail: 'A host ID or MAC address, common with older commercial software and appliance vendors.',
         excludes: [
           { approach: 'paas', reason: 'Instances are replaced without warning, so a licence pinned to one host cannot hold.' },
           { approach: 'saas', reason: 'You would be replacing the licensed product rather than hosting it, which is question 01.' },
         ],
         scores: { vm: 6, container: -4, orchestrated: -4 },
+        note: 'If the licence is counted per physical socket or core rather than pinned to an identifier — Oracle Database, IBM PVU, some SQL Server editions — an ordinary shared virtual machine will not satisfy it either. That needs a dedicated host or bare metal, which both clouds sell as a separate product.',
       },
       {
         value: 'os',
@@ -182,9 +187,9 @@ export const QUESTIONS: ChooserQuestion[] = [
     prompt: 'What does the traffic actually look like?',
     help: 'Shape matters more than volume here — a busy hour is a different problem from a busy year.',
     options: [
-      { value: 'idle', label: 'Close to nothing most of the time, with occasional bursts', scores: { paas: 5, vm: -4, orchestrated: -2 } },
+      { value: 'idle', label: 'Idle most of the time — paying for a machine that sits there is the waste', scores: { paas: 5, vm: -4, orchestrated: -2 } },
       { value: 'steady', label: 'Steady and predictable', scores: { vm: 2, container: 2, orchestrated: 1 } },
-      { value: 'spiky', label: 'Sudden peaks that are hard to predict', scores: { orchestrated: 3, paas: 3, vm: -2 } },
+      { value: 'spiky', label: 'A real baseline with sharp peaks over it — headroom is the problem', scores: { orchestrated: 3, paas: 3, vm: -2 } },
     ],
   },
   {
@@ -196,7 +201,7 @@ export const QUESTIONS: ChooserQuestion[] = [
       {
         value: 'required',
         label: 'Required — a regulator or a contract asks us to show we could leave',
-        detail: 'DORA Article 30 and several national frameworks ask for a tested exit plan.',
+        detail: 'The EU’s Digital Operational Resilience Act (DORA) wants exit strategies written into the contract (Art. 30) and exit plans that are documented and tested (Art. 28). Several national frameworks ask the same.',
         scores: { container: 4, orchestrated: 3, paas: -5, saas: -4 },
       },
       {
@@ -227,19 +232,25 @@ const APPROACH_KEYS: ApproachKey[] = ['vm', 'container', 'orchestrated', 'paas',
 export function evaluate(selection: Selection) {
   const score: Record<string, number> = { vm: 0, container: 0, orchestrated: 0, paas: 0, saas: 0 };
   const reasons: Record<string, string[]> = { vm: [], container: [], orchestrated: [], paas: [], saas: [] };
-  const notes: string[] = [];
 
-  let answered = 0;
+  const chosen: ChooserOption[] = [];
   for (const question of QUESTIONS) {
-    const chosen = selection[question.key];
-    if (!chosen) continue;
-    const option = question.options.find((o) => o.value === chosen);
-    if (!option) continue;
-    answered += 1;
+    const value = selection[question.key];
+    if (!value) continue;
+    const option = question.options.find((o) => o.value === value);
+    if (option) chosen.push(option);
+  }
+
+  for (const option of chosen) {
     for (const [approach, delta] of Object.entries(option.scores ?? {})) score[approach] += delta as number;
     for (const rule of option.excludes ?? []) reasons[rule.approach].push(rule.reason);
-    if (option.note) notes.push(option.note);
   }
+
+  // Notes are collected only once every exclusion is known, so a note never
+  // argues for an approach that has since been ruled out.
+  const notes = chosen
+    .filter((o) => o.note && (!o.noteUnlessExcluded || reasons[o.noteUnlessExcluded].length === 0))
+    .map((o) => o.note!);
 
   const verdicts: ApproachVerdict[] = APPROACH_KEYS.map((key) => ({
     key,
@@ -248,25 +259,33 @@ export function evaluate(selection: Selection) {
     reasons: reasons[key],
   }));
 
-  // Viable options first, then by score. Ties keep the declared order, which
-  // biases toward the simpler choice — the right default when it is close.
+  // Viable options first, then by score. Array order breaks exact ties, but it
+  // is the page's narrative order (most you run -> least), which is no kind of
+  // recommendation — so a tie at the top is reported as a tie rather than
+  // resolved into a winner. See `undecided`.
   const ranked = [...verdicts].sort((a, b) => {
     if (a.excluded !== b.excluded) return a.excluded ? 1 : -1;
     return b.score - a.score;
   });
 
   const viable = ranked.filter((r) => !r.excluded);
+  const tiedTop = viable.length ? viable.filter((r) => r.score === viable[0].score).length : 0;
+
   return {
-    answered,
+    answered: chosen.length,
     total: QUESTIONS.length,
-    complete: answered === QUESTIONS.length,
+    complete: chosen.length === QUESTIONS.length,
     verdicts,
     ranked,
     notes,
     top: viable[0],
     runnerUp: viable[1],
-    /** True when the top two are close enough that the tool should not pretend to be sure. */
-    close: viable.length > 1 && viable[0].score - viable[1].score <= 2,
+    /** How many viable options share the top score. */
+    tiedTop,
+    /** No single option leads, so naming one would be an artefact of array order. */
+    undecided: tiedTop > 1,
+    /** One clear leader, but only just — say so rather than pretending to be sure. */
+    close: tiedTop === 1 && viable.length > 1 && viable[0].score - viable[1].score <= 2,
   };
 }
 

@@ -38,7 +38,7 @@ export const FACTOR_GROUPS: FactorGroup[] = [
         numeral: 'IV',
         name: 'Backing services as attached resources',
         original: 'Treat databases, queues and caches as attached resources reached by URL, swappable without a code change.',
-        today: 'This is the factor that actually decides whether you can change cloud. Reach a queue through a standard client and it is a config change; reach it through a managed binding and it is a rewrite. The lock-in was never the runtime.',
+        today: 'This is the factor that actually decides whether you can change cloud. Reach a queue through a standard client and it is a config change; reach it through a managed binding and it is a rewrite.',
       },
       {
         numeral: 'V',
@@ -147,10 +147,6 @@ export interface PortabilityMove {
 
 export const BEYOND_FACTORS: PortabilityMove[] = [
   {
-    title: 'Identity is the deepest hook',
-    body: 'Managed identity and resource principals are the most convenient thing a cloud offers and the least portable. Federate through OIDC and the workload keeps its identity story when it moves; call the native API from business logic and you have written the provider into your domain layer.',
-  },
-  {
     title: 'Data gravity beats every diagram',
     body: 'Code moves in an afternoon. Twelve terabytes and the egress bill do not. Ask what a full copy costs — in money and in hours — before you choose the store, because that number is the real exit price and it only grows.',
   },
@@ -159,12 +155,8 @@ export const BEYOND_FACTORS: PortabilityMove[] = [
     body: 'Terraform is a portable tool, not portable code: azurerm resources do not become oci resources. What is portable is the module boundary and the pipeline around it. Resist the abstraction layer that promises to hide both clouds — it usually delivers the limitations of each and the strengths of neither.',
   },
   {
-    title: 'Observability is a lock-in you can decline',
-    body: 'This is the cheapest portability win most teams never take. An OpenTelemetry collector between your applications and your backend turns "change observability vendor" from a re-instrumentation project into a configuration change.',
-  },
-  {
     title: 'An exit plan you have never run is fiction',
-    body: 'DORA Article 30 requires financial entities to write exit strategies into contracts covering critical or important functions, and several national frameworks ask the same. Regulation aside, the test is simple: could you stand up this workload somewhere else, with real data, this quarter? If nobody has tried, you have a document rather than a capability.',
+    body: 'DORA wants exit strategies written into the contract for critical or important functions (Article 30) and exit plans that are documented and periodically tested (Article 28). Several national frameworks ask the same. Regulation aside, the test is simple: could you stand this workload up somewhere else, with real data, this quarter? If nobody has tried, you have a document rather than a capability.',
   },
   {
     title: 'The portability tax is real — pay it deliberately',

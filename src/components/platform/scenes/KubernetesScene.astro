@@ -21,18 +21,18 @@ import Hull from './Hull.astro';
   <text class="scene__label" x="24" y="196">DECLARED</text>
   <text class="scene__number" x="24" y="238">3</text>
   <text class="scene__label" x="120" y="196">OBSERVED</text>
-  <text class="scene__number k-obs k-obs--3" x="120" y="238">3</text>
-  <text class="scene__number k-obs k-obs--2" x="120" y="238">2</text>
+  <text class="scene__number k-obs k-obs--3 scene__before" x="120" y="238">3</text>
+  <text class="scene__number k-obs k-obs--2 scene__after" x="120" y="238">2</text>
 
   <!-- ── The deck ──────────────────────────────────────────────────── -->
   <rect class="scene__line" x="478" y="174" width="70" height="40" stroke-dasharray="3 4" />
-  <g class="k-gap">
+  <g class="k-gap scene__after">
     <path class="scene__line" d="M492 186 L534 202 M534 186 L492 202" />
   </g>
 
   <g class="k-crate"><rect class="scene__crate" x="274" y="174" width="70" height="40" /><path class="scene__line" d="M274 186 H344" /></g>
   <g class="k-crate"><rect class="scene__crate" x="376" y="174" width="70" height="40" /><path class="scene__line" d="M376 186 H446" /></g>
-  <g class="k-crate k-crate--lost scene__pivot"><rect class="scene__crate" x="478" y="174" width="70" height="40" /><path class="scene__line" d="M478 186 H548" /></g>
+  <g class="k-crate k-crate--lost scene__pivot scene__before"><rect class="scene__crate" x="478" y="174" width="70" height="40" /><path class="scene__line" d="M478 186 H548" /></g>
   <g class="k-crate k-replacement"><rect class="scene__crate" x="478" y="174" width="70" height="40" /><path class="scene__line" d="M478 186 H548" /></g>
 
   <g transform="translate(230 214)">
@@ -55,7 +55,7 @@ import Hull from './Hull.astro';
   </g>
   <path class="scene__line k-flow" d="M192 305 H252 M342 305 H410 M450 318 V340 H150 V322" />
   <path class="scene__line" d="M244 300 L252 305 L244 310 M402 300 L410 305 L402 310 M145 330 L150 322 L155 330" />
-  <text class="scene__label scene__quiet" x="300" y="356" text-anchor="middle">THE LOOP DOES NOT STOP WHEN THE DEPLOY FINISHES</text>
+  <text class="scene__label" x="300" y="356" text-anchor="middle">THE LOOP DOES NOT STOP WHEN THE DEPLOY FINISHES</text>
 </svg>
 
 <style>
@@ -71,7 +71,7 @@ import Hull from './Hull.astro';
   @keyframes k-flow { to { stroke-dashoffset: -32; } }
 
   /* At rest the deck is full, so the empty slot and its replacement are held back. */
-  .k-obs--2, .k-gap, .k-replacement { opacity: 0; }
+  .k-replacement { opacity: 0; }
 
   :global(.cp[data-demonstrate='true']) .k-crate--lost { animation: k-lost var(--nautical-cycle-duration) var(--ease-standard) infinite; }
   :global(.cp[data-demonstrate='true']) .k-replacement { animation: k-replace var(--nautical-cycle-duration) var(--ease-standard) infinite; }

@@ -2,8 +2,9 @@
 /*
  * Chooser shell. All scoring lives in src/data/platform-chooser.ts; this file
  * renders the questions and an empty verdict frame that the client script
- * fills. Every option's detail is rendered server-side and revealed, so the
- * content survives with scripting off.
+ * fills. Every option's detail is rendered server-side, but the frame ships
+ * hidden, so the scoring genuinely needs scripting — hence the <noscript>.
+ * The tabbed explainer above degrades properly; this does not.
  */
 import { QUESTIONS } from '../../data/platform-chooser';
 import { APPROACHES } from '../../data/platform-approaches';
@@ -32,9 +33,15 @@ import ApproachDetail from './ApproachDetail.astro';
       <button type="button" class="pc__reset" data-chooser-reset>Clear all answers</button>
     </form>
 
-    <aside class="pc__result" aria-live="polite">
+    <aside class="pc__result">
       <div class="pc__panel">
-        <p class="pc__progress"><span data-chooser-progress>0</span> of {QUESTIONS.length} answered</p>
+        <p class="pc__progress" aria-live="polite" aria-atomic="true">
+          <span data-chooser-progress>0</span> of {QUESTIONS.length} answered<span data-chooser-headline></span>
+        </p>
+
+        <noscript>
+          <p class="pc__empty">This tool scores your answers in the browser, so it needs JavaScript. Without it, the five options and the trade-offs between them are set out in the sections above.</p>
+        </noscript>
 
         <p class="pc__empty" data-chooser-empty>
           Nothing is assumed until you answer. Each choice narrows the list, and
@@ -44,6 +51,12 @@ import ApproachDetail from './ApproachDetail.astro';
         <div data-chooser-verdict hidden>
           <p class="pc__partial" data-chooser-partial hidden>
             Provisional — the order can still change.
+          </p>
+
+          <p class="pc__tie" data-chooser-tie hidden>
+            <span data-chooser-tie-count></span> options are still level on score.
+            Naming one here would only be reading them off in page order — answer
+            another question or two and they will separate.
           </p>
 
           {APPROACHES.map((approach, index) => <ApproachDetail approach={approach} hidden={index > 0} />)}
@@ -127,7 +140,9 @@ import ApproachDetail from './ApproachDetail.astro';
   }
   .pc__empty { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
   .pc__empty[hidden], .pc__rank[hidden], [data-chooser-verdict][hidden],
-  .pc__aside[hidden], .pc__close[hidden], .pc__partial[hidden] { display: none; }
+  .pc__aside[hidden], .pc__close[hidden], .pc__partial[hidden], .pc__tie[hidden] { display: none; }
+  /* Suppresses the winner's detail block while nothing actually leads. */
+  .pc__panel[data-undecided='true'] :global(.approach) { display: none; }
 
   .pc__partial {
     margin-bottom: var(--space-4);
@@ -135,6 +150,7 @@ import ApproachDetail from './ApproachDetail.astro';
     letter-spacing: var(--tracking-wide); color: var(--color-primary);
   }
   .pc__close { margin-top: var(--space-4); font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-primary); }
+  .pc__tie { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-navy); }
 
   .pc__aside { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-divider); }
   .pc__aside span {
@@ -158,8 +174,8 @@ import ApproachDetail from './ApproachDetail.astro';
 
   @media (min-width: 1024px) {
     .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: var(--space-8); }
-    .pc__result { position: sticky; top: var(--space-8); }
-    .pc__panel { max-height: calc(100vh - var(--space-16)); overflow-y: auto; }
+    .pc__result { position: sticky; top: calc(var(--nav-height) + var(--space-5)); }
+    .pc__panel { max-height: calc(100vh - var(--nav-height) - var(--space-8)); overflow-y: auto; }
   }
   @media (min-width: 1280px) {
     .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--space-10); }
