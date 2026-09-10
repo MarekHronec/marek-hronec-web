@@ -1,0 +1,77 @@
+---
+import SailingVessel from './SailingVessel.astro';
+import ChartWater from './ChartWater.astro';
+---
+<svg class="scene scene--availability" viewBox="0 0 600 360" role="img" aria-labelledby="availability-scene-title">
+  <title id="availability-scene-title">A ship rounds a lighthouse along a safe channel. When the light goes out, it loses its reference and grounds on the outer reef.</title>
+  <ChartWater id="availability" />
+  <path class="scene__route a-safe-route" d="M120 225 C120 182 190 147 277 147 C364 147 435 182 435 225 C435 268 364 303 277 303 C190 303 120 268 120 225" />
+  <text class="scene__label" x="67" y="120">MARKED CHANNEL</text>
+  <path class="scene__line scene__quiet" d="M170 125 L180 150" />
+  <!-- The rear course is painted before the island and tower. The near course clears their silhouette. -->
+  <g class="a-ship"><g class="a-heading"><g transform="scale(.55)"><SailingVessel small /></g></g></g>
+  <path class="a-island" d="M207 229 L225 211 L246 214 L263 200 L288 213 L313 211 L341 233 Q278 254 207 229 Z" />
+  <path class="scene__line scene__quiet" d="M203 242 Q268 265 349 242 M220 250 Q274 269 328 254 M222 226 L243 226 M302 229 L320 234" />
+  <g class="a-lighthouse">
+    <path class="scene__paper" d="M253 223 L263 111 H284 L296 225 Q273 233 253 223 Z" />
+    <path class="a-stripe" d="M259 151 L289 152 L292 175 L257 174 Z" />
+    <path class="scene__line scene__quiet" d="M268 121 L263 214 M286 187 L289 221" />
+    <path class="scene__line" d="M270 228 V210 Q274 203 279 210 V230 M271 131 V143 M273 184 V196" />
+    <ellipse class="scene__paper" cx="274" cy="112" rx="23" ry="6" />
+    <path class="scene__line" d="M252 110 V102 M262 115 V105 M285 115 V105 M296 110 V102 M251 102 Q274 111 297 102" />
+    <path class="scene__paper" d="M261 100 V78 H287 V100 Z" />
+    <path class="scene__line" d="M267 79 V101 M281 79 V101" />
+    <path class="a-roof" d="M255 79 Q274 53 293 79 Z" />
+    <path class="scene__line" d="M274 61 V51" />
+    <circle class="a-lamp" cx="274" cy="89" r="5" />
+  </g>
+  <!-- Project a rotating horizontal plane into the elevation view. -->
+  <g transform="translate(274 89) scale(1 .25)" class="a-light">
+    <g class="a-sweep"><path class="a-beam" d="M0 0 L267 -53 Q280 0 267 53 Z" /><path class="a-beam a-beam--back" d="M0 0 L-235 -43 Q-245 0 -235 43 Z" /></g>
+  </g>
+  <g class="a-reef">
+    <path class="scene__paper" d="M438 286 L449 266 L458 278 L471 255 L486 282 L502 274 L515 295 Q475 306 438 286 Z" />
+    <path class="scene__line scene__quiet" d="M449 291 L460 287 M471 266 L476 285 M491 289 L502 291 M435 300 Q476 314 520 302" />
+    <text class="scene__label" x="476" y="333" text-anchor="middle">OUTER REEF</text>
+  </g>
+
+  <g class="a-impact scene__line" transform="translate(450 282)"><path d="M-11 -3 L-22 -8 M-6 7 L-12 16 M5 8 L8 18" /><circle r="20" /></g>
+  <g class="scene__after"><text class="scene__label" x="49" y="45">SIGNAL LOST</text><text class="scene__text" x="49" y="65">No backup guidance</text></g>
+  <g class="scene__before"><text class="scene__label" x="49" y="45">LIGHT OPERATIONAL</text><text class="scene__text" x="49" y="65">A reliable point of reference</text></g>
+</svg>
+<style>
+  .a-island { fill: var(--color-primary-container); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); }
+  .a-stripe, .a-roof { fill: var(--color-navy); }
+  .a-lamp { fill: var(--color-primary); }
+  .a-beam { fill: var(--color-primary); opacity: .13; }
+  .a-beam--back { opacity: .07; }
+  /* Continuous travel uses linear timing; UI transitions retain the site easing. */
+  .a-sweep { animation: sweep var(--nautical-beam-duration) linear infinite; transform-origin: 0 0; }
+  .a-ship {
+    offset-path: path('M120 225 C120 182 190 147 277 147 C364 147 435 182 435 225 C435 268 364 303 277 303 C190 303 120 268 120 225 Z');
+    offset-distance: 0%;
+    offset-rotate: 0deg;
+    offset-anchor: 0px 0px;
+    animation: round-channel var(--nautical-orbit-duration) linear infinite;
+  }
+  /* Flip at the ends of the circuit without interpolating through zero width. */
+  .a-heading { animation: heading var(--nautical-orbit-duration) steps(1, end) infinite; transform-origin: 0 0; }
+  .a-impact { opacity: 0; }
+  .a-light { transition: opacity var(--duration-slow) var(--ease-standard); }
+  :global(.ex__panel[data-demonstrate="true"]) .a-light { opacity: 0; }
+  :global(.ex__panel[data-demonstrate="true"]) .a-lamp { fill: var(--color-meta-label); }
+  :global(.ex__panel[data-demonstrate="true"]) .a-ship { offset-path: none; animation: drift var(--nautical-story-duration) linear both; }
+  :global(.ex__panel[data-demonstrate="true"]) .a-heading { animation: none; transform: none; }
+  :global(.ex__panel[data-demonstrate="true"]) .a-impact { animation: strike var(--nautical-story-duration) var(--ease-standard) both; }
+  @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes round-channel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  @keyframes heading { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } 100% { transform: scaleX(1); } }
+  @keyframes drift {
+    0% { transform: translate(132px, 197px) scale(.82); }
+    25% { transform: translate(213px, 146px) scale(.75); }
+    48% { transform: translate(370px, 161px) scale(.8); }
+    72% { transform: translate(433px, 228px) scale(.95); }
+    90%, 100% { transform: translate(435px, 275px) rotate(-16deg); }
+  }
+  @keyframes strike { 0%, 79% { opacity: 0; } 92%, 100% { opacity: .7; } }
+</style>

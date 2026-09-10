@@ -1,0 +1,35 @@
+<aside class="calculator-notice" aria-labelledby="calculator-notice-title">
+  <svg class="calculator-notice__icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" /><path d="M16 14 V23 M16 9 V10" /></svg>
+  <div class="calculator-notice__body">
+    <h2 id="calculator-notice-title">Guidance, not an official classification</h2>
+    <p>This independent calculator reproduces the logic of published Slovak documents.
+      Use it to understand the requirements, then check the result against the official
+      workbook and a formal risk analysis. The system operator remains responsible
+      for its classification.</p>
+    <details>
+      <summary>Source documents <span>4 references</span></summary>
+      <dl>
+        <div><dt>Workbook</dt><dd>MIRRI SR — <em>Určenie parametrov UxCxIxAx</em>, príloha č. 1, v10.0</dd></div>
+        <div><dt>Guidance</dt><dd>MIRRI SR — <em>Metodické usmernenie pre klasifikáciu ISVS</em>, 023107/2023/oSBATA-1</dd></div>
+        <div><dt>Act</dt><dd>Zákon č. 69/2018 Z. z. o kybernetickej bezpečnosti, §20</dd></div>
+        <div><dt>Decree</dt><dd>Vyhláška č. 165/2018 Z. z. — kritériá kategórií incidentov</dd></div>
+      </dl>
+    </details>
+  </div>
+</aside>
+<style>
+  .calculator-notice { display: flex; align-items: flex-start; gap: var(--space-4); padding: var(--space-5); background: var(--color-surface-container-low); margin-top: var(--space-2); }
+  .calculator-notice__icon { width: var(--space-6); height: var(--space-6); flex-shrink: 0; fill: none; stroke: var(--color-primary); stroke-width: 1.5; stroke-linecap: round; }
+  .calculator-notice__body { min-width: 0; }
+  h2 { font: var(--weight-semibold) var(--text-title-md) / var(--leading-snug) var(--font-display); color: var(--color-navy); }
+  p { margin-top: var(--space-2); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); max-width: 94ch; }
+  details { margin-top: var(--space-4); }
+  summary { color: var(--color-primary); font-size: var(--text-label-md); font-weight: var(--weight-semibold); cursor: pointer; width: fit-content; }
+  summary span { margin-left: var(--space-3); color: var(--color-meta-label); font-weight: var(--weight-regular); }
+  dl { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
+  dl > div { display: grid; gap: var(--space-1); }
+  dt { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
+  dd { font-size: var(--text-label-md); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
+  @media (min-width: 768px) { dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); } }
+</style>
+

@@ -1,0 +1,53 @@
+---
+import SailingVessel from './SailingVessel.astro';
+import ChartWater from './ChartWater.astro';
+const levels = [1, 2, 3, 4];
+---
+<svg class="scene scene--service" viewBox="0 0 600 360" role="img" aria-labelledby="service-scene-title">
+  <title id="service-scene-title">An illustrative U3 baseline rules out U1 and U2 services. U3 and U4 meet the level threshold; other placement requirements still need checking.</title>
+  <ChartWater id="service" />
+  <text class="scene__label" x="43" y="38">CLASSIFY THE ASSET</text>
+  <g class="scene__line" transform="translate(43 57)">
+    <path class="scene__paper" d="M0 0 H151 V56 H0 Z" />
+    <text class="scene__text" x="16" y="24">C · I · A</text><text class="scene__label" x="16" y="43">+ RISK CRITERIA</text>
+  </g>
+  <path class="scene__route" d="M197 85 H254 M245 80 L254 85 L245 90" />
+  <g transform="translate(274 47)">
+    <path class="u-shield" d="M0 0 L46 10 V45 Q45 67 0 83 Q-45 67 -46 45 V10 Z" />
+    <text class="u-value" x="0" y="48">U3</text>
+  </g>
+  <text class="scene__label" x="337" y="69">REQUIRED BASELINE</text>
+  <text class="scene__text" x="337" y="91">An illustrative result</text>
+  <text class="scene__label" x="43" y="160">COMPARE THE HOSTING SERVICE</text>
+  <path class="scene__line scene__quiet" d="M59 205 H538 M59 212 H538" />
+  {levels.map((level, index) => (
+    <g class:list={['u-port', level < 3 ? 'u-port--below' : 'u-port--meets']} transform={`translate(${104 + index * 130} 207)`}>
+      <path class="u-port__wash" d="M-47 -24 H47 V87 H-47 Z" />
+      <path class="scene__paper" d="M-36 0 V-24 H-9 V0 M-32 -24 V-35 L-23 -42 L-13 -35 V-24" />
+      <path class="scene__line" d="M-26 -18 V-10 M-18 -18 V-10 M-37 4 H39 M-38 8 V63 H-27 M38 8 V63 H27" />
+      <path class="scene__line scene__quiet" d="M-39 16 H-32 M32 16 H39 M-39 34 H-32 M32 34 H39" />
+      <text class="u-port__name" x="11" y="-12">U{level}</text>
+      <g class="scene__after">
+        {level < 3 ? <path class="scene__line" d="M-22 39 H22 M-5 24 L5 34 M5 24 L-5 34" /> : <path class="scene__line" d="m-7 25 5 5 10 -12" />}
+      </g>
+      <text class="scene__label scene__after" x="0" y="102" text-anchor="middle">{level < 3 ? 'BELOW BASELINE' : 'MEETS LEVEL'}</text>
+    </g>
+  ))}
+  <g class="u-ship"><g transform="scale(.42)"><SailingVessel small /></g></g>
+  <text class="scene__label" x="43" y="350">THE HARBOR IS THE HOST. ITS PROTECTION MUST MATCH THE CARGO.</text>
+</svg>
+<style>
+  .u-shield { fill: var(--color-navy); }
+  .u-value { fill: var(--color-on-primary); text-anchor: middle; font: var(--weight-medium) var(--nautical-number) var(--font-mono); }
+  .u-port__name { fill: var(--color-primary); font: var(--weight-semibold) var(--nautical-text) var(--font-mono); }
+  .u-port__wash { fill: var(--color-primary-container); opacity: 0; transition: opacity var(--duration-slow) var(--ease-standard); }
+  .u-ship { transform: translate(288px, 279px); }
+  :global(.ex__panel[data-demonstrate="true"]) .u-port--below .scene__paper { opacity: .5; }
+  :global(.ex__panel[data-demonstrate="true"]) .u-port--meets .u-port__wash { opacity: .45; }
+  :global(.ex__panel[data-demonstrate="true"]) .u-ship { animation: dock var(--nautical-story-duration) var(--ease-standard) both; }
+  @keyframes dock {
+    0%, 12% { transform: translate(288px, 279px); }
+    55% { transform: translate(364px, 277px); }
+    100% { transform: translate(364px, 256px); }
+  }
+</style>

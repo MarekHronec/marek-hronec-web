@@ -1,0 +1,733 @@
+---
+/*
+ * ISVS placement calculator.
+ *
+ * The model — questions, thresholds, weights, control obligations and the
+ * combination-viability rules — lives in src/data/security-calculator.ts.
+ * This component renders it and wires up the client script. Nothing is
+ * transmitted; the whole calculation runs in the browser.
+ */
+
+import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
+import CiaExplainer from './CiaExplainer.astro';
+import CalculatorGuide from './CalculatorGuide.astro';
+---
+
+<section class="calc" id="calculator">
+  <div class="calc__inner container">
+
+    <CiaExplainer />
+    <CalculatorGuide />
+
+    <!-- Running readout — fills in as the classification is made -->
+    <div class="calc__readout" id="calc-readout">
+      {['C', 'I', 'A', 'U'].map((k) => (
+        <div class="calc__tile" data-tile={k}>
+          <span class="calc__tile-letter">{k}</span>
+          <span class="calc__tile-value" data-tile-value={k}>·</span>
+        </div>
+      ))}
+      <p class="calc__readout-note" id="calc-readout-note">
+        Answer the questions below to determine the cloud service level.
+      </p>
+    </div>
+
+    <ol class="calc__steps" role="list">
+      {AXES.map((axis, ai) => (
+        <li class="calc__step" data-classification-step={axis.key}>
+          <div class="calc__step-head">
+            <span class="calc__step-num" aria-hidden="true">{axis.letter}</span>
+            <div class="calc__step-titles">
+              <p class="calc__step-label">Property {ai + 1} of 3 · {axis.name}</p>
+              <h3 class="calc__step-title">
+                {axis.question}
+              </h3>
+              <p class="calc__step-help">
+                {axis.help}
+                <span class="calc__step-src">{axis.nameSk} · {axis.source.short}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="calc__answer-guide"><span>Choose one level</span><span data-axis-selection={axis.key}>No answer selected</span></div>
+          <div class="calc__levels" role="radiogroup" aria-label={axis.name}>
+            {axis.levels.map((lvl) => (
+              <label class="calc__level" data-axis={axis.key} data-value={lvl.value}>
+                <input type="radio" name={`axis-${axis.key}`} value={String(lvl.value)} data-axis={axis.key} />
+                <span class="calc__level-body">
+                  <span class="calc__level-head">
+                    <span class="calc__level-code">{axis.letter}{lvl.value}</span><span class="calc__chosen" aria-hidden="true">✓ Selected</span>
+                    <span class="calc__level-term">{lvl.term}</span>
+                    <span class="calc__level-sk">{lvl.termSk}</span>
+                  </span>
+                  <span class="calc__level-plain">{lvl.plain}</span>
+                  <span class="calc__lock" data-lock hidden></span>
+                  <details class="calc__formal">
+                    <summary>Read the official definition</summary>
+                    <ul role="list">
+                      {lvl.formal.map((f) => <li>{f}</li>)}
+                    </ul>
+                  </details>
+                </span>
+              </label>
+            ))}
+          </div>
+        </li>
+      ))}
+
+      <!-- Incident profile — replaces "could this cause a category N incident?" -->
+      <li class="calc__step" id="calc-step-incident" hidden>
+        <div class="calc__step-head">
+          <span class="calc__step-num" aria-hidden="true">2</span>
+          <div class="calc__step-titles">
+            <p class="calc__step-label">Incident impact · Stage 2</p>
+            <h3 class="calc__step-title">What would a bad day actually look like?</h3>
+            <p class="calc__step-help">
+              The workbook asks whether compromise could cause a category I, II or III
+              incident. Rather than assume you know those thresholds, these questions ask
+              the underlying facts and derive the category for you.
+              <span class="calc__step-src">Decree 165/2018 §24(2)</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="calc__incident">
+          {INCIDENT_QUESTIONS.map((q) => (
+            <fieldset class="calc__q">
+              <legend class="calc__q-title">{q.question}</legend>
+              <p class="calc__q-help">{q.help}</p>
+              <div class="calc__q-options">
+                {q.options.map((o) => (
+                  <label class="calc__opt" data-degree={o.degree}>
+                    <input type="radio" name={`inc-${q.id}`} value={String(o.degree)} data-incident={q.id} />
+                    <span class="calc__opt-body">
+                      <span class="calc__opt-label">{o.label}</span>
+                      {o.detail && <span class="calc__opt-detail">{o.detail}</span>}
+                    </span>
+                    <span class="calc__gauge" aria-hidden="true">
+                      {[1, 2, 3].map((step) => (
+                        <span class:list={['calc__gauge-bar', { 'calc__gauge-bar--on': o.degree >= step }]} />
+                      ))}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ))}
+          <p class="calc__degree" id="calc-degree" hidden></p>
+        </div>
+      </li>
+
+      <!-- Remaining criteria the CIA triple and incident degree cannot settle -->
+      <li class="calc__step" id="calc-step-criteria" hidden>
+        <div class="calc__step-head">
+          <span class="calc__step-num" aria-hidden="true">3</span>
+          <div class="calc__step-titles">
+            <p class="calc__step-label">Hosting requirements · Stage 3</p>
+            <h3 class="calc__step-title">A few things only you can confirm</h3>
+            <p class="calc__step-help" id="calc-criteria-lead"></p>
+          </div>
+        </div>
+        <div class="calc__criteria" id="calc-criteria"></div>
+        <details class="calc__derived">
+          <summary>Criteria already settled by your answers</summary>
+          <div id="calc-derived"></div>
+        </details>
+      </li>
+    </ol>
+
+    <div id="calc-result" aria-live="polite"></div>
+  </div>
+</section>
+
+<script>
+  import {
+    INCIDENT_QUESTIONS, DEGREE_LABEL,
+    isViable, lockReason, matchCategories, incidentDegree, evaluate,
+    type AxisKey, type Cia, type Ctx, type Level, type Degree, type Selection,
+  } from '../../data/security-calculator';
+
+  const sel: Selection = {};
+  const incident: Record<string, Degree | undefined> = {};
+  const answers: Record<string, boolean> = {};
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const incidentStep = $('calc-step-incident');
+  const criteriaStep = $('calc-step-criteria');
+  const criteriaBox  = $('calc-criteria');
+  const derivedBox   = $('calc-derived');
+  const lead         = $('calc-criteria-lead');
+  const degreeEl     = $('calc-degree');
+  const resultBox    = $('calc-result');
+  const readoutNote  = $('calc-readout-note');
+
+  document.querySelectorAll<HTMLInputElement>('input[data-axis]').forEach((input) => {
+    input.addEventListener('change', () => {
+      sel[input.dataset.axis as AxisKey] = Number(input.value) as Level;
+      Object.keys(answers).forEach((k) => delete answers[k]);
+      render();
+    });
+  });
+
+  document.querySelectorAll<HTMLInputElement>('input[data-incident]').forEach((input) => {
+    input.addEventListener('change', () => {
+      incident[input.dataset.incident!] = Number(input.value) as Degree;
+      Object.keys(answers).forEach((k) => delete answers[k]);
+      render();
+    });
+  });
+
+  function cia(): Cia | null {
+    return sel.c !== undefined && sel.i !== undefined && sel.a !== undefined
+      ? { c: sel.c, i: sel.i, a: sel.a }
+      : null;
+  }
+
+  /** Grey out values no supported combination can reach, and say why. */
+  function applyLocks() {
+    document.querySelectorAll<HTMLElement>('.calc__level').forEach((card) => {
+      const axis = card.dataset.axis as AxisKey;
+      const value = Number(card.dataset.value) as Level;
+      const probe: Selection = { ...sel };
+      delete probe[axis];
+
+      const viable = isViable(axis, value, probe);
+      const input = card.querySelector('input') as HTMLInputElement;
+      const lockEl = card.querySelector('[data-lock]') as HTMLElement;
+
+      card.classList.toggle('calc__level--locked', !viable);
+      input.disabled = !viable;
+      if (!viable) {
+        if (input.checked) { input.checked = false; delete sel[axis]; }
+        lockEl.textContent = lockReason(axis, value, probe) ?? '';
+        lockEl.hidden = false;
+      } else {
+        lockEl.hidden = true;
+      }
+    });
+  }
+
+  function setTile(k: string, v: string | number) {
+    const el = document.querySelector(`[data-tile-value="${k}"]`) as HTMLElement;
+    const tile = document.querySelector(`[data-tile="${k}"]`) as HTMLElement;
+    el.textContent = String(v);
+    tile.classList.toggle('calc__tile--set', v !== '·');
+  }
+
+  function render() {
+    applyLocks();
+    document.querySelectorAll<HTMLElement>('[data-axis-selection]').forEach((status) => {
+      const axis = status.dataset.axisSelection as AxisKey;
+      const selected = document.querySelector<HTMLInputElement>('input[name="axis-' + axis + '"]:checked');
+      const term = selected?.closest('.calc__level')?.querySelector('.calc__level-term')?.textContent;
+      status.textContent = selected ? axis.toUpperCase() + selected.value + ' · ' + term : 'No answer selected';
+      status.dataset.selected = String(Boolean(selected));
+    });
+    const phase = !cia() ? 1 : INCIDENT_QUESTIONS.every((q) => incident[q.id] !== undefined) ? 3 : 2;
+    document.querySelectorAll<HTMLElement>('[data-assessment-phase]').forEach((step) => {
+      const current = Number(step.dataset.assessmentPhase) === phase;
+      step.dataset.current = String(current);
+      if (current) step.setAttribute('aria-current', 'step');
+      else step.removeAttribute('aria-current');
+    });
+    (['c', 'i', 'a'] as AxisKey[]).forEach((k) => setTile(k.toUpperCase(), sel[k] ?? '·'));
+
+    const triple = cia();
+    incidentStep.hidden = !triple;
+    if (!triple) {
+      criteriaStep.hidden = true;
+      resultBox.innerHTML = '';
+      setTile('U', '·');
+      readoutNote.textContent = 'Answer the questions below to determine the cloud service level.';
+      return;
+    }
+
+    const answered = INCIDENT_QUESTIONS.every((q) => incident[q.id] !== undefined);
+    const degree = incidentDegree(incident);
+    degreeEl.hidden = !answered;
+    if (answered) {
+      degreeEl.textContent = `Worst credible incident: ${DEGREE_LABEL[degree]}.`;
+    }
+    if (!answered) {
+      criteriaStep.hidden = true;
+      resultBox.innerHTML = '';
+      setTile('U', '·');
+      readoutNote.textContent = `Classified C${triple.c} I${triple.i} A${triple.a}. Now describe the worst credible incident.`;
+      return;
+    }
+
+    const ctx: Ctx = { ...triple, degree };
+    const cats = matchCategories(triple);
+    criteriaStep.hidden = false;
+    lead.textContent = cats.length > 1
+      ? `C${triple.c} I${triple.i} A${triple.a} sits in ${cats.length} categories. These answers decide which governs.`
+      : `C${triple.c} I${triple.i} A${triple.a} sits in ${cats[0].name}. Tick anything that applies.`;
+
+    criteriaBox.innerHTML = '';
+    derivedBox.innerHTML = '';
+
+    cats.forEach((cat) => {
+      const manual = cat.criteria.map((cr, idx) => ({ cr, idx })).filter((x) => !x.cr.auto);
+      const auto = cat.criteria.map((cr, idx) => ({ cr, idx })).filter((x) => x.cr.auto);
+
+      if (manual.length) {
+        const g = document.createElement('div');
+        g.className = 'calc__criteria-group';
+        const h = document.createElement('p');
+        h.className = 'calc__criteria-heading';
+        h.textContent = `${cat.name} — ${cat.summary}`;
+        g.appendChild(h);
+        manual.forEach(({ cr, idx }) => {
+          const key = `${cat.id}-${idx}`;
+          const row = document.createElement('label');
+          row.className = 'calc__criterion';
+          const box = document.createElement('input');
+          box.type = 'checkbox';
+          box.checked = answers[key] === true;
+          box.addEventListener('change', () => { answers[key] = box.checked; render(); });
+          row.appendChild(box);
+          const t = document.createElement('span');
+          t.className = 'calc__criterion-text';
+          t.textContent = cr.plain ?? cr.text;
+          row.appendChild(t);
+          const w = document.createElement('span');
+          w.className = 'calc__criterion-tag';
+          w.textContent = `U${cr.weight}`;
+          row.appendChild(w);
+          g.appendChild(row);
+        });
+        criteriaBox.appendChild(g);
+      }
+
+      if (auto.length) {
+        const g = document.createElement('div');
+        g.className = 'calc__criteria-group';
+        const h = document.createElement('p');
+        h.className = 'calc__criteria-heading';
+        h.textContent = cat.name;
+        g.appendChild(h);
+        auto.forEach(({ cr }) => {
+          const met = cr.auto!(ctx);
+          const row = document.createElement('p');
+          row.className = 'calc__criterion calc__criterion--auto';
+          row.innerHTML =
+            `<span class="calc__criterion-state" aria-hidden="true">${met ? '✓' : '—'}</span>` +
+            `<span class="calc__criterion-text">${cr.text}</span>` +
+            `<span class="calc__criterion-tag">${met ? `U${cr.weight}` : 'n/a'}</span>`;
+          g.appendChild(row);
+        });
+        derivedBox.appendChild(g);
+      }
+    });
+
+    showResult(ctx);
+  }
+
+  function showResult(ctx: Ctx) {
+    const out = evaluate(ctx, answers);
+    if (out.u === null || !out.governing) {
+      setTile('U', '·');
+      readoutNote.textContent = 'Tick at least one criterion that describes this system.';
+      resultBox.innerHTML = '';
+      return;
+    }
+
+    setTile('U', out.u);
+    readoutNote.textContent = `Security ${out.governing.name} · ${out.governing.nameSk}`;
+
+    const mandatory = out.controls.filter((c) => c.obligation === 'mandatory');
+    const recommended = out.controls.filter((c) => c.obligation === 'recommended');
+    const list = (rows: typeof mandatory) =>
+      rows.map((c) => `<li><span>${c.area.name}</span><span class="calc__control-ref">${c.area.ref}</span></li>`).join('');
+
+    resultBox.innerHTML = `
+      <div class="calc__verdict">
+        <p class="calc__verdict-label">Result &middot; U${out.u} C${ctx.c} I${ctx.i} A${ctx.a}</p>
+        <p class="calc__verdict-body">
+          This is a <strong>${out.governing.name}</strong> system (${out.governing.nameSk}).
+          Look for services at cloud service level <strong>U${out.u}</strong> or higher in the
+          Government Cloud service catalogue. Of the 17 measures under §20 of Act 69/2018,
+          <strong>${mandatory.length}</strong> are mandatory here and ${recommended.length} are recommended.
+        </p>
+        <div class="calc__controls">
+          <div>
+            <p class="calc__control-head">Mandatory &middot; ${mandatory.length}</p>
+            <ul class="calc__control-list" role="list">${list(mandatory)}</ul>
+          </div>
+          <div>
+            <p class="calc__control-head">Recommended &middot; ${recommended.length}</p>
+            <ul class="calc__control-list" role="list">
+              ${recommended.length ? list(recommended) : '<li><span>All 17 measures are mandatory at this category.</span></li>'}
+            </ul>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  render();
+</script>
+
+<style>
+  .calc { scroll-margin-top: calc(var(--nav-height) + var(--space-4)); }
+
+  .calc__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  /* ── Readout ───────────────────────────────────────────────────────── */
+  .calc__readout {
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background-color: var(--color-navy);
+  }
+
+  .calc__tile {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    min-width: 3.5rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-on-dark-border);
+    font-family: var(--font-mono);
+  }
+
+  .calc__tile--set { background-color: rgba(255, 255, 255, 0.08); }
+
+  .calc__tile-letter { font-size: var(--text-label-md); color: var(--color-primary-container); }
+
+  .calc__tile-value {
+    font-size: var(--text-title-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-on-inverse-surface);
+  }
+
+  .calc__readout-note {
+    font-size: var(--text-body-md);
+    color: var(--color-on-dark-muted);
+    margin-left: var(--space-2);
+  }
+
+  /* ── Steps ─────────────────────────────────────────────────────────── */
+  .calc__steps {
+    display: flex; flex-direction: column; gap: var(--space-6);
+  }
+
+  .calc__step-head {
+    display: flex; align-items: flex-start; gap: var(--space-4); margin-bottom: var(--space-5);
+  }
+
+  .calc__step-num {
+    display: grid; place-items: center; flex-shrink: 0; width: var(--space-8); height: var(--space-8); background: var(--color-navy); color: var(--color-on-primary); font: var(--text-title-lg) var(--font-mono);
+  }
+
+  .calc__step-titles { display: flex; flex-direction: column; gap: var(--space-2); }
+
+  .calc__step-title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+  }
+
+  .calc__step-help {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 72ch;
+  }
+
+  .calc__step-src {
+    display: block;
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
+  }
+
+  /* ── Level cards ───────────────────────────────────────────────────── */
+  .calc__levels { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+
+  @media (min-width: 900px) {
+    .calc__levels { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .calc__level {
+    display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-5); background: var(--color-surface-container-lowest); cursor: pointer; transition: background var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  }
+
+  .calc__level:hover {
+    background: var(--color-primary-tint);
+  }
+
+  .calc__level:has(input:checked) {
+    background: var(--color-primary-tint); box-shadow: inset var(--space-1) 0 0 var(--color-primary);
+  }
+
+  .calc__level--locked {
+    cursor: not-allowed; background: var(--color-surface-container);
+  }
+
+  .calc__level--locked:hover { background-color: var(--color-surface-container-low); }
+
+  .calc__level input {
+    margin-top: var(--space-1); align-self: flex-start; accent-color: var(--color-primary); flex-shrink: 0; width: var(--space-4); height: var(--space-4);
+  }
+
+  .calc__level-body {
+    display: flex; flex-direction: column; gap: var(--space-3); flex: 1; min-width: 0;
+  }
+
+  .calc__level-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: var(--space-1) var(--space-3); }
+
+  .calc__level-code {
+    display: inline-block; padding: var(--space-1) var(--space-2); background: var(--color-navy); color: var(--color-on-primary); font: var(--weight-medium) var(--text-label-md) var(--font-mono);
+  }
+
+  .calc__level-term {
+    grid-column: 2; grid-row: 1; font-size: var(--text-title-md); font-weight: var(--weight-semibold); color: var(--color-navy);
+  }
+
+  .calc__level-sk {
+    font-size: var(--text-label-md); color: var(--color-on-surface-muted);
+  }
+
+  .calc__level-plain {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface);
+  }
+
+  .calc__lock {
+    font-size: var(--text-label-md);
+    line-height: var(--leading-snug);
+    color: var(--color-primary-dim);
+    border-left: 2px solid var(--color-primary);
+    padding-left: var(--space-3);
+  }
+
+  /* ── Official wording, on demand ───────────────────────────────────── */
+  .calc__formal summary,
+  .calc__derived summary {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .calc__formal ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .calc__formal li {
+    font-size: var(--text-label-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--color-divider);
+  }
+
+  .calc__derived { margin-top: var(--space-5); }
+  .calc__derived > div { margin-top: var(--space-4); }
+
+  /* ── Incident questions ────────────────────────────────────────────── */
+  .calc__incident { display: flex; flex-direction: column; gap: var(--space-6); }
+
+  .calc__q {
+    min-width: 0; border: 0; padding: var(--space-4); background: var(--color-surface-container-lowest);
+  }
+
+  .calc__q-title {
+    float: left; width: 100%; font-family: var(--font-display); font-size: var(--text-title-md); font-weight: var(--weight-semibold); color: var(--color-navy); padding: 0; margin-bottom: var(--space-2);
+  }
+
+  .calc__q-help {
+    clear: both; font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); margin-bottom: var(--space-4); max-width: 72ch;
+  }
+
+  .calc__q-options { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+
+  @media (min-width: 768px) {
+    .calc__q-options { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .calc__opt {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: start; gap: var(--space-3); padding: var(--space-4); background: var(--color-surface-container-low); cursor: pointer; transition: background var(--duration-fast) var(--ease-standard);
+  }
+
+  .calc__opt:hover { background-color: var(--color-surface-container-low); }
+
+  .calc__opt:has(input:checked) {
+    background: var(--color-primary-tint); box-shadow: inset var(--space-1) 0 0 var(--color-primary);
+  }
+
+  .calc__opt input { margin-top: 3px; accent-color: var(--color-primary); }
+
+  .calc__opt-body { display: flex; flex-direction: column; gap: 2px; }
+
+  .calc__opt-label { font-size: var(--text-body-md); color: var(--color-on-surface); }
+
+  .calc__opt-detail {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-meta-label);
+  }
+
+  /* Severity at a glance — three bars, filled to the incident degree the
+     option carries under Decree 165/2018. */
+  .calc__gauge {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding-top: 5px;
+  }
+
+  .calc__gauge-bar {
+    display: block;
+    width: 4px;
+    height: 12px;
+    background-color: var(--color-divider);
+  }
+
+  .calc__gauge-bar--on { background-color: var(--color-primary); }
+
+  .calc__opt:has(input:checked) .calc__gauge-bar { background-color: var(--color-divider-strong); }
+  .calc__opt:has(input:checked) .calc__gauge-bar--on { background-color: var(--color-primary); }
+
+  .calc__degree {
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-primary-tint);
+    border-left: 3px solid var(--color-primary);
+  }
+
+  /* ── Criteria ──────────────────────────────────────────────────────── */
+  .calc__criteria { display: flex; flex-direction: column; gap: var(--space-6); }
+
+  :global(.calc__criteria-heading) {
+    font: var(--weight-semibold) var(--text-title-md) / var(--leading-snug) var(--font-display); color: var(--color-navy); margin-bottom: var(--space-4);
+  }
+
+  :global(.calc__criterion) {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: var(--space-3); padding: var(--space-4); margin-top: var(--space-2); background: var(--color-surface-container-lowest); font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface); cursor: pointer;
+  }
+
+  :global(.calc__criterion--auto) { cursor: default; color: var(--color-on-surface-muted); }
+  :global(.calc__criterion input) { accent-color: var(--color-primary); }
+  :global(.calc__criterion-state) { font-family: var(--font-mono); color: var(--color-primary); width: 1em; }
+
+  :global(.calc__criterion-tag) {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-meta-label);
+    white-space: nowrap;
+  }
+
+  /* ── Verdict ───────────────────────────────────────────────────────── */
+  :global(.calc__verdict) {
+    background-color: var(--color-navy);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  :global(.calc__verdict-label) {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-md);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary-container);
+  }
+
+  :global(.calc__verdict-body) {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-dark-muted);
+    max-width: 72ch;
+  }
+
+  :global(.calc__verdict-body strong) { color: var(--color-on-inverse-surface); }
+
+  :global(.calc__controls) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-on-dark-border);
+  }
+
+  @media (min-width: 768px) {
+    :global(.calc__controls) { grid-template-columns: repeat(2, 1fr); gap: var(--space-8); }
+  }
+
+  :global(.calc__control-head) {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary-container);
+    margin-bottom: var(--space-3);
+  }
+
+  :global(.calc__control-list) { display: flex; flex-direction: column; }
+
+  :global(.calc__control-list li) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: var(--text-body-md);
+    line-height: var(--leading-snug);
+    color: var(--color-on-dark-muted);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-on-dark-border);
+  }
+
+  :global(.calc__control-list li:last-child) { border-bottom: none; }
+
+  :global(.calc__control-ref) {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    color: var(--color-primary-container);
+    white-space: nowrap;
+  }
+  /* Questions, choices, and selected answers have distinct visual roles. */
+  .calc__step { padding: var(--space-4); background: var(--color-surface-container-low); }
+  .calc__step[hidden] { display: none; }
+  .calc__step-label { font: var(--weight-medium) var(--text-label-md) var(--font-mono); color: var(--color-primary); }
+  .calc__answer-guide { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-3); font-size: var(--text-label-md); color: var(--color-on-surface-muted); }
+  .calc__answer-guide > span:first-child { color: var(--color-navy); font-weight: var(--weight-semibold); }
+  [data-axis-selection][data-selected="true"] { color: var(--color-primary); font-weight: var(--weight-semibold); }
+  .calc__chosen { display: none; grid-column: 2; grid-row: 3; font-size: var(--text-label-md); font-weight: var(--weight-semibold); color: var(--color-primary); }
+  .calc__level-code { grid-row: 1 / 3; align-self: start; }
+  .calc__level-sk { grid-column: 2; grid-row: 2; }
+  .calc__level:has(input:checked) .calc__chosen { display: inline; }
+  .calc__level:has(input:focus-visible), .calc__opt:has(input:focus-visible) { outline: var(--space-1) solid var(--color-primary-container); outline-offset: var(--space-1); }
+  .calc__level--locked .calc__level-code { background: var(--color-meta-label); }
+  .calc__formal summary { text-transform: none; letter-spacing: var(--tracking-normal); font-weight: var(--weight-regular); color: var(--color-on-surface-muted); }
+  .calc__formal[open] { padding: var(--space-3); background: var(--color-surface-container-low); }
+  :global(.calc__criterion:has(input:checked)) { background: var(--color-primary-tint); box-shadow: inset var(--space-1) 0 0 var(--color-primary); }
+  @media (min-width: 768px) { .calc__step { padding: var(--space-6); } }
+</style>

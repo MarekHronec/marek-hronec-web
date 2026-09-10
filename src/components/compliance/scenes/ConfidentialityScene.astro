@@ -1,0 +1,50 @@
+---
+import SailingVessel from './SailingVessel.astro';
+import ChartWater from './ChartWater.astro';
+---
+<svg class="scene scene--confidentiality" viewBox="0 0 600 360" role="img" aria-labelledby="confidentiality-scene-title">
+  <title id="confidentiality-scene-title">A ship's private manifest is readable by its captain. Removing access protection reveals the same information to an outsider.</title>
+  <ChartWater id="confidentiality" />
+  <g transform="translate(115 246) scale(1.16)"><g class="c-vessel"><SailingVessel /></g></g>
+  <path class="scene__line scene__quiet" d="M84 273 H168 M101 280 H181 M99 141 Q111 130 123 141 M130 120 Q140 111 150 120" />
+  <text class="scene__label" x="63" y="309">THE SHIP'S DATA</text>
+  <g class="manifest">
+    <path class="scene__paper" d="M207 59 H331 L352 80 V229 H207 Z" />
+    <path class="scene__line" d="M331 59 V80 H352" />
+    <text class="scene__label" x="225" y="91">PRIVATE MANIFEST</text>
+    <path class="scene__line scene__quiet" d="M225 105 H332" />
+    <text class="scene__text" x="225" y="132">Cargo</text><text class="scene__text" x="225" y="159">Route</text><text class="scene__text" x="225" y="186">Crew</text>
+    <path class="manifest__entries" d="M277 128 H331 M277 133 H311 M277 155 H324 M277 160 H331 M277 182 H331 M277 187 H316" />
+    <g transform="translate(326 210)" class="scene__line"><circle r="9" /><path d="m-4 0 3 3 5 -6" /></g>
+  </g>
+  <path class="scene__route" d="M354 116 H393 Q408 116 408 101 H434" />
+  <path class="scene__route c-route" d="M352 197 H384 Q405 197 405 232 V248 H434" />
+  <g transform="translate(466 101)" class="scene__line">
+    <circle class="scene__paper" r="25" /><circle cy="-5" r="7" /><path d="M-13 13 Q-12 2 0 2 Q12 2 13 13 M-11 -12 Q0 -22 11 -12" />
+  </g>
+  <text class="scene__label" x="466" y="143" text-anchor="middle">CAPTAIN</text>
+  <text class="scene__text" x="466" y="161" text-anchor="middle">Allowed to read</text>
+  <g transform="translate(466 247)" class="scene__line">
+    <circle class="scene__paper" r="25" /><circle cy="-6" r="7" /><path d="M-13 13 Q-12 2 0 2 Q12 2 13 13" />
+  </g>
+  <text class="scene__label" x="466" y="289" text-anchor="middle">OUTSIDER</text>
+  <g class="scene__before"><text class="scene__text" x="466" y="308" text-anchor="middle">Access denied</text>
+    <g transform="translate(405 230)" class="scene__line"><circle class="scene__paper" r="13" /><path d="M-5 -5 L5 5 M5 -5 L-5 5" /></g>
+  </g>
+  <g class="scene__after"><text class="scene__text scene__emphasis" x="466" y="308" text-anchor="middle">Private details exposed</text>
+    <g class="c-leaked-record" transform="translate(274 244)"><path class="scene__paper" d="M0 0 H132 V49 H0 Z" /><text class="scene__label" x="10" y="19">PRIVATE CREW LIST</text><text class="scene__text" x="10" y="37">8 names revealed</text></g>
+    <g class="c-message"><path class="scene__paper" d="M-7 -9 H7 V9 H-7 Z" /><path class="scene__line" d="M-3 -4 H3 M-3 0 H3 M-3 4 H1" /></g>
+  </g>
+</svg>
+<style>
+  .c-vessel { animation: heave var(--nautical-orbit-duration) var(--ease-standard) both; }
+  @keyframes heave { 0%, 50%, 100% { transform: translateY(0) rotate(0); } 25%, 75% { transform: translateY(-2px) rotate(.7deg); } }
+  :global(.ex__panel[data-demonstrate="true"]) .c-leaked-record { animation: open-record var(--nautical-story-duration) var(--ease-standard) both; }
+  @keyframes open-record { 0%, 35% { opacity: 0; } 80%, 100% { opacity: 1; } }
+  .manifest__entries { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-heavy-stroke); opacity: .5; }
+  .c-message { opacity: 0; }
+  :global(.ex__panel[data-demonstrate="true"]) .c-route { opacity: 1; stroke-dasharray: 4 6; animation: disclose var(--nautical-story-duration) var(--ease-standard) both; }
+  :global(.ex__panel[data-demonstrate="true"]) .c-message { animation: reveal var(--nautical-story-duration) var(--ease-standard) both; }
+  @keyframes disclose { from { stroke-dashoffset: 90; } to { stroke-dashoffset: 0; } }
+  @keyframes reveal { 0% { opacity: 0; transform: translate(353px, 197px); } 15% { opacity: 1; transform: translate(371px, 197px); } 55% { opacity: 1; transform: translate(405px, 222px); } 80% { opacity: 1; transform: translate(434px, 248px); } 90%, 100% { opacity: 0; transform: translate(448px, 248px); } }
+</style>

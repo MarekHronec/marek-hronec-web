@@ -1,0 +1,428 @@
+---
+/*
+ * EU cloud compliance — topic page.
+ *
+ * Groups the existing compliance corpus into the three layers a practitioner
+ * actually navigates (EU regulation, national frameworks, assurance underlay)
+ * and carries the ISVS placement calculator. Article grouping is by slug so
+ * adding a country note is a one-line change below; the calculator's model
+ * lives in src/data/security-calculator.ts.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SecurityCalculator from '../components/compliance/SecurityCalculator.astro';
+import CalculatorNotice from '../components/compliance/CalculatorNotice.astro';
+import CompassRose from '../components/icons/CompassRose.astro';
+import { getCollection } from 'astro:content';
+import { base } from '../utils/base';
+
+const all = await getCollection('knowledgeBase');
+const compliance = all.filter((a) => a.data.category === 'compliance');
+const bySlug = new Map(compliance.map((a) => [a.id.split('/').pop() ?? a.id, a]));
+
+interface Layer {
+  label: string;
+  lede: string;
+  slugs: string[];
+}
+
+const LAYERS: Layer[] = [
+  {
+    label: 'EU regulation',
+    lede: 'Binding instruments that reach cloud providers and their customers directly, regardless of member state.',
+    slugs: [
+      'dora-for-cloud-financial-sector-overlay',
+      'dora-article-30-contracts-and-exit-strategies',
+      'dora-ctpp-regime-direct-esa-supervision',
+      'nis2-supply-chain-cloud-providers',
+      'eu-ai-act-and-cloud-provider-obligations',
+      'gdpr-article-28-and-eu-cloud-code-of-conduct',
+      'eucs-watch-political-tracking-2026',
+    ],
+  },
+  {
+    label: 'National frameworks',
+    lede: 'What each authority will actually accept. The frameworks diverge more than the EU layer suggests.',
+    slugs: [
+      'france-anssi-secnumcloud-qualification',
+      'germany-bsi-c5-cloud-attestation',
+      'italy-acn-cloud-qualification',
+      'spain-ens-national-security-framework',
+      'netherlands-bio2-baseline',
+      'poland-ksc-cybersecurity-system',
+      'czechia-nukib-cybersecurity-act',
+      'slovakia-ksvc-mirri-government-cloud',
+      'finland-pitukri-cloud-assessment',
+      'norway-nsm-cloud-frameworks',
+      'switzerland-finma-cloud-frameworks',
+      'united-kingdom-ncsc-cloud-security-principles',
+    ],
+  },
+  {
+    label: 'Assurance underlay',
+    lede: 'The certifications and attestations every national framework builds on — and how to read them.',
+    slugs: [
+      'iso-27001-27017-27018-27701-cloud-baselines',
+      'soc-2-reports-how-to-actually-read-them',
+      'csa-star-registry-cross-cutting-trust-layer',
+      'reading-cloud-attestation-reports-practitioner-guide',
+      'cloud-encryption-key-custody-byok-hyok',
+    ],
+  },
+  {
+    label: 'Market and posture',
+    lede: 'Choosing where to land, and who can actually host you under each posture.',
+    slugs: [
+      'cloud-compliance-decision-framework',
+      'cloud-data-security-eu-national-frameworks-overview',
+      'sovereign-cloud-products-2026-landscape',
+      'eu-native-cloud-providers-landscape',
+      'hyperscaler-eu-data-boundary-commitments',
+    ],
+  },
+];
+
+const layers = LAYERS.map((l) => ({
+  ...l,
+  articles: l.slugs.map((s) => bySlug.get(s)).filter(Boolean),
+}));
+
+const covered = new Set(LAYERS.flatMap((l) => l.slugs));
+const ungrouped = compliance.filter((a) => !covered.has(a.id.split('/').pop() ?? a.id));
+const countryCount = LAYERS[1].slugs.length;
+---
+
+<BaseLayout
+  title="EU Cloud Compliance"
+  description="National cloud qualification frameworks across the EU, the regulation above them, and a calculator for classifying a Slovak ISVS and its required controls."
+>
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="ca-hero">
+    <div class="ca-hero__inner container">
+      <h1 class="ca-hero__heading">
+        Cloud compliance in the
+        <span class="ca-hero__accent">European Union</span><span class="ca-hero__period">.</span>
+      </h1>
+      <p class="ca-hero__body">
+        Every member state has arrived at its own answer to the same question:
+        which cloud services may hold public-sector and essential-service data,
+        and under what assurance. {countryCount} of those answers are mapped here,
+        alongside the EU instruments above them and the certifications they all
+        rest on — plus a calculator that works a Slovak ISVS through to its
+        required cloud service level.
+      </p>
+      <div class="ca-choice">
+        <a class="ca-choice__card" href="#calculator">
+          <span class="ca-choice__kicker">Tool</span>
+          <span class="ca-choice__title">Classify a system</span>
+          <span class="ca-choice__body">
+            Work an ISVS through to its C, I, A classification, its security
+            category, and the cloud service level and controls that follow.
+          </span>
+          <span class="ca-choice__go">Open the calculator &rarr;</span>
+        </a>
+        <a class="ca-choice__card" href="#reference">
+          <span class="ca-choice__kicker">Reference</span>
+          <span class="ca-choice__title">Read the frameworks</span>
+          <span class="ca-choice__body">
+            {compliance.length} sourced notes: {countryCount} national frameworks,
+            the EU regulation above them, and the assurance they all rest on.
+          </span>
+          <span class="ca-choice__go">Browse the reference &rarr;</span>
+        </a>
+      </div>
+
+      <CalculatorNotice />
+    </div>
+  </section>
+
+  <!-- ── Calculator ────────────────────────────────────────────────── -->
+  <div class="section-rule">
+    <SecurityCalculator />
+  </div>
+
+  <!-- ── Reference ─────────────────────────────────────────────────── -->
+  <section class="ca-layers section-rule" id="reference">
+    <div class="ca-layers__inner container">
+      {layers.map((layer) => (
+        <div class="ca-layer">
+          <div class="ca-layer__head">
+            <h2 class="ca-layer__label">{layer.label}</h2>
+            <p class="ca-layer__lede">{layer.lede}</p>
+          </div>
+          <ul class="ca-layer__list" role="list">
+            {layer.articles.map((a) => (
+              <li class="ca-item">
+                <a class="ca-item__link" href={`${base}/knowledge-base/${a!.id}`}>
+                  <span class="ca-item__title">{a!.data.title}</span>
+                  <span class="ca-item__excerpt">{a!.data.excerpt}</span>
+                </a>
+                <span class="ca-item__meta">{a!.data.readTime ? `${a!.data.readTime} min` : ''}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      {ungrouped.length > 0 && (
+        <p class="ca-layers__rest">
+          <a href={`${base}/knowledge-base?topic=compliance`}>
+            {ungrouped.length} further compliance notes in the Knowledge Base →
+          </a>
+        </p>
+      )}
+    </div>
+  </section>
+
+  <!-- ── Close ─────────────────────────────────────────────────────── -->
+  <section class="ca-close section-rule">
+    <div class="ca-close__inner container">
+      <CompassRose size={22} class="ca-close__rose" aria-hidden="true" />
+      <p class="ca-close__text">
+        Every note is sourced and carries a review date. Regulatory positions move —
+        <a href={`${base}/knowledge-base?topic=compliance`}>browse the full set</a>
+        or <a href={`${base}/contact`}>get in touch</a> if you need a position
+        assessed against a specific framework.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+  .ca-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--space-8) var(--space-7);
+  }
+
+  .ca-hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-on-surface);
+    max-width: 18ch;
+  }
+
+  .ca-hero__accent {
+    color: var(--color-primary);
+  }
+
+  .ca-hero__period {
+    color: var(--color-meta-label);
+  }
+
+  .ca-hero__body {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 68ch;
+  }
+
+  /* ── Choice ────────────────────────────────────────────────────────── */
+  .ca-choice {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .ca-choice {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .ca-choice__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: 1px solid var(--color-divider-strong);
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .ca-choice__card:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-tint);
+    opacity: 1;
+  }
+
+  .ca-choice__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-meta-label);
+  }
+
+  .ca-choice__title {
+    font-family: var(--font-display);
+    font-size: var(--text-title-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-on-surface);
+  }
+
+  .ca-choice__body {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+  }
+
+  .ca-choice__go {
+    margin-top: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+  }
+
+  .ca-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-meta-label);
+  }
+
+  /* ── Layers ────────────────────────────────────────────────────────── */
+  #reference {
+    scroll-margin-top: calc(var(--nav-height) + var(--space-4));
+  }
+
+  .ca-layers__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+  }
+
+  .ca-layer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 1024px) {
+    .ca-layer {
+      grid-template-columns: 300px 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  .ca-layer__label {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+
+  .ca-layer__label::after {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: var(--space-3);
+    background-color: var(--color-primary);
+  }
+
+  .ca-layer__lede {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    margin-top: var(--space-4);
+  }
+
+  .ca-layer__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ca-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .ca-item:first-child {
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .ca-item__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    text-decoration: none;
+  }
+
+  .ca-item__title {
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-on-surface);
+    line-height: var(--leading-snug);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .ca-item__link:hover .ca-item__title {
+    color: var(--color-primary);
+  }
+
+  .ca-item__excerpt {
+    font-size: var(--text-body-md);
+    line-height: var(--leading-snug);
+    color: var(--color-on-surface-muted);
+    max-width: 74ch;
+  }
+
+  .ca-item__meta {
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    color: var(--color-meta-label);
+    white-space: nowrap;
+  }
+
+  .ca-layers__rest a {
+    font-family: var(--font-display);
+    font-size: var(--text-label-md);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+  }
+
+  /* ── Close ─────────────────────────────────────────────────────────── */
+  .ca-close__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-block: var(--space-7) var(--space-10);
+  }
+
+  .ca-close__rose {
+    flex-shrink: 0;
+    color: var(--color-warm-gray);
+    margin-top: 2px;
+  }
+
+  .ca-close__text {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-on-surface-muted);
+    max-width: 68ch;
+  }
+</style>
