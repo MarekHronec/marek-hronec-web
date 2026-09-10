@@ -6,6 +6,7 @@
  * only geometry and its own motion. Scenes opt into the story toggle by styling
  * .scene__before / .scene__after, or by keying off [data-demonstrate="true"].
  */
+import WorkloadQuestion from './WorkloadQuestion.astro';
 import type { ConceptStory } from '../../data/platform-concepts';
 
 interface Props {
@@ -54,10 +55,7 @@ const { story } = Astro.props;
       <p class="cp__status" data-status aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
     </div>
 
-    <div class="cp__question">
-      <span>Ask about your workload</span>
-      <p>{story.question}</p>
-    </div>
+    <WorkloadQuestion question={story.question} answers={story.answers} />
     <p class="cp__lesson">{story.lesson}</p>
   </div>
 </section>
@@ -104,9 +102,6 @@ const { story } = Astro.props;
     color: var(--color-primary); min-height: var(--space-8);
   }
 
-  .cp__question { padding: var(--space-4) var(--space-5); background: var(--color-primary-tint); }
-  .cp__question span { display: block; font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
-  .cp__question p { font-size: var(--text-body-md); font-weight: var(--weight-medium); line-height: var(--leading-relaxed); color: var(--color-navy); }
   .cp__copy .cp__lesson { font-size: var(--text-label-md); }
 
   .cp__playback { display: flex; justify-content: flex-end; gap: var(--space-4); padding: var(--space-3); }

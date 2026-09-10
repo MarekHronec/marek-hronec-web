@@ -1,23 +1,24 @@
 ---
-/*
- * A side-on vessel drawn from its deck-left corner, so a parent group can
- * position it with a transform attribute and leave CSS transforms free for
- * motion. Deck runs along y=0; the hull hangs below it.
- */
 interface Props {
   width?: number;
   depth?: number;
   bridge?: boolean;
 }
 const { width = 210, depth = 44, bridge = true } = Astro.props;
-const bow = width - 14;
+const bow = width - depth * .52;
+const count = Math.max(3, Math.floor(width / 30));
+const ports = Array.from({ length: count }, (_, i) => 24 + i * (width - 48) / (count - 1));
 ---
 <g>
-  <path class="scene__hull" d={`M0 0 H${width} L${bow} ${depth} H14 Z`} />
+  <path class="scene__hull" d={`M0 0 H${width} Q${width - 7} ${depth * .64} ${bow} ${depth} H${depth * .6} Q8 ${depth * .8} 0 0 Z`} />
+  <path class="scene__solid" d={`M8 ${depth * .45} Q${width * .5} ${depth * .7} ${width - 10} ${depth * .35} Q${width - 16} ${depth * .8} ${bow} ${depth} H${depth * .6} Q16 ${depth * .8} 8 ${depth * .45} Z`} />
+  <path class="scene__line" d={`M3 5 H${width - 4}`} />
+  {ports.map((x) => <circle class="scene__solid" cx={x} cy={depth * .28} r="1.5" />)}
   {bridge && (
     <g>
       <path class="scene__hull" d="M10 0 V-24 H40 V0 Z" />
-      <path class="scene__line" d="M16 -16 H34 M16 -8 H34" />
+      <path class="scene__solid" d="M14 -20 H22 V-14 H14 Z M26 -20 H36 V-14 H26 Z" />
+      <path class="scene__line" d="M12 -28 H42 M22 -28 V-39 M22 -36 H34 M16 -8 H34" />
     </g>
   )}
 </g>

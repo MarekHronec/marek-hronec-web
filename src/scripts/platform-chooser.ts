@@ -11,14 +11,13 @@ const COUNT_WORD: Record<number, string> = { 2: 'Two', 3: 'Three', 4: 'Four', 5:
 
 export function initializeChooser() {
   document.querySelectorAll<HTMLElement>('.pc:not([data-ready])').forEach((root) => {
-    root.dataset.ready = 'true';
-
     const form = root.querySelector<HTMLFormElement>('[data-chooser-form]');
     const panel = root.querySelector<HTMLElement>('[data-chooser-verdict]');
     const rank = root.querySelector<HTMLElement>('[data-chooser-rank]');
     const empty = root.querySelector<HTMLElement>('[data-chooser-empty]');
     const progress = root.querySelector<HTMLElement>('[data-chooser-progress]');
     if (!form || !panel || !rank || !empty || !progress) return;
+    root.dataset.ready = 'true';
 
     const details = new Map(
       [...root.querySelectorAll<HTMLElement>('[data-detail]')].map((el) => [el.dataset.detail!, el]),
@@ -30,6 +29,8 @@ export function initializeChooser() {
       [...root.querySelectorAll<HTMLElement>('[data-q-selection]')].map((el) => [el.dataset.qSelection!, el]),
     );
 
+    const resetButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-chooser-reset]')];
+    const resultScroll = root.querySelector<HTMLElement>('[data-result-scroll]');
     const panelBox = root.querySelector<HTMLElement>('.pc__panel');
     const headline = root.querySelector<HTMLElement>('[data-chooser-headline]');
     const tie = root.querySelector<HTMLElement>('[data-chooser-tie]');
@@ -66,6 +67,9 @@ export function initializeChooser() {
 
       renderSelectionLabels(selection);
       progress.textContent = String(result.answered);
+      resetButtons.forEach((button) => { button.disabled = result.answered === 0; });
+      // A changed recommendation must start at its heading, not an old scroll offset.
+      if (resultScroll) resultScroll.scrollTop = 0;
 
       const hasAnswer = result.answered > 0 && !!result.top;
       empty.hidden = hasAnswer;
@@ -73,7 +77,7 @@ export function initializeChooser() {
       rank.hidden = !hasAnswer;
 
       if (hasAnswer) {
-        details.forEach((el, key) => { el.hidden = key !== result.top!.key; });
+        details.forEach((el, key) => { el.hidden = result.undecided || key !== result.top!.key; });
 
         // With several options level, the "winner" would be whichever the data
         // file happens to list first — so say that rather than dress it up.
@@ -128,7 +132,9 @@ export function initializeChooser() {
         if (label) {
           label.textContent = verdict.excluded
             ? 'Ruled out'
-            : leads
+            : result.undecided && verdict.score === result.top?.score
+              ? 'Joint lead'
+              : leads
               ? 'Best fit'
               : `Score ${verdict.score > 0 ? '+' : ''}${verdict.score}`;
         }
@@ -141,11 +147,13 @@ export function initializeChooser() {
       });
     };
 
+    form.addEventListener('submit', (event) => event.preventDefault());
     form.addEventListener('change', render);
-    root.querySelector('[data-chooser-reset]')?.addEventListener('click', () => {
+    resetButtons.forEach((button) => button.addEventListener('click', () => {
       form.reset();
       render();
-    });
+      form.querySelector<HTMLInputElement>('input[type="radio"]')?.focus();
+    }));
 
     render();
   });

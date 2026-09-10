@@ -12,13 +12,9 @@ import { APPROACHES, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-appro
 
 <div class="resp">
   <div class="resp__head">
-    <h2 class="resp__title">The line moves. Two rows never do.</h2>
+    <h2 class="resp__title">What you operate. What you still govern.</h2>
     <p class="resp__lede">
-      Every provider publishes a version of this chart, and every one of them
-      draws its own share slightly larger than it really is. Read it as a shape
-      rather than a contract: the boundary slides as you hand more over, and
-      configuration and data stay on your side of it every time — including
-      where you run nothing at all.
+      This comparison assumes cloud VMs, containers on your own VMs, managed Kubernetes, managed application platforms and SaaS. “Yours” means you have work to own; it does not remove the provider’s duties. Exact boundaries depend on the service and contract.
     </p>
   </div>
 
@@ -108,7 +104,10 @@ import { APPROACHES, STACK_LAYERS, OWNER_LABEL } from '../../data/platform-appro
     white-space: nowrap;
   }
   .resp__cell--provider { color: var(--color-meta-label); }
-  .resp__cell--shared { color: var(--color-primary); }
+  .resp__cell--shared {
+    color: var(--color-navy);
+    background: linear-gradient(135deg, var(--color-primary-tint) 50%, var(--color-surface-container-lowest) 50%);
+  }
   .resp__cell--you {
     color: var(--color-navy);
     font-weight: var(--weight-semibold);

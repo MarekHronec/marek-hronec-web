@@ -4,8 +4,8 @@ import Hull from './Hull.astro';
 <svg class="scene scene--k8s" viewBox="0 0 600 360" role="img" aria-labelledby="k8s-scene-title">
   <title id="k8s-scene-title">
     A manifest declares three replicas. When one is lost, the observed count
-    falls to two, and the controller loop — observe, compare, act — schedules a
-    replacement without anybody being paged.
+    falls to two. The ReplicaSet controller creates a replacement Pod and the
+    scheduler assigns a node, assuming sufficient capacity and a working image.
   </title>
 
   <!-- ── The declaration ───────────────────────────────────────────── -->
@@ -36,7 +36,7 @@ import Hull from './Hull.astro';
   <g class="k-crate k-replacement"><rect class="scene__crate" x="478" y="174" width="70" height="40" /><path class="scene__line" d="M478 186 H548" /></g>
 
   <g transform="translate(230 214)">
-    <g class="k-heave"><Hull width={340} depth={44} bridge={false} /></g>
+    <Hull width={340} depth={44} bridge={false} />
   </g>
   <path class="scene__line scene__quiet" d="M214 258 H586 M240 270 H360 M400 270 H540" />
 
@@ -55,16 +55,10 @@ import Hull from './Hull.astro';
   </g>
   <path class="scene__line k-flow" d="M192 305 H252 M342 305 H410 M450 318 V340 H150 V322" />
   <path class="scene__line" d="M244 300 L252 305 L244 310 M402 300 L410 305 L402 310 M145 330 L150 322 L155 330" />
-  <text class="scene__label" x="300" y="356" text-anchor="middle">THE LOOP DOES NOT STOP WHEN THE DEPLOY FINISHES</text>
+  <text class="scene__label" x="300" y="356" text-anchor="middle">CONTROLLERS KEEP CHECKING THE DESIRED STATE</text>
 </svg>
 
 <style>
-  .k-heave { animation: k-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
-  @keyframes k-heave {
-    0%, 50%, 100% { transform: translateY(0); }
-    25%, 75% { transform: translateY(-2px); }
-  }
-
   /* Ambient: current flowing around the control loop. One dash period is 16
      units, so a -32 offset returns to an identical frame — no visible seam. */
   .k-flow { stroke-dasharray: 6 10; animation: k-flow 2.4s linear infinite; }
@@ -73,37 +67,27 @@ import Hull from './Hull.astro';
   /* At rest the deck is full, so the empty slot and its replacement are held back. */
   .k-replacement { opacity: 0; }
 
-  :global(.cp[data-demonstrate='true']) .k-crate--lost { animation: k-lost var(--nautical-cycle-duration) var(--ease-standard) infinite; }
-  :global(.cp[data-demonstrate='true']) .k-replacement { animation: k-replace var(--nautical-cycle-duration) var(--ease-standard) infinite; }
-  :global(.cp[data-demonstrate='true']) .k-gap { animation: k-gap var(--nautical-cycle-duration) var(--ease-standard) infinite; }
-  :global(.cp[data-demonstrate='true']) .k-obs--3 { animation: k-count-out var(--nautical-cycle-duration) var(--ease-standard) infinite; }
-  :global(.cp[data-demonstrate='true']) .k-obs--2 { animation: k-count-in var(--nautical-cycle-duration) var(--ease-standard) infinite; }
-  :global(.cp[data-demonstrate='true']) .k-node--observe rect { animation: k-fire var(--nautical-cycle-duration) var(--ease-standard) infinite; animation-delay: calc(var(--nautical-cycle-duration) * .3); }
-  :global(.cp[data-demonstrate='true']) .k-node--compare rect { animation: k-fire var(--nautical-cycle-duration) var(--ease-standard) infinite; animation-delay: calc(var(--nautical-cycle-duration) * .36); }
-  :global(.cp[data-demonstrate='true']) .k-node--act rect { animation: k-fire var(--nautical-cycle-duration) var(--ease-standard) infinite; animation-delay: calc(var(--nautical-cycle-duration) * .42); }
+  :global(.cp[data-demonstrate='true']) .k-crate--lost { animation: k-lost 6s linear both; }
+  :global(.cp[data-demonstrate='true']) .k-replacement { animation: k-replace 6s linear both; }
+  :global(.cp[data-demonstrate='true']) .k-gap { animation: k-gap 6s linear both; }
+  :global(.cp[data-demonstrate='true']) .k-obs--3 { animation: k-count-out 6s linear both; }
+  :global(.cp[data-demonstrate='true']) .k-obs--2 { animation: k-count-in 6s linear both; }
 
   /* Rotation pivots on the crate's own centre rather than the viewBox origin. */
   @keyframes k-lost {
     0%, 12%    { opacity: 1; transform: translate(0px, 0px) rotate(0deg); }
     20%        { opacity: 1; transform: translate(10px, 22px) rotate(14deg); }
-    34%, 95%   { opacity: 0; transform: translate(26px, 96px) rotate(30deg); }
-    95.01%     { opacity: 0; transform: translate(0px, 0px) rotate(0deg); }
-    100%       { opacity: 1; transform: translate(0px, 0px) rotate(0deg); }
+    34%, 100% { opacity: 0; transform: translate(26px, 96px) rotate(30deg); }
   }
   @keyframes k-replace {
     0%, 44%   { opacity: 0; transform: translate(0px, -130px); }
     54%       { opacity: 1; transform: translate(0px, -52px); }
-    66%, 95%  { opacity: 1; transform: translate(0px, 0px); }
-    100%      { opacity: 0; transform: translate(0px, 0px); }
+    66%, 100% { opacity: 1; transform: translate(0px, 0px); }
   }
   /* The count and the empty slot only change once the crate has actually gone,
      so the diagram never claims a loss the reader cannot yet see. */
   @keyframes k-gap   { 0%, 32% { opacity: 0; } 40%, 54% { opacity: .5; } 62%, 100% { opacity: 0; } }
   @keyframes k-count-out { 0%, 32% { opacity: 1; } 38%, 60% { opacity: 0; } 66%, 100% { opacity: 1; } }
   @keyframes k-count-in  { 0%, 32% { opacity: 0; } 38%, 60% { opacity: 1; } 66%, 100% { opacity: 0; } }
-  @keyframes k-fire {
-    0%, 4%  { fill: var(--color-surface); }
-    8%, 14% { fill: var(--color-primary-tint); }
-    20%, 100% { fill: var(--color-surface); }
-  }
+
 </style>

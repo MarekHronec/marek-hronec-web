@@ -1,14 +1,5 @@
-/*
- * Twelve-Factor, read as a portability checklist rather than as scripture, plus
- * the things it never covered.
- *
- * Twelve-Factor was written at Heroku in 2011 — before Docker, before
- * Kubernetes, before anything called serverless. It has aged better than most
- * documents from 2011 because it is not really about a platform: it is a list
- * of the ways an application gets stuck to the machine it was first deployed
- * on. Factors XIII–XV come from Kevin Hoffman's "Beyond the Twelve-Factor App"
- * (2016), which is where telemetry and authentication were finally named.
- */
+/* Original Twelve-Factor principles, paraphrased with deployment guidance.
+ * Later additions are attributed separately; this is editorial interpretation. */
 
 export interface Factor {
   numeral: string;
@@ -32,85 +23,85 @@ export const FACTOR_GROUPS: FactorGroup[] = [
         numeral: 'III',
         name: 'Config in the environment',
         original: 'Strict separation of config from code; anything that varies between deploys lives in the environment.',
-        today: 'Still the highest-value factor, and now the sharpest test of portability. An application that reads a connection string from its environment can move. One that calls a provider’s secret SDK to fetch the same string has a dependency compiled into it.',
+        today: "Keep deployment settings out of code. Inject secrets securely through the deployment environment or mounted files, and isolate provider-specific secret clients behind adapters.",
       },
       {
         numeral: 'IV',
         name: 'Backing services as attached resources',
         original: 'Treat databases, queues and caches as attached resources reached by URL, swappable without a code change.',
-        today: 'This is the factor that actually decides whether you can change cloud. Reach a queue through a standard client and it is a config change; reach it through a managed binding and it is a rewrite.',
+        today: "Standard protocols reduce code changes, but a new endpoint is only part of a move. Test data conversion, authentication, feature differences and delivery semantics.",
       },
       {
         numeral: 'V',
         name: 'Build, release, run',
         original: 'Three strictly separated stages, with releases immutable and uniquely identified.',
-        today: 'Twelve-Factor described this before there was an artifact format for it. Today the container image is the build, image plus config is the release, and the orchestrator does the run. The separation is now something you get by default rather than something you engineer.',
+        today: "A container image can be the build artifact; combining its digest with versioned configuration identifies a release. Pipelines must still enforce the separation and reproducibility.",
       },
       {
         numeral: 'VI',
         name: 'Stateless processes',
         original: 'Processes are stateless and share nothing; persistent data belongs in a backing service.',
-        today: 'What makes one instance interchangeable with the next, which is the precondition for every scaling and healing behaviour above it. Sticky sessions and local caches are where this quietly breaks.',
+        today: "Keep durable state outside replaceable application instances. Disposable local caches are fine; required session or business data on one instance prevents safe replacement.",
       },
       {
         numeral: 'IX',
         name: 'Disposability',
         original: 'Fast startup, and graceful shutdown when the process is asked to stop.',
-        today: 'Now a literal contract: Kubernetes sends SIGTERM and waits out a grace period you configure. Ignore it and rolling updates drop live requests — the most common cause of "deploys cause errors" that nobody has traced.',
+        today: "Handle termination gracefully, typically SIGTERM in Kubernetes. Test readiness, traffic draining and in-flight work against the configured grace period.",
       },
     ],
   },
   {
-    title: 'The ones the platform absorbed',
-    lede: 'Still correct, but no longer work you do. Reading these as tasks is a sign of a document that has not been revisited.',
+    title: 'The ones the platform helps you implement',
+    lede: 'The platform provides mechanisms. Your application and operations still need to use them correctly.',
     factors: [
       {
         numeral: 'VII',
         name: 'Port binding',
         original: 'The application is self-contained and exports a service by binding to a port.',
-        today: 'The default. A container does this by definition, and the orchestrator handles what used to be a web server in front.',
+        today: "A web process may expose its own port. Workers and batch containers need not listen on one. Configure binding, health checks and ingress for the chosen platform.",
       },
       {
         numeral: 'VIII',
         name: 'Concurrency',
         original: 'Scale out through the process model rather than by making one process bigger.',
-        today: 'Now expressed as replica counts and autoscaling rules. The factor survives; the mechanism moved out of the application entirely.',
+        today: "Platforms provide replicas and autoscalers. The application still needs safe parallel execution, appropriate connection limits and correct handling of duplicate work.",
       },
       {
         numeral: 'XI',
         name: 'Logs as event streams',
         original: 'Write to stdout and let the execution environment handle routing and storage.',
-        today: 'Universal. The remaining decision is structure — one JSON line carrying a trace ID is worth more at three in the morning than ten lines of prose.',
+        today: "Structured stdout logs simplify collection. Someone must still configure routing, retention, access, redaction and cost controls; logging does not operate itself.",
       },
     ],
   },
   {
     title: 'The ones that need a modern reading',
-    lede: 'Right in spirit, dated in detail. Applying them literally in 2026 produces some odd architecture.',
+    lede: 'Apply the original principles to current tooling without assuming the tooling guarantees them.',
     factors: [
       {
         numeral: 'I',
         name: 'Codebase',
         original: 'One codebase tracked in revision control, many deploys.',
-        today: 'Written before monorepos were normal, and often misread as a ban on them. What matters is one deployable unit per application with a traceable history — not how many repositories you keep.',
+        today: "Use a traceable codebase for each deployable application. A monorepo can contain several applications with separate build and release boundaries.",
       },
       {
         numeral: 'II',
         name: 'Dependencies',
         original: 'Declare dependencies explicitly; never rely on packages existing on the host.',
-        today: 'The image is now the isolation boundary, which solved the original problem and created a new one: you inherit every CVE in every layer you did not write. The modern form of this factor is a lockfile, a base-image policy and an SBOM.',
+        today: "Declare and pin dependencies, maintain base images and rebuild for fixes. An SBOM inventories components; it does not establish that an image is safe.",
       },
       {
         numeral: 'X',
         name: 'Dev/prod parity',
         original: 'Keep development, staging and production as similar as possible.',
-        today: 'Containers turned this from aspiration into something achievable for the application. The remaining gap is the managed services around it — and that gap is where most production surprises now live.',
+        today: "An image reduces runtime differences. Also test the backing services, identity, network and resource limits that differ between development and production.",
       },
       {
         numeral: 'XII',
         name: 'Admin processes',
         original: 'Run one-off tasks as one-off processes in an identical environment.',
-        today: 'A Job running the same image, not a shell on a long-lived box. If a migration can only be run by someone who knows which machine to log into, this factor is not satisfied.',
+        today: "Run migrations and other one-off tasks from the same release and configuration as the application, with controlled access and a repeatable procedure.",
       },
     ],
   },
@@ -122,13 +113,13 @@ export const FACTOR_GROUPS: FactorGroup[] = [
         numeral: 'XIII',
         name: 'Telemetry',
         original: 'Treat the application’s own observability as a first-class concern, not an afterthought.',
-        today: 'Twelve-Factor’s logs factor predates distributed tracing entirely. OpenTelemetry is the portable answer: instrument once against a vendor-neutral API and change backends by config. Provider-native agents everywhere is a rewrite you have agreed to in advance.',
+        today: "Logs alone do not cover metrics and traces. OpenTelemetry offers vendor-neutral instrumentation and export; backend queries, dashboards and semantic differences still need migration.",
       },
       {
         numeral: 'XIV',
         name: 'Authentication and authorization',
         original: 'Identity and access are part of the application contract, not infrastructure detail.',
-        today: 'Workload identity is the deepest hook a cloud gets into an application, and the most convenient. Federating through OIDC keeps that hook shallow enough to pull out; a native resource principal call in business logic does not.',
+        today: "Federation through OIDC reduces dependence on one identity interface. Claims, roles, trust policies and resource permissions still need explicit mapping and testing.",
       },
       {
         numeral: 'XV',
@@ -148,7 +139,7 @@ export interface PortabilityMove {
 export const BEYOND_FACTORS: PortabilityMove[] = [
   {
     title: 'Data gravity beats every diagram',
-    body: 'Code moves in an afternoon. Twelve terabytes and the egress bill do not. Ask what a full copy costs — in money and in hours — before you choose the store, because that number is the real exit price and it only grows.',
+    body: 'Measure export and import time, egress charges, format conversion and the cutover window. Test a representative data migration; application packaging alone cannot estimate the exit cost.',
   },
   {
     title: 'Your infrastructure code is not portable, and that is fine',
@@ -156,7 +147,7 @@ export const BEYOND_FACTORS: PortabilityMove[] = [
   },
   {
     title: 'An exit plan you have never run is fiction',
-    body: 'DORA wants exit strategies written into the contract for critical or important functions (Article 30) and exit plans that are documented and periodically tested (Article 28). Several national frameworks ask the same. Regulation aside, the test is simple: could you stand this workload up somewhere else, with real data, this quarter? If nobody has tried, you have a document rather than a capability.',
+    body: 'For financial entities in scope, DORA Article 28(8) requires exit plans for ICT services supporting critical or important functions to be comprehensive, documented, sufficiently tested and reviewed periodically. Article 30(3)(f) addresses contractual exit arrangements. Independently of regulation, rehearse a move with representative data and measure the recovery and cutover time.',
   },
   {
     title: 'The portability tax is real — pay it deliberately',

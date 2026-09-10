@@ -1,0 +1,23 @@
+---
+interface Props { question: string; answers?: { yes: string; no: string }; }
+const { question, answers } = Astro.props;
+---
+<div class="workload-question">
+  <p class="workload-question__label">Ask about your workload</p>
+  <p class="workload-question__prompt">{question}</p>
+  {answers && (
+    <dl>
+      <div><dt>If yes</dt><dd>{answers.yes}</dd></div>
+      <div><dt>If no</dt><dd>{answers.no}</dd></div>
+    </dl>
+  )}
+</div>
+<style>
+  .workload-question { padding: var(--space-4) var(--space-5); background: var(--color-primary-tint); color: var(--color-navy); }
+  .workload-question__label { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+  .workload-question__prompt { font-size: var(--text-body-md); font-weight: var(--weight-medium); line-height: var(--leading-relaxed); }
+  dl { display: grid; gap: var(--space-4); margin-top: var(--space-4); font-size: var(--text-label-md); line-height: var(--leading-relaxed); }
+  dt { font-weight: var(--weight-semibold); }
+  dd { margin: var(--space-1) 0 0; }
+</style>
+

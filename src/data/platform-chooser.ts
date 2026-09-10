@@ -58,8 +58,8 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'plumbing',
-        label: 'Every company has one: mail, CRM, ticketing, reporting, identity',
-        detail: 'Nobody was ever promoted for running their own mail server.',
+        label: 'A suitable product already meets our needs: mail, CRM or ticketing',
+        detail: 'We have checked product fit, integration, data handling and contract requirements.',
         // Deliberately dominant. The other six questions all ask *how* to run
         // something; this one asks whether to run it at all, and when the
         // answer is "no" the rest are moot. A genuine blocker still overrides
@@ -81,7 +81,7 @@ export const QUESTIONS: ChooserQuestion[] = [
         label: 'A kernel module, a driver, or an agent that loads into the kernel',
         detail: 'Storage drivers, kernel-level security agents, specialised networking.',
         excludes: [
-          { approach: 'paas', reason: 'A platform service never gives you access to the kernel underneath it.' },
+          { approach: 'paas', reason: 'The managed application platforms considered here do not let you install host kernel modules.' },
           { approach: 'saas', reason: 'A finished product cannot load a module into a kernel you do not control. If a different product would do the job instead, that is question 01.' },
         ],
         scores: { vm: 6, container: -5, orchestrated: -5 },
@@ -95,21 +95,21 @@ export const QUESTIONS: ChooserQuestion[] = [
           { approach: 'saas', reason: 'You would be replacing the licensed product rather than hosting it, which is question 01.' },
         ],
         scores: { vm: 6, container: -4, orchestrated: -4 },
-        note: 'If the licence is counted per physical socket or core rather than pinned to an identifier — Oracle Database, IBM PVU, some SQL Server editions — an ordinary shared virtual machine will not satisfy it either. That needs a dedicated host or bare metal, which both clouds sell as a separate product.',
+        note: 'Verify the vendor terms for the exact product, edition and cloud deployment. Per-core licensing can permit shared VMs; dedicated hosts are not a universal requirement. Stable identifiers and VM replacement rules also need checking.',
       },
       {
         value: 'os',
-        label: 'An operating system or runtime version no managed platform still offers',
-        detail: 'Old distributions, superseded runtimes, vendor appliances.',
+        label: 'A specific guest OS or kernel that managed platforms cannot provide',
+        detail: 'An old user-space runtime alone does not imply this: a compatible custom container may work on a managed platform.',
         excludes: [
-          { approach: 'paas', reason: 'Runtime versions are retired on the provider’s schedule, which is the opposite of what this workload needs.' },
+          { approach: 'paas', reason: 'This requirement needs control of the guest OS or kernel, beyond a custom container image.' },
           { approach: 'saas', reason: 'A hosted product does not run your operating system at all. Replacing the software is question 01.' },
         ],
         scores: { vm: 5, container: 2 },
       },
       {
         value: 'none',
-        label: 'None of these — it is an ordinary program that listens on a port',
+        label: 'None of these — a conventional web app, worker or scheduled job',
         scores: { container: 2, orchestrated: 1, paas: 2 },
       },
     ],
@@ -132,9 +132,9 @@ export const QUESTIONS: ChooserQuestion[] = [
       },
       {
         value: 'stuck',
-        label: 'On local disk, and it cannot be moved',
+        label: 'Persistent local disk semantics are essential; network storage cannot substitute',
         excludes: [
-          { approach: 'paas', reason: 'Where a platform service offers persistent storage at all, it is network-attached rather than local disk — different latency, different file-locking behaviour. Software that truly depends on a local filesystem tends to break on it.' },
+          { approach: 'paas', reason: 'The managed app services considered here do not guarantee durable local disks with these semantics. If a supported network volume works, revise this answer.' },
         ],
         scores: { vm: 4, orchestrated: -3 },
       },
@@ -164,10 +164,11 @@ export const QUESTIONS: ChooserQuestion[] = [
         excludes: [
           {
             approach: 'orchestrated',
-            reason: 'Kubernetes with nobody owning it is a second product you did not plan to build — one that needs a version upgrade at least once a year, on the provider’s schedule rather than yours.',
+            reason: 'Kubernetes with nobody owning it is a second product you did not plan to build — one that needs ongoing node, version and add-on maintenance within service support policies.',
           },
         ],
         scores: { paas: 5, saas: 3, vm: -3 },
+        note: 'A managed service still needs an owner for access, alerts, application incidents and recovery. Assign that responsibility before going live.',
       },
       {
         value: 'devs',
@@ -201,7 +202,7 @@ export const QUESTIONS: ChooserQuestion[] = [
       {
         value: 'required',
         label: 'Required — a regulator or a contract asks us to show we could leave',
-        detail: 'The EU’s Digital Operational Resilience Act (DORA) wants exit strategies written into the contract (Art. 30) and exit plans that are documented and tested (Art. 28). Several national frameworks ask the same.',
+        detail: 'For financial entities in scope, DORA addresses ICT services supporting critical or important functions: Article 28(8) covers exit plans, and Article 30(3)(f) contractual exit arrangements. Check the obligations that actually apply to your workload.',
         scores: { container: 4, orchestrated: 3, paas: -5, saas: -4 },
       },
       {
@@ -230,8 +231,8 @@ export interface ApproachVerdict {
 const APPROACH_KEYS: ApproachKey[] = ['vm', 'container', 'orchestrated', 'paas', 'saas'];
 
 export function evaluate(selection: Selection) {
-  const score: Record<string, number> = { vm: 0, container: 0, orchestrated: 0, paas: 0, saas: 0 };
-  const reasons: Record<string, string[]> = { vm: [], container: [], orchestrated: [], paas: [], saas: [] };
+  const score: Record<ApproachKey, number> = { vm: 0, container: 0, orchestrated: 0, paas: 0, saas: 0 };
+  const reasons: Record<ApproachKey, string[]> = { vm: [], container: [], orchestrated: [], paas: [], saas: [] };
 
   const chosen: ChooserOption[] = [];
   for (const question of QUESTIONS) {
@@ -242,7 +243,7 @@ export function evaluate(selection: Selection) {
   }
 
   for (const option of chosen) {
-    for (const [approach, delta] of Object.entries(option.scores ?? {})) score[approach] += delta as number;
+    for (const approach of APPROACH_KEYS) score[approach] += option.scores?.[approach] ?? 0;
     for (const rule of option.excludes ?? []) reasons[rule.approach].push(rule.reason);
   }
 

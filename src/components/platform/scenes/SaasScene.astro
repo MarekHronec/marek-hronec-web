@@ -13,7 +13,7 @@ const crew = [40, 72, 104, 136];
   <text class="scene__label sa-cap scene__before" x="300" y="48" text-anchor="middle">YOU RUN THE VESSEL, THE CREW AND THE SCHEDULE</text>
   <text class="scene__label sa-cap scene__after" x="300" y="48" text-anchor="middle">THE SERVICE RUNS ALL OF IT</text>
   <text class="scene__text sa-cap scene__before" x="300" y="72" text-anchor="middle">Every part of it is yours to operate, staff and answer for.</text>
-  <text class="scene__text sa-cap scene__after" x="300" y="72" text-anchor="middle">Two things did not go with it. They never do.</text>
+  <text class="scene__text sa-cap scene__after" x="300" y="72" text-anchor="middle">You still govern data and access.</text>
 
   <path class="scene__line scene__quiet" d="M300 100 V286" />
 
@@ -44,8 +44,7 @@ const crew = [40, 72, 104, 136];
   <text class="scene__label" x="330" y="112">SCHEDULED SERVICE</text>
   <path class="scene__line scene__quiet" d="M330 120 H576" />
   <text class="scene__text" x="330" y="146">Runs the vessel, the crew</text>
-  <text class="scene__text" x="330" y="166">and the schedule — none of</text>
-  <text class="scene__text" x="330" y="186">which you see again.</text>
+  <text class="scene__text" x="330" y="166">and the schedule for you.</text>
   <path class="scene__line scene__quiet" d="M330 270 H584" />
   <path class="scene__heavy" d="M336 270 V250 M572 270 V250" />
 
@@ -54,7 +53,7 @@ const crew = [40, 72, 104, 136];
     <text class="scene__label" x="448" y="252" text-anchor="middle">BERTH AVAILABLE</text>
   </g>
 
-  <g class="scene__after">
+  <g class="scene__after sa-handover">
     <g transform="translate(340 226)">
       <g class="sa-heave sa-heave--offset"><Hull width={216} depth={44} /></g>
     </g>
@@ -62,7 +61,7 @@ const crew = [40, 72, 104, 136];
   </g>
 
   <!-- ── What never transfers ──────────────────────────────────────── -->
-  <text class="scene__label" x="24" y="302">NEVER TRANSFERS</text>
+  <text class="scene__label" x="24" y="302">YOUR DECISIONS REMAIN</text>
   <path class="scene__line scene__quiet" d="M24 310 H300" />
   <rect class="scene__crate" x="24" y="318" width="106" height="34" />
   <text class="scene__label" x="77" y="339" text-anchor="middle">YOUR DATA</text>
@@ -71,6 +70,8 @@ const crew = [40, 72, 104, 136];
 </svg>
 
 <style>
+  :global(.cp[data-demonstrate='true']) .sa-handover { animation: sa-handover 2.4s var(--ease-standard) both; }
+  @keyframes sa-handover { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
   .sa-heave { animation: sa-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
   .sa-heave--offset { animation-delay: -7s; }
   @keyframes sa-heave {

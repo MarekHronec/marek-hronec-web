@@ -8,27 +8,29 @@ import Hull from './Hull.astro';
   </title>
 
   <!-- ── The transfer route ────────────────────────────────────────── -->
-  <path class="scene__route" d="M110 224 V140 H490 V222" />
+  <path class="scene__route" d="M111 239 C111 130 111 130 180 130 H420 C490 130 490 130 490 239" />
 
   <!-- ── Station 1 — ship ──────────────────────────────────────────── -->
   <g transform="translate(55 250)">
     <g class="cn-heave"><Hull width={112} depth={26} bridge={false} /></g>
   </g>
   <path class="scene__line scene__quiet" d="M40 278 H180" />
-  <text class="scene__label" x="111" y="298" text-anchor="middle">SHIP</text>
+  <text class="scene__label" x="111" y="298" text-anchor="middle">DEVELOPMENT</text>
 
   <!-- ── Station 2 — yard ──────────────────────────────────────────── -->
-  <path class="scene__heavy" d="M300 250 V166 H352" />
-  <path class="scene__line" d="M352 166 V186" />
+  <path class="scene__heavy" d="M272 250 V160 H352 V250 M265 160 H359" />
+  <path class="scene__line scene__quiet" d="M272 160 L352 250 M352 160 L272 250 M278 152 H346 M282 152 V160 M298 152 V160 M314 152 V160 M330 152 V160" />
+  <path class="scene__line" d="M300 160 V188 Q300 196 307 190" />
   <path class="scene__heavy" d="M248 250 H356" />
-  <text class="scene__label" x="300" y="298" text-anchor="middle">YARD</text>
+  <text class="scene__label" x="300" y="298" text-anchor="middle">CI</text>
 
   <!-- ── Station 3 — truck ─────────────────────────────────────────── -->
-  <path class="scene__heavy" d="M446 250 H524 V222 H548 V250" />
+  <path class="scene__heavy" d="M440 246 H524 V222 H544 L552 238 V250 H544 M440 250 H458 M474 250 H526" />
+  <path class="scene__crate" d="M530 226 H540 L547 238 H530 Z" />
   <circle class="scene__hull" cx="466" cy="256" r="7" />
   <circle class="scene__hull" cx="534" cy="256" r="7" />
   <path class="scene__line scene__quiet" d="M430 266 H564" />
-  <text class="scene__label" x="490" y="298" text-anchor="middle">TRUCK</text>
+  <text class="scene__label" x="490" y="298" text-anchor="middle">PRODUCTION</text>
 
   <!-- ── Break-bulk: every carrier wants it packed its own way ─────── -->
   <g class="scene__before">
@@ -53,16 +55,13 @@ import Hull from './Hull.astro';
 
   <!-- ── One box, unchanged, across all three ──────────────────────── -->
   <g class="scene__after">
-    <text class="scene__label" x="300" y="76" text-anchor="middle">ONE BOX, EVERY CARRIER</text>
-    <text class="scene__text" x="300" y="98" text-anchor="middle">The transfer stops being work. That is the whole of the idea.</text>
+    <text class="scene__label" x="300" y="76" text-anchor="middle">ONE IMAGE, COMPATIBLE HOSTS</text>
+    <text class="scene__text" x="300" y="98" text-anchor="middle">The contents stay the same. Configure each destination.</text>
 
-    <g class="cn-box"><rect class="scene__crate" x="96" y="228" width="30" height="22" /><path class="scene__line" d="M96 235 H126" /></g>
-    <g class="cn-box"><rect class="scene__crate" x="285" y="228" width="30" height="22" /><path class="scene__line" d="M285 235 H315" /></g>
-    <g class="cn-box"><rect class="scene__crate" x="475" y="228" width="30" height="22" /><path class="scene__line" d="M475 235 H505" /></g>
 
     <g class="cn-travel scene__pinned">
       <rect class="scene__crate" width="30" height="22" />
-      <path class="scene__line" d="M0 7 H30" />
+      <path class="scene__line" d="M6 3 V19 M12 3 V19 M18 3 V19 M24 3 V19" />
     </g>
   </g>
 </svg>
@@ -75,16 +74,11 @@ import Hull from './Hull.astro';
   }
 
   /* The travelling box only makes sense once the box has been standardised. */
-  .cn-travel { opacity: 0; }
-  :global(.cp[data-demonstrate='true']) .cn-travel {
-    animation: cn-travel var(--nautical-cycle-duration) var(--ease-standard) infinite;
+  .cn-travel {
+    offset-path: path("M96 228 C96 119 96 119 165 119 H405 C475 119 475 119 475 228");
+    offset-anchor: 0 0;
+    offset-rotate: 0deg;
   }
-  @keyframes cn-travel {
-    0%       { opacity: 0; transform: translate(96px, 228px); }
-    8%       { opacity: 1; transform: translate(96px, 228px); }
-    22%      { opacity: 1; transform: translate(96px, 129px); }
-    52%      { opacity: 1; transform: translate(475px, 129px); }
-    68%, 88% { opacity: 1; transform: translate(475px, 228px); }
-    96%, 100% { opacity: 0; transform: translate(475px, 228px); }
-  }
+  :global(.cp[data-demonstrate='true']) .cn-travel { animation: cn-travel 6s linear both; }
+  @keyframes cn-travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
 </style>

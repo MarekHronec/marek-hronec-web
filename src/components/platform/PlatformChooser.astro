@@ -7,9 +7,8 @@
  * The tabbed explainer above degrades properly; this does not.
  */
 import { QUESTIONS } from '../../data/platform-chooser';
-import { APPROACHES } from '../../data/platform-approaches';
 import ChooserQuestion from './ChooserQuestion.astro';
-import ApproachDetail from './ApproachDetail.astro';
+import ChooserResult from './ChooserResult.astro';
 ---
 
 <div class="pc" id="chooser">
@@ -19,7 +18,7 @@ import ApproachDetail from './ApproachDetail.astro';
       Seven questions about one workload. You get a recommendation with its
       trade-offs stated plainly, an honest second choice, and anything that has
       been ruled out — with the reason, so you can disagree with it. It is a
-      structured second opinion, not an authority.
+      starting point. Scores are editorial preferences, not benchmarks or compliance approval. Service limits, costs and workload tests must confirm the shortlist.
     </p>
   </div>
 
@@ -30,72 +29,10 @@ import ApproachDetail from './ApproachDetail.astro';
           <ChooserQuestion question={question} index={index} total={QUESTIONS.length} />
         ))}
       </ol>
-      <button type="button" class="pc__reset" data-chooser-reset>Clear all answers</button>
+      <button type="button" class="pc__reset" data-chooser-reset disabled>↺ Start over</button>
     </form>
 
-    <aside class="pc__result">
-      <div class="pc__panel">
-        <p class="pc__progress" aria-live="polite" aria-atomic="true">
-          <span data-chooser-progress>0</span> of {QUESTIONS.length} answered<span data-chooser-headline></span>
-        </p>
-
-        <noscript>
-          <p class="pc__empty">This tool scores your answers in the browser, so it needs JavaScript. Without it, the five options and the trade-offs between them are set out in the sections above.</p>
-        </noscript>
-
-        <p class="pc__empty" data-chooser-empty>
-          Nothing is assumed until you answer. Each choice narrows the list, and
-          anything ruled out will say why.
-        </p>
-
-        <div data-chooser-verdict hidden>
-          <p class="pc__partial" data-chooser-partial hidden>
-            Provisional — the order can still change.
-          </p>
-
-          <p class="pc__tie" data-chooser-tie hidden>
-            <span data-chooser-tie-count></span> options are still level on score.
-            Naming one here would only be reading them off in page order — answer
-            another question or two and they will separate.
-          </p>
-
-          {APPROACHES.map((approach, index) => <ApproachDetail approach={approach} hidden={index > 0} />)}
-
-          <p class="pc__close" data-chooser-close hidden>
-            The top two are close. Treat it as a tie, and let the people who will
-            operate it break it.
-          </p>
-
-          <div class="pc__aside" data-chooser-notes hidden>
-            <span>Worth saying</span>
-            <p data-chooser-notes-body></p>
-          </div>
-
-          <div class="pc__aside" data-chooser-runner hidden>
-            <span>Second choice</span>
-            <p data-chooser-runner-name></p>
-          </div>
-
-          <div class="pc__aside" data-chooser-lock hidden>
-            <span>On leaving</span>
-            <p data-chooser-lock-body></p>
-          </div>
-        </div>
-
-        <div class="pc__rank" data-chooser-rank hidden>
-          <h3 class="pc__rank-head">All five, ranked</h3>
-          <ul role="list">
-            {APPROACHES.map((approach) => (
-              <li class="pc__rank-row" data-rank-row={approach.key}>
-                <span class="pc__rank-name">{approach.name}</span>
-                <span class="pc__rank-state" data-rank-state></span>
-                <span class="pc__rank-reason" data-rank-reason hidden></span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </aside>
+    <ChooserResult />
   </div>
 </div>
 
@@ -119,63 +56,15 @@ import ApproachDetail from './ApproachDetail.astro';
   .pc__grid { display: grid; gap: var(--space-8); align-items: start; }
   .pc__steps { display: flex; flex-direction: column; gap: var(--space-6); }
   .pc__reset {
-    margin-top: var(--space-5); border: 0; background: transparent; cursor: pointer;
-    padding: var(--space-2) 0; font: var(--text-label-md) var(--font-body);
-    color: var(--color-primary); text-decoration: underline; text-underline-offset: 4px;
+    margin-top: var(--space-5); border: 0; background: var(--color-primary-tint); cursor: pointer;
+    padding: var(--space-3) var(--space-4); font: var(--text-label-md) var(--font-body);
+    color: var(--color-navy);
   }
 
-  /* ── Verdict ─────────────────────────────────────────────────────── */
-  /* Named container so ApproachDetail lays itself out against the panel width
-     rather than the viewport — this column is narrow on desktop, wide on mobile. */
-  .pc__panel {
-    border: 1px solid var(--color-divider-strong);
-    padding: var(--space-5);
-    container-type: inline-size;
-  }
-  .pc__progress {
-    font: var(--text-label-sm) var(--font-mono); text-transform: uppercase;
-    letter-spacing: var(--tracking-wide); color: var(--color-meta-label);
-    padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-divider);
-    margin-bottom: var(--space-4);
-  }
-  .pc__empty { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
-  .pc__empty[hidden], .pc__rank[hidden], [data-chooser-verdict][hidden],
-  .pc__aside[hidden], .pc__close[hidden], .pc__partial[hidden], .pc__tie[hidden] { display: none; }
-  /* Suppresses the winner's detail block while nothing actually leads. */
-  .pc__panel[data-undecided='true'] :global(.approach) { display: none; }
-
-  .pc__partial {
-    margin-bottom: var(--space-4);
-    font: var(--text-label-sm) var(--font-mono); text-transform: uppercase;
-    letter-spacing: var(--tracking-wide); color: var(--color-primary);
-  }
-  .pc__close { margin-top: var(--space-4); font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-primary); }
-  .pc__tie { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-navy); }
-
-  .pc__aside { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-divider); }
-  .pc__aside span {
-    display: block; font: var(--text-label-sm) var(--font-mono);
-    text-transform: uppercase; letter-spacing: var(--tracking-wide);
-    color: var(--color-meta-label); margin-bottom: var(--space-2);
-  }
-  .pc__aside p { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
-
-  .pc__rank { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-divider-strong); }
-  .pc__rank-head { font: var(--weight-semibold) var(--text-label-md) var(--font-body); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); margin-bottom: var(--space-3); }
-  .pc__rank ul { display: flex; flex-direction: column; }
-  .pc__rank-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-divider); }
-  .pc__rank-name { font-size: var(--text-body-md); color: var(--color-on-surface); }
-  .pc__rank-state { font: var(--text-label-sm) var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-meta-label); align-self: center; }
-  .pc__rank-row[data-state='ruled-out'] .pc__rank-name { color: var(--color-meta-label); text-decoration: line-through; }
-  .pc__rank-row[data-state='top'] .pc__rank-name { font-weight: var(--weight-semibold); color: var(--color-navy); }
-  .pc__rank-row[data-state='top'] .pc__rank-state { color: var(--color-primary); }
-  .pc__rank-reason { grid-column: 1 / -1; font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-meta-label); }
-  .pc__rank-reason[hidden] { display: none; }
-
+  .pc__reset:hover:enabled { background: var(--color-navy); color: var(--color-on-primary); }
+  .pc__reset:disabled { opacity: .5; cursor: default; }
   @media (min-width: 1024px) {
     .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: var(--space-8); }
-    .pc__result { position: sticky; top: calc(var(--nav-height) + var(--space-5)); }
-    .pc__panel { max-height: calc(100vh - var(--nav-height) - var(--space-8)); overflow-y: auto; }
   }
   @media (min-width: 1280px) {
     .pc__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--space-10); }

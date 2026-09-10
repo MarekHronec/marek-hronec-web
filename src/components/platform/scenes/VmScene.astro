@@ -10,9 +10,7 @@ const stack = [
 ---
 <svg class="scene scene--vm" viewBox="0 0 600 360" role="img" aria-labelledby="vm-scene-title">
   <title id="vm-scene-title">
-    One workload occupies a whole virtual machine, most of its capacity idle, and
-    every layer above the hypervisor belongs to you. A second workload needs a
-    second machine, with its own kernel, patch cycle and operators.
+    A VM has its own guest kernel and can carry several workloads. Choosing a second isolated guest adds another operating system to maintain.
   </title>
 
   <!-- ── Machine 01 ────────────────────────────────────────────────── -->
@@ -23,14 +21,14 @@ const stack = [
       <Hull width={250} depth={56} />
       <rect class="scene__crate" x="196" y="-30" width="42" height="30" />
       <rect class="scene__line" x="64" y="-30" width="124" height="30" stroke-dasharray="3 4" />
-      <text class="scene__label" x="72" y="-11">PAID FOR, IDLE</text>
+      <text class="scene__label" x="72" y="-11">SPARE CAPACITY</text>
     </g>
   </g>
   <path class="scene__line scene__quiet" d="M26 256 H304 M52 268 H150 M186 268 H286" />
   <path class="scene__line scene__quiet" d="M40 292 H290" />
   <text class="scene__text" x="40" y="312">Its own kernel</text>
   <text class="scene__text" x="40" y="332">Its own patch cycle</text>
-  <text class="scene__text" x="40" y="352">Its own operators</text>
+  <text class="scene__text" x="40" y="352">Your OS maintenance</text>
 
   <!-- ── What one machine actually contains ────────────────────────── -->
   <g class="scene__before">
@@ -47,7 +45,7 @@ const stack = [
   </g>
 
   <!-- ── Machine 02 — arrives with the second workload ─────────────── -->
-  <g class="scene__after">
+  <g class="scene__after vm-arrival">
     <text class="scene__label" x="320" y="70">MACHINE 02</text>
     <path class="scene__line scene__quiet" d="M320 80 H570" />
     <g transform="translate(320 200)">
@@ -55,18 +53,20 @@ const stack = [
         <Hull width={250} depth={56} />
         <rect class="scene__crate" x="196" y="-30" width="42" height="30" />
         <rect class="scene__line" x="64" y="-30" width="124" height="30" stroke-dasharray="3 4" />
-        <text class="scene__label" x="72" y="-11">PAID FOR, IDLE</text>
+        <text class="scene__label" x="72" y="-11">SPARE CAPACITY</text>
       </g>
     </g>
     <path class="scene__line scene__quiet" d="M306 256 H584 M332 268 H430 M466 268 H566" />
     <path class="scene__line scene__quiet" d="M320 292 H570" />
     <text class="scene__text" x="320" y="312">Its own kernel</text>
     <text class="scene__text" x="320" y="332">Its own patch cycle</text>
-    <text class="scene__text" x="320" y="352">Its own operators</text>
+    <text class="scene__text" x="320" y="352">Your OS maintenance</text>
   </g>
 </svg>
 
 <style>
+  :global(.cp[data-demonstrate='true']) .vm-arrival { animation: vm-arrive 2.4s var(--ease-standard) both; }
+  @keyframes vm-arrive { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
   .vm-heave { animation: vm-heave var(--nautical-orbit-duration) var(--ease-standard) infinite; }
   .vm-heave--offset { animation-delay: -6s; }
   @keyframes vm-heave {

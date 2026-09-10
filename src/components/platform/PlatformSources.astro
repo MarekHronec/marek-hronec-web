@@ -1,0 +1,27 @@
+---
+const sources = [
+  ['Responsibility boundaries', 'https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility'],
+  ['OCI image compatibility', 'https://specs.opencontainers.org/image-spec/config/'],
+  ['Kubernetes controllers', 'https://kubernetes.io/docs/concepts/architecture/controller/'],
+  ['App Service container access', 'https://learn.microsoft.com/en-us/azure/app-service/configure-linux-open-ssh-session'],
+  ['Twelve-Factor principles', 'https://12factor.net/'],
+  ['Later factors: Kevin Hoffman', 'https://www.oreilly.com/library/view/beyond-the-twelve-factor/9781492042631/'],
+  ['OpenTelemetry', 'https://opentelemetry.io/docs/what-is-opentelemetry/'],
+  ['DORA: Articles 28 and 30', 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2554'],
+  ['SQL Server licensing example', 'https://www.microsoft.com/licensing/guidance/SQL'],
+];
+---
+<aside class="platform-sources" aria-label="Sources and method">
+  <p class="platform-sources__label">Sources &amp; method · Reviewed 9 September 2026</p>
+  <p>The explanations draw on these primary references. The chooser uses editorial weights to suggest a shortlist; its scores do not measure performance, cost or regulatory compliance. Validate the specific service, plan and contract before choosing.</p>
+  <ul role="list">
+    {sources.map(([label, href]) => <li><a href={href}>{label} &rarr;</a></li>)}
+  </ul>
+</aside>
+<style>
+  .platform-sources { margin-top: var(--space-7); padding: var(--space-5); background: var(--color-surface-container-low); color: var(--color-on-surface-muted); font-size: var(--text-label-md); line-height: var(--leading-relaxed); }
+  .platform-sources__label { margin-bottom: var(--space-3); font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
+  ul { display: grid; gap: var(--space-3); margin-top: var(--space-4); padding: 0; list-style: none; }
+  a { color: var(--color-primary); text-underline-offset: .2em; }
+  @media (min-width: 640px) { ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

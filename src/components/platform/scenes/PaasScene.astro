@@ -41,16 +41,16 @@ const fittings = [
   <!-- ── Wired to the quay ─────────────────────────────────────────── -->
   <g class="scene__before">
     <text class="scene__label" x="330" y="52" text-anchor="middle">MANAGED CONNECTIONS</text>
-    <text class="scene__text" x="330" y="76" text-anchor="middle">Short to wire, and genuinely faster.</text>
-    <text class="scene__text" x="330" y="94" text-anchor="middle">They belong to the port.</text>
+    <text class="scene__text" x="330" y="76" text-anchor="middle">Managed integrations reduce setup work.</text>
+    <text class="scene__text" x="330" y="94" text-anchor="middle">Check which interfaces are provider-specific.</text>
     <path class="scene__line" d="M158 154 Q244 154 306 244 M158 198 Q254 198 306 254 M158 242 Q262 242 306 264" />
   </g>
 
   <!-- ── What travels, and what does not ───────────────────────────── -->
   <g class="scene__after">
     <text class="scene__label" x="330" y="52" text-anchor="middle">THE CONNECTORS STAYED AT THE QUAY</text>
-    <text class="scene__text" x="330" y="76" text-anchor="middle">The runtime moved. You did not migrate —</text>
-    <text class="scene__text" x="330" y="94" text-anchor="middle">you reimplemented.</text>
+    <text class="scene__text" x="330" y="76" text-anchor="middle">The image can travel. Identity, triggers</text>
+    <text class="scene__text" x="330" y="94" text-anchor="middle">and data may need migration or adapters.</text>
     <path class="scene__line" d="M158 154 H206 M158 198 H206 M158 242 H206" />
     {fittings.map((f) => (
       <g transform={`translate(216 ${f.y + 18})`}>
@@ -69,11 +69,10 @@ const fittings = [
   }
 
   :global(.cp[data-demonstrate='true']) .pa-vessel {
-    animation: pa-depart var(--nautical-cycle-duration) var(--ease-standard) infinite;
+    animation: pa-depart 4s var(--ease-standard) both;
   }
   @keyframes pa-depart {
-    0%, 10%  { transform: translateX(0); }
-    46%, 88% { transform: translateX(84px); }
-    100%     { transform: translateX(0); }
+    from { transform: translateX(0); }
+    to { transform: translateX(84px); }
   }
 </style>

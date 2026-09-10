@@ -11,13 +11,7 @@ import { FACTOR_GROUPS, BEYOND_FACTORS } from '../../data/platform-portability';
   <div class="pp__head">
     <h2 class="pp__title">Twelve-Factor, read as a portability checklist.</h2>
     <p class="pp__lede">
-      It was written at Heroku in 2011 — before Docker, before Kubernetes,
-      before anything called serverless — and it is usually quoted as if none of
-      that happened. It has aged well, because it was never really about a
-      platform: it is a list of the ways an application gets stuck to the machine
-      it was first deployed on. Some factors still carry the whole weight. Some
-      became the platform’s job. A few need a modern reading, and three were
-      missing entirely.
+      Twelve-Factor describes application design principles that help make deployment repeatable. Containers and managed platforms provide useful tools, but do not implement every principle for you. Below, the original twelve are paraphrased alongside practical guidance, followed by three later additions.
     </p>
   </div>
 
@@ -32,7 +26,7 @@ import { FACTOR_GROUPS, BEYOND_FACTORS } from '../../data/platform-portability';
               <span class="pp__numeral">{factor.numeral}</span>
               <span class="pp__factor-name">{factor.name}</span>
             </p>
-            <p class="pp__original"><span>2011</span>{factor.original}</p>
+            <p class="pp__original"><span>Principle</span>{factor.original}</p>
             <p class="pp__today"><span>Today</span>{factor.today}</p>
           </li>
         ))}

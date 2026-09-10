@@ -6,8 +6,10 @@
  * can trigger, and closes on the trade rather than on a recommendation.
  */
 
+export type ConceptKey = 'vm' | 'container' | 'kubernetes' | 'paas' | 'saas';
+
 export interface ConceptStory {
-  key: string;
+  key: ConceptKey;
   ordinal: string;
   name: string;
   model: string;
@@ -16,6 +18,7 @@ export interface ConceptStory {
   definition: string;
   analogy: string;
   question: string;
+  answers?: { yes: string; no: string };
   action: string;
   reset: string;
   before: string;
@@ -34,14 +37,14 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     definition:
       'A hypervisor carves a physical machine into virtual ones. Each gets its own kernel, its own operating system, and its own patch cycle.',
     analogy:
-      'Chartering an entire vessel to move a single pallet. The isolation is genuine, and sometimes it is exactly what you need. The hold is mostly empty either way, and you crew the whole ship.',
+      "A charter gives you control over a vessel and its cargo. You can carry several workloads together, or charter another vessel when one needs a separate operating system. You maintain each vessel you choose to run.",
     question: 'Does anything in this workload actually need its own kernel?',
-    action: 'Add a second workload',
-    reset: 'Remove the second workload',
-    before: 'One machine, one workload. You crew all of it.',
-    after: 'The second workload brings a second machine — its own kernel, its own patches, its own crew.',
+    action: "Isolate a second workload",
+    reset: "Return to one machine",
+    before: "One VM can run several workloads. Its guest OS is yours to maintain.",
+    after: "Here we choose a second VM for a separate guest kernel. That adds another OS to maintain.",
     lesson:
-      'You are buying isolation. Sometimes that is the right purchase: a kernel module, a host-bound licence, an OS nothing else will run. Often it is just the shape the estate grew into.',
+      "Choose a VM when control over the guest OS matters. Capacity, isolation and the number of workloads are separate decisions.",
   },
   {
     key: 'container',
@@ -49,16 +52,20 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     name: 'Container',
     model: 'Packaging',
     cue: 'You standardise the box.',
-    title: 'One box, any carrier.',
+    title: "One box, compatible carriers.",
     definition:
-      'A container image packages an application with its dependencies. The kernel stays on the host; the image carries everything above it.',
+      "An image packages application files and user-space dependencies. A container runs that image using a compatible host kernel; data, secrets and external services still need configuration.",
     analogy:
-      'Before 1956, cargo moved piece by piece — every transfer between ship, crane and truck meant unpacking and repacking by hand. The standard box did not make ships faster. It made the transfer almost free. A container image does that for a runtime handover.',
-    question: 'Could somebody rebuild your runtime elsewhere from what is checked in?',
+      "A standard cargo box moves between compatible carriers without repacking its contents. The image is your box; the host is the carrier. Packaging makes the handover repeatable, but does not move the database or arrange access at the destination.",
+    question: 'Can your team build and run this application on a new, compatible host without setting it up by hand?',
+    answers: {
+      yes: 'Your build is repeatable: a good starting point for containers. Test the image on the target platform, including its data and connections. This does not mean you need Kubernetes.',
+      no: 'First capture the manual setup in a build recipe and declare the dependencies. Containers can help make that setup repeatable; choosing a container host alone will not fix it.',
+    },
     action: 'Standardise the box',
     reset: 'Return to loose cargo',
     before: 'Every carrier needs the cargo repacked. Each transfer is hand-work, and each one can go wrong.',
-    after: 'One box moves from laptop to CI to any compatible host, unchanged. The handover stops being a project.',
+    after: "The same image travels through development, CI and production. Each destination still needs compatible hardware, runtime and configuration.",
     lesson:
       'The box is an implemented standard, not a promise — which is the whole portability argument. It is also its limit: the box still needs a compatible kernel and a matching CPU architecture underneath.',
   },
@@ -72,14 +79,14 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     definition:
       'Kubernetes holds a declaration of what should be running, and controllers that continuously compare it against what is running — then act on the difference.',
     analogy:
-      'The manifest says three boxes on deck. A heavy sea takes one over the side. Nobody raises a ticket: the next round of the watch counts two, compares against three, and puts a replacement aboard. The loop does not stop when the deploy finishes.',
+      "The manifest calls for three boxes on deck. When one is lost, the watch notices the gap and requests a replacement. Someone still has to supply space on deck and working cargo: automation cannot repair every underlying problem.",
     question: 'When something dies at three in the morning, does anything put it back?',
-    action: 'Lose a container overboard',
-    reset: 'Calm the sea',
+    action: "Lose one Pod",
+    reset: "Restore the starting state",
     before: 'Declared 3. Observed 3. The controller has nothing to do.',
-    after: 'Observed 2 against a declared 3. The controller schedules a replacement — no ticket, no pager, no human in the loop.',
+    after: "A Pod is lost. The ReplicaSet controller creates a replacement, and the scheduler finds a node for it. With capacity and a working image, the count returns to three.",
     lesson:
-      'Self-healing is a property of the loop, not a feature you switch on. What it costs is a control plane, a version upgrade at least once a year, and somebody who genuinely understands it.',
+      "Reconciliation keeps trying to reach the desired state. You still need health checks, capacity, incident ownership and supported versions of the cluster and its add-ons.",
   },
   {
     key: 'paas',
@@ -89,23 +96,23 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     cue: 'You hand over the artifact.',
     title: 'The port runs the ship.',
     definition:
-      'You supply the artifact. The provider supplies and operates everything that runs it, and decides when the runtime under it changes.',
+      "You supply code or an image; the provider operates the underlying platform. Supported runtimes, custom images, scaling and access depend on the service and plan.",
     analogy:
-      'You bring cargo to the quay and the port does the rest — crane, vessel, crew, schedule. It is genuinely faster. The catch is the fittings: they are the port’s, they match only their own equipment, and the day you leave you find out how much of your operation was theirs.',
+      "The port supplies a vessel and crew, so you can focus on the cargo. Some fittings use standard connections; others belong to that port. A move means checking which connections can travel and which need adapters.",
     question: 'If this platform vanished tomorrow, what would you actually have to rebuild?',
     action: 'Move to another port',
     reset: 'Reset the move',
     before: 'Code, image and configuration all belong to you. The connectors make the wiring short.',
-    after: 'The runtime moves. The managed connectors — their identity bindings, their triggers — stay at the quay. That gap is the migration.',
+    after: 'The image moves. Provider-specific identity bindings and triggers need new connections; data needs its own migration plan.',
     lesson:
-      'Lock-in is born at the connector, not the runtime. Judge a platform service by its seams rather than by how quickly it takes your first deploy.',
+      "Check the whole dependency map: identity, storage, triggers, networking and runtime support. Test a move before treating an image as proof of portability.",
   },
   {
     key: 'saas',
     ordinal: '05',
     name: 'Software service',
     model: 'SaaS',
-    cue: 'You stop running anything.',
+    cue: "You use a finished product.",
     title: 'You book the freight, you still own the cargo.',
     definition:
       'You consume a finished product. The provider runs the platform and the application; you configure, integrate and govern it.',
@@ -115,8 +122,8 @@ export const CONCEPT_STORIES: ConceptStory[] = [
     action: 'Hand over the operation',
     reset: 'Take it back',
     before: 'You run the vessel, the crew and the schedule, alongside the cargo itself.',
-    after: 'The service runs the vessel, the crew and the schedule. Two things do not transfer: the cargo, and the list of who may sign for it.',
+    after: "The provider operates the product. You still govern your data, users and tenant settings; the provider retains its own security and contractual duties.",
     lesson:
-      'A provider’s compliance certificate covers their platform, not your configuration. Data and access stay yours at every level — this one included.',
+      "A provider certificate does not validate your tenant configuration. Agree responsibilities in the contract, control access and test whether you can export usable data.",
   },
 ];

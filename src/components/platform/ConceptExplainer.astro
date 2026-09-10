@@ -3,7 +3,7 @@
  * Tabbed explainer for the five options. Shell only — the narrative lives in
  * src/data/platform-concepts.ts and each figure is its own scene component.
  */
-import { CONCEPT_STORIES } from '../../data/platform-concepts';
+import { CONCEPT_STORIES, type ConceptKey } from '../../data/platform-concepts';
 import ConceptPanel from './ConceptPanel.astro';
 import VmScene from './scenes/VmScene.astro';
 import ContainerScene from './scenes/ContainerScene.astro';
@@ -20,16 +20,14 @@ const scenes = {
   kubernetes: KubernetesScene,
   paas: PaasScene,
   saas: SaasScene,
-};
+} satisfies Record<ConceptKey, typeof VmScene>;
 ---
 
 <div class="cx" data-explainer>
   <div class="cx__head">
-    <h2 class="cx__title">Five ways to run the same application.</h2>
+    <h2 class="cx__title">Five concepts. Different decisions.</h2>
     <p class="cx__lede">
-      Each one hands more of the running to somebody else, and takes some of
-      your freedom with it. Work through them and the trade becomes concrete —
-      what you stop doing, and what you can no longer change.
+      These layers can work together: containers can run on VMs, Kubernetes manages containers, and a platform service may accept an image. SaaS is a decision to buy a finished product. Explore what each changes and who operates it.
     </p>
   </div>
 
@@ -55,7 +53,7 @@ const scenes = {
   </div>
 
   {CONCEPT_STORIES.map((story) => {
-    const Scene = scenes[story.key as keyof typeof scenes];
+    const Scene = scenes[story.key];
     return (
       <ConceptPanel story={story}>
         <Scene />

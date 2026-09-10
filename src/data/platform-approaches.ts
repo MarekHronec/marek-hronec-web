@@ -52,15 +52,15 @@ export const APPROACHES: Approach[] = [
       'The provider rents you an isolated machine and stops there. Everything above the hypervisor is yours, including the parts you would rather not think about.',
     owns: { physical: 'provider', virtualisation: 'provider', os: 'you', runtime: 'you', code: 'you', config: 'you', data: 'you' },
     note:
-      'The most work of the five, and the one people underestimate. Kernel CVEs, log shipping, certificate rotation and backup restores are all yours, and none of them appear on the pricing page.',
+      "You maintain the guest OS, application and recovery procedures. Managed backup and monitoring can help, but someone must configure them and verify restores.",
     goodWhen: [
       'The software needs a specific kernel, a kernel module, or a driver it can only load with host access.',
-      'A licence is bound to a physical host, a MAC address, or a hardware identifier.',
+      'The vendor supports your chosen VM and its licensing model; hardware-bound licences need separate verification.',
       'You are lifting an existing system on a deadline and rewriting it is not on the table.',
       'You need a runtime kept alive past the date any managed platform will still offer it.',
     ],
     badWhen: [
-      'You have a dozen small services and no appetite for a dozen machines to patch.',
+      'You have little capacity to maintain guest operating systems, even when workloads share machines.',
       'Nobody owns patching. An unattended VM is a liability with a monthly invoice.',
       'You want a deploy to be a swap, rather than a change applied to a long-lived box.',
     ],
@@ -78,13 +78,13 @@ export const APPROACHES: Approach[] = [
     name: 'Container',
     model: 'Packaging',
     oneLine:
-      'The application and its dependencies become one image that runs identically wherever there is a compatible kernel. This is the step that buys portability, and the bill for it is that you now own a base image, its updates and every CVE inside it.',
+      "An image packages application files and dependencies into a versioned artifact. You still maintain its base image and libraries, and configure a compatible host and external services.",
     owns: { physical: 'provider', virtualisation: 'provider', os: 'you', runtime: 'you', code: 'you', config: 'you', data: 'you' },
     note:
       'Packaging changed; ownership did not. Run containers on your own VMs and you still own the host OS. What moved is the dependency surface — now explicit, versioned, and shipped with the application instead of installed beside it.',
     goodWhen: [
       'You want one artifact to travel from a laptop through CI into production unchanged.',
-      'Rollback should mean pointing at the previous image tag, not replaying an install.',
+      'Rollback should mean pointing at the previous image digest, not replaying an install.',
       'More than one team deploys, and their dependency choices should not collide.',
     ],
     badWhen: [
@@ -93,13 +93,13 @@ export const APPROACHES: Approach[] = [
       'Nobody owns base images. You have just adopted the CVEs of every layer you inherited.',
     ],
     lockIn: {
-      level: 'Lowest of the five',
+      level: 'Low at the image format',
       where:
-        'The open container image format — the OCI spec, no relation to Oracle’s cloud — is implemented rather than promised, and an image built for one registry runs from another. The caveat is architecture, not vendor: an arm64 image will not run on amd64 nodes.',
+        'OCI image standards support exchange between compatible registries and runtimes. Match the OS and CPU architecture, or provide a multi-platform image. Storage, networking and identity remain separate migration work.',
     },
-    examples: { microsoft: 'Azure Container Registry', oracle: 'OCI Container Registry' },
+    examples: { microsoft: 'Containers on Azure VMs; images in ACR', oracle: 'Containers on OCI Compute; images in Container Registry' },
     keepDoorOpen:
-      'Keep provider SDK calls out of the image for anything the environment can supply. An image that reads a connection string from its environment moves; one that calls a provider secret service to fetch it does not.',
+      "Inject deployment configuration and secrets securely. Isolate provider SDKs behind adapters and test the image on a second compatible environment.",
   },
   {
     key: 'orchestrated',
@@ -109,7 +109,7 @@ export const APPROACHES: Approach[] = [
       'You write down what should be running. A controller compares that against what is actually running and closes the gap, continuously — not once at deploy time.',
     owns: { physical: 'provider', virtualisation: 'provider', os: 'shared', runtime: 'you', code: 'you', config: 'you', data: 'you' },
     note:
-      'On a managed service the provider runs the control plane and publishes node images, but you decide when nodes upgrade and what runs on them. Kubernetes is a platform for building platforms, not an application runtime you get for free.',
+      "This column assumes managed Kubernetes. Providers operate the control plane; node maintenance and upgrade controls vary by service. Your team still owns workloads, add-ons and application recovery.",
     goodWhen: [
       'Enough services deploy independently that placing them by hand has become somebody’s job.',
       'You need self-healing, rolling updates and service discovery as properties of the system rather than as scripts.',
@@ -134,24 +134,24 @@ export const APPROACHES: Approach[] = [
     name: 'Platform service',
     model: 'PaaS',
     oneLine:
-      'You deliver code or an image and the provider runs it. No OS, no cluster, no upgrade cadence — and no shell access, no arbitrary system libraries, and no say in when your runtime version is deprecated.',
+      "You deliver code or an image and the provider operates the host platform. Some services offer custom libraries and container shell access. Host control, runtime support and scaling remain service-specific.",
     owns: { physical: 'provider', virtualisation: 'provider', os: 'provider', runtime: 'shared', code: 'you', config: 'you', data: 'you' },
     note:
       'The runtime is shared, not handed over. The provider patches the platform and gives you platform metrics; tracing, alerting logic, SLOs and incident response stay firmly on your side of the line.',
     goodWhen: [
       'The team is small and time to first deploy matters more than exit cost.',
       'The workload is an ordinary web application or API with no unusual host requirements.',
-      'Load is near zero most of the time, and paying for an idle machine is the wrong trade.',
+      'Load is often idle and the selected plan supports economical scale-to-zero; check minimum charges and cold starts.',
     ],
     badWhen: [
-      'A regulator or a contract requires a demonstrable exit within a fixed period.',
+      'You cannot meet the required exit deadline with the chosen service and its dependencies.',
       'You depend on a runtime version that will be deprecated on the provider’s schedule, not yours.',
       'The application needs system-level access the platform will never grant.',
     ],
     lockIn: {
       level: 'Moderate at the runtime, high at the seams',
       where:
-        'The runtime is often more portable than it looks. The connectors are not. Managed connections carry their own identity bindings and trigger semantics, and they stay behind when the code leaves — which is why moving a platform service usually costs more than standing it up did.',
+        'The runtime is often more portable than it looks. Provider-specific connectors may require adapters. Managed connections carry their own identity bindings and trigger semantics, and they stay behind when the code leaves — include those connections in the migration estimate.',
     },
     examples: { microsoft: 'App Service, Container Apps, Functions', oracle: 'OCI Functions, Container Instances' },
     keepDoorOpen:
@@ -162,10 +162,10 @@ export const APPROACHES: Approach[] = [
     name: 'Software service',
     model: 'SaaS',
     oneLine:
-      'Somebody else runs the product. You configure it, integrate it, govern it — and remain entirely accountable for the data inside it and for who is allowed to read it.',
+      "The provider operates a finished product. You configure and integrate it, govern your data and control user access. Both parties retain responsibilities under the service agreement.",
     owns: { physical: 'provider', virtualisation: 'provider', os: 'provider', runtime: 'provider', code: 'provider', config: 'you', data: 'you' },
     note:
-      'Configuration and data never transfer, at any level, including this one. A large share of SaaS breaches are not the provider being compromised — they are a permission the customer left open.',
+      "You own tenant settings and access decisions. The provider also has security, availability and data-handling duties: a customer responsibility does not remove the provider responsibility.",
     goodWhen: [
       'The capability is not your differentiator. Nobody was ever promoted for running their own mail server.',
       'The problem is well understood and a mature product already solves it.',
@@ -177,11 +177,11 @@ export const APPROACHES: Approach[] = [
       'The process you would have to adopt is worse than the one you have, and you would be paying to adopt it.',
     ],
     lockIn: {
-      level: 'Highest, and it is not about code',
+      level: 'Potentially high in data and workflows',
       where:
-        'The question is never "is there an export?" — there is always an export. It is whether the export arrives in a shape another product can ingest, and whether the processes built around this one survive the change. That is usually the more expensive half.',
+        'Check whether a complete export exists, what it costs and whether another product can use it. Workflows, integrations and permissions may need migration too.',
     },
-    examples: { microsoft: 'Microsoft 365, Fabric', oracle: 'Oracle Fusion Applications, NetSuite' },
+    examples: { microsoft: 'Microsoft 365, Dynamics 365', oracle: 'Oracle Fusion Applications, NetSuite' },
     keepDoorOpen:
       'Own the identity layer and the integration contracts. If access is federated from your own directory and integrations run through interfaces you control, you are replacing a product rather than rebuilding a department.',
   },
