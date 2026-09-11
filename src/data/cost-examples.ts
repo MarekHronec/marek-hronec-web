@@ -1,0 +1,8 @@
+import type { CostKey } from './cost-concepts';
+export interface CostExample { rows: {label:string; before:number; after:number}[]; assumption:string; outcome:string; totalLabel:string }
+export const COST_EXAMPLES: Record<CostKey, CostExample> = {
+idle:{totalLabel:'Planned monthly bill',rows:[{label:'Chartered capacity',before:800,after:400},{label:'Retained storage & services',before:200,after:200}],assumption:'4 → 2 vessels at €200/month each. Released for a whole future month; no commitment or release fee.',outcome:'€400 less next month. Retained services still cost €200.'},
+scaling:{totalLabel:'Planned monthly bill',rows:[{label:'Baseline & retained services',before:800,after:800},{label:'Extra capacity for the peak',before:0,after:200}],assumption:'2 extra vessels × 10 days × €10/day. The baseline remains in place for the month.',outcome:'€200 more this month for the peak. Ending the peak stops new daily charges; it does not refund past use.'},
+transfer:{totalLabel:'Planned monthly bill',rows:[{label:'Existing services',before:600,after:600},{label:'Additional outbound transfer',before:0,after:200}],assumption:'1,000 GB × an invented €0.20/GB rate. No free allowance or other transfer fees in this example.',outcome:'€200 added for this shipment. Repeating the shipment adds another charge.'},
+operations:{totalLabel:'Monthly cost including team time',rows:[{label:'Provider invoice',before:300,after:700},{label:'Your team’s operating effort',before:1200,after:600}],assumption:'Team effort: 24 → 12 hours/month at €50/hour. Provider fee rises by €400. No transition cost included.',outcome:'Total cost falls €200, although the provider invoice rises €400. Freed staff time is not automatically a cash saving.'}
+};

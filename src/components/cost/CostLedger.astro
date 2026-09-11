@@ -1,0 +1,45 @@
+---
+import { COST_EXAMPLES } from '../../data/cost-examples';
+import type { CostKey } from '../../data/cost-concepts';
+interface Props { concept: CostKey }
+const {concept}=Astro.props;
+const example=COST_EXAMPLES[concept];
+const before=example.rows.reduce((sum,r)=>sum+r.before,0);
+const after=example.rows.reduce((sum,r)=>sum+r.after,0);
+const euro=(n:number)=>'€'+n.toLocaleString('en-IE');
+---
+<aside class="cost-ledger" data-cost-ledger data-before={before} data-after={after} data-period={concept==='idle'?'next month':concept==='operations'?'per month':'this month'} aria-label="Illustrative monthly cost comparison">
+  <header><span>Illustrative amounts · not provider prices</span><strong>{example.totalLabel}</strong></header>
+  <div class="cost-ledger__total">
+    <span><small>Before</small><b>{euro(before)}</b></span>
+    <span aria-hidden="true">→</span>
+    <span><small>With this decision</small><b data-cost-total>{euro(before)}</b></span>
+  </div>
+  <p class="cost-ledger__delta" data-cost-delta>€0 change</p>
+  <dl>{example.rows.map(row=><div data-cost-row data-before={row.before} data-after={row.after}>
+    <dt>{row.label}</dt><dd><span>{euro(row.before)} → </span><strong data-cost-value>{euro(row.before)}</strong></dd>
+    <progress aria-hidden="true" max={Math.max(before,after)} value={row.before}></progress>
+  </div>)}</dl>
+  <p class="cost-ledger__assumption">{example.assumption}</p>
+  <p class="cost-ledger__outcome">After the decision: {example.outcome}</p>
+  <p class="cost-ledger__note">Motion compares two scenarios; it is not a live bank balance or a refund. Reset restores the example.</p>
+</aside>
+<style>
+.cost-ledger { padding: var(--space-4); background: var(--color-surface-container-low); color: var(--color-navy); margin-top: var(--space-3); }
+header span { display: block; font-size: var(--text-label-md); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); }
+header strong { font-size: var(--text-body-lg); }
+.cost-ledger__total { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-3); }
+small { display: block; font-size: var(--text-label-md); color: var(--color-on-surface-muted); }
+b { font: var(--weight-semibold) var(--text-headline-md)/var(--leading-relaxed) var(--font-display); font-variant-numeric: tabular-nums; }
+.cost-ledger__delta { color: var(--color-primary); font-weight: var(--weight-semibold); margin-bottom: var(--space-3); }
+dl > div { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2); margin-top: var(--space-3); font-size: var(--text-label-md); }
+dd { margin: 0; font-variant-numeric: tabular-nums; }
+dd span { color: var(--color-on-surface-muted); }
+progress { grid-column: 1/-1; width: 100%; height: var(--space-2); border: 0; appearance: none; background: var(--color-primary-tint); }
+progress::-webkit-progress-bar { background: var(--color-primary-tint); }
+progress::-webkit-progress-value { background: var(--color-primary); }
+progress::-moz-progress-bar { background: var(--color-primary); }
+.cost-ledger__assumption,.cost-ledger__outcome,.cost-ledger__note { margin-top: var(--space-3); font-size: var(--text-label-md); line-height: var(--leading-relaxed); }
+.cost-ledger__assumption,.cost-ledger__note { color: var(--color-on-surface-muted); }
+.cost-ledger__outcome { font-weight: var(--weight-semibold); }
+</style>

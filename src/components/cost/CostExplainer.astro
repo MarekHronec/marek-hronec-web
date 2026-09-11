@@ -1,5 +1,6 @@
 ---
 import { COST_STORIES, type CostKey } from '../../data/cost-concepts';
+import CostLedger from './CostLedger.astro';
 import ConceptPanel from '../platform/ConceptPanel.astro';
 import IdleCapacity from './scenes/IdleCapacity.astro';
 import DemandScaling from './scenes/DemandScaling.astro';
@@ -13,11 +14,14 @@ const scenes = { idle: IdleCapacity, scaling: DemandScaling, transfer: TransferR
   <div class="cost-explainer__tabs" role="tablist" aria-label="Cost concepts" data-needs-js hidden>
     {COST_STORIES.map((s,i) => <button type="button" role="tab" id={'concept-tab-'+s.key} aria-controls={'concept-panel-'+s.key} aria-selected={i===0} tabindex={i===0?0:-1} data-tab={s.key}><span>{s.ordinal} / {s.model}</span><strong>{s.name}</strong></button>)}
   </div>
-  {COST_STORIES.map(story => { const Scene=scenes[story.key]; return <ConceptPanel story={story}><Scene /></ConceptPanel>; })}
+  {COST_STORIES.map(story => { const Scene=scenes[story.key]; return <ConceptPanel story={story}><Scene /><CostLedger concept={story.key} /></ConceptPanel>; })}
 </div>
 <script>
   import { initializeExplainers } from '../../scripts/explainer';
+  import { initializeCostLedgers } from '../../scripts/cost-ledgers';
   initializeExplainers();
+  initializeCostLedgers();
+  document.addEventListener('astro:page-load', initializeCostLedgers);
   document.addEventListener('astro:page-load', () => initializeExplainers());
 </script>
 <style>

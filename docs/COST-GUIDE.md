@@ -21,3 +21,9 @@ Validation: all 243 cost-checklist combinations, invalid/partial inputs and unce
 Astro check: 127 files, zero errors/warnings/hints. Production build: 71 pages and successful Pagefind indexing. Existing build notices concern Markdown plugin configuration deprecation and a large Knowledge Base client chunk, outside this change.
 
 Published locally on main after verification; nothing pushed or deployed.
+
+## Visible charge comparisons
+
+feature/cost-bill-motion adds an illustrative monthly ledger to every cost scene. Line items, total, delta and bars follow the existing scene timeline, including pause, replay, reset and reduced motion. Invented rates and assumptions are visible. Idle compares a full future month; scaling and transfer add charges this month; operations separates provider invoice from valued staff time. Reset is a scenario reset, not a refund.
+
+Both independent reviewers rechecked the implementation. Accepted fixes: sum rounded displayed rows to prevent intermediate discrepancies; distinguish one-time charges from recurring monthly changes; label static outcome text as prospective. No remaining findings. Browser checks cover all four endpoint and reset totals, paused arithmetic, existing controls, mobile widths, reduced motion and no-JavaScript fallback. Astro check: 130 files, no errors/warnings/hints. Production build: 71 pages. Local merge only; no push.
