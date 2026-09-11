@@ -1,0 +1,18 @@
+---
+import Hull from '../../platform/scenes/Hull.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="scaling-title">
+<title id="scaling-title">Two baseline vessels remain ready. Two extra vessels travel into position to handle peak demand.</title>
+<text class="scene__label" x="300" y="32" text-anchor="middle">BASELINE + PEAK CAPACITY</text>
+{[0,1,2,3].map(i=><g transform={'translate(55 '+(106+i*61)+')'}>
+<path class="scene__route" d="M0 20 H330"/>
+<g class:list={['vessel',{'peak':i>1}]}><Hull width={150} depth={26}/><path class="scene__crate" d="M58 0 V-22 H94 V0 M99 0 V-22 H133 V0"/></g>
+<text class="scene__text" x="352" y="12">{i<2?'Baseline':'Peak capacity'}</text>
+</g>)}
+</svg>
+<style>
+.vessel { transform: translateX(145px); }
+.peak { transform: translateX(0); opacity: .18; }
+:global(.cp[data-demonstrate='true']) .peak { animation: join var(--nautical-story-duration) linear both; }
+@keyframes join { from { transform: translateX(0); opacity: 1; } to { transform: translateX(145px); opacity: 1; } }
+</style>

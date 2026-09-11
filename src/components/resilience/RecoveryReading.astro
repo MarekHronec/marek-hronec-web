@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { base } from '../../utils/base';
-const ids=['multicloud/regions-zones-availability-domains-where-your-data-lives','multicloud/service-availability-by-region-why-you-cannot-trust-the-map'];
+const ids=['multicloud/rto-rpo-from-business-impact-to-tested-recovery','multicloud/backups-replication-point-in-time-recovery','multicloud/recovery-exercise-failover-validation-failback','multicloud/regions-zones-availability-domains-where-your-data-lives','multicloud/service-availability-by-region-why-you-cannot-trust-the-map'];
 const articles=await getCollection('knowledgeBase');
 const reading=ids.map(id=>{const a=articles.find(a=>a.id===id);if(!a)throw new Error('Missing resilience reading: '+id);return a;});
 const sources=[
@@ -13,11 +13,11 @@ const sources=[
 ---
 <section class="recovery-reading" aria-labelledby="recovery-reading-title">
   <h2 id="recovery-reading-title">Read the detail behind the decision.</h2>
-  <p>These existing notes cover placement and regional service checks. They were reviewed and updated alongside this guide.</p>
+  <p>Start with the target agreement, protection checklist and exercise runbook. The regional notes help verify placement and dependencies.</p>
   <ul role="list">{reading.map(a=><li><a href={base+'/knowledge-base/'+a.id}>{a.data.title} &rarr;</a><p>{a.data.excerpt}</p></li>)}</ul>
   <aside>
     <h3>Sources &amp; method</h3>
-    <p>Reviewed 10 September 2026. The illustrations simplify failure scenarios; the planner translates your stated targets into questions and priorities. It does not calculate achieved RTO, RPO or availability.</p>
+    <p>Reviewed 11 September 2026. The illustrations simplify failure scenarios; the planner translates your stated targets into questions and priorities. It does not calculate achieved RTO, RPO or availability.</p>
     <ul role="list">{sources.map(([label,href])=><li><a href={href}>{label} &rarr;</a></li>)}</ul>
   </aside>
 </section>

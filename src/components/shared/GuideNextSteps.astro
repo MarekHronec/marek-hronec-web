@@ -4,14 +4,15 @@ import { base } from '../../utils/base';
 interface Props { current: GuideKey }
 const { current } = Astro.props;
 const offers: Record<GuideKey, Partial<Record<GuideKey, string>>> = {
-  platform: { compliance: 'Check the data and compliance requirements', resilience: 'Plan how this workload will recover' },
-  compliance: { platform: 'Explore suitable platform approaches', resilience: 'Turn availability needs into recovery targets' },
-  resilience: { compliance: 'Check where recovery copies may live', platform: 'Review who operates the recovery platform' },
+  platform: { cost: 'Check the full cost of this platform', compliance: 'Check the data and compliance requirements', resilience: 'Plan how this workload will recover' },
+  compliance: { cost: 'Include protection and governance in the cost', platform: 'Explore suitable platform approaches', resilience: 'Turn availability needs into recovery targets' },
+  resilience: { cost: 'Budget for standby, copies and recovery tests', compliance: 'Check where recovery copies may live', platform: 'Review who operates the recovery platform' },
+  cost: { platform: 'Compare what each platform leaves you to operate', compliance: 'Check the protection requirements before cutting cost', resilience: 'Include the recovery design in your estimate' },
 };
 ---
 <aside class="guide-next" aria-label="Continue your architecture decision">
   <p class="guide-next__label">Continue your architecture decision</p>
-  {GUIDES.filter(g => g.key !== current).map(g => <a href={base + g.href}>{offers[current][g.key]} <span aria-hidden="true">&rarr;</span></a>)}
+  {GUIDES.filter(g => g.key !== current).map(g => <a href={base + g.href}>{offers[current][g.key] ?? g.title} <span aria-hidden="true">&rarr;</span></a>)}
   <p class="guide-next__note">A platform category alone does not establish compliance. Check the specific service, configuration, contract and recovery location.</p>
 </aside>
 <style>

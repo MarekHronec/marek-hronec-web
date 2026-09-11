@@ -1,0 +1,16 @@
+---
+import Hull from '../../platform/scenes/Hull.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="idle-title">
+<title id="idle-title">Four chartered vessels: one working, three idle. Releasing two leaves one working vessel and one spare.</title>
+<text class="scene__label" x="300" y="32" text-anchor="middle">CHARTERED CAPACITY · ILLUSTRATIVE</text>
+{[0,1,2,3].map(i=><g transform={'translate(74 '+(99+i*65)+')'}>
+<g class:list={['berth',{'released':i>1}]}><Hull width={190} depth={26}/>{i===0&&<path class="scene__crate" d="M65 0 V-23 H107 V0 M111 0 V-23 H153 V0"/>}</g>
+<text class="scene__text" x="252" y="13">{i===0?'Carrying cargo':i===1?'Spare capacity':'Idle charter'}</text>
+{i>1&&<text class="scene__after scene__label" x="252" y="30">RELEASED</text>}
+</g>)}
+</svg>
+<style>
+:global(.cp[data-demonstrate='true']) .released { animation: release var(--nautical-story-duration) linear both; }
+@keyframes release { to { transform: translateX(60px); opacity: .12; } }
+</style>

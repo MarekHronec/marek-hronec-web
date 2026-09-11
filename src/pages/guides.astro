@@ -4,7 +4,7 @@ import GuideHero from '../components/shared/GuideHero.astro';
 import { GUIDES } from '../data/architecture-guides';
 import { base } from '../utils/base';
 ---
-<BaseLayout title="Architecture Guides" description="Interactive guides for platform choices, cloud compliance and recovery planning.">
+<BaseLayout title="Architecture Guides" description="Interactive guides for platform choices, cloud compliance, recovery planning and cost.">
   <GuideHero title="Make the next" accent="architecture decision" description="Use these guides to frame a workload decision, explore the trade-offs and identify what to verify. Each combines plain explanations, marine illustrations and an interactive tool." />
   <section class="guides container" aria-label="Choose an architecture guide">
     {GUIDES.map((g, i) => <article><span>0{i + 1}</span><h2><a href={base + g.href}>{g.title} &rarr;</a></h2><p>{g.description}</p></article>)}
@@ -18,5 +18,5 @@ import { base } from '../utils/base';
   h2 { margin-block: var(--space-3); font-size: var(--text-title-lg); }
   a { color: var(--color-navy); } p { color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
   .guides__note { grid-column: 1 / -1; max-width: 80ch; }
-  @media (min-width: 1024px) { .guides { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .guides { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GuideHero from '../components/shared/GuideHero.astro';
+import CostReading from '../components/cost/CostReading.astro';
+import CostPlanner from '../components/cost/CostPlanner.astro';
+import CostExplainer from '../components/cost/CostExplainer.astro';
+---
+<BaseLayout title="Cost — Understand the Whole Architecture" description="Explore idle capacity, scaling, data transfer and operational effort before estimating cloud workload costs.">
+<GuideHero title="Understand what" accent="the architecture will cost" description="A server price is a starting point. Follow the capacity you keep, the demand you serve, the data you move and the work your team still owns." tool={{href:'#cost-planner',title:'Prepare a cost checklist',description:'Identify measurements, hidden costs and questions to resolve before pricing.'}} reference={{href:'#options',title:'Understand the four cost drivers',description:'Explore capacity, demand, data movement and operational effort.'}}  />
+<section id="options" class="cost-section container"><CostExplainer /></section>
+<div class="cost-section container"><CostPlanner /></div>
+<div class="cost-section container"><CostReading /></div>
+</BaseLayout>
+<style>.cost-section { padding-block: var(--space-8); }</style>

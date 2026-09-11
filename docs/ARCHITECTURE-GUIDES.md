@@ -16,12 +16,12 @@ Updated these existing articles, including their review dates:
 
 Corrected the fault-domain/availability-domain distinction, automatic region-pair recovery implications, static regional claims, quota versus capacity, preview-age heuristics and inventory coverage assumptions. Sources are linked inline and from the resilience guide. The broader Knowledge Base was not represented as comprehensively re-audited.
 
-## Exact articles recommended next
+## Published recovery articles
 
-These are writing briefs, not published links or unfinished articles on the site.
+These three briefs were implemented on feature/cost-guide. Each article is now in the Knowledge Base and linked from /resilience. The scopes below record the original editorial requirements.
 
 1. **RTO and RPO — From Business Impact to a Tested Recovery Target**
-   - Proposed path: multicloud/rto-rpo-from-business-impact-to-tested-recovery
+   - Published path: multicloud/rto-rpo-from-business-impact-to-tested-recovery
    - Audience: application owners and architects.
    - Explain operation scope, interruption start/end, acknowledged transactions, achievable versus required targets, and why SLA percentages do not specify RTO.
    - Worked example: an order service with a 4-hour RTO and a 15-minute RPO; measure detection, decision, restore, validation and reconciliation.
@@ -29,14 +29,14 @@ These are writing briefs, not published links or unfinished articles on the site
    - Primary sources: Microsoft reliability targets and business-continuity guidance.
 
 2. **Backups, Replication and Point-in-Time Recovery — Three Different Jobs**
-   - Proposed path: multicloud/backups-replication-point-in-time-recovery
+   - Published path: multicloud/backups-replication-point-in-time-recovery
    - Explain deletion propagation, retention, consistency across stores, isolation, immutability and key access.
    - Worked example: a bad change reaches both live copies; restore a clean point and reconcile legitimate later transactions.
    - Deliverable: a protection-and-restore checklist with evidence, rather than a product comparison promising universal behavior.
    - Primary sources: the selected Azure and OCI data services' backup and recovery documentation.
 
 3. **Run a Recovery Exercise — Failover, Validation and Safe Failback**
-   - Proposed path: multicloud/recovery-exercise-failover-validation-failback
+   - Published path: multicloud/recovery-exercise-failover-validation-failback
    - Cover isolated testing, prerequisites, traffic switching, dependencies, split-brain prevention, business validation and failback as a separate operation.
    - Worked example: primary region unavailable with a constrained alternate region.
    - Deliverable: a runbook and results record with owners, measured interruption, recoverable data point, gaps and actions.

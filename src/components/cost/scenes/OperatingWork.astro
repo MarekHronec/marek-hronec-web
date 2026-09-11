@@ -1,0 +1,18 @@
+---
+const tasks=['Dock maintenance','Cargo checks','Delivery decisions'];
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="operations-title">
+<title id="operations-title">Dock maintenance moves from your team to the port operator. Cargo checks and delivery decisions stay with your team.</title>
+<text class="scene__label" x="300" y="32" text-anchor="middle">HAND OVER A TASK · KEEP AN OWNER</text>
+<path class="scene__paper" d="M25 70 H285 V326 H25 Z M315 70 H575 V326 H315 Z"/>
+<text class="scene__label" x="155" y="99" text-anchor="middle">YOUR TEAM</text>
+<text class="scene__label" x="445" y="99" text-anchor="middle">PORT OPERATOR</text>
+{tasks.map((task,i)=><g transform={'translate(44 '+(126+i*64)+')'}><g class:list={['task',{'handover':i===0}]}>
+<path class="scene__crate" d="M0 0 H220 V44 H0 Z"/>
+<text class="scene__text" x="110" y="27" text-anchor="middle">{task}</text>
+</g></g>)}
+</svg>
+<style>
+:global(.cp[data-demonstrate='true']) .handover { animation: handover var(--nautical-story-duration) linear both; }
+@keyframes handover { to { transform: translateX(290px); } }
+</style>

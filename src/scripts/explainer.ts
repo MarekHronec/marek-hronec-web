@@ -48,6 +48,8 @@ export function initializeExplainers(rootSelector = '[data-explainer]') {
       root.querySelectorAll<HTMLButtonElement>('[data-pause]').forEach((button) => {
         button.textContent = userPaused ? 'Resume motion' : 'Pause motion';
         button.setAttribute('aria-pressed', String(userPaused));
+        const panel = button.closest<HTMLElement>('[data-panel]');
+        button.disabled = !panel || animations(panel).length === 0;
       });
     };
 
@@ -100,6 +102,11 @@ export function initializeExplainers(rootSelector = '[data-explainer]') {
       });
 
       panel.querySelector('[data-replay]')?.addEventListener('click', () => {
+        // Finite scenes create a timeline when their demonstration is enabled.
+        if (animations(panel).length === 0 && panel.dataset.demonstrate !== 'true') {
+          panel.querySelector<HTMLButtonElement>('button[data-demonstrate]')?.click();
+          return;
+        }
         userPaused = false;
         restart(panel);
         setPlayback();

@@ -61,6 +61,8 @@ const { story } = Astro.props;
 </section>
 
 <style>
+  .cp__playback button:disabled { opacity: .45; cursor: default; }
+
   .cp { display: grid; gap: var(--space-6); padding-block: var(--space-5); }
   /* Beats the UA [hidden] rule that `display: grid` would otherwise outrank. */
   .cp[hidden] { display: none; }

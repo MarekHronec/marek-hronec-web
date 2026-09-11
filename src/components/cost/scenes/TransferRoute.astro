@@ -1,0 +1,20 @@
+---
+import Harbour from '../../resilience/scenes/Harbour.astro';
+import Hull from '../../platform/scenes/Hull.astro';
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="transfer-title">
+<title id="transfer-title">Cargo travels from the source port to the destination. Measure each direction separately before applying service-specific rates.</title>
+<ChartWater id="cost-transfer-water"/>
+<text class="scene__label" x="300" y="33" text-anchor="middle">MEASURE VOLUME × CHECK THE ROUTE’S RATE</text>
+<g transform="translate(24 160)"><Harbour label="SOURCE"/></g>
+<g transform="translate(444 160)"><Harbour label="DESTINATION"/></g>
+<path class="scene__route" d="M120 222 H471 M462 217 L471 222 L462 227"/>
+<g transform="translate(80 204)"><g class="shipment"><Hull width={112} depth={26}/><path class="scene__crate" d="M50 0 V-20 H88 V0"/></g></g>
+<text class="scene__label" x="300" y="282" text-anchor="middle">OUTBOUND · REGIONS / PROVIDERS / INTERNET</text>
+<text class="scene__text" x="300" y="310" text-anchor="middle">Return traffic may have a different charge.</text>
+</svg>
+<style>
+:global(.cp[data-demonstrate='true']) .shipment { animation: shipment var(--nautical-story-duration) linear both; }
+@keyframes shipment { to { transform: translateX(320px); } }
+</style>

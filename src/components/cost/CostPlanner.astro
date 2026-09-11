@@ -1,0 +1,62 @@
+---
+import { COST_QUESTIONS } from '../../data/cost-planner';
+import ChooserQuestion from '../platform/ChooserQuestion.astro';
+import GuideNextSteps from '../shared/GuideNextSteps.astro';
+---
+<section class="cost-planner" id="cost-planner" aria-labelledby="cost-planner-title">
+  <h2 id="cost-planner-title">Prepare your cost checklist.</h2>
+  <p class="cost-planner__lede">Five questions about one workload. Identify what to measure, what to include and which assumptions need evidence. No prices are calculated: rates, contracts and workload measurements belong in your estimate.</p>
+  <noscript><p>Enable JavaScript to prepare the checklist. The four explanations above and the reading below remain available without it.</p></noscript>
+  <div class="cost-planner__grid">
+    <form data-cost-form>
+      <ol role="list">{COST_QUESTIONS.map((question,index)=><ChooserQuestion question={{...question,options:[...question.options]}} index={index} total={COST_QUESTIONS.length} />)}</ol>
+      <button type="button" data-cost-reset disabled>↺ Start over</button>
+    </form>
+    <aside class="cost-planner__result">
+      <div class="cost-planner__toolbar">
+        <p data-cost-progress aria-live="polite" aria-atomic="true">0 of 5 answered</p>
+        <button type="button" data-cost-reset disabled>↺ Start over</button>
+      </div>
+      <div class="cost-planner__body" tabindex="0" role="region" aria-label="Cost checklist">
+        <p data-cost-summary>Complete the five questions to prepare your cost checklist.</p>
+        <div data-cost-output hidden>
+          <h3>Cost checklist</h3>
+          <div data-cost-gaps hidden><h4>Measure first</h4><ul></ul></div>
+          <ol data-cost-priorities></ol>
+        </div>
+        <GuideNextSteps current="cost" />
+      </div>
+    </aside>
+  </div>
+</section>
+<script>
+  import { initializeCostPlanner } from '../../scripts/cost-planner';
+  initializeCostPlanner();
+  document.addEventListener('astro:page-load', initializeCostPlanner);
+</script>
+<style>
+  h2 { font: var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); letter-spacing: var(--tracking-tight); }
+  .cost-planner__lede { max-width: 75ch; margin-block: var(--space-3) var(--space-6); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
+  .cost-planner__grid { display: grid; gap: var(--space-6); align-items: start; }
+  form > ol { display: grid; gap: var(--space-5); }
+  button { border: 0; padding: var(--space-3); background: var(--color-primary-tint); color: var(--color-navy); font: var(--text-label-md) var(--font-body); cursor: pointer; }
+  form > button { margin-top: var(--space-4); }
+  button:disabled { opacity: .5; cursor: default; }
+  button:hover:enabled { background: var(--color-navy); color: var(--color-on-primary); }
+  .cost-planner__result { display: flex; flex-direction: column; min-width: 0; background: var(--color-surface-container-low); }
+  .cost-planner__toolbar { display: flex; gap: var(--space-3); align-items: center; justify-content: space-between; padding: var(--space-4); }
+  .cost-planner__toolbar p { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
+  .cost-planner__body { padding: var(--space-5); min-height: 0; line-height: var(--leading-relaxed); overflow-wrap: anywhere; }
+  [hidden] { display: none; }
+  h3 { margin-top: var(--space-4); font-size: var(--text-title-lg); color: var(--color-navy); }
+  [data-cost-gaps] { padding: var(--space-4); margin-block: var(--space-4); background: var(--color-primary-tint); }
+  [data-cost-gaps] ul { list-style: disc; padding-left: var(--space-4); }
+  .cost-planner__body :global(li) { margin-top: var(--space-3); }
+  .cost-planner__body :global(h4) { color: var(--color-navy); font-weight: var(--weight-semibold); }
+  .cost-planner__body :global(li p) { font-size: var(--text-label-md); color: var(--color-on-surface-muted); }
+  @media(min-width: 1024px) {
+    .cost-planner__grid { grid-template-columns: minmax(0,1fr) minmax(0,24rem); gap: var(--space-8); }
+    .cost-planner__result { position: sticky; top: calc(var(--nav-height) + var(--space-4)); max-height: calc(100dvh - var(--nav-height) - var(--space-8)); }
+    .cost-planner__body { overflow-y: auto; scrollbar-gutter: stable; }
+  }
+</style>
