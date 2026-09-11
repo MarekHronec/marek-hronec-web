@@ -3,8 +3,8 @@ title: "Regions, Zones, Availability Domains — Where Your Data Actually Lives"
 category: multicloud
 tags: ["Azure", "OCI", "Regions", "Availability Zones", "Data Residency"]
 date: 2026-04-30
-updated: 2026-05-13
-readTime: 13
+updated: 2026-09-10
+readTime: 5
 level: beginner
 excerpt: "Region choice locks in data residency, resilience, and service availability for years. The portal calls it a dropdown. It is an architectural decision."
 references:
@@ -21,149 +21,56 @@ references:
     description: "Oracle's reference for OCI regions, availability domain counts per region, realms, and home region semantics — essential reading before provisioning a new OCI tenancy."
     domain: "docs.oracle.com"
   - title: "Data residency in Azure"
-    url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/data-residency"
-    description: "Microsoft's guide to data residency commitments across Azure geographies, the EU Data Boundary programme, and service-specific residency behaviours — the reference for sovereignty-driven region decisions."
-    domain: "learn.microsoft.com"
+    url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/data-residency/"
+    description: "Microsoft's overview of Azure data residency; verify the commitments and exceptions for each service and recovery configuration."
+    domain: "azure.microsoft.com"
 ---
 
-The portal lets you pick a region from a dropdown. That makes it look like a simple choice — pick a city, deploy. It is not a simple choice. The region you choose locks in your data residency, determines your resilience options, constrains which services you can use, and quietly shapes your cost model and disaster recovery story for years. Many of the architectural problems that prove hardest to fix are downstream of a hurried region decision in the first sprint.
+A region choice defines more than a location. It constrains failure isolation, service features and where recovery copies can live. Make the choice against a named business operation and its recovery requirements.
 
-This article is about getting that decision right, on either cloud, with eyes open about how the two providers think about the problem differently.
+Use the [resilience guide](/resilience) to frame recovery time, recovery point and the failure boundary you need to survive. Then validate the actual services and configurations.
 
-## The vocabulary, before anyone confuses it
+## Choose the failure boundary first
 
-Both clouds use the words *region* and *zone* but they do not mean exactly the same thing.
+| Boundary | What it separates | What it does not establish |
+|---|---|---|
+| Instance or host | Individual compute resources | Independent storage, routing or identity |
+| Azure availability zone | Datacenter groups within a region | Protection against a complete regional outage |
+| OCI availability domain | One or more datacenters isolated from other ADs | Protection against a complete regional outage |
+| OCI fault domain | Hardware and infrastructure groupings within an AD | Protection against loss of that entire AD |
+| Another region | A separate regional deployment | Automatic application recovery or independent global dependencies |
 
-**Azure:**
-- **Geography** — a country or region of countries (US, EU, Japan, India). A data residency boundary.
-- **Region** — a metropolitan area with one or more datacenters. Azure has over 70 of these globally.
-- **Availability Zone (AZ)** — a logical zone number within a region, backed by physically separate datacenter groups with independent power, cooling, and networking. Where supported, regions have a minimum of three AZs, typically separated by several kilometres but staying within ~100 km for low latency.
-- **Region pair** — two regions Microsoft has linked for some platform-managed replication and update sequencing. Many newer regions are *non-paired* and rely on AZ redundancy instead.
+An Azure zonal resource runs in a selected zone. To tolerate that zone failing, the application needs healthy capacity and its dependencies elsewhere. Zone-redundant managed services distribute resources across zones, but their supported tiers and configuration requirements vary. Azure logical zone numbers can map differently between subscriptions. Check the physical mappings when placement across subscriptions matters. [Microsoft availability-zone documentation](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)
 
-**OCI:**
-- **Realm** — a logical collection of regions. The commercial realm holds public regions; separate realms exist for US Government, UK Government, EU Sovereign, EU Restricted Access, and a few others. Realms do not share data, do not share IAM, and are mutually invisible.
-- **Region** — a metropolitan area, like Frankfurt or Ashburn.
-- **Availability Domain (AD)** — one or more datacenters within a region. Some OCI regions have multiple ADs; many newer regions have a single AD. Always verify the AD count for the region you intend to use.
-- **Fault Domain (FD)** — a hardware grouping inside an AD. Every AD has exactly three FDs. Spreading across FDs gives you anti-affinity within a single datacenter.
+OCI regions contain one or more availability domains; verify the count for the chosen region. Each availability domain contains three fault domains. Fault-domain distribution is useful within an AD, but does not turn a single-AD region into a multi-AD deployment. An AD can include multiple datacenters, so avoid describing it simply as one building. [Oracle regions and availability domains](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm)
 
-The differences that matter operationally:
+## A region pair is not a recovery plan
 
-- **Azure AZ ≠ OCI AD.** An Azure AZ is a logical zone number backed by physically separate datacenter groups with independent power, cooling, and networking. An OCI AD is also one or more datacenters but is treated more like a campus. The fault isolation goal is similar; the granularity is different.
-- **OCI Fault Domains do not map cleanly to modern Azure constructs.** The closest is *update domains* on classic Availability Sets (mostly retired now) or implicit hardware separation within a single AZ. If you need three-way anti-affinity within a single zone on Azure, you are largely trusting platform placement.
-- **OCI multi-AD vs single-AD regions matter.** Most of OCI's newer regions are single-AD. You get FD-level isolation, which is good but is not the same as AZ-level isolation. Plan accordingly.
+Some Azure regions have a paired region. Others do not. Pairing affects particular platform behaviors and services; deploying in a paired region does not configure application failover. Even when a storage service replicates to another region, compute, networking, permissions, application state and traffic routing need their own recovery design. [Microsoft region-pair guidance](https://learn.microsoft.com/en-us/azure/reliability/regions-paired)
 
-## Region pairs: a feature that changed meaning
+Choose the destination supported by your services and permitted by your requirements. Document how data reaches it, who can activate it, what capacity exists and how users reach the recovered operation. Treat failback as a separate procedure.
 
-Azure region pairs used to be the centrepiece of every "design for resilience" conversation. They are not, anymore.
+## Residency applies to the recovery design too
 
-Originally, Azure region pairs were how Microsoft delivered platform-managed cross-region replication: GRS storage replicated to its paired region, planned maintenance was sequenced so a pair never updated simultaneously, and during a major outage Microsoft would prioritise restoring one region per pair. That was useful. It was also a constraint — you did not get to choose which region your geo-redundant data went to.
+Record the allowed locations for production records, backups, replicas, logs, keys and support-related processing. A regional resource label alone does not describe every data flow or contractual commitment. Global services and managed backup settings need specific review.
 
-The current state is more nuanced. Microsoft is opening regions faster than they pair them, and many Azure regions are now non-paired, relying on availability zones as their primary regional redundancy model. Microsoft's recommended resilience pattern for these regions is *availability zones plus your own multi-region replication strategy*, not platform-managed pairing. Region pairs remain useful for the services and geographies that support them, but the forward-looking resilience guidance centres on availability zones for intra-region HA and an explicit multi-region DR strategy. The documentation for newer regions reflects this shift.
+If the workload must remain in one region, zone redundancy and protected recovery points may still be appropriate. They cannot keep the operation available during loss of that entire region. Record that limitation and align the recovery target with the permitted design. [Microsoft guidance on regional constraints](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)
 
-The asymmetric pair worth knowing about: **Brazil South is paired with South Central US** — outside the Brazil geography. If you have data residency requirements that pin you to Brazil, GRS storage in Brazil South will replicate your data to the United States. That is not what most architects assume. There are similar quirks documented in Microsoft's regions list; read it before you make a residency commitment.
+Use the [cloud compliance guide](/compliance) to identify questions about placement and protection. It does not replace checking the particular service and contract.
 
-OCI takes a different approach. Oracle does not publish "pairs." OCI's recommended resilience pattern is multi-region by design — Full Stack Disaster Recovery, Data Guard, Object Storage cross-region replication, all of which let you pick your own pair of regions. This is more flexible and asks more of you. There is no "platform-managed prioritisation" if a major incident affects multiple regions; you implement DR yourself.
+## Validate the whole dependency chain
 
-## Where your data actually lives — the parts they do not advertise
+Two application instances can still share one database, one identity dependency, one deployment pipeline or one route. List what must work for a user to complete the business operation. For each dependency, record its failure scope, recovery mechanism and owner.
 
-Three things drive most data-residency surprises:
+A representative recovery exercise should include access to credentials and keys, data consistency, available capacity, traffic changes and a real business transaction. Record elapsed interruption and the age of the recovered data. Restoring a server is only one step. [Microsoft disaster-recovery guidance](https://learn.microsoft.com/en-us/azure/well-architected/reliability/disaster-recovery)
 
-**Some "global" services have their data closer than you think — and sometimes farther.** Entra ID metadata is global by design. Front Door routes through Microsoft's global edge. Traffic Manager DNS is global. Cosmos DB has a metadata layer that is not strictly per-region. None of this means your transactional data leaves your chosen region, but it does mean some configuration and identity data has a global footprint. For most workloads this is fine. For workloads with strict sovereignty requirements (regulated public-sector, certain financial services, EU sovereign cloud customers), it is a question to ask explicitly before adoption.
+## Before committing to a region
 
-**GRS replication paths are the path of least surprise — but they exist.** Geo-redundant storage in Azure replicates to the paired region. If you are in West Europe (paired with North Europe), your blobs land in both Netherlands and Ireland. If you are in Brazil South (paired with South Central US), your blobs leave Brazil. This is documented but not screaming.
+1. Agree the operation, recovery targets and failure scenarios.
+2. Verify zone/AD support for each critical service and tier.
+3. Check permitted primary and recovery locations.
+4. Verify destination features, quotas and capacity.
+5. Identify shared dependencies and owners.
+6. Exercise recovery and document gaps.
 
-**EU Data Boundary is real but not total.** Microsoft has implemented a multi-year programme for in-scope commercial Azure, Microsoft 365, Dynamics 365, and Power Platform data to be stored and processed within the EU Data Boundary. But documented exceptions remain — certain services, support scenarios, diagnostic operations, and non-regional service behaviours are listed explicitly in the EU Data Boundary documentation. If you are an EU customer with strict residency requirements, treat that documentation as a primary source, not a marketing summary.
-
-OCI's sovereign cloud story is structurally simpler — separate realms with no data sharing — and that simplicity is one of OCI's marketing points for sovereignty-conscious customers. The trade-off is that you give up access to services that have not yet shipped in the sovereign realm.
-
-## Choosing a region — the framework
-
-Six considerations, weighted by how often they actually drive the decision:
-
-**Latency to users.** Pick the region closest to where your traffic originates. Two-digit milliseconds of latency from your users to your closest region is the difference between a snappy app and a sluggish one. Tools: ping the regional endpoints, or use synthetic monitoring with checkpoints in your user geographies.
-
-**Data residency requirements.** If GDPR, Schrems II, or sector-specific regulation pins your data to a geography, the residency boundary is non-negotiable and shrinks your candidate list. Match this against the *geography*, not just the *region*.
-
-**Service availability.** Not every service is in every region. Some services launch in a single US region in preview and take 12–18 months to reach Europe. Some services are still not available in sovereign regions years after their commercial launch. Verify before committing.
-
-**Resilience requirements.** Does the region have AZs? Are the AZs supported by the services you need (some services support AZ deployment in some regions and not others)? Is it a paired region (Azure) or a multi-AD region (OCI)? What is your DR target region and how far is it?
-
-**Cost.** Region pricing varies. Western European and US regions tend to be cheapest for compute and storage; Brazil, Australia, Japan, and the Middle East tend to be 10–30% more expensive. OCI publishes consistent commercial pricing across most regions, which is one of its quiet advantages.
-
-**Future capacity.** Some regions are persistently capacity-constrained for certain VM families or GPU types. If you need H100s and you are in a region that has none, you have not fully chosen the region — you have chosen a queue.
-
-```hcl
-# Lock down region selection in policy from day one
-# Azure: allowedLocations policy assignment
-resource "azurerm_management_group_policy_assignment" "allowed_locations" {
-  name                 = "restrict-locations"
-  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-  management_group_id  = data.azurerm_management_group.platform.id
-  parameters = jsonencode({
-    listOfAllowedLocations = {
-      value = ["westeurope", "northeurope"]
-    }
-  })
-}
-```
-
-```hcl
-# OCI: per-compartment IAM policy with request.region condition
-resource "oci_identity_policy" "region_lock" {
-  compartment_id = var.tenancy_ocid
-  name           = "region-lock-eu"
-  description    = "Restrict workload deployments to EU regions"
-  statements = [
-    "Allow group WorkloadAdmins to manage all-resources in compartment Workloads where any { request.region = 'eu-frankfurt-1', request.region = 'eu-amsterdam-1' }"
-  ]
-}
-```
-
-OCI region restrictions through IAM conditions are authorisation controls, not an Azure Policy-style resource-location compliance engine. They restrict which regional API requests a group is authorised to make; they do not produce a compliance report of where resources are deployed.
-
-Pin allowed regions in policy from day one. The marginal cost of doing this on day one is zero. The cost of unwinding accidental deployments to unapproved regions on day 200 is significant.
-
-:::tip[Architectural Pro Tip]
-For OCI, the home region is not changeable after the tenancy is provisioned. IAM master definitions live there, and changes to users, groups, policies, compartments, dynamic groups, and federation resources are made in the home region and then propagated to other subscribed regions. Pick the home region deliberately, and pick the one that matches where your operators and identity management work — not just where your workloads run.
-:::
-
-## Anti-affinity within a region
-
-Once you have chosen a region, the next question is how to structure resilience inside it. The patterns differ on each cloud.
-
-**Azure, AZ-supported region:** Spread compute across all three zones. Use zone-redundant SKUs where the service offers them (zone-redundant load balancers, zone-redundant Application Gateways, zone-redundant SQL Databases, ZRS storage). For services without zone redundancy, deploy zonal instances and a load balancer that fronts them. For production workloads, the loss of a single zone should not take down an entire tier.
-
-**Azure, no-AZ region:** Use Availability Sets where the service supports them (becoming rarer — many services are AZ-only now). Use multiple regions for HA, not just multiple datacenters in one. This is increasingly the only sensible answer in regions without AZs.
-
-**OCI, multi-AD region:** Spread tier across ADs for the strongest intra-region resilience. Within each AD, spread across all three FDs for hardware-level anti-affinity. Use regional subnets (Oracle's recommendation since 2018) rather than AD-specific subnets so workloads can move ADs without re-addressing.
-
-**OCI, single-AD region:** You have FDs but not ADs. FD spread is your best intra-region resilience. For higher availability, use cross-region replication and DR — there is no equivalent of "two AZs in one region" to fall back on.
-
-The anti-pattern across both clouds: deploying everything to a single zone or AD "to keep latency tight." The savings on intra-zone latency are typically a millisecond or two; the cost of a zone or AD outage taking the whole tier down is hours of revenue. The trade is almost always wrong.
-
-:::warning[Reality Check]
-OCI Availability Domain numbers are tenancy-specific. AD-1 in one tenancy is not the same physical datacenter as AD-1 in another. Oracle does this deliberately so that customers do not all pile their workloads into the lowest-numbered AD and overload it. The practical implication: when sharing infrastructure setup with other organisations, never refer to "AD-1" as if it means a fixed datacenter. Refer to the AD name from your own tenancy or use the AD's logical name.
-:::
-
-## Multicloud factor
-
-Cross-cloud DR only works in regions where both clouds and the necessary connectivity exist. The Azure–OCI Interconnect is available only in specific paired locations, and the list changes over time. If you want a multicloud architecture spanning Azure and OCI, your region choice on each side has to take current Interconnect availability into account rather than assuming every major Azure and OCI region pair is supported.
-
-The portable rules:
-
-- Pick regions in the same geography on both clouds. EU on EU, US on US. Latency, residency, and Interconnect availability all align better.
-- Treat home region (OCI) and primary region (Azure) as the same operational geography. Operators should not be context-switching between time zones for routine work.
-- Never deploy production to a single zone or AD. The savings are negligible; the risk is unbounded.
-- For multicloud DR, pick the secondary region on each cloud deliberately, not by inheritance from a region pair. Pairs were designed for single-cloud DR; multicloud DR has different constraints.
-- Pin allowed regions in policy on both clouds, before anyone deploys anything.
-
-## Closing checklist
-
-- Inventory the geographies that have data residency or sovereignty requirements for your business. Match these to allowed Azure geographies and OCI realms.
-- Pick the home region on OCI deliberately — it is not changeable.
-- Verify AZ support (Azure) or AD count (OCI) for every region you plan to use, for every critical service.
-- Verify region pair status (Azure) — many newer regions are non-paired and require explicit cross-region DR.
-- Lock allowed regions in Azure Policy and OCI IAM policies before any workload deploys.
-- Default to AZ/AD spread for production. Single-zone or single-AD production is a deferred outage.
-- Read your service's specific zone behaviour. Some services are auto-zone-redundant; others require explicit configuration; others do not support zones at all.
-- For multicloud, design region pairs (Azure region + OCI region in the same geography) into your strategy. Document them. Make them stable.
+For the service-by-service checks, continue with [Service Availability by Region](/knowledge-base/multicloud/service-availability-by-region-why-you-cannot-trust-the-map).

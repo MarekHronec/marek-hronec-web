@@ -1,0 +1,9 @@
+---
+interface Props { label: string }
+const { label } = Astro.props;
+---
+<g class="harbour">
+  <path class="scene__paper" d="M0 0 V-50 L28 -70 L56 -50 V0 Z M70 0 V-34 H112 V0 Z" />
+  <path class="scene__line" d="M10 -42 H22 V-28 H10 Z M34 -42 H46 V-28 H34 Z M22 0 V-17 H36 V0 M82 -22 H101 M-12 0 H128 M-12 7 H128 M-2 7 V28 M50 7 V28 M116 7 V28" />
+  <text class="scene__label" x="56" y="-84" text-anchor="middle">{label}</text>
+</g>

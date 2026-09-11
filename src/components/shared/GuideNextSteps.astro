@@ -1,0 +1,23 @@
+---
+import { GUIDES, type GuideKey } from '../../data/architecture-guides';
+import { base } from '../../utils/base';
+interface Props { current: GuideKey }
+const { current } = Astro.props;
+const offers: Record<GuideKey, Partial<Record<GuideKey, string>>> = {
+  platform: { compliance: 'Check the data and compliance requirements', resilience: 'Plan how this workload will recover' },
+  compliance: { platform: 'Explore suitable platform approaches', resilience: 'Turn availability needs into recovery targets' },
+  resilience: { compliance: 'Check where recovery copies may live', platform: 'Review who operates the recovery platform' },
+};
+---
+<aside class="guide-next" aria-label="Continue your architecture decision">
+  <p class="guide-next__label">Continue your architecture decision</p>
+  {GUIDES.filter(g => g.key !== current).map(g => <a href={base + g.href}>{offers[current][g.key]} <span aria-hidden="true">&rarr;</span></a>)}
+  <p class="guide-next__note">A platform category alone does not establish compliance. Check the specific service, configuration, contract and recovery location.</p>
+</aside>
+<style>
+  .guide-next { margin-top: var(--space-5); padding: var(--space-4); background: var(--color-primary-tint); }
+  .guide-next__label { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+  a { display: block; margin-top: var(--space-3); font: var(--weight-semibold) var(--text-body-md) var(--font-body); line-height: var(--leading-relaxed); color: var(--color-navy); }
+  a:hover { text-decoration: underline; text-underline-offset: .2em; }
+  .guide-next__note { margin-top: var(--space-3); font-size: var(--text-label-sm); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+</style>

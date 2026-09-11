@@ -10,7 +10,7 @@ import WorkloadQuestion from './WorkloadQuestion.astro';
 import type { ConceptStory } from '../../data/platform-concepts';
 
 interface Props {
-  story: ConceptStory;
+  story: ConceptStory<string>;
 }
 
 const { story } = Astro.props;

@@ -1,0 +1,33 @@
+---
+import { GUIDES } from '../../data/architecture-guides';
+import { base } from '../../utils/base';
+interface Props { mobile?: boolean }
+const { mobile = false } = Astro.props;
+const active = GUIDES.some(g => Astro.url.pathname.startsWith(base + g.href)) || Astro.url.pathname.startsWith(base + '/guides');
+---
+<details class:list={['guide-menu', { 'guide-menu--mobile': mobile, 'guide-menu--active': active }]}>
+  <summary>Architecture Guides <span aria-hidden="true">⌄</span></summary>
+  <ul role="list">
+    <li><a href={base + '/guides'} aria-current={Astro.url.pathname.replace(/\/$/, '') === base + '/guides' ? 'page' : undefined}>All architecture guides &rarr;</a></li>
+    {GUIDES.map(g => <li><a href={base + g.href} aria-current={Astro.url.pathname.replace(/\/$/, '') === base + g.href ? 'page' : undefined}><strong>{g.title}</strong><span>{g.description}</span></a></li>)}
+  </ul>
+</details>
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('.guide-menu').forEach(menu => {
+    menu.addEventListener('keydown', event => { if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary')?.focus(); } });
+    document.addEventListener('click', event => { if (!menu.contains(event.target as Node)) menu.open = false; });
+  });
+</script>
+<style>
+  .guide-menu { position: relative; color: var(--color-on-surface-muted); font: var(--weight-medium) var(--text-label-md) var(--font-display); }
+  summary { display: flex; align-items: center; gap: var(--space-2); cursor: pointer; list-style: none; white-space: nowrap; }
+  summary::-webkit-details-marker { display: none; }
+  .guide-menu--active summary { color: var(--color-primary); font-weight: var(--weight-bold); }
+  ul { position: absolute; top: calc(100% + var(--space-4)); left: 0; width: 22rem; padding: var(--space-3); background: var(--color-surface); box-shadow: var(--shadow-card); list-style: none; }
+  a { display: block; padding: var(--space-3); color: var(--color-navy); }
+  a:hover, a[aria-current='page'] { background: var(--color-primary-tint); }
+  a span { display: block; margin-top: var(--space-1); color: var(--color-on-surface-muted); font-size: var(--text-label-sm); line-height: var(--leading-relaxed); }
+  .guide-menu--mobile { padding-block: var(--space-3); }
+  .guide-menu--mobile summary { font-size: var(--text-title-md); }
+  .guide-menu--mobile ul { position: static; width: auto; margin-top: var(--space-3); box-shadow: none; background: var(--color-surface-container-low); }
+</style>

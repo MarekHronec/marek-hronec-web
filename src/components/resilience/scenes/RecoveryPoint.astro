@@ -1,0 +1,26 @@
+---
+const records = ['08:45 · 12 crates', '08:50 · +2 crates', '08:55 · +1 crate'];
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="rpo-title">
+  <title id="rpo-title">A failure at 09:00 leaves a 15-minute data gap when the last usable recovery point is 08:45.</title>
+  <text class="scene__label" x="300" y="38" text-anchor="middle">RPO · MAXIMUM ACCEPTABLE DATA LOSS</text>
+  <path class="scene__paper" d="M42 90 H238 V258 H42 Z M356 90 H552 V258 H356 Z" />
+  <text class="scene__label" x="60" y="116">LIVE CARGO LOG</text>
+  <text class="scene__label" x="374" y="116">USABLE COPY · 08:45</text>
+  {records.map((line,i) => <g class:list={[{'recent-entry':i>0,'baseline-entry':i===0}]}><text class="scene__text" x="60" y={150+i*35}>{line}</text><path class="scene__line scene__quiet" d={'M60 '+(160+i*35)+' H219'} /></g>)}
+  <text class="scene__text" x="374" y="150">08:45 · 12 crates</text>
+  <path class="scene__line" d="M254 149 H338 M330 144 L338 149 L330 154" />
+  <g class="scene__after"><text class="scene__label" x="60" y="243">LOG LOST AT 09:00</text><text class="scene__text" x="374" y="206">Restore this point.</text></g>
+  <path class="scene__line" d="M70 296 H530 M70 289 V303 M390 289 V303 M530 289 V303" />
+  <path class="scene__heavy data-gap" d="M390 296 H530" pathLength="1" />
+  <text class="scene__label" x="70" y="324">EARLIER HISTORY</text><text class="scene__label" x="390" y="324" text-anchor="middle">08:45</text><text class="scene__label" x="530" y="324" text-anchor="end">09:00</text>
+  <text class="scene__text scene__after" x="460" y="352" text-anchor="middle">Example: 15-minute gap</text>
+</svg>
+<style>
+  .data-gap { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  :global(.cp[data-demonstrate='true']) .recent-entry { animation: lost-entry 1.6s var(--ease-standard) both; }
+  :global(.cp[data-demonstrate='true']) .baseline-entry { animation: lost-entry 1.6s var(--ease-standard) both; }
+  :global(.cp[data-demonstrate='true']) .data-gap { animation: reveal-gap 1.6s linear both; }
+  @keyframes lost-entry { from { opacity: 1; } to { opacity: .12; } }
+  @keyframes reveal-gap { to { stroke-dashoffset: 0; } }
+</style>

@@ -8,10 +8,12 @@
 
 import { base } from '../../utils/base';
 import Logo from './Logo.astro';
+import GuideMenu from './GuideMenu.astro';
 
 const navLinks = [
   { label: 'About',          href: `${base}/` },
   { label: 'Case Studies',   href: `${base}/case-studies` },
+  { label: 'Architecture Guides', href: base + '/guides' },
   { label: 'Knowledge Base', href: `${base}/knowledge-base` },
 ];
 
@@ -42,7 +44,7 @@ const isActive = (href: string): boolean => {
     <ul class="header__links" role="list">
       {navLinks.map(({ label, href }) => (
         <li>
-          <a
+          {label === 'Architecture Guides' ? <GuideMenu  /> : (<a
             class:list={[
               'header__link',
               { 'header__link--active': isActive(href) },
@@ -50,7 +52,7 @@ const isActive = (href: string): boolean => {
             href={href}
           >
             {label}
-          </a>
+          </a>)}
         </li>
       ))}
     </ul>
@@ -82,7 +84,7 @@ const isActive = (href: string): boolean => {
     <ul class="header__mobile-links" role="list">
       {navLinks.map(({ label, href }) => (
         <li>
-          <a
+          {label === 'Architecture Guides' ? <GuideMenu mobile /> : (<a
             class:list={[
               'header__mobile-link',
               { 'header__mobile-link--active': isActive(href) },
@@ -90,7 +92,7 @@ const isActive = (href: string): boolean => {
             href={href}
           >
             {label}
-          </a>
+          </a>)}
         </li>
       ))}
       <li>
@@ -132,7 +134,7 @@ const isActive = (href: string): boolean => {
   }
 
   /* Desktop: 1fr / auto / 1fr keeps nav links perfectly centered */
-  @media (min-width: 768px) {
+  @media (min-width: 1200px) {
     .header__nav {
       grid-template-columns: 1fr auto 1fr;
     }
@@ -194,7 +196,7 @@ const isActive = (href: string): boolean => {
     gap: var(--space-6);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1200px) {
     .header__links {
       display: flex;
     }
@@ -243,7 +245,7 @@ const isActive = (href: string): boolean => {
     transition: background-color var(--duration-fast) var(--ease-standard);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1200px) {
     .header__cta {
       display: inline-flex;
       align-items: center;
@@ -263,7 +265,7 @@ const isActive = (href: string): boolean => {
     padding: var(--space-2);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1200px) {
     .header__hamburger {
       display: none;
     }
@@ -291,18 +293,19 @@ const isActive = (href: string): boolean => {
 
   .header__mobile-menu {
     display: none;
+    max-height: calc(100dvh - var(--nav-height)); overflow-y: auto;
     background-color: var(--color-surface);
     border-top: 1px solid var(--color-divider);
   }
 
   /* Only show when open on mobile; always hidden on desktop via the base display:none */
-  @media (max-width: 767px) {
+  @media (max-width: 1199px) {
     .header__mobile-menu--open {
       display: block;
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1200px) {
     .header__mobile-menu {
       display: none;
     }

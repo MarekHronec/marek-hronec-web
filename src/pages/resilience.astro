@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GuideHero from '../components/shared/GuideHero.astro';
+import ResilienceExplainer from '../components/resilience/ResilienceExplainer.astro';
+import RecoveryPlanner from '../components/resilience/RecoveryPlanner.astro';
+import RecoveryReading from '../components/resilience/RecoveryReading.astro';
+---
+<BaseLayout title="Resilience — Design for Failure" description="Understand RTO, RPO, backups, replication and failure boundaries. Prepare a recovery brief for your cloud workload.">
+  <GuideHero title="Design for failure." accent="Prepare for recovery" description="An outage is a business interruption before it is an infrastructure problem. Decide how long the operation can stop, how much data could be lost, and which failures the recovery plan must survive." tool={{href:'#recovery-planner',title:'Prepare a recovery brief',description:'Set targets, surface conflicting requirements and decide what to test next.'}} reference={{href:'#options',title:'Understand the four concepts',description:'Explore time, data, recovery copies and failure boundaries through marine illustrations.'}} />
+  <section id="options" class="resilience-section container"><ResilienceExplainer /></section>
+  <div class="resilience-section container"><RecoveryPlanner /></div>
+  <div class="resilience-section container"><RecoveryReading /></div>
+</BaseLayout>
+<style>
+  .resilience-section { padding-block: var(--space-8); }
+</style>

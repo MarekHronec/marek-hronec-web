@@ -1,0 +1,24 @@
+---
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import Harbour from './Harbour.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="domains-title">
+  <title id="domains-title">A common harbour closure disables two local piers. A prepared alternate harbour survives this particular failure.</title>
+  <ChartWater id="domains" />
+  <text class="scene__label" x="300" y="37" text-anchor="middle">SEPARATE COPIES · CHECK SHARED DEPENDENCIES</text>
+  <path class="scene__route" d="M28 86 H310 V240 H28 Z M394 86 H576 V240 H394 Z" />
+  <g class="local-harbour"><g transform="translate(49 168)"><Harbour label="PIER A" /></g><g transform="translate(194 168) scale(.8)"><Harbour label="PIER B" /></g></g>
+  <g transform="translate(418 168)"><Harbour label="OTHER HARBOUR" /></g>
+  <g class="scene__after"><path transform="translate(0 40)" class="scene__heavy" d="M86 114 C55 113 58 78 82 80 C93 49 137 57 144 81 C174 78 189 108 164 116 H86 M115 122 L104 143 H126 L114 161" /><path class="scene__heavy" d="M64 194 L99 220 M99 194 L64 220 M217 194 L252 220 M252 194 L217 220" /></g>
+  <path class="scene__route" d="M138 273 C235 323 375 323 483 257" />
+  <g class="domain-vessel"><g transform="scale(.5)"><SailingVessel /></g></g>
+  <text class="scene__label" x="170" y="344" text-anchor="middle">ONE FAILURE BOUNDARY</text><text class="scene__label" x="481" y="344" text-anchor="middle">A PREPARED ALTERNATIVE</text>
+</svg>
+<style>
+  .domain-vessel { offset-path: path("M138 273 C235 323 375 323 483 257"); offset-anchor: 0 0; offset-rotate: 0deg; }
+  :global(.cp[data-demonstrate='true']) .domain-vessel { animation: domain-route var(--nautical-story-duration) linear both; }
+  :global(.cp[data-demonstrate='true']) .local-harbour { animation: close-harbour 1s linear both; }
+  @keyframes domain-route { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  @keyframes close-harbour { to { opacity: .3; } }
+</style>

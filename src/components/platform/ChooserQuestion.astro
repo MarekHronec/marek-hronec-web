@@ -26,7 +26,7 @@ const titleId = `pc-q-${question.key}`;
     <div class="pcq__titles">
       <p class="pcq__label">Question {index + 1} of {total} &middot; {question.label}</p>
       <h3 class="pcq__title" id={titleId}>{question.prompt}</h3>
-      <p class="pcq__help">{question.help}</p>
+      <p class="pcq__help" id={`${titleId}-help`}>{question.help}</p>
     </div>
   </div>
 
@@ -35,7 +35,7 @@ const titleId = `pc-q-${question.key}`;
     <span data-q-selection={question.key}>No answer selected</span>
   </div>
 
-  <div class="pcq__opts" role="radiogroup" aria-labelledby={titleId}>
+  <div class="pcq__opts" role="radiogroup" aria-labelledby={titleId} aria-describedby={`${titleId}-help`}>
     {question.options.map((option) => (
       <label class="pcq__opt">
         <input type="radio" name={question.key} value={option.value} />

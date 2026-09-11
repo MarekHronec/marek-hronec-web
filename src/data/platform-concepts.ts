@@ -8,8 +8,8 @@
 
 export type ConceptKey = 'vm' | 'container' | 'kubernetes' | 'paas' | 'saas';
 
-export interface ConceptStory {
-  key: ConceptKey;
+export interface ConceptStory<Key extends string = ConceptKey> {
+  key: Key;
   ordinal: string;
   name: string;
   model: string;

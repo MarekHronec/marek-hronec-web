@@ -1,0 +1,30 @@
+---
+const ledgers = [{x:30,title:'PRIMARY'},{x:226,title:'LIVE REPLICA'},{x:422,title:'RETAINED COPY'}];
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="copies-title">
+  <title id="copies-title">A deletion propagates to the live replica. An earlier retained recovery point still contains the record.</title>
+  <text class="scene__label" x="300" y="38" text-anchor="middle">A LIVE MIRROR IS NOT A RECOVERY HISTORY</text>
+  {ledgers.map((l,i) => <g transform={'translate('+l.x+' 108)'}>
+    <path class="scene__paper" d="M0 0 H118 L148 30 V152 H0 Z M118 0 V30 H148" />
+    <text class="scene__label" x="12" y="-18">{l.title}</text>
+    <path class="scene__line scene__quiet" d="M16 42 H127 M16 78 H127 M16 112 H127" />
+    <g class:list={['ledger-record',{'ledger-record--primary':i===0,'ledger-record--replica':i===1}]}>
+      <text class="scene__text" x="16" y="68">Cargo #42</text><text class="scene__text" x="16" y="101">12 crates</text>
+    </g>
+    {i<2 && <g class:list={['scene__after', 'deleted', {'deleted--replica':i===1}]}><path class="scene__heavy" d="M55 56 L93 102 M93 56 L55 102" /></g>}
+  </g>)}
+  <path class="scene__route" d="M184 183 H218" />
+  <circle class="scene__solid deletion-signal" cx="184" cy="183" r="4" />
+  <g class="scene__after"><path class="scene__line" d="M495 277 V300 H107 V277 M102 285 L107 277 L112 285" /><text class="scene__label" x="300" y="329" text-anchor="middle">RESTORE A KNOWN-GOOD POINT · RECONCILE LATER WORK</text></g>
+</svg>
+<style>
+  .deletion-signal { opacity: 0; }
+  :global(.cp[data-demonstrate='true']) .ledger-record--primary { animation: delete-primary 3s linear both; }
+  :global(.cp[data-demonstrate='true']) .ledger-record--replica { animation: delete-replica 3s linear both; }
+  :global(.cp[data-demonstrate='true']) .deleted--replica { animation: mark-replica 3s linear both; }
+  :global(.cp[data-demonstrate='true']) .deletion-signal { animation: send-deletion 3s linear both; }
+  @keyframes delete-primary { 0% { opacity: 1; } 20%,100% { opacity: .1; } }
+  @keyframes delete-replica { 0%,50% { opacity: 1; } 75%,100% { opacity: .1; } }
+  @keyframes mark-replica { 0%,50% { opacity: 0; } 75%,100% { opacity: 1; } }
+  @keyframes send-deletion { 0%,20% { opacity: 0; transform: translateX(0); } 25% { opacity: 1; transform: translateX(0); } 65% { opacity: 1; transform: translateX(34px); } 70%,100% { opacity: 0; transform: translateX(34px); } }
+</style>

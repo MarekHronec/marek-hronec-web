@@ -1,6 +1,7 @@
 ---
 import { QUESTIONS } from '../../data/platform-chooser';
 import { APPROACHES } from '../../data/platform-approaches';
+import GuideNextSteps from '../shared/GuideNextSteps.astro';
 import ApproachDetail from './ApproachDetail.astro';
 ---
     <aside class="pc__result">
@@ -54,6 +55,7 @@ import ApproachDetail from './ApproachDetail.astro';
           </div>
         </div>
 
+        <GuideNextSteps current="platform" />
         <div class="pc__rank" data-chooser-rank hidden>
           <h3 class="pc__rank-head">All five, ranked</h3>
           <ul role="list">

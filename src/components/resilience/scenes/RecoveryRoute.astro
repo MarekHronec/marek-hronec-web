@@ -1,0 +1,27 @@
+---
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import Harbour from './Harbour.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="rto-title">
+  <title id="rto-title">Recovery time includes recognising a harbour closure and restoring deliveries through an alternate harbour.</title>
+  <ChartWater id="rto" />
+  <g transform="translate(75 160)"><Harbour label="PRIMARY" /></g>
+  <g transform="translate(421 160)"><Harbour label="ALTERNATE" /></g>
+  <path class="scene__route" d="M132 252 C220 300 367 285 471 226" />
+  <g class="route-closed scene__after"><path class="scene__heavy" d="M94 178 L160 222 M160 178 L94 222" /></g>
+  <g class="recovery-vessel"><g transform="scale(.6)"><SailingVessel /></g></g>
+  <text class="scene__label" x="300" y="38" text-anchor="middle">RTO · TIME TO RESTORE THE OPERATION</text>
+  <path class="scene__line" d="M70 321 H530 M70 315 V327 M530 315 V327" />
+  <path class="scene__heavy recovery-clock" d="M70 321 H530" pathLength="1" />
+  <text class="scene__label" x="70" y="347">INTERRUPTION</text>
+  <text class="scene__label" x="530" y="347" text-anchor="end">OPERATION RESTORED</text>
+</svg>
+<style>
+  .recovery-vessel { offset-path: path("M132 252 C220 300 367 285 471 226"); offset-anchor: 0 0; offset-rotate: 0deg; }
+  .recovery-clock { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  :global(.cp[data-demonstrate='true']) .recovery-vessel { animation: recovery-route var(--nautical-story-duration) linear both; }
+  :global(.cp[data-demonstrate='true']) .recovery-clock { animation: recovery-clock var(--nautical-story-duration) linear both; }
+  @keyframes recovery-route { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  @keyframes recovery-clock { to { stroke-dashoffset: 0; } }
+</style>
