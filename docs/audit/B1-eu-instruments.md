@@ -216,7 +216,7 @@ Source: [EU Cloud CoC register](https://eucoc.cloud/en/public-register) ·
 [transfers module](https://eucoc.cloud/en/about/third-country-transfers-initiative) ·
 [AWS CISPE](https://aws.amazon.com/compliance/cispe)
 
-## P11 ☐ STALE — NIS2 per-country table
+## P11 ◐ PART-APPLIED — STALE — NIS2 per-country table
 
 - **Netherlands** — Cyberbeveiligingswet **in force 15 August 2026** (Senate 7 July).
 - **France / Spain** — still untransposed, but on **8 July 2026 the Commission
@@ -225,6 +225,20 @@ Source: [EU Cloud CoC register](https://eucoc.cloud/en/public-register) ·
 - Missing the infringement wave itself — 23 formal notices Nov 2024 → 19 reasoned
   opinions 7 May 2025 → 4 CJEU referrals 8 July 2026. For a reader planning
   multi-country contracts that is the single most useful fact on the page.
+
+**Applied:** the Netherlands row only. `rdi.nl` states directly that the
+Cyberbeveiligingswet "is ingegaan op 15 augustus 2026" and replaces the Wbni,
+with Senate approval on 7 July.
+
+**Not applied — UNVERIFIED:** the CJEU referral of France, Ireland, Spain and
+the Netherlands on 8 July 2026, and the infringement-wave figures. The
+reviewer's source would not load here, the Commission presscorner is a
+JavaScript shell that returns 200 for any reference number, and a guessed
+reference proves nothing. The claim is plausible and probably right, but it
+names four member states as defendants in an active case — not something to
+publish on a corroborating source that could not be opened. Someone should
+confirm it against the Commission's July 2026 infringement package before the
+France and Spain rows are touched.
 
 ## P12 ☐ Lower severity
 
