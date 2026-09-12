@@ -302,3 +302,44 @@ checked out it committed connectivity work onto it, then cherry-picked that to
 `main` and left the tree on `main`. No work was lost — `git rebase main` dropped
 the duplicate — but check `git branch --show-current` before committing, and do
 not assume the tree is where you left it.
+
+---
+
+## X2 · Replacement URLs — first pass, and a calibration lesson
+
+**Applied (3).** Verified twice: the URL returns 200 *and* its `<title>` names the
+same document the reference cites. A live page is not the same as the right page.
+
+| Article | Reference | New URL |
+|---|---|---|
+| `dora-for-cloud-...` | EBA DORA hub | `/activities/direct-supervision-and-oversight/digital-operational-resilience-act` |
+| `dora-article-30-...` | EBA/GL/2019/04 | `/activities/single-rulebook/regulatory-activities/internal-governance/guidelines-ict-and-security-risk-management` |
+| `dora-article-30-...` | EBA/GL/2019/02 | `/activities/single-rulebook/regulatory-activities/internal-governance/guidelines-outsourcing-arrangements` |
+
+EBA moved `/regulation-and-policy/…` → `/activities/…`. The other EU agencies
+probably did something similar.
+
+**Held (1).** `numerique.gouv.fr/doctrine-cloud-au-centre/` → `/cloud/` returns
+200, but the reference is titled *"Cloud at the Centre Doctrine (DINUM)"* and the
+replacement is a general cloud landing page whose title is empty (JS-rendered).
+That is a weaker target than the citation claims. Not applied until the doctrine
+document itself is located.
+
+### Calibration: what the cheap model was and was not good for
+
+Haiku was given all 35. It returned **4 correct replacements and 30 "NOT FOUND"**.
+The four positives were right — all verified 200. The negatives were close to
+worthless: two were disproved on the first guess, by hand, in seconds —
+`aws.amazon.com/compliance/europe-digital-sovereignty/` (200) and
+`docs.oracle.com/en-us/iaas/Content/Security/Concepts/security_overview.htm` (200),
+both of which it declared nonexistent.
+
+It also volunteered a substantive factual claim nobody asked it for: *"As of 2026,
+AWS has not launched a dedicated European Sovereign Cloud product."* That is
+precisely the confident-wrong-answer this audit's protocol exists to catch, and it
+would have propagated into an article had it been trusted.
+
+**Rule for the rest of the audit:** a cheap model may *verify* a URL — a mechanical
+yes/no — but must not be asked to *find* one, and its negative results are not
+evidence. Absence of a search result is not absence of a page. The remaining 31
+went to sonnet with the two counterexamples quoted in the brief.

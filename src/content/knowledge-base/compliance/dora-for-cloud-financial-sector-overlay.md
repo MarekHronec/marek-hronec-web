@@ -13,7 +13,7 @@ references:
     description: "The Digital Operational Resilience Act — the EU regulation establishing ICT operational resilience requirements for the financial sector. Applicable since 17 January 2025."
     domain: "eur-lex.europa.eu"
   - title: "DORA Regulatory Technical Standards (RTS)"
-    url: "https://www.eba.europa.eu/regulation-and-policy/operational-risk/dora"
+    url: "https://www.eba.europa.eu/activities/direct-supervision-and-oversight/digital-operational-resilience-act"
     description: "The EBA's hub for DORA technical standards — the detailed rules under DORA covering ICT risk management, incident reporting, TLPT, and third-party risk management."
     domain: "eba.europa.eu"
   - title: "ESMA — DORA"
