@@ -3,7 +3,7 @@ title: "Netherlands — BIO2: Government Baseline Becoming a Statutory Obligatio
 category: compliance
 tags: ["Netherlands", "BIO2", "BZK", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-05
-updated: 2026-05-05
+updated: 2026-09-12
 readTime: 10
 level: intermediate
 excerpt: "BIO2 v1.3 is the Dutch government's security baseline since 5 March 2026, superseding BIO v1.04zv. The Cyberbeveiligingswet — the Dutch NIS2 transposition — was approved by the Tweede Kamer on 15 April 2026 and is in Senate review. The cloud profile is operated by hyperscalers via independent attestation."
@@ -62,8 +62,8 @@ The working version of BIO2 is maintained openly on GitHub at `https://minbzk.gi
 
 BIO2's statutory position is in late-stage transition:
 
-- **Cyberbeveiligingswet (Cbw)** — the Dutch NIS2 transposition. **Approved by the Tweede Kamer on 15 April 2026**; in Senate (Eerste Kamer) review as of writing; entry into force targeted for **Q2 2026**. When the act enters into force, BIO2 becomes a **statutory obligation** for in-scope entities via the ministerial Cybersecurity Regulation under the Cbw.
-- Until Cbw takes effect, BIO2 applies to central government, provinces, and water authorities as **"verplichtende zelfregulering"** — mandatory self-regulation — under a decision by the Overheidsbreed Beleidsoverleg Digitale Overheid on 23 September 2025.
+- **Cyberbeveiligingswet (Cbw)** — the Dutch NIS2 transposition. Approved by the Tweede Kamer on 15 April 2026, by the Eerste Kamer on 7 July, and **in force since 15 August 2026**, replacing the Wbni. When the act enters into force, BIO2 becomes a **statutory obligation** for in-scope entities via the ministerial Cybersecurity Regulation under the Cbw.
+- That ended the self-regulation period. The **Cyberbeveiligingsregeling sector overheid**, published in the Staatscourant on 7 August 2026 and in force alongside the Cbw from 15 August, makes BIO2 a statutory obligation and requires ISO 27001/27002 — across all four layers, municipalities included. Government bodies also acquired an NCSC registration duty from the same date. Before that, BIO2 applied to central government, provinces, and water authorities as **"verplichtende zelfregulering"** — mandatory self-regulation — under a decision by the Overheidsbreed Beleidsoverleg Digitale Overheid on 23 September 2025.
 - **BIO v1.04zv has been superseded by BIO2 v1.3** as of 5 March 2026 in central-government digital communication. Municipal applicability is being aligned through the ministerial regulation rather than a continuing parallel BIO1 regime.
 
 The transition produces some operational ambiguity: BIO2 is "mandatory" today in a self-regulation sense; it will be "mandatory" in a statutory sense once the Cbw takes effect; the practical implications for non-compliance shift along that transition.
@@ -81,19 +81,20 @@ Implicitly, BIO also covers **ZBOs** — autonomous administrative authorities �
 
 The cloud sub-framework — BIO Thema-uitwerking Clouddiensten — defines what cloud providers must demonstrate to support BIO-compliant consumers. It is voluntary for the provider (no provider must hold it) but operationally necessary for cloud providers serving the Dutch public sector.
 
-## Classification model — BBN1, BBN2, BBN3
+## Classification model — BIO2 abolished the BBNs
 
-BIO uses a three-level classification model:
+**The three basisbeveiligingsniveaus are gone.** This is the single biggest change in BIO2 and the one most likely to trip up material written against BIO 1.04. In the framework's own words, "de drie basisbeveiligingsniveaus (BBN's) uit de vorige versie van de BIO zijn vervallen"; VNG put it the same way when v1.3 was published — "vervalt het systeem van basisbeveiligingsniveaus (BBN's) en maakt dat plaats voor een risicogebaseerde aanpak".
 
-| Level | Data sensitivity |
-|---|---|
-| **BBN1** | Public or low-sensitivity information |
-| **BBN2** | Standard public-sector data |
-| **BBN3** | Department-confidential and higher-sensitivity data |
+What replaces them is not another set of levels. BIO2 asks an organisation to reach its own reasoned conclusion:
 
-Above BBN3, the framework imposes a hard restriction: information classified **Stg. CONFIDENTIEEL**, **SECRET**, or **TOP SECRET** under the EU/NATO classification model **may not be stored in public cloud**. This is a categorical exclusion, not a controls-driven requirement.
+- Run a **risk analysis** rather than reading a level off a table.
+- Apply the NEN-EN-ISO/IEC 27002 controls on a risk basis, implementing at minimum the BIO2 *overheidsmaatregelen* — the government-specific additions.
+- Record what was selected, and why, in a **Verklaring van Toepasselijkheid** (statement of applicability).
+- Operate an **ISMS conforming to NEN-EN-ISO/IEC 27001**, which BIO2 makes mandatory.
 
-IBD publishes a practical tool — the **Baselinetoets BBN** (an Excel-based questionnaire) — that helps a system owner determine the correct BBN level.
+For a cloud provider the practical consequence is that there is no longer a level to be "approved for". A Dutch public body will arrive with the output of its own risk analysis and ask which of its selected controls you can evidence. Answering that with a BBN tier is answering a question nobody is asking any more, and it signals the supplier is working from the old baseline.
+
+The *Baselinetoets BBN*, the instrument used to determine a level, belongs to BIO 1.04 and goes with it.
 
 ## Evaluation criteria
 
@@ -123,7 +124,7 @@ BIO assessment follows a documented sequence:
 
 1. **Risk Self Assessment (RSA)** — mandatory for the system owner. Determines applicability of BIO controls and selection of relevant measures.
 2. **Demonstration of design, existence, and effectiveness** of controls — language drawn from NIS2 / Cbw expectations.
-3. **Independent testing** — penetration testing, red teaming, external audits as appropriate to the BBN level.
+3. **Independent testing** — penetration testing, red teaming and external audits, scoped to the risks the organisation's own analysis identified.
 4. **ENSIA** — Eenduidige Normatiek Single Information Audit — the annual self-assessment process for municipalities, provinces, water authorities, and central organisations.
 
 For cloud providers demonstrating Thema-uitwerking Clouddiensten compliance, the established pattern is via **EY CertifyPoint** as monitoring body. EY CertifyPoint issues certificates attesting that the cloud provider's services meet the BIO cloud expectations. AWS, Microsoft, and Google use this route.
@@ -139,7 +140,7 @@ Unlike Slovakia, Italy, or France, the Netherlands does **not** maintain a centr
 - **Google Cloud Compliance Reports** for Google.
 - Mid-size and Dutch-native providers publish through their own trust centres.
 
-Procurement teams in the Dutch public sector evaluate cloud providers individually against BBN classification and Thema-uitwerking expectations.
+Procurement teams in the Dutch public sector evaluate cloud providers individually, against the controls their own risk analysis selected and the Thema-uitwerking expectations.
 
 Recertification cadence:
 
@@ -170,7 +171,7 @@ BIO does **not** impose strict sovereignty requirements:
 - No headquartering requirement.
 - No immunity-from-extraterritorial-law clause.
 
-The strongest sovereignty-adjacent rule is the **categorical exclusion of EU/NATO-classified information** (CONFIDENTIEEL and above) from public cloud. For BBN1–BBN3, hyperscalers are accepted as providers.
+The strongest sovereignty-adjacent rule is the **categorical exclusion of EU/NATO-classified information** (CONFIDENTIEEL and above) from public cloud. Below that line, hyperscalers are accepted as providers. Note that this exclusion was historically expressed as "above BBN3"; with the BBNs withdrawn it stands on the classification of the information itself, which is where it always really sat.
 
 The Dutch political position on EUCS sovereignty has been on the more permissive side of the debate. The Netherlands has resisted strict EUCS sovereignty rules at the EU level, consistent with the BIO posture of accepting hyperscalers below the classified-information threshold.
 
@@ -194,7 +195,7 @@ For a CSP targeting Dutch public-sector consumers, the highest-leverage move is 
 
 - **BIO2 v1.3** (dated 9 January 2026) was published in Staatscourant on **5 March 2026** and **supersedes BIO v1.04zv and BIO2 v1.2** in central-government digital communication. Next BIO2 version planned end of 2027.
 - The **Cyberbeveiligingswet (Cbw)** — Dutch NIS2 transposition — was **approved by the Tweede Kamer on 15 April 2026** and is in Senate review; entry into force targeted Q2 2026. Will make BIO2 a statutory obligation via the ministerial Cybersecurity Regulation under the Cbw.
-- Three BBN levels (BBN1, BBN2, BBN3). EU/NATO-classified information (CONFIDENTIEEL and above) is categorically excluded from public cloud — not a controls question, a hard restriction.
+- No baseline levels: BIO2 withdrew BBN1–BBN3 in favour of a risk analysis, ISO 27002 controls applied on a risk basis plus the mandatory overheidsmaatregelen, and a Verklaring van Toepasselijkheid recording the choices. EU/NATO-classified information (CONFIDENTIEEL and above) remains categorically excluded from public cloud — not a controls question, a hard restriction.
 - BIO2 builds on ISO/IEC 27001:2023 and 27002:2022, adding approximately 200 government-specific measures. The cloud sub-framework (Thema-uitwerking Clouddiensten) maps to CIS Controls and ISO/IEC 27017.
 - No central catalogue. CSPs publish certificates through their trust centres. EY CertifyPoint is the established monitoring body for the cloud sub-framework.
 - Sanctions are reputational pre-Cbw; statutory NIS2 sanctions apply post-Cbw, with RDI as the digital infrastructure supervisor.

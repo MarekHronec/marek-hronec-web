@@ -3,7 +3,7 @@ title: "Choosing Your Cloud Compliance Posture — A Decision Framework"
 category: compliance
 tags: ["Decision Framework", "Practitioner", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-15
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 12
 level: intermediate
 excerpt: "The national frameworks, cross-cutting baselines, and regulatory overlays add up to dozens of acronyms. This article is the decision tree that maps 'I am [type of organisation] doing [type of workload] in [geography]' to 'these are the frameworks that actually apply to you'."
@@ -152,7 +152,7 @@ Higher compliance bar. Full ISO stack including 27701. Strong national framework
 
 ### Tier 4 — National-classified information / critical infrastructure data
 
-Strict sovereignty and security bar. SecNumCloud, KsVC U4 (private government cloud), ACN QC4 / PSN, ENS Alta + Cloud PCE, BIO2 BBN3, PiTuKri TL III handling. Customer-held HSM key custody. EU-controlled provider entity (JV, EU-native operator, dedicated sovereign region). Restricted access to operational personnel.
+Strict sovereignty and security bar. SecNumCloud, KsVC U4 (private government cloud), ACN QC4 / PSN, ENS Alta + Cloud PCE, BIO2 (risk-based, no baseline levels since v1.3), PiTuKri TL III handling. Customer-held HSM key custody. EU-controlled provider entity (JV, EU-native operator, dedicated sovereign region). Restricted access to operational personnel.
 
 ## Decision tree by geographic scope
 
@@ -202,7 +202,7 @@ Operational pattern: federated compliance programme with regional compliance lea
 - **Tier 3** for the personal-data workflows.
 - **Single Member State** scope.
 
-Apply: KsVC U3 listing for the cloud provider (citizen-data workflows); ISO 27001/27017/27018; SOC 2 Type 2 or BSI C5 as supporting evidence; GDPR Article 28 contract; EU Cloud CoC Level 2 as supplementary; NIS2 supply-chain assessment of the cloud provider (the ministry is likely an essential entity). For lower-sensitivity workflows at U1–U2, EU-native providers (OVHcloud, IONOS, Scaleway, STACKIT) are KsVC-listed candidates — see [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the operational landscape.
+Apply: KsVC U2 listing for the cloud provider (citizen-data workflows — MIRRI's own U2 example); ISO 27001/27017/27018; SOC 2 Type 2 or BSI C5 as supporting evidence; GDPR Article 28 contract; EU Cloud CoC Level 2 as supplementary; NIS2 supply-chain assessment of the cloud provider (the ministry is likely an essential entity). For lower-sensitivity workflows at U1–U2, EU-native providers (OVHcloud, IONOS, Scaleway, STACKIT) are KsVC-listed candidates — see [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the operational landscape.
 
 Don't apply: DORA (not a financial entity); SecNumCloud (not French); EUCS High+ (not yet operative).
 

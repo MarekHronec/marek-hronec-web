@@ -3,10 +3,10 @@ title: "Poland — KSC and the Pending National Cybersecurity Certification Syst
 category: compliance
 tags: ["Poland", "KSC", "KSCC", "NASK", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-07
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 10
 level: intermediate
-excerpt: "Poland regulates cloud through the National Cybersecurity System (KSC). The NIS2-aligned amendment (informally 'KSC2') entered into force on 3 April 2026 with a pending Constitutional Court review. The parallel National Cybersecurity Certification System (KSCC) was adopted in June 2025 and is operationalising."
+excerpt: "Poland regulates cloud through the National Cybersecurity System (KSC). The NIS2-aligned amendment (informally 'KSC2') entered into force on 3 April 2026 with a pending Constitutional Tribunal review. The parallel National Cybersecurity Certification System (KSCC) was adopted in June 2025 and is operationalising."
 references:
   - title: "KSC — National Cybersecurity System Act (Consolidated)"
     url: "https://sip.lex.pl/akty-prawne/dzu-dziennik-ustaw/krajowy-system-cyberbezpieczenstwa-18746756"
@@ -20,9 +20,9 @@ references:
     url: "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20250001017"
     description: "The Polish National Cybersecurity Certification System Act of 25 June 2025 — establishes a three-tier certification trust system (basic/significant/high) for ICT products, services, and processes."
     domain: "isap.sejm.gov.pl"
-  - title: "KSC consolidated text — Dz.U. 2026 poz. 20 t.j."
-    url: "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20260000020"
-    description: "Consolidated text of the National Cybersecurity System Act incorporating the 2026 NIS2 amendment (informally 'KSC2'). In force from 3 April 2026 after one-month vacatio legis from publication."
+  - title: "KSC NIS2 amendment — Dz.U. 2026 poz. 252"
+    url: "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20260000252"
+    description: "The act amending the National Cybersecurity System Act to transpose NIS2 (informally 'KSC2'), published 2 March 2026 and in force 3 April 2026 after a one-month vacatio legis. Not to be confused with Dz.U. 2026 poz. 20, which is the Marshal of the Sejm's 29 December 2025 announcement of the consolidated pre-amendment text."
     domain: "isap.sejm.gov.pl"
   - title: "Ministerstwo Cyfryzacji"
     url: "https://www.gov.pl/web/cyfryzacja"
@@ -49,7 +49,7 @@ Two instruments matter:
 
 "KSC2" is informal shorthand; the act is formally a *nowelizacja* (amendment) of the 2018 KSC Act. KSC is the operative horizontal cybersecurity framework; KSCC is the parallel certification framework.
 
-**Important caveat.** The President referred the KSC2 amendment to the **Constitutional Court** at the time of signing. The act took effect on 3 April 2026, but constitutional review is pending. Provisions struck down on constitutional review would create downstream uncertainty for regulated subjects and supervisory authorities.
+**Important caveat.** The President referred the KSC2 amendment to the **Constitutional Tribunal** at the time of signing. The act took effect on 3 April 2026, but constitutional review is pending. Provisions struck down on constitutional review would create downstream uncertainty for regulated subjects and supervisory authorities.
 
 The institutional landscape:
 
@@ -72,7 +72,7 @@ Secondary regulation under KSC defines specific obligations for key services ope
 
 ## Scope of obligation
 
-The 2025 KSC2 amendment expands the scope materially in line with NIS2:
+The 2026 KSC2 amendment expands the scope materially in line with NIS2:
 
 - **Operators of key services** — energy, transport, healthcare, banking, water supply, digital infrastructure (including cloud providers above NIS2 size thresholds).
 - **Providers of digital services** — cloud services, marketplaces, search engines.
@@ -136,7 +136,7 @@ KSC2 sanctions follow the NIS2 model:
 
 The personal liability mechanism is the operationally distinctive element of the Polish framework. Governance failures at regulated subjects can result in named individuals being sanctioned, not just the legal entity.
 
-For Polish **financial institutions**, **DORA** (Regulation (EU) 2022/2554) applies independently with the standard EU timelines. Major ICT incident reporting goes to the **KNF** (Komisja Nadzoru Finansowego, Financial Supervision Authority) for banking and insurance. DORA's Critical Third-Party Provider regime can bring hyperscalers under direct European supervision when they serve significant portions of the financial sector.
+For Polish **financial institutions**, **DORA** (Regulation (EU) 2022/2554) applies independently with the standard EU timelines, and its Critical Third-Party Provider oversight is live — the ESAs designated the first 19 CTPPs on 18 November 2025. Major ICT incident reporting goes to the **KNF** (Komisja Nadzoru Finansowego, Financial Supervision Authority) for banking and insurance. DORA's Critical Third-Party Provider regime can bring hyperscalers under direct European supervision when they serve significant portions of the financial sector.
 
 ## Sovereignty posture
 
@@ -170,11 +170,11 @@ The personal liability mechanism in KSC2 occasionally surprises foreign CSPs tha
 
 - Poland regulates cloud security through the National Cybersecurity System (KSC). The NIS2-aligned amendment (informally "KSC2") was signed 19 February 2026, published 2 March 2026, **in force 3 April 2026** (consolidated Dz.U. 2026 poz. 20 t.j.). There is no dedicated cloud qualification framework today.
 - A parallel **KSCC** (National Cybersecurity Certification System) was **adopted** by the Ustawa z dnia 25 czerwca 2025 r. (Dz.U. 2025 poz. 1017). Three-tier trust system (basic/significant/high). Operational ramp-up underway.
-- **Constitutional Court review pending** on the KSC2 amendment. Provisions struck down would produce downstream uncertainty.
+- **Constitutional Tribunal review pending** on the KSC2 amendment. Provisions struck down would produce downstream uncertainty.
 - Three CSIRTs: NASK (civil), GOV (public administration, under ABW), MON (defence). Incident reporting routes to the relevant CSIRT per sector.
 - Reference standard: ISO/IEC 27001. Cloud providers are regulated as digital service providers under KSC2.
 - Sanctions follow NIS2: up to **€10 million or 2% of global annual turnover** (whichever is higher) for key services operators. **Personal liability** for management is distinctively emphasised — named individuals can be personally fined for governance failures.
 - No sovereignty rules on providers. Poland's position in the EUCS debate is more permissive than France's; the Polish 2025 presidency tried to move EUCS without success.
 - For CSPs, the practical package is the same as for most EU markets: ISO 27001/27017/27018, SOC 2 or BSI C5, EU Cloud CoC, incident reporting capabilities. No Polish-specific certification required today; KSCC operationalisation may add a Polish-aligned certification track over time.
-- Operational distinctives: three-CSIRT routing, personal-liability accountability, KSC Register self-registration window 7 May – 3 October 2026, Constitutional Court review of KSC2 pending.
+- Operational distinctives: three-CSIRT routing, personal-liability accountability, KSC Register self-registration window 7 May – 3 October 2026, Constitutional Tribunal review of KSC2 pending.
 - **What to read next:** [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the supply-chain obligations Polish regulated subjects must satisfy; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for CloudFerro and other EU-native providers active in the Polish market; [EUCS Watch](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the political context including the Polish 2025 presidency effort; [Czechia](/knowledge-base/compliance/czechia-nukib-cybersecurity-act) and [Slovakia](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) for adjacent CEE regulatory comparisons.
