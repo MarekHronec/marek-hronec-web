@@ -46,23 +46,30 @@ Scope is wider than it is usually described. **Article 30(2) applies to every co
 
 ## The fifteen clause categories
 
-Article 30(2) and 30(3) specify the required contractual content. The list groups into fifteen distinct categories:
+Article 30(2) and 30(3) specify the required contractual content — fifteen elements in total, but they are two separate lists with different scope, and conflating them is the most common way to read this article wrong.
 
-1. **Service description** — clear and complete description of all functions and services.
-2. **Service locations** — places where data is processed and stored.
-3. **Service levels** — quantitative and qualitative performance targets, including KPIs.
-4. **Data availability, authenticity, integrity, confidentiality** — security and data protection provisions.
-5. **Personal data access** — provisions for the financial entity's access to its own personal data.
-6. **Assistance with incidents** — cooperation provisions including no additional cost.
-7. **Cooperation with competent authorities** — including audit and inspection rights.
-8. **Termination rights** — clear termination conditions for the financial entity.
-9. **Audit rights** — for the financial entity, its competent authority, and external auditors.
-10. **Information rights** — access to information necessary to monitor performance and compliance.
-11. **Notification of material changes** — to subcontracting or location.
-12. **Insurance** — provisions where appropriate.
-13. **Business continuity and contingency** — measures, plans, and tested capabilities.
-14. **Personnel security and access management** — for the provider's personnel handling financial-entity data.
-15. **Exit strategies** — separately specified in detail.
+**Article 30(2) — every contract for ICT services, nine elements:**
+
+1. **(a) Service description** — a clear and complete description of all functions and ICT services, stating whether subcontracting of a service supporting a critical or important function is permitted, and on what conditions.
+2. **(b) Locations** — the regions or countries where the functions and services are provided and where data is processed.
+3. **(c) Data protection** — provisions on availability, authenticity, integrity and confidentiality, including personal data.
+4. **(d) Access, recovery and return** — of personal and non-personal data in an easily accessible format, in the event of insolvency, resolution, discontinuation, or termination.
+5. **(e) Service level descriptions** — including updates and revisions.
+6. **(f) Incident assistance** — at no additional cost, or at a cost determined ex-ante.
+7. **(g) Cooperation with authorities** — full cooperation with the financial entity's competent and resolution authorities.
+8. **(h) Termination rights** — and related minimum notice periods.
+9. **(i) Training participation** — the conditions on which the provider takes part in the financial entity's ICT security-awareness programmes and digital operational resilience training. Routinely forgotten, and a real obligation.
+
+**Article 30(3) — added on top, only where the arrangement supports a critical or important function, six elements:**
+
+10. **(a) Full service levels** — with precise quantitative and qualitative performance targets.
+11. **(b) Notice periods and reporting** — including notification of any development that might materially affect the provider's ability to deliver.
+12. **(c) Business contingency** — requirements to implement *and test* contingency plans, and to have ICT security measures, tools and policies in place.
+13. **(d) TLPT participation** — the obligation to participate and fully cooperate in the financial entity's threat-led penetration testing under Articles 26 and 27.
+14. **(e) Monitoring and audit** — the right to monitor performance on an ongoing basis, including unrestricted rights of access, inspection and audit.
+15. **(f) Exit strategies** — in particular a mandatory adequate transition period.
+
+Two things commonly listed as Article 30 requirements are **not** in it. **Insurance** appears nowhere in the article — that expectation comes from the EBA outsourcing guidelines. Nor is **personnel security** a separate head; it surfaces indirectly through the audit and cooperation clauses.
 
 For arrangements supporting **critical or important functions**, additional content is required, including specific terms on subcontracting, data location restrictions, and reinforced audit rights.
 

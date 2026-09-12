@@ -142,7 +142,7 @@ mandatory adequate transition period. The duty that exit plans be
 "comprehensive, documented and … sufficiently tested and reviewed periodically"
 is **Art. 28(8)**, and it falls on the financial entity, not the contract.
 
-## P6 ◐ (a) and (b) APPLIED, (c) open — WRONG — Art. 30 scope, the cost clause, and the clause list
+## P6 ☑ APPLIED (a), (b), (c) — WRONG — Art. 30 scope, the cost clause, and the clause list
 
 **(a) Scope, L45.** "applies to all ICT third-party arrangements supporting
 critical or important functions" — Art. 30(2) applies to *every* ICT services
