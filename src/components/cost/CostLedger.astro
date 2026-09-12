@@ -1,28 +1,31 @@
 ---
-import { COST_EXAMPLES } from '../../data/cost-examples';
+import { billingExample } from '../../data/cost-billing';
+import BillingControls from './BillingControls.astro';
 import type { CostKey } from '../../data/cost-concepts';
 interface Props { concept: CostKey }
 const {concept}=Astro.props;
-const example=COST_EXAMPLES[concept];
+const example=billingExample(concept);
 const before=example.rows.reduce((sum,r)=>sum+r.before,0);
 const after=example.rows.reduce((sum,r)=>sum+r.after,0);
 const euro=(n:number)=>'€'+n.toLocaleString('en-IE');
 ---
-<aside class="cost-ledger" data-cost-ledger data-before={before} data-after={after} data-period={concept==='idle'?'next month':concept==='operations'?'per month':'this month'} aria-label="Illustrative monthly cost comparison">
+<aside class="cost-ledger" data-cost-ledger data-concept={concept} data-before={before} data-after={after} data-period={concept==='operations'?'per month':'this month'} aria-label="Illustrative monthly cost comparison">
   <header><span>Illustrative amounts · not provider prices</span><strong>{example.totalLabel}</strong></header>
+  <BillingControls concept={concept} />
   <div class="cost-ledger__total">
-    <span><small>Before</small><b>{euro(before)}</b></span>
+    <span><small>Without this decision</small><b data-cost-before>{euro(before)}</b></span>
     <span aria-hidden="true">→</span>
     <span><small>With this decision</small><b data-cost-total>{euro(before)}</b></span>
   </div>
   <p class="cost-ledger__delta" data-cost-delta>€0 change</p>
   <dl>{example.rows.map(row=><div data-cost-row data-before={row.before} data-after={row.after}>
-    <dt>{row.label}</dt><dd><span>{euro(row.before)} → </span><strong data-cost-value>{euro(row.before)}</strong></dd>
+    <dt>{row.label}</dt><dd><span data-row-before>{euro(row.before)} → </span><strong data-cost-value>{euro(row.before)}</strong></dd>
     <progress aria-hidden="true" max={Math.max(before,after)} value={row.before}></progress>
   </div>)}</dl>
-  <p class="cost-ledger__assumption">{example.assumption}</p>
-  <p class="cost-ledger__outcome">After the decision: {example.outcome}</p>
-  <p class="cost-ledger__note">Motion compares two scenarios; it is not a live bank balance or a refund. Reset restores the example.</p>
+  <p data-cost-accrual class="cost-ledger__assumption">{concept==='idle'?'At the selected release time, €396 has already accrued. The decision affects the remaining hours.':''}</p>
+  <p class="cost-ledger__assumption" data-cost-assumption>{example.assumption}</p>
+  <p class="cost-ledger__outcome" data-cost-outcome>After the decision: {example.outcome}</p>
+  <p class="cost-ledger__note">Amounts rounded to whole euros. Motion compares two scenarios; it is not a live bank balance or a refund. Reset restores the example.</p>
 </aside>
 <style>
 .cost-ledger { padding: var(--space-4); background: var(--color-surface-container-low); color: var(--color-navy); margin-top: var(--space-3); }

@@ -1,0 +1,7 @@
+const fs=require('fs'),ts=require('typescript'),assert=require('node:assert/strict');
+const path=require('node:path');
+function load(file){const m={exports:{}};const code=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;new Function('require','module','exports',code)(id=>load(path.resolve(path.dirname(file),id+'.ts')),m,m.exports);return m.exports;}
+const {billingExample}=load(path.resolve(__dirname,'../src/data/cost-billing.ts'));
+const total=e=>e.rows.reduce((n,r)=>n+r.after,0);
+for(const mode of ['hourly','monthly','commitment'])for(let hour=0;hour<=720;hour+=24)for(const storage of [true,false]){const e=billingExample('idle',{mode,hour,storage});assert(Math.abs(e.accrued+e.remaining-total(e))<1e-8);assert(total(e)<=792);assert(e.remaining>=0);if(mode!=='hourly')assert.equal(e.rows[0].after,720);}
+assert.equal(total(billingExample('idle')),612);assert.equal(total(billingExample('idle',{storage:true})),576);assert.equal(total(billingExample('idle',{hour:720,storage:true})),792);assert.equal(total(billingExample('idle',{hour:0,storage:true})),360);assert.equal(total(billingExample('idle',{hour:NaN})),612);assert.equal(total(billingExample('scaling',{days:30})),1400);assert.equal(total(billingExample('transfer',{gb:10000})),2600);console.log('PASS 186 timing/billing/storage combinations, boundaries, invalid inputs and quantity calculations');
