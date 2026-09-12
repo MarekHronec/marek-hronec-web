@@ -14,7 +14,7 @@ references:
     domain: "bsi.bund.de"
   - title: "BSI — C5:2026 Catalogue"
     url: "https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Cloud-Computing/Kriterienkatalog-C5/C5_2025/C5_2025_node.html"
-    description: "BSI's page for the C5:2026 catalogue published in November 2025 — restructured for EUCS alignment, with new criteria for containers, supply-chain security, post-quantum cryptography, and confidential computing."
+    description: "BSI's page for the C5:2026 catalogue published in March 2026 — restructured for EUCS alignment, with new criteria for containers, supply-chain security, post-quantum cryptography, and confidential computing."
     domain: "bsi.bund.de"
   - title: "C5:2020 — Full Criteria Catalogue (PDF)"
     url: "https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/CloudComputing/ComplianceControlsCatalogue-Cloud_Computing-C5.pdf"

@@ -34,7 +34,7 @@ references:
     domain: "senat.fr"
   - title: "ANSSI ReCyF — French Cyber Reference Framework"
     url: "https://messervices.cyber.gouv.fr/nis2#exigences"
-    description: "ANSSI's French Cyber Reference Framework, published 17 November 2025 — recommended measures aligned with NIS2 objectives. Works alongside SecNumCloud rather than replacing it."
+    description: "ANSSI's French Cyber Reference Framework, published 17 March 2026 — recommended measures aligned with NIS2 objectives. Works alongside SecNumCloud rather than replacing it."
     domain: "cyber.gouv.fr"
   - title: "MonEspaceNIS2 — ANSSI Entity Self-Assessment Portal"
     url: "https://messervices.cyber.gouv.fr/nis2"
@@ -60,7 +60,7 @@ SecNumCloud is anchored in a stack of regulatory instruments:
 - **"Cloud au centre" doctrine** (2021, updated 2023) — the executive policy that requires sensitive public-sector data to be hosted on SecNumCloud-qualified services.
 - **SREN Law** (loi visant à sécuriser et réguler l'espace numérique), 10 April 2024 — reinforces SecNumCloud application in public procurement and introduces sanctions for procurement non-compliance.
 - **NIS2 transposition** — the *loi Résilience* (projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques) was adopted by the Senate on 12 March 2025 and revised by the National Assembly special commission on 10 September 2025. **Not yet in force as of mid-2026**; entry into force expected in 2026 once final adoption and implementing decrees publish. France received a reasoned opinion from the European Commission on 7 May 2025 for non-notification of full NIS2 transposition. French essential and important entities will increasingly be required to use SecNumCloud-qualified providers for sensitive workloads under the new act.
-- **French Cyber Reference Framework (ReCyF)** — published by ANSSI on 17 November 2025. Lists recommended measures aligned with NIS2 objectives; works alongside SecNumCloud rather than replacing it. The MonEspaceNIS2 portal (cyber.gouv.fr) is live for entity identification and self-assessment.
+- **French Cyber Reference Framework (ReCyF)** — published by ANSSI on 17 March 2026. Lists recommended measures aligned with NIS2 objectives; works alongside SecNumCloud rather than replacing it. The MonEspaceNIS2 portal (cyber.gouv.fr) is live for entity identification and self-assessment.
 
 The combined effect: SecNumCloud is binding for state administration and for Opérateurs d'Importance Vitale (OIV) and Opérateurs de Services Essentiels (OSE) handling sensitive data. The SREN law gives procurement officers the legal basis to enforce it.
 

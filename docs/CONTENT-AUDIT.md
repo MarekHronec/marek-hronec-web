@@ -28,6 +28,39 @@ Four dimensions, all four required before an article is marked done:
 | **Consistent** | Does it contradict another article, or a derived page (`/compliance`, `/platform`)? |
 | **Complete** | Metadata present and honest — `updated:`, `references:`, `level`, `readTime`? |
 
+## A mistake this audit actually made — read it before doing a bulk edit
+
+Fixing the ANSSI/BSI date (B1 finding P8) meant changing "March 2026" to
+"November 2025" across five files. I scoped the replacement to *lines
+mentioning ANSSI or BSI*, thinking that was safe, and it corrupted three lines:
+
+- ANSSI's **ReCyF** genuinely was published **17 March 2026**. Two lines in
+  `france-anssi-secnumcloud-qualification.md` said so, and both mention ANSSI.
+- BSI's **C5:2026 catalogue** genuinely was published **March 2026**. Its
+  reference description mentions BSI.
+
+The scoping heuristic was wrong because it assumed one organisation has one
+event in one month. Two different real events involving the same agencies sat a
+few months apart.
+
+**The verification was worse than the edit.** I grepped afterwards for lines
+that *still* contained "March 2026" plus ANSSI/BSI, saw only the C5:2026 body
+lines, and concluded the scoping had worked. That grep was structurally
+incapable of finding the damage: it searched for what remained, not for what
+changed. A wrongly-changed line no longer matches the search that would find it.
+
+Two rules follow, and they apply to every batch:
+
+1. **Never bulk-replace a date, name or number on a keyword match.** Read each
+   occurrence and decide. Fifteen lines is not too many to look at.
+2. **Verify by reading the diff, not by re-grepping the source.** `git show
+   --unified=0` on your own commit, every changed line, every time. The
+   question is "is each line I changed still true", not "is the old string
+   gone".
+
+The corruption was caught by the *next* batch's reviewer, which flagged the
+France date as contradicting another file. Without that it would have shipped.
+
 ## Protocol — read this before running a batch
 
 The failure mode that matters is **a confident wrong correction**. Replacing an
