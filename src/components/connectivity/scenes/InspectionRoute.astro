@@ -1,47 +1,45 @@
 ---
 import ConnectivityFigure from '../ConnectivityFigure.astro';
 ---
-<ConnectivityFigure label="Request and reply diagram">
+<ConnectivityFigure label="Customs quay and inspected cargo illustration">
 <svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="routing-title routing-desc">
-  <title id="routing-title">Route a request and its reply through inspection</title>
-  <desc id="routing-desc">The direct route bypasses the firewall. Select the inspected route to follow a filled request marker through the checkpoint to the application, then an outlined reply marker back through the same checkpoint. Both inspection receipts appear as traffic passes.</desc>
-  <text class="label" x="24" y="32">FOLLOW ONE COMPLETE EXCHANGE</text>
-  <path class="line direct" d="M80 147 H520"/>
-  <text class="small direct" x="196" y="128">Direct · no inspection</text>
-  <path class="line quiet" d="M80 147 C150 147 157 258 260 258 H340 C443 258 450 147 520 147"/>
-  <path class="line chosen" d="M80 147 C150 147 157 258 260 258 H340 C443 258 450 147 520 147"/>
-  <g class="switch"><path class="line" d="M111 147 H155"/><circle class="paper line" cx="111" cy="147" r="4"/></g>
-  <rect class="wash" x="34" y="77" width="92" height="52"/>
-  <path class="line" d="M53 92 h54 v23 H53 Z M68 120 h24"/>
-  <text x="46" y="182">Client</text>
-  <rect class="wash" x="474" y="77" width="92" height="52"/>
-  <path class="line" d="M492 91 h56 v10 h-56 Z M492 107 h56 v10 h-56 Z"/>
-  <text x="469" y="182">Application</text>
-  <rect class="wash" x="252" y="215" width="96" height="88"/>
-  <path class="line" d="M273 239 h54 v38 h-54 Z M273 251 h54 M273 264 h54 M288 239 v12 M311 251 v13 M288 264 v13"/>
-  <text class="label" x="244" y="325">INSPECTION</text>
-  <circle class="packet travel outbound" r="7"/>
-  <circle class="reply travel inbound" r="7"/>
-  <g class="reveal checked-out"><text class="small" x="51" y="245">Request checked</text><path class="line" d="M210 235 l6 7 11 -14"/></g>
-  <g class="reveal checked-back"><text class="small" x="366" y="284">Reply checked</text><path class="line" d="M505 274 l6 7 11 -14"/></g>
-  <g class="scene__before"><text x="24" y="374">A firewall beside the route sees no traffic.</text></g>
-  <g class="scene__after">
-    <text class="pending" x="24" y="374">Following the request and its reply…</text>
-    <text class="reveal complete" x="24" y="374">1 exchange completed · both directions inspected</text>
-  </g>
-  <circle class="packet" cx="32" cy="416" r="5"/><text class="small" x="46" y="421">Request</text>
-  <circle class="reply" cx="158" cy="416" r="5"/><text class="small" x="172" y="421">Reply</text>
-  <text class="label" x="304" y="421">ILLUSTRATIVE ROUTE + POLICY</text>
+<title id="routing-title">Choose the customs quay, then inspect cargo and the return manifest</title>
+<desc id="routing-desc">The direct loading route bypasses customs. On the inspected route a consignment moves through customs to the ship. Its return manifest passes customs on the way back. Two stamps record the outward and return checks, representing request and reply inspection.</desc>
+<text class="label" x="24" y="30">CUSTOMS QUAY / OUTWARD & RETURN</text>
+<path class="scene__sea-fill" d="M26 234 Q166 219 302 232 T576 236 V291 H26 Z"/>
+<path class="scene__line scene__quiet" d="M30 263 Q78 257 115 263 T202 263 M351 278 Q400 271 442 278 T564 278"/>
+<path class="scene__paper" d="M26 230 V201 H342 V230 Z"/>
+<path class="scene__heavy" d="M38 232 V260 M94 232 V260 M155 232 V260 M215 232 V260 M280 232 V260 M334 232 V260"/>
+<path class="scene__hull" d="M359 218 Q457 233 575 215 L549 254 Q450 275 382 248 Z"/>
+<path class="scene__line" d="M373 229 Q451 244 564 225"/>
+<path class="scene__paper" d="M483 212 V176 H525 V212 M490 176 V157 H514 V176"/>
+<path class="scene__line" d="M489 188 H499 V198 H489 Z M506 188 H517 V198 H506 Z M518 157 V124"/>
+<path class="scene__solid" d="M519 125 l26 7 -26 6 Z"/>
+<path class="scene__crate" d="M394 211 V185 H425 V211 M429 211 V185 H460 V211"/>
+<path class="scene__heavy" d="M60 198 V64 H407 M64 65 L156 108 M388 66 V157"/>
+<path class="scene__line" d="M48 198 H78 M390 153 q-9 10 0 15 q10 0 8 -9"/>
+<path class="line direct dash" d="M88 94 H441 V174"/>
+<text class="small direct" x="174" y="79">Direct loading · bypasses customs</text>
+<path class="scene__paper" d="M218 201 V131 L269 108 L320 131 V201 Z"/>
+<path class="scene__line" d="M228 143 H309 M230 156 H246 V175 H230 Z M291 156 H307 V175 H291 Z M256 201 V154 H282 V201"/>
+<text class="label" x="232" y="133">CUSTOMS</text>
+<path class="line chosen dash" d="M88 184 H446"/>
+<g class="travel outbound"><path class="scene__crate" d="M-15 -25 H15 V0 H-15 Z"/><path class="scene__line" d="M-15 -25 L15 0 M15 -25 L-15 0"/></g>
+<g class="travel inbound"><path class="scene__paper" d="M-12 -29 H12 V0 H-12 Z"/><path class="scene__line" d="M-7 -21 H7 M-7 -15 H7 M-7 -9 H4"/></g>
+<text class="small" x="28" y="287">Cargo = request</text><text class="small" x="342" y="287">Return manifest = reply</text>
+<g class="reveal checked-out"><path class="scene__line" d="M31 324 l8 10 17 -23"/><text x="68" y="330">Cargo inspected</text></g>
+<g class="reveal checked-back"><path class="scene__line" d="M314 324 l8 10 17 -23"/><text x="351" y="330">Reply inspected</text></g>
+<text class="scene__before" x="24" y="383">A customs house cannot inspect a bypassing load.</text>
+<g class="scene__after"><text class="pending" x="24" y="383">Follow the consignment, then its return manifest…</text><text class="reveal complete" x="24" y="383">1 exchange completed · both directions inspected</text></g>
+<text class="small" x="24" y="419">The chosen route and customs rules allow this exchange.</text>
 </svg>
 </ConnectivityFigure>
 <style>
 .chosen, .inbound { opacity:0; }
-.switch { transform-box:view-box; transform-origin:111px 147px; transition:transform var(--duration-slow) var(--ease-standard); }
-.outbound { offset-path:path("M80 147 C150 147 157 258 260 258 H340 C443 258 450 147 520 147"); }
-.inbound { offset-path:path("M520 147 C450 147 443 258 340 258 H260 C157 258 150 147 80 147"); }
-:global(.cp[data-demonstrate='true']) .direct { opacity:.16; }
-:global(.cp[data-demonstrate='true']) .chosen { opacity:1; }
-:global(.cp[data-demonstrate='true']) .switch { transform:rotate(40deg); }
+.outbound { offset-path:path("M88 184 H446"); }
+.inbound { offset-path:path("M446 184 H88"); }
+:global(.cp[data-demonstrate='true']) .direct { opacity:.15; }
+:global(.cp[data-demonstrate='true']) .chosen { opacity:.4; }
 :global(.cp[data-demonstrate='true']) .outbound { animation: request-trip var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .inbound { animation: reply-trip var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .checked-out { animation: checked-out var(--nautical-story-duration) step-end both; }

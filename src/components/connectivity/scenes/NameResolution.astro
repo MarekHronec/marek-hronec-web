@@ -1,48 +1,40 @@
 ---
 import ConnectivityFigure from '../ConnectivityFigure.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
 ---
-<ConnectivityFigure label="DNS lookup diagram">
+<ConnectivityFigure label="Harbour radio, berth directory and arrival illustration">
 <svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="dns-title dns-desc">
-  <title id="dns-title">DNS lookup first, application connection second</title>
-  <desc id="dns-desc">The client asks a resolver for orders.example. The resolver returns 10.20.0.4 instead of the old cached address 10.20.0.9. Only after receiving the address does the client connect directly to the intended service. Application traffic does not pass through DNS.</desc>
-  <text class="label" x="24" y="32">A NAME IS NOT YET A DESTINATION</text>
-  <rect class="wash" x="24" y="63" width="214" height="174"/>
-  <text class="label" x="40" y="88">CLIENT</text>
-  <text x="40" y="117">orders.example</text>
-  <text class="small" x="40" y="150">Address in use</text>
-  <text class="old-address" x="40" y="181">10.20.0.9</text>
-  <text class="reveal new-address" x="40" y="181">10.20.0.4</text>
-  <text class="small old-address" x="40" y="214">Old cached answer</text>
-  <text class="small reveal new-address" x="40" y="214">Fresh answer received</text>
-  <rect class="paper" x="365" y="63" width="211" height="174"/>
-  <path class="line" d="M365 66 v168 M380 135 h180"/>
-  <text class="label" x="382" y="88">DNS RESOLVER</text>
-  <text class="small" x="382" y="117">Looks up the name</text>
-  <text class="small" x="382" y="162">Current answer</text>
-  <text x="382" y="192">10.20.0.4</text>
-  <path class="line quiet" d="M238 108 H359 M359 191 H238"/>
-  <text class="small" x="254" y="93">1. Ask</text>
-  <text class="small" x="252" y="220">2. Answer</text>
-  <circle class="packet travel query" r="6"/>
-  <g class="travel answer"><rect class="ink" x="-25" y="-14" width="50" height="28"/><text class="label white" x="-10" y="5">.4</text></g>
-  <path class="line quiet" d="M130 237 V289 Q130 307 149 307 H459"/>
-  <text class="small" x="176" y="288">3. Connect to that address</text>
-  <circle class="packet travel connection" r="7"/>
-  <rect class="wash" x="461" y="266" width="115" height="75"/>
-  <text class="label" x="477" y="290">SERVICE</text>
-  <text x="477" y="316">10.20.0.4</text>
-  <g class="scene__before"><text x="24" y="378">This client is still using the old address.</text></g>
-  <g class="scene__after">
-    <text class="pending" x="24" y="378">Refresh this client’s answer, then connect…</text>
-    <text class="reveal complete" x="24" y="378">New answer received → intended service reached</text>
-  </g>
-  <text class="small" x="24" y="418">One client shown. Other cached answers can remain unchanged.</text>
+<title id="dns-title">Ask harbour radio for the berth, then sail to it</title>
+<desc id="dns-desc">The captain has an old berth assignment. A radio question reaches the harbour directory. Its answer, berth 4, updates the captain’s note. The yacht then sails directly to berth 4 rather than through the radio office. This represents a DNS answer followed by a separate connection.</desc>
+<g transform="translate(0 5)"><ChartWater id="dns-marine"/></g>
+<text class="label" x="24" y="30">HARBOUR RADIO / FIND THE BERTH</text>
+<path class="scene__paper" d="M364 124 V83 L402 61 L441 83 V124 Z"/>
+<path class="scene__line" d="M378 123 V98 H393 V123 M410 92 H426 V106 H410 Z M402 61 V31 M398 39 H406"/>
+<text class="small" x="449" y="94">Directory</text><text class="label" x="449" y="115">BERTH 4</text>
+<path class="scene__line scene__quiet" d="M358 39 q-15 17 0 34 M348 31 q-22 25 0 50 M435 40 q15 16 0 32"/>
+<path class="scene__hull" d="M450 175 H574 V185 H450 Z M450 267 H574 V277 H450 Z"/>
+<path class="scene__line" d="M462 187 V203 M512 187 V203 M562 187 V203 M462 279 V293 M512 279 V293 M562 279 V293"/>
+<text class="small" x="463" y="161">Old berth · 9</text><text class="small" x="463" y="253">Assigned · 4</text>
+<path class="scene__route" d="M124 270 C238 179 354 158 444 199"/>
+<path class="scene__route" d="M124 270 C230 330 354 315 444 292"/>
+<g class="travel connection"><g transform="scale(.57)"><SailingVessel/></g></g>
+<g class="travel query"><path class="scene__line" d="M-8 -9 Q3 0 -8 9 M0 -14 Q15 0 0 14"/></g>
+<g class="travel answer"><path class="scene__paper" d="M-24 -16 H24 V16 H-24 Z"/><text class="label" x="-16" y="5">B 4</text></g>
+<path class="scene__paper" d="M24 56 H270 V141 H24 Z"/>
+<text class="label" x="39" y="80">CAPTAIN’S BERTH NOTE</text>
+<text class="old-address" x="39" y="108">Berth 9 · 10.20.0.9</text>
+<text class="reveal new-address" x="39" y="108">Berth 4 · 10.20.0.4</text>
+<text class="small" x="39" y="130">orders.example</text>
+<text class="scene__before" x="24" y="379">The captain still has an old berth assignment.</text>
+<g class="scene__after"><text class="pending" x="24" y="379">Ask by radio → receive berth → sail to it…</text><text class="reveal complete" x="24" y="379">Fresh berth assignment → arrival at the right quay</text></g>
+<text class="small" x="24" y="418">The directory gives directions; it does not carry the cargo.</text>
 </svg>
 </ConnectivityFigure>
 <style>
-.query { offset-path:path("M238 108 H359"); opacity:0; }
-.answer { offset-path:path("M339 191 H208"); opacity:0; }
-.connection { offset-path:path("M130 237 V289 Q130 307 149 307 H459"); opacity:0; }
+.query { offset-path:path("M142 202 Q245 155 359 87"); opacity:0; }
+.answer { offset-path:path("M359 105 Q297 173 150 155"); opacity:0; }
+.connection { offset-path:path("M124 270 C230 330 354 315 444 292"); }
 :global(.cp[data-demonstrate='true']) .query { animation: query var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .answer { animation: answer var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .connection { animation: connect var(--nautical-story-duration) linear both; }
@@ -52,7 +44,7 @@ import ConnectivityFigure from '../ConnectivityFigure.astro';
 :global(.cp[data-demonstrate='true']) .complete { animation: complete var(--nautical-story-duration) step-end both; }
 @keyframes query { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 23%,100% {offset-distance:100%;opacity:0;} }
 @keyframes answer { 0%,26% {offset-distance:0%;opacity:0;} 27% {offset-distance:0%;opacity:1;} 48% {offset-distance:100%;opacity:1;} 49%,100% {offset-distance:100%;opacity:0;} }
-@keyframes connect { 0%,53% {offset-distance:0%;opacity:0;} 54% {offset-distance:0%;opacity:1;} 94%,100% {offset-distance:100%;opacity:1;} }
+@keyframes connect { 0%,54% {offset-distance:0%;} 94%,100% {offset-distance:100%;} }
 @keyframes old-answer { 0% {opacity:1;} 49%,100% {opacity:0;} }
 @keyframes fresh-answer { 0% {opacity:0;} 49%,100% {opacity:1;} }
 @keyframes pending { 0% {opacity:1;} 94%,100% {opacity:0;} }

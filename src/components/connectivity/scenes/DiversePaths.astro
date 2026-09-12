@@ -1,34 +1,35 @@
 ---
 import ConnectivityFigure from '../ConnectivityFigure.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import Harbour from '../../resilience/scenes/Harbour.astro';
 ---
-<ConnectivityFigure label="Connection recovery diagram">
+<ConnectivityFigure label="Shipping passages and harbour log illustration">
 <svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="paths-title paths-desc">
-  <title id="paths-title">A cut cable interrupts delivery before a separate connection restores it</title>
-  <desc id="paths-desc">Before the cut, deliveries use the primary cable. During the demonstration one request stops at the break and two delivery slots are missed while the route changes. A subsequent request travels over the independent backup cable and delivery resumes. The delivery record makes the interruption visible; timings and capacity are illustrative.</desc>
-  <text class="label" x="24" y="32">A SECOND CABLE. A VISIBLE RECOVERY.</text>
-  <rect class="wash" x="24" y="84" width="104" height="139"/>
-  <rect class="wash" x="472" y="84" width="104" height="139"/>
-  <text x="41" y="113">Office</text><text x="486" y="113">Cloud</text>
-  <path class="line" d="M50 133 h51 v39 H50 Z M65 181 h22 M492 133 h63 v12 h-63 Z M492 154 h63 v12 h-63 Z"/>
-  <path class="line primary" d="M128 145 H282 M318 145 H472"/>
-  <path class="line cable-join" d="M282 145 H318"/>
-  <path class="line quiet" d="M128 198 C196 288 402 288 472 198"/>
-  <path class="line backup" d="M128 198 C196 288 402 288 472 198"/>
-  <text class="small" x="214" y="117">Primary cable · site A</text>
-  <text class="small" x="202" y="294">Backup cable · site B</text>
-  <g class="reveal cut"><path class="line" d="M289 132 l23 26 M312 132 l-23 26"/><text class="label" x="273" y="85">CUT</text></g>
-  <circle class="packet travel lost" r="7"/>
-  <circle class="packet travel recovered" r="7"/>
+  <title id="paths-title">A blocked shipping channel interrupts arrivals before a separate passage restores them</title>
+<desc id="paths-desc">A vessel stops outside a closed channel. Two scheduled arrivals are missed while the alternate passage is selected. A following delivery sails around the other side of the headland and reaches the quay. The harbour log keeps the missed arrivals visible after recovery. Timings and capacity are illustrative.</desc>
+<g transform="translate(0 -28)"><ChartWater id="paths-marine"/></g>
+<text class="label" x="24" y="30">TWO PASSAGES / ONE HARBOUR LOG</text>
+<path class="scene__paper" d="M205 160 Q226 121 261 147 L282 128 L304 144 L335 133 Q377 151 375 201 Q338 232 287 220 L247 239 L215 219 Z"/>
+<path class="scene__line scene__quiet" d="M224 172 L259 158 L277 178 L302 160 L342 166 M236 198 L275 188 L296 204 L345 192"/>
+<text class="small" x="251" y="210">Headland</text>
+<path class="scene__route primary" d="M78 139 Q231 81 389 131 L463 173"/>
+<path class="scene__route" d="M78 238 C179 302 359 321 466 218"/>
+<path class="scene__line backup" d="M78 238 C179 302 359 321 466 218"/>
+<g transform="translate(451 170) scale(.78)"><Harbour label="DELIVERY QUAY"/></g>
+<text class="small" x="86" y="83">Inner channel</text><text class="small" x="95" y="306">Outer passage · outside the closure</text>
+<g class="reveal cut"><path class="scene__hull" d="M252 101 L300 124 L295 133 L247 110 Z"/><path class="scene__line" d="M252 102 l2 10 M265 108 l2 11 M279 115 l2 11"/><text class="label" x="245" y="79">CLOSED</text></g>
+<g class="travel lost"><g transform="scale(.4)"><SailingVessel/></g></g>
+<g class="travel recovered"><g transform="scale(.48)"><SailingVessel/></g></g>
   <rect class="ink" x="24" y="318" width="552" height="105"/>
-  <text class="label white" x="40" y="342">DELIVERY RECORD</text>
+  <text class="label white" x="40" y="342">HARBOUR ARRIVALS</text>
   <g class="history">
     <path class="white" d="M43 383 v-23 h21 v23 Z M79 383 v-23 h21 v23 Z M115 383 v-23 h21 v23 Z"/>
     <path class="future" d="M151 383 h21 M187 383 h21 M223 383 h21 M259 383 h21"/>
     <path class="misses" d="M153 371 l16 12 M169 371 l-16 12 M189 371 l16 12 M205 371 l-16 12"/>
     <path class="white reveal receipt-one" d="M223 383 v-23 h21 v23 Z"/>
-    <path class="white reveal receipt-two" d="M259 383 v-23 h21 v23 Z"/>
   </g>
-  <text class="small white" x="40" y="407">Earlier → later · illustrative slots</text>
+  <text class="small white" x="40" y="407">Earlier → later · scheduled arrivals</text>
   <g class="scene__before"><text class="white" x="338" y="373">Delivering normally</text></g>
   <g class="scene__after">
     <text class="white pending" x="338" y="373">Delivery interrupted</text>
@@ -41,9 +42,8 @@ import ConnectivityFigure from '../ConnectivityFigure.astro';
 .backup, .cut, .misses { opacity:0; }
 .future { fill:none; stroke:var(--color-on-primary); stroke-width:var(--nautical-heavy-stroke); opacity:.25; }
 .misses { fill:none; stroke:var(--color-on-primary); stroke-width:var(--nautical-heavy-stroke); }
-.lost { offset-path:path("M128 145 H280"); opacity:0; }
-.recovered { offset-path:path("M128 198 C196 288 402 288 472 198"); opacity:0; }
-:global(.cp[data-demonstrate='true']) .cable-join { opacity:0; }
+.lost { offset-path:path("M78 139 Q148 111 226 113"); }
+.recovered { offset-path:path("M78 238 C179 302 359 321 466 218"); }
 :global(.cp[data-demonstrate='true']) .primary { opacity:.3; }
 :global(.cp[data-demonstrate='true']) .cut { opacity:1; }
 :global(.cp[data-demonstrate='true']) .lost { animation: lost var(--nautical-story-duration) linear both; }
@@ -51,13 +51,11 @@ import ConnectivityFigure from '../ConnectivityFigure.astro';
 :global(.cp[data-demonstrate='true']) .backup { animation: switch-route var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .misses { animation: missed var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .receipt-one, :global(.cp[data-demonstrate='true']) .complete { animation: received var(--nautical-story-duration) step-end both; }
-:global(.cp[data-demonstrate='true']) .receipt-two { animation: next-received var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .pending { animation: pending var(--nautical-story-duration) step-end both; }
-@keyframes lost { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 27%,100% {offset-distance:100%;opacity:0;} }
-@keyframes recover { 0%,40% {offset-distance:0%;opacity:0;} 41% {offset-distance:0%;opacity:1;} 84%,100% {offset-distance:100%;opacity:1;} }
+@keyframes lost { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 27%,100% {offset-distance:100%;opacity:1;} }
+@keyframes recover { 0%,40% {offset-distance:0%;opacity:1;} 41% {offset-distance:0%;opacity:1;} 84%,100% {offset-distance:100%;opacity:1;} }
 @keyframes switch-route { 0% {opacity:0;} 40%,100% {opacity:1;} }
 @keyframes missed { 0% {opacity:0;} 27%,100% {opacity:1;} }
 @keyframes received { 0% {opacity:0;} 84%,100% {opacity:1;} }
-@keyframes next-received { 0% {opacity:0;} 98%,100% {opacity:1;} }
 @keyframes pending { 0% {opacity:1;} 84%,100% {opacity:0;} }
 </style>

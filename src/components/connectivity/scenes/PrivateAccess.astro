@@ -1,58 +1,53 @@
 ---
 import ConnectivityFigure from '../ConnectivityFigure.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
 ---
-<ConnectivityFigure label="Access test diagram">
+<ConnectivityFigure label="Harbour gate and cargo permit illustration">
 <svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="access-title access-desc">
-  <title id="access-title">Private access and identity are two separate checks</title>
-  <desc id="access-desc">Close public access, then test three requests. The public client stops at the network boundary. A private client without permission reaches the identity check but is denied. An authorised private client reaches the application.</desc>
-  <text class="label" x="24" y="32">01 / REACH THE ENTRANCE</text>
-  <text class="label" x="354" y="32">02 / CHECK IDENTITY</text>
-  <rect class="wash" x="282" y="58" width="294" height="262" rx="0"/>
-  <path class="line dash quiet" d="M282 58 V320"/>
-  <path class="line quiet" d="M462 72 V306"/>
-  <text class="small" x="296" y="79">Private network</text>
-  <text class="small" x="487" y="79">Service</text>
-  <text x="24" y="102">Public client</text>
-  <text class="small" x="24" y="127">Outside the network</text>
-  <text x="24" y="182">Private client</text>
-  <text class="small" x="24" y="207">No app permission</text>
-  <text x="24" y="262">Private client</text>
-  <text class="small" x="24" y="287">App permission</text>
-  <path class="line quiet" d="M196 116 H550 M196 196 H550 M196 276 H550"/>
-  <g class="gate"><path class="line" d="M274 100 L290 132 M290 100 L274 132"/></g>
-  <g class="identity"><path class="line" d="M452 187 L472 207 M472 187 L452 207"/><path class="line" d="M451 276 l8 9 15 -20"/></g>
-  <circle class="packet travel public-request" r="7"/>
-  <circle class="packet travel denied-request" r="7"/>
-  <circle class="packet travel accepted-request" r="7"/>
-  <g class="reveal public-result"><rect class="paper" x="300" y="102" width="140" height="27"/><text class="label" x="310" y="121">UNREACHABLE</text></g>
-  <g class="reveal denied-result"><rect class="paper" x="484" y="182" width="84" height="28"/><text class="label" x="492" y="201">DENIED</text></g>
-  <g class="reveal accepted-result"><rect class="ink" x="487" y="263" width="81" height="27"/><text class="label white" x="496" y="282">ALLOWED</text></g>
-  <g class="scene__before">
-    <text x="24" y="361">Both network entrances are open.</text>
-    <text class="small" x="24" y="386">Check public access separately for each service.</text>
-  </g>
-  <g class="scene__after">
-    <text x="24" y="361">Private access is only the first check.</text>
-    <text class="small" x="24" y="386">Reaching an application does not grant permission to use it.</text>
-  </g>
-  <text class="label" x="24" y="421">THREE TEST REQUESTS · ILLUSTRATIVE POLICY</text>
+<title id="access-title">A harbour entrance and a cargo permit are different checks</title>
+<desc id="access-desc">A boom closes the public harbour entrance and an outside yacht stops. At the private quay a cargo permit is rejected, then an approved consignment is lifted into the warehouse. The harbour log records unreachable, denied and allowed.</desc>
+<g transform="translate(0 -25)"><ChartWater id="access-marine"/></g>
+<text class="label" x="24" y="30">HARBOUR ACCESS / CARGO PERMITS</text>
+<path class="scene__hull" d="M312 108 H574 V273 H527 V225 H312 Z"/>
+<path class="scene__line" d="M319 218 H573 M325 228 V248 M372 228 V248 M420 228 V248 M469 228 V248"/>
+<path class="scene__paper" d="M430 158 V92 L488 56 L547 92 V158 Z"/>
+<path class="scene__line" d="M438 96 H538 M450 111 H471 V132 H450 Z M503 111 H525 V132 H503 Z M479 158 V120 H493 V158"/>
+<text class="label" x="443" y="179">WAREHOUSE</text>
+<path class="scene__heavy" d="M321 107 V199 M276 219 V256"/>
+<g class="boom"><path class="scene__hull" d="M286 213 L324 112 L329 115 L291 217 Z"/><path class="scene__line" d="M292 192 l6 2 M303 160 l6 2 M314 131 l6 2"/></g>
+<g class="travel public-request"><g transform="scale(.55)"><SailingVessel/></g></g>
+<text class="small" x="35" y="247">Public entrance</text>
+<text class="small" x="321" y="271">Private quay → permit check</text>
+<path class="scene__heavy" d="M348 208 V116 H412 M350 117 L408 144 M402 116 V155"/>
+<path class="scene__line" d="M341 208 H360 M402 151 q-8 9 0 13 q8 0 7 -7"/>
+<g class="travel denied-request"><path class="scene__paper" d="M-12 -20 H13 V9 H-12 Z"/><path class="scene__line" d="M-7 -13 H8 M-7 -7 H8"/></g>
+<g class="travel accepted-request"><path class="scene__crate" d="M-17 -21 H17 V4 H-17 Z"/><path class="scene__line" d="M-17 -21 L17 4 M17 -21 L-17 4 M-17 -21 L0 -34 L17 -21"/></g>
+<rect class="ink" x="24" y="306" width="552" height="116"/>
+<text class="label white" x="40" y="331">HARBOUR LOG</text>
+<text class="small white" x="40" y="358">Outside yacht</text><text class="small white" x="215" y="358">Invalid permit</text><text class="small white" x="401" y="358">Valid permit</text>
+<text class="white scene__before" x="40" y="390">Entrance open · cargo still needs permission</text>
+<text class="label white reveal public-result" x="40" y="390">UNREACHABLE</text>
+<text class="label white reveal denied-result" x="215" y="390">DENIED ×</text>
+<text class="label white reveal accepted-result" x="401" y="390">ALLOWED ✓</text>
 </svg>
 </ConnectivityFigure>
 <style>
-.public-request { offset-path:path("M196 116 H267"); }
-.denied-request { offset-path:path("M196 196 H449"); }
-.accepted-request { offset-path:path("M196 276 H550"); }
-.gate, .identity { opacity:0; }
-:global(.cp[data-demonstrate='true']) .gate, :global(.cp[data-demonstrate='true']) .identity { opacity:1; }
+.boom { transform-box:view-box; transform-origin:324px 113px; transform:rotate(-60deg); }
+.public-request { offset-path:path("M96 206 H247"); }
+.denied-request { offset-path:path("M332 190 H408"); opacity:0; }
+.accepted-request { offset-path:path("M354 206 C362 179 381 163 402 158 H492"); opacity:0; }
+:global(.cp[data-demonstrate='true']) .boom { animation: close-boom var(--nautical-story-duration) var(--ease-standard) both; }
 :global(.cp[data-demonstrate='true']) .public-request { animation: public-test var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .denied-request { animation: denied-test var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .accepted-request { animation: accepted-test var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .public-result { animation: public-result var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .denied-result { animation: denied-result var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .accepted-result { animation: accepted-result var(--nautical-story-duration) step-end both; }
+@keyframes close-boom { 0% {transform:rotate(-60deg);} 16%,100% {transform:rotate(0deg);} }
 @keyframes public-test { 0% {offset-distance:0%;} 22%,100% {offset-distance:100%;} }
-@keyframes denied-test { 0%,25% {offset-distance:0%;} 58%,100% {offset-distance:100%;} }
-@keyframes accepted-test { 0%,60% {offset-distance:0%;} 94%,100% {offset-distance:100%;} }
+@keyframes denied-test { 0%,25% {offset-distance:0%;opacity:0;} 26% {opacity:1;offset-distance:0%;} 58%,100% {offset-distance:100%;opacity:1;} }
+@keyframes accepted-test { 0%,60% {offset-distance:0%;opacity:0;} 61% {opacity:1;offset-distance:0%;} 94%,100% {offset-distance:100%;opacity:1;} }
 @keyframes public-result { 0% {opacity:0;} 22%,100% {opacity:1;} }
 @keyframes denied-result { 0% {opacity:0;} 58%,100% {opacity:1;} }
 @keyframes accepted-result { 0% {opacity:0;} 94%,100% {opacity:1;} }
