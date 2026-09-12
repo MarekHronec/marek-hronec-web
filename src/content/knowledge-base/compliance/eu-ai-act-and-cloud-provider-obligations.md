@@ -3,10 +3,10 @@ title: "EU AI Act × Cloud — How AI Regulation Reaches Cloud Providers and The
 category: compliance
 tags: ["EU AI Act", "AI", "GPAI", "Compliance", "Data Security", "Cross-Cutting", "Sectoral"]
 date: 2026-05-14
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 12
 level: advanced
-excerpt: "The EU AI Act applies progressively from 2025 through 2027. For cloud providers, two roles matter: provider of general-purpose AI models, and infrastructure for customer-deployed AI systems. For customers, deployer obligations apply at scale. This article walks through what AI Act actually requires of cloud providers, where it intersects with GDPR and NIS2, and what to plan for."
+excerpt: "The EU AI Act applies progressively from 2025 through 2028, after the Digital Omnibus deferred the high-risk deadlines in July 2026. For cloud providers, two roles matter: provider of general-purpose AI models, and infrastructure for customer-deployed AI systems. For customers, deployer obligations apply at scale. This article walks through what AI Act actually requires of cloud providers, where it intersects with GDPR and NIS2, and what to plan for."
 references:
   - title: "EU AI Act — Regulation (EU) 2024/1689"
     url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"
@@ -18,7 +18,7 @@ references:
     domain: "digital-strategy.ec.europa.eu"
   - title: "AI Act Implementation Timeline"
     url: "https://artificialintelligenceact.eu/implementation-timeline/"
-    description: "Implementation timeline for the AI Act covering the phased application from February 2025 through August 2027 across different obligation categories."
+    description: "Implementation timeline for the AI Act covering the phased application from February 2025 through August 2028 across different obligation categories."
     domain: "artificialintelligenceact.eu"
   - title: "EDPB Guidelines on AI and Personal Data"
     url: "https://www.edpb.europa.eu/documents_en"
@@ -30,7 +30,7 @@ references:
     domain: "enisa.europa.eu"
 ---
 
-The EU AI Act — Regulation (EU) 2024/1689 — applies progressively from **February 2025 through August 2027**. For cloud providers, two roles matter: **provider of general-purpose AI models** (GPAI providers) and **infrastructure for customer-deployed AI systems**. For customers, **deployer obligations** apply at scale and increasingly to operational AI use. The AI Act sits alongside [GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), [NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) as a parallel regulatory layer. This article walks through what the AI Act actually requires of cloud providers and their customers, where it intersects with existing cloud regulation, and what to plan for.
+The EU AI Act — Regulation (EU) 2024/1689, as amended by the Digital Omnibus on AI, Regulation (EU) 2026/1744 — applies progressively from **February 2025 through August 2028**. For cloud providers, two roles matter: **provider of general-purpose AI models** (GPAI providers) and **infrastructure for customer-deployed AI systems**. For customers, **deployer obligations** apply at scale and increasingly to operational AI use. The AI Act sits alongside [GDPR](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct), [NIS2](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) as a parallel regulatory layer. This article walks through what the AI Act actually requires of cloud providers and their customers, where it intersects with existing cloud regulation, and what to plan for.
 
 ## What the AI Act is and what it covers
 
@@ -113,13 +113,19 @@ The AI Act has phased application:
 | Date | Obligation activated |
 |---|---|
 | **2 February 2025** | Prohibited AI practices banned; AI literacy obligations apply |
-| **2 August 2025** | GPAI model obligations apply for new models placed on market; national competent authorities must be designated. (The European AI Office was established by the Commission in February 2024 and became formally operative on entry into force in August 2024.) |
-| **2 August 2026** | Most other obligations apply, including high-risk AI provider obligations |
-| **2 August 2027** | High-risk AI systems integrated into regulated products (medical devices, machinery, etc.) — full application |
+| **2 August 2025** | GPAI model obligations apply for new models placed on market; national competent authorities must be designated |
+| **2 August 2026** | Article 50 transparency obligations apply — disclosure that a user is interacting with AI, and marking of synthetic content. AI Office and national authorities gain full enforcement powers over GPAI |
+| **2 December 2026** | Grace period ends for marking generative output of systems already on the market. New Article 5 prohibition on AI-generated CSAM and non-consensual intimate imagery bites |
+| **2 December 2027** | Stand-alone high-risk obligations under Article 6(2) and Annex III — *deferred from 2 August 2026* |
+| **2 August 2028** | High-risk AI embedded in regulated products under Article 6(1) and Annex I — medical devices, machinery, vehicles — *deferred from 2 August 2027* |
 
-Some obligations have specific later dates for models placed on the market before the relevant cut-off (existing models have transition periods). The implementation timeline is published in detail on the EU's official AI Act implementation portal.
+**The high-risk dates moved.** Most commentary written before mid-2026, including the earlier version of this article, has them at August 2026 and August 2027. **Regulation (EU) 2026/1744** — the Digital Omnibus on AI, in force 27 July 2026 — amended Article 113 to push stand-alone high-risk obligations to 2 December 2027 and product-embedded high-risk to 2 August 2028. The same instrument softened the Article 4 AI-literacy duty from *ensuring* literacy to *taking measures to support its development*.
 
-As of mid-2026, the prohibited practices are in force, GPAI obligations for new models are in force, and the broader high-risk system obligations are about to take effect (August 2026).
+If you are reading a compliance plan that still targets August 2026 for high-risk readiness, it predates the omnibus.
+
+The European AI Office is a separate matter of chronology often stated wrongly: it was established by Commission Decision of 24 January 2024, in force 21 February 2024, and staffed from 16 June 2024 — before the AI Act entered into force, not as a consequence of it.
+
+As of September 2026, the prohibited practices are in force, GPAI obligations for new models are in force, and the Article 50 transparency obligations took effect in August. High-risk obligations are now more than a year away.
 
 ## Where AI Act intersects with cloud regulation
 
@@ -204,7 +210,7 @@ The AI Act establishes administrative fines:
 The 7% headline figure for prohibited practices is the highest in EU regulatory regimes — higher than GDPR's 4% and NIS2's 2%. The substantive risk for compliant providers is moderate; the substantive risk for providers operating prohibited AI is significant.
 
 :::warning[Reality Check]
-The AI Act is often discussed as a future regulation, but obligations have been in force since February 2025 and are expanding. Cloud providers that wait until full application (August 2026 / 2027) before building compliance programmes will not have adequate documentation, conformity assessment, or operational capability when the regulations take effect. The "we'll do it when the deadline arrives" approach has worked poorly in past EU regulatory cycles (GDPR, NIS2, DORA); it will work equally poorly for AI Act. Cloud providers and customers should treat full operational readiness as a 2026 priority, not a 2027 one.
+The AI Act is often discussed as a future regulation, but obligations have been in force since February 2025 and are expanding. Cloud providers that wait until full application (December 2027 / August 2028) before building compliance programmes will not have adequate documentation, conformity assessment, or operational capability when the regulations take effect. The "we'll do it when the deadline arrives" approach has worked poorly in past EU regulatory cycles (GDPR, NIS2, DORA); it will work equally poorly for AI Act. Cloud providers and customers should treat full operational readiness as a 2026 priority, not a 2027 one.
 :::
 
 ## What cloud providers must operationally build
@@ -229,7 +235,7 @@ For cloud providers preparing for full AI Act application:
 - Conformity assessment for high-risk services.
 - Deployer documentation packs.
 
-The operational programme is comparable in scale to DORA or NIS2 preparation. Cloud providers that began preparation in 2024 are on track; providers starting in 2026 are in catch-up mode for the August 2026 high-risk-system effective date.
+The operational programme is comparable in scale to DORA or NIS2 preparation. Cloud providers that began preparation in 2024 are on track; providers starting in 2026 have more room than they did before the omnibus, but the December 2027 high-risk-system effective date.
 
 ## What customers must operationally build
 
@@ -265,7 +271,7 @@ For Slovak public-sector AI use, the practical compliance stack is **AI Act + [G
 
 ## Closing checklist
 
-- EU AI Act (Regulation (EU) 2024/1689) applies progressively from **February 2025 through August 2027**.
+- EU AI Act (Regulation (EU) 2024/1689, amended by Regulation (EU) 2026/1744) applies progressively from **February 2025 through August 2028**. The high-risk deadlines were deferred by the Digital Omnibus in July 2026.
 - Four risk tiers: Prohibited, High-risk, Limited-risk, Minimal-risk. Parallel GPAI regime for general-purpose AI models.
 - Cloud providers occupy three positions: GPAI provider, AI infrastructure provider, AI service provider.
 - Customers using AI on cloud are **deployers** with risk-tier-dependent obligations. Public-sector deployers of high-risk AI require **FRIA**.

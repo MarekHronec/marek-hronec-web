@@ -45,7 +45,7 @@ direct ESA supervision as something that *can* happen rather than has.
 Source: [EBA](https://www.eba.europa.eu/publications-and-media/press-releases/european-supervisory-authorities-designate-critical-ict-third-party-providers-under-digital) ·
 [EIOPA](https://www.eiopa.europa.eu/european-supervisory-authorities-designate-critical-ict-third-party-providers-under-digital-2025-11-18_en)
 
-## P2 ☐ WRONG — AI Act high-risk dates were moved by the AI Omnibus
+## P2 ☑ APPLIED — WRONG — AI Act high-risk dates were moved by the AI Omnibus
 
 `eu-ai-act-and-cloud-provider-obligations.md` L9, 21, 33, 117, 118, 122, 207, 232, 268
 
