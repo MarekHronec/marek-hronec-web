@@ -117,7 +117,7 @@ NIS2 transposition status is highly heterogeneous across the member states this 
 | Slovakia | Act 366/2024 + vyhláška NBÚ 227/2025 | In force (1 Jan 2025 / 1 Sep 2025) | **Gap** — MIRRI methodology rev. April 2025 still static U1–U4 |
 | Germany | NIS2-Umsetzungsgesetz (NIS2UmsuCG) | In force since 6 Dec 2025 | Aligned — C5:2026 (March 2026) closes the gap from 1 Jun 2027 |
 | France | Loi Résilience | Not yet in force; expected 2026 | ANSSI ReCyF (Mar 2026) covers NIS2 alongside SecNumCloud |
-| Spain | RDL 7/2025 (partial) + Anteproyecto pending | Partial in force; full law in parliament | RD 311/2022 + CCN-STIC 800 updated June 2025 |
+| Spain | Anteproyecto de Ley de Coordinación y Gobernanza — not adopted | **Nothing notified** — referred to the CJEU 8 Jul 2026; NIS1 (RDL 12/2018) still operative | RD 311/2022 + CCN-STIC 800 updated June 2025 |
 | Netherlands | Cyberbeveiligingswet (Cbw) | Approved Tweede Kamer Apr 2026; Senate review | BIO2 v1.3 (Mar 2026) aligns to forthcoming ministerial regulation |
 | Italy | D.Lgs. 138/2024 | In force since 16 Oct 2024 | Aligned — Regolamento 21007/24 + Determinazione 127437/2026 |
 | Finland | Kyberturvallisuuslaki (Act 124/2025) | In force since 8 Apr 2025 | **Gap** — PiTuKri v1.1 from 2020; new criteria library autumn 2026 |

@@ -136,7 +136,7 @@ NIS2 is a directive; each Member State transposes it into national law. The subs
 | **Czechia** | NÚKIB; sectoral CSIRTs | Personal management-function prohibition up to 6 months as enforcement tool |
 | **Germany** | BSI under NIS2-Umsetzungsgesetz | In force since 6 December 2025; ~29,500 entities in scope |
 | **France** | ANSSI under Loi Résilience | Not yet in force (mid-2026); ReCyF provides interim guidance |
-| **Spain** | INCIBE / sectoral authorities; CCN-CERT for public sector | Partial transposition via RDL 7/2025; coordination law pending |
+| **Spain** | INCIBE / sectoral authorities; CCN-CERT for public sector | No NIS2 transposition notified; referred to the CJEU 8 July 2026; NIS1 duties under RDL 12/2018 still apply |
 | **Italy** | ACN under D.Lgs. 138/2024 | In force since 16 October 2024; phased compliance through October 2026 |
 | **Netherlands** | NCSC and RDI under Cyberbeveiligingswet | **In force since 15 August 2026**; Senate approved 7 July 2026; replaces the Wbni |
 | **Finland** | Traficom and sectoral authorities under Kyberturvallisuuslaki | In force since 8 April 2025 |

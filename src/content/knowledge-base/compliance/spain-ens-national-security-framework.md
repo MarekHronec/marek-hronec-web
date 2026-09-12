@@ -3,7 +3,7 @@ title: "Spain — ENS: The National Security Framework Spans Every Public-Sector
 category: compliance
 tags: ["Spain", "ENS", "CCN", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-02
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 10
 level: intermediate
 excerpt: "ENS is not a cloud-specific framework — it covers every public-sector information system. But its cloud profile (PCE) and three-tier model make it one of the more workable EU regimes for hyperscalers."
@@ -18,20 +18,20 @@ references:
     domain: "ens.ccn.cni.es"
   - title: "RD 311/2022 — English Version (PDF)"
     url: "https://administracionelectronica.gob.es/dam/jcr:eb23ff83-ebdb-487e-abd2-8654f837794f/RD_311-2022_of-3_May_ENS.pdf"
-    description: "The full English translation of Real Decreto 311/2022 — the 74 security measures across organisational, operational, and protective categories."
+    description: "The full English translation of Real Decreto 311/2022 — the 73 security measures across organisational, operational, and protective categories."
     domain: "administracionelectronica.gob.es"
   - title: "Ley 40/2015 — Legal Regime of the Public Sector"
     url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10566"
-    description: "The framework law for the Spanish public sector — defines the scope of bodies that ENS applies to through the Disposición Adicional Tercera."
+    description: "The framework law for the Spanish public sector — its `artículo 2` defines the set of bodies that ENS applies to."
     domain: "boe.es"
   - title: "ENS FAQ — CCN"
     url: "https://ens.ccn.cni.es/es/que-es-el-ens/faq"
     description: "CCN's practical FAQ on ENS compliance — categorisation, audit obligations, the role of accredited certification bodies, and treatment of cloud services."
     domain: "ens.ccn.cni.es"
-  - title: "Real Decreto-ley 7/2025 — Partial NIS2 Transposition"
-    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2025-7187"
-    description: "Spanish royal decree-law providing partial NIS2 transposition, in force as immediately enforceable obligations while the comprehensive coordination law remains in parliamentary process."
-    domain: "boe.es"
+  - title: "Commission refers Spain to the Court of Justice over NIS2 (IP/26/1499)"
+    url: "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1499/IP_26_1499_EN.pdf"
+    description: "The Commission's 8 July 2026 decision to refer Ireland, Spain, France and the Netherlands to the CJEU for failing to notify NIS2 transposition measures — Spain under INFR(2024)0270."
+    domain: "ec.europa.eu"
   - title: "Anteproyecto de Ley de Coordinación y Gobernanza de la Ciberseguridad (Council of Ministers)"
     url: "https://www.lamoncloa.gob.es/consejodeministros/Paginas/enlaces/140125-enlace-ciberseguridad.aspx"
     description: "The Council of Ministers' January 2025 approval of the draft Cybersecurity Coordination and Governance Act — the comprehensive NIS2 transposition vehicle still in parliamentary process."
@@ -46,11 +46,11 @@ The Spanish Esquema Nacional de Seguridad (ENS) is not a cloud-specific framewor
 
 ## The system at a glance
 
-The framework is the **Esquema Nacional de Seguridad (ENS)** — National Security Framework — currently regulated by **Real Decreto 311/2022** of 3 May 2022 (BOE-A-2022-7191). RD 311/2022 replaced the original Real Decreto 3/2010, modernising the control set and introducing explicit treatment of cloud services.
+The framework is the **Esquema Nacional de Seguridad (ENS)** — National Security Framework — currently regulated by **Real Decreto 311/2022** of 3 May 2022 (BOE-A-2022-7191). RD 311/2022 replaced the original Real Decreto 3/2010, modernising the control set and introducing explicit treatment of cloud services. It has been amended once since, by **Real Decreto 1125/2024** of 5 November 2024, which modified its second additional provision.
 
-The framework is administered by the **Centro Criptológico Nacional (CCN)**, part of the **Centro Nacional de Inteligencia (CNI)** — the Spanish intelligence service. CCN issues the STIC guidance series, maintains the ENS portal at `https://ens.ccn.cni.es/`, and operates the INES and AMPARO governance tools. Implementation policy sits at the **Ministerio de Asuntos Económicos y Transformación Digital**.
+The framework is administered by the **Centro Criptológico Nacional (CCN)**, part of the **Centro Nacional de Inteligencia (CNI)** — the Spanish intelligence service. CCN issues the STIC guidance series, maintains the ENS portal at `https://ens.ccn.cni.es/`, and operates the INES and AMPARO governance tools. Implementation policy sits at the **Ministerio para la Transformación Digital y de la Función Pública**, which took the digital portfolio when the former Ministerio de Asuntos Económicos y Transformación Digital was split in the November 2023 reshuffle.
 
-The ENS framework is built around three categorisation levels and 74 security measures organised across organisational, operational, and protective control families. Compliance is demonstrated via audit (for higher categories) or self-assessment (for the baseline category).
+The ENS framework is built around three categorisation levels and 73 security measures organised across organisational, operational, and protective control families. Compliance is demonstrated via audit (for higher categories) or self-assessment (for the baseline category).
 
 ## Legislative basis
 
@@ -61,20 +61,19 @@ ENS is anchored in a deeper statutory stack than most cloud frameworks:
 - **Real Decreto-ley 12/2018** — the Spanish transposition of the NIS Directive.
 - **Real Decreto 43/2021** — implementing regulation for RDL 12/2018, defining OES and DSP obligations.
 - **Ley Orgánica 7/2021** on protection of personal data in the criminal-justice context — `§37` references ENS directly as the security framework.
-- **Real Decreto-ley 7/2025** — **partial NIS2 transposition, in force**. Provides immediately enforceable obligations while the comprehensive coordination law is still in parliamentary process.
-- **Anteproyecto de Ley de Coordinación y Gobernanza de la Ciberseguridad** — comprehensive NIS2 transposition vehicle. Approved by the Council of Ministers on **14 January 2025** and **still in parliamentary process** as of mid-2026. Spain received a reasoned opinion from the European Commission on 7 May 2025 for non-notification of full NIS2 transposition.
+- **Anteproyecto de Ley de Coordinación y Gobernanza de la Ciberseguridad** — the comprehensive NIS2 transposition vehicle. Approved by the Council of Ministers on **14 January 2025** and **still not adopted**.
 
-Spain therefore operates in a **dual-track NIS2 regime** as of mid-2026: RDL 7/2025 obligations are enforceable today; the substantive coordination law and its sanctions framework are pending parliamentary adoption.
+Spain has **not notified any NIS2 transposition**, in whole or in part. The Commission sent a letter of formal notice on 28 November 2024 and a reasoned opinion on 7 May 2025, and on **8 July 2026 referred Spain to the Court of Justice** — alongside Ireland, France and the Netherlands — with a request for financial sanctions (Spain: INFR(2024)0270). Until the coordination law passes, the operative obligations remain the **NIS1** regime under RDL 12/2018 and RD 43/2021.
 
 ## Scope of obligation
 
 The scope is broader than most national cloud frameworks:
 
 - **All public administration** in the sense of `artículo 2` of Ley 40/2015 — central government, autonomous communities, local administrations, universities, and the public corporate sector.
-- **Private-sector entities providing technological services to the public administration** — under the Disposición Adicional Tercera of RD 311/2022. This is the hook that brings cloud providers in scope when they serve Spanish public-sector customers.
+- **Private-sector entities providing technological services to the public administration** — under `artículo 2.3` of RD 311/2022, which extends the decree to private-sector systems where, under an applicable rule and a contractual relationship, they provide services or supply solutions to public-sector entities for the exercise of administrative powers. This is the hook that brings cloud providers in scope when they serve Spanish public-sector customers.
 - **Systems processing classified information** are also covered, with additional CCN-issued requirements.
 
-The Disposición Adicional Tercera mechanism is what makes ENS operationally relevant for commercial cloud providers. A CSP that wants to sell to Spanish public-sector customers either needs to be ENS-certified, or its customers need to inherit ENS responsibility for the systems they run on the cloud.
+That `artículo 2.3` mechanism is what makes ENS operationally relevant for commercial cloud providers. A CSP that wants to sell to Spanish public-sector customers either needs to be ENS-certified, or its customers need to inherit ENS responsibility for the systems they run on the cloud.
 
 ## Classification model — Básica, Media, Alta
 
@@ -94,11 +93,11 @@ The authenticity and traceability dimensions are ENS-specific and differentiate 
 | **MEDIA (Medium)** | Medium impact in at least one dimension | Formal third-party audit by ENAC-accredited body |
 | **ALTA (High)** | High impact in at least one dimension | Formal third-party audit, strictest control set |
 
-The categorisation is performed by the system owner; CCN provides guidance but does not pre-classify. A system's category drives which of the 74 measures apply and at what depth.
+The categorisation is performed by the system owner; CCN provides guidance but does not pre-classify. A system's category drives which of the 73 measures apply and at what depth.
 
 ## Evaluation criteria
 
-The control set is in **Annex II of RD 311/2022**: **74 security measures** (reduced from 75 in the previous version) across:
+The control set is in **Annex II of RD 311/2022**: **73 security measures** — 4 organisational, 33 operational and 36 protective — across:
 
 - **Organisational measures (org)** — policy, organisation, governance.
 - **Operational measures (op)** — operations, monitoring, incident management.
@@ -156,7 +155,7 @@ The sanctioning mechanism varies by subject:
 
 - **Public-sector subjects** — non-compliance is grounds for audit by **Tribunal de Cuentas** (the Court of Auditors) and potential personal liability for responsible officials.
 - **Private-sector providers to the public administration** — non-compliance disqualifies from public-sector procurement.
-- **NIS2-scope subjects under RDL 12/2018** — administrative sanctions per the NIS2 transposition (in the legislative process as of mid-2026).
+- **NIS1-scope operators under RDL 12/2018 and RD 43/2021** — administrative sanctions under that regime. No NIS2 sanctions regime exists in Spanish law yet; it arrives with the coordination law.
 - **Serious incidents** — coordinated with CCN-CERT.
 
 CCN-CERT is operationally important. It is the national CERT for the public sector and a central actor in incident response and supervisory action.
@@ -194,7 +193,7 @@ The five-dimension model (CIA + authenticity + traceability) sounds like a margi
 
 - ENS is the framework for all Spanish public-sector information systems, with cloud services treated through the dedicated **Servicios en la Nube** PCE.
 - Three categories: Básica (self-assessment), Media (third-party audit), Alta (third-party audit, strictest controls). Categorisation is based on impact across five dimensions: C, I, A, authenticity, traceability.
-- 74 security measures across organisational, operational, and protective control families. The PCE filters the scope for cloud-mode delivery.
+- 73 security measures across organisational, operational, and protective control families. The PCE filters the scope for cloud-mode delivery.
 - Audits performed by **ENAC-accredited certification bodies**. Recertification every 2 years for Media and Alta.
 - Public register maintained on `ens.ccn.cni.es`. Non-compliance disqualifies from public-sector procurement; NIS2 sanctions apply on top.
 - Sovereignty posture is layered through category Alta and the PCE rather than through ownership caps. International CSPs hold ENS certifications at Media and Alta.
