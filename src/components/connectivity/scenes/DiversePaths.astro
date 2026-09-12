@@ -11,22 +11,25 @@ import Harbour from '../../resilience/scenes/Harbour.astro';
 <g transform="translate(0 -28)"><ChartWater id="paths-marine"/></g>
 <text class="label" x="24" y="30">TWO PASSAGES / ONE HARBOUR LOG</text>
 <path class="scene__paper" d="M205 160 Q226 121 261 147 L282 128 L304 144 L335 133 Q377 151 375 201 Q338 232 287 220 L247 239 L215 219 Z"/>
-<path class="scene__line scene__quiet" d="M224 172 L259 158 L277 178 L302 160 L342 166 M236 198 L275 188 L296 204 L345 192"/>
+<path class="scene__line scene__quiet" d="M220 175 Q237 146 263 164 L281 151 L305 167 L335 155 Q359 170 358 192 M232 199 L256 215 L281 199 L301 211 L342 198"/>
 <text class="small" x="251" y="210">Headland</text>
 <path class="scene__route primary" d="M78 139 Q231 81 389 131 L463 173"/>
 <path class="scene__route" d="M78 238 C179 302 359 321 466 218"/>
+<path class="scene__line scene__quiet" d="M197 153 Q190 182 204 219 M213 234 Q245 255 275 237 M333 229 Q372 225 387 198"/>
 <path class="scene__line backup" d="M78 238 C179 302 359 321 466 218"/>
 <g transform="translate(451 170) scale(.78)"><Harbour label="DELIVERY QUAY"/></g>
 <text class="small" x="86" y="83">Inner channel</text><text class="small" x="95" y="306">Outer passage · outside the closure</text>
-<g class="reveal cut"><path class="scene__hull" d="M252 101 L300 124 L295 133 L247 110 Z"/><path class="scene__line" d="M252 102 l2 10 M265 108 l2 11 M279 115 l2 11"/><text class="label" x="245" y="79">CLOSED</text></g>
+<g class="reveal cut"><path class="scene__line" d="M251 96 V119 M299 118 V139"/><path class="scene__solid" d="M245 119 h13 l-3 6 h-7 Z M293 139 h13 l-3 6 h-7 Z"/><path class="scene__hull" d="M252 101 L300 124 L295 133 L247 110 Z"/><path class="scene__line" d="M252 102 l2 10 M265 108 l2 11 M279 115 l2 11"/><text class="label" x="245" y="79">CLOSED</text></g>
 <g class="travel lost"><g transform="scale(.4)"><SailingVessel/></g></g>
+<path class="scene__line reveal mooring" d="M484 216 L502 186"/>
 <g class="travel recovered"><g transform="scale(.48)"><SailingVessel/></g></g>
   <rect class="ink" x="24" y="318" width="552" height="105"/>
   <text class="label white" x="40" y="342">HARBOUR ARRIVALS</text>
   <g class="history">
     <path class="white" d="M43 383 v-23 h21 v23 Z M79 383 v-23 h21 v23 Z M115 383 v-23 h21 v23 Z"/>
     <path class="future" d="M151 383 h21 M187 383 h21 M223 383 h21 M259 383 h21"/>
-    <path class="misses" d="M153 371 l16 12 M169 371 l-16 12 M189 371 l16 12 M205 371 l-16 12"/>
+    <path class="misses" d="M153 371 l16 12 M169 371 l-16 12"/>
+    <path class="misses second-miss" d="M189 371 l16 12 M205 371 l-16 12"/>
     <path class="white reveal receipt-one" d="M223 383 v-23 h21 v23 Z"/>
   </g>
   <text class="small white" x="40" y="407">Earlier → later · scheduled arrivals</text>
@@ -50,12 +53,15 @@ import Harbour from '../../resilience/scenes/Harbour.astro';
 :global(.cp[data-demonstrate='true']) .recovered { animation: recover var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .backup { animation: switch-route var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .misses { animation: missed var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .second-miss { animation: missed-later var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .mooring { animation: received var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .receipt-one, :global(.cp[data-demonstrate='true']) .complete { animation: received var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .pending { animation: pending var(--nautical-story-duration) step-end both; }
 @keyframes lost { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 27%,100% {offset-distance:100%;opacity:1;} }
 @keyframes recover { 0%,40% {offset-distance:0%;opacity:1;} 41% {offset-distance:0%;opacity:1;} 84%,100% {offset-distance:100%;opacity:1;} }
 @keyframes switch-route { 0% {opacity:0;} 40%,100% {opacity:1;} }
 @keyframes missed { 0% {opacity:0;} 27%,100% {opacity:1;} }
+@keyframes missed-later { 0% {opacity:0;} 39%,100% {opacity:1;} }
 @keyframes received { 0% {opacity:0;} 84%,100% {opacity:1;} }
 @keyframes pending { 0% {opacity:1;} 84%,100% {opacity:0;} }
 </style>

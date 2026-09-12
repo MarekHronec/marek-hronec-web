@@ -19,10 +19,12 @@ import ChartWater from '../../compliance/scenes/ChartWater.astro';
 <g class="travel public-request"><g transform="scale(.55)"><SailingVessel/></g></g>
 <text class="small" x="35" y="247">Public entrance</text>
 <text class="small" x="321" y="271">Private quay → permit check</text>
-<path class="scene__heavy" d="M348 208 V116 H412 M350 117 L408 144 M402 116 V155"/>
-<path class="scene__line" d="M341 208 H360 M402 151 q-8 9 0 13 q8 0 7 -7"/>
+<path class="scene__heavy" d="M348 208 V116 H516 M350 117 L386 143"/>
+<path class="scene__line" d="M341 208 H360 M355 111 H510"/>
 <g class="travel denied-request"><path class="scene__paper" d="M-12 -20 H13 V9 H-12 Z"/><path class="scene__line" d="M-7 -13 H8 M-7 -7 H8"/></g>
+<g class="travel trolley"><path class="scene__solid" d="M-10 -4 H10 V4 H-10 Z"/><path class="scene__line hoist" d="M0 0 V56"/></g>
 <g class="travel accepted-request"><path class="scene__crate" d="M-17 -21 H17 V4 H-17 Z"/><path class="scene__line" d="M-17 -21 L17 4 M17 -21 L-17 4 M-17 -21 L0 -34 L17 -21"/></g>
+<g class="reveal permit-stamp"><circle class="scene__paper" cx="409" cy="189" r="10"/><path class="scene__line" d="M404 184 l10 10 M414 184 l-10 10"/></g>
 <rect class="ink" x="24" y="306" width="552" height="116"/>
 <text class="label white" x="40" y="331">HARBOUR LOG</text>
 <text class="small white" x="40" y="358">Outside yacht</text><text class="small white" x="215" y="358">Invalid permit</text><text class="small white" x="401" y="358">Valid permit</text>
@@ -36,10 +38,15 @@ import ChartWater from '../../compliance/scenes/ChartWater.astro';
 .boom { transform-box:view-box; transform-origin:324px 113px; transform:rotate(-60deg); }
 .public-request { offset-path:path("M96 206 H247"); }
 .denied-request { offset-path:path("M332 190 H408"); opacity:0; }
-.accepted-request { offset-path:path("M354 206 C362 179 381 163 402 158 H492"); opacity:0; }
+.accepted-request { transform:translate(354px,206px); opacity:0; }
+.trolley { offset-path:path("M354 116 H492"); }
+.hoist { transform-box:fill-box; transform-origin:top; }
 :global(.cp[data-demonstrate='true']) .boom { animation: close-boom var(--nautical-story-duration) var(--ease-standard) both; }
 :global(.cp[data-demonstrate='true']) .public-request { animation: public-test var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .denied-request { animation: denied-test var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .trolley { animation: trolley-travel var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .hoist { animation: hoist-lift var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .permit-stamp { animation: denied-result var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .accepted-request { animation: accepted-test var(--nautical-story-duration) linear both; }
 :global(.cp[data-demonstrate='true']) .public-result { animation: public-result var(--nautical-story-duration) step-end both; }
 :global(.cp[data-demonstrate='true']) .denied-result { animation: denied-result var(--nautical-story-duration) step-end both; }
@@ -47,8 +54,11 @@ import ChartWater from '../../compliance/scenes/ChartWater.astro';
 @keyframes close-boom { 0% {transform:rotate(-60deg);} 16%,100% {transform:rotate(0deg);} }
 @keyframes public-test { 0% {offset-distance:0%;} 22%,100% {offset-distance:100%;} }
 @keyframes denied-test { 0%,25% {offset-distance:0%;opacity:0;} 26% {opacity:1;offset-distance:0%;} 58%,100% {offset-distance:100%;opacity:1;} }
-@keyframes accepted-test { 0%,60% {offset-distance:0%;opacity:0;} 61% {opacity:1;offset-distance:0%;} 94%,100% {offset-distance:100%;opacity:1;} }
+@keyframes accepted-test { 0%,60% {transform:translate(354px,206px);opacity:0;} 61% {transform:translate(354px,206px);opacity:1;} 73% {transform:translate(354px,158px);opacity:1;} 94%,100% {transform:translate(492px,158px);opacity:1;} }
+@keyframes trolley-travel { 0%,73% {offset-distance:0%;} 94%,100% {offset-distance:100%;} }
+@keyframes hoist-lift { 0%,61% {transform:scaleY(1);} 73%,100% {transform:scaleY(.143);} }
 @keyframes public-result { 0% {opacity:0;} 22%,100% {opacity:1;} }
 @keyframes denied-result { 0% {opacity:0;} 58%,100% {opacity:1;} }
 @keyframes accepted-result { 0% {opacity:0;} 94%,100% {opacity:1;} }
 </style>
+

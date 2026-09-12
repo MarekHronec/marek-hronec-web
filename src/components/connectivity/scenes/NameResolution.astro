@@ -12,16 +12,18 @@ import ChartWater from '../../compliance/scenes/ChartWater.astro';
 <path class="scene__paper" d="M364 124 V83 L402 61 L441 83 V124 Z"/>
 <path class="scene__line" d="M378 123 V98 H393 V123 M410 92 H426 V106 H410 Z M402 61 V31 M398 39 H406"/>
 <text class="small" x="449" y="94">Directory</text><text class="label" x="449" y="115">BERTH 4</text>
-<path class="scene__line scene__quiet" d="M358 39 q-15 17 0 34 M348 31 q-22 25 0 50 M435 40 q15 16 0 32"/>
+<path class="scene__line radio-pulse" d="M358 39 q-15 17 0 34 M348 31 q-22 25 0 50 M435 40 q15 16 0 32"/>
 <path class="scene__hull" d="M450 175 H574 V185 H450 Z M450 267 H574 V277 H450 Z"/>
 <path class="scene__line" d="M462 187 V203 M512 187 V203 M562 187 V203 M462 279 V293 M512 279 V293 M562 279 V293"/>
 <text class="small" x="463" y="161">Old berth · 9</text><text class="small" x="463" y="253">Assigned · 4</text>
-<path class="scene__route" d="M124 270 C238 179 354 158 444 199"/>
-<path class="scene__route" d="M124 270 C230 330 354 315 444 292"/>
+<path class="scene__route old-course" d="M124 270 C238 179 354 158 444 199"/>
+<path class="scene__route new-course" d="M124 270 C230 330 354 315 444 292"/>
+<path class="scene__line reveal mooring" d="M456 290 L476 276"/>
 <g class="travel connection"><g transform="scale(.57)"><SailingVessel/></g></g>
 <g class="travel query"><path class="scene__line" d="M-8 -9 Q3 0 -8 9 M0 -14 Q15 0 0 14"/></g>
 <g class="travel answer"><path class="scene__paper" d="M-24 -16 H24 V16 H-24 Z"/><text class="label" x="-16" y="5">B 4</text></g>
-<path class="scene__paper" d="M24 56 H270 V141 H24 Z"/>
+<path class="scene__paper" d="M24 56 H256 L270 70 V141 H24 Z"/><path class="scene__line" d="M256 56 V70 H270"/><path class="scene__line scene__quiet" d="M34 87 H255"/>
+<path class="scene__line reveal berth-check" d="M548 245 l6 7 12 -17"/>
 <text class="label" x="39" y="80">CAPTAIN’S BERTH NOTE</text>
 <text class="old-address" x="39" y="108">Berth 9 · 10.20.0.9</text>
 <text class="reveal new-address" x="39" y="108">Berth 4 · 10.20.0.4</text>
@@ -32,6 +34,11 @@ import ChartWater from '../../compliance/scenes/ChartWater.astro';
 </svg>
 </ConnectivityFigure>
 <style>
+.radio-pulse { opacity:.22; }
+:global(.cp[data-demonstrate='true']) .radio-pulse { animation: radio-response var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .old-course { animation: old-course var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .new-course { animation: new-course var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .mooring, :global(.cp[data-demonstrate='true']) .berth-check { animation: complete var(--nautical-story-duration) step-end both; }
 .query { offset-path:path("M142 202 Q245 155 359 87"); opacity:0; }
 .answer { offset-path:path("M359 105 Q297 173 150 155"); opacity:0; }
 .connection { offset-path:path("M124 270 C230 330 354 315 444 292"); }
@@ -45,6 +52,9 @@ import ChartWater from '../../compliance/scenes/ChartWater.astro';
 @keyframes query { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 23%,100% {offset-distance:100%;opacity:0;} }
 @keyframes answer { 0%,26% {offset-distance:0%;opacity:0;} 27% {offset-distance:0%;opacity:1;} 48% {offset-distance:100%;opacity:1;} 49%,100% {offset-distance:100%;opacity:0;} }
 @keyframes connect { 0%,54% {offset-distance:0%;} 94%,100% {offset-distance:100%;} }
+@keyframes radio-response { 0%,22%,49%,100% {opacity:.22;} 26%,32%,40%,46% {opacity:1;} 29%,36%,43% {opacity:.3;} }
+@keyframes old-course { 0%,49% {opacity:.45;} 54%,100% {opacity:.12;} }
+@keyframes new-course { 0%,49% {opacity:.25;} 54%,100% {opacity:.8;} }
 @keyframes old-answer { 0% {opacity:1;} 49%,100% {opacity:0;} }
 @keyframes fresh-answer { 0% {opacity:0;} 49%,100% {opacity:1;} }
 @keyframes pending { 0% {opacity:1;} 94%,100% {opacity:0;} }
