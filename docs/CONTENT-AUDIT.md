@@ -80,6 +80,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
 | X2 | Link liveness + metadata | all | haiku | todo | — | — |
+| X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
 
 ### B1 — EU-level instruments (opus)
 `dora-for-cloud-financial-sector-overlay` · `dora-article-30-contracts-and-exit-strategies` ·
@@ -154,6 +155,11 @@ Not per-article. Look for: the same fact stated differently in two articles;
 already found and fixed); terminology drift; internal links that point at
 renamed slugs.
 
+### X3 — Guide pages (sonnet)
+`/cost`, `/resilience`, `/connectivity` absorbed ~11k words from seven articles
+(see M1). Their claims were never audited as articles and are thinly sourced
+(M2). In scope because the content is the corpus, wherever it now lives.
+
 ### X2 — Link liveness and metadata (haiku)
 ~250 reference URLs across 49 articles. Check HTTP status, flag redirects that
 change meaning (a spec moved to a new version) and anything dead. Separately:
@@ -167,13 +173,55 @@ match word count.
 Findings are recorded per batch as they come in, then struck through when
 applied. Nothing here is applied to the corpus until it appears in a commit.
 
-### Pre-audit findings (2026-09-12, mechanical)
+### Pre-audit findings (2026-09-12, mechanical — no web, no agent)
 
-- **8 articles carry no `references:`** — the six in B8 plus
-  `regions-zones-...` and `service-availability-...` lost theirs? (verify: both
-  show 4 refs, so no — the eight are the B8 six plus
-  `hub-and-spoke-...` and `hybrid-connectivity-...`).
-- **3 articles have no `updated:`** — all in B8.
-- **`/platform` misattributed DORA Art. 28(8) to Art. 30.** Fixed 2026-09-09 in
-  `fix(platform): act on the review`. The source article was correct. Recorded
-  here as the origin of the X1 workstream.
+**Clean.** 357 internal knowledge-base links across the corpus, **zero dead**.
+All five standalone pages articles link to (`/compliance`, `/platform`, `/cost`,
+`/resilience`, `/connectivity`) exist. Nothing to do here.
+
+**M1 · Seven articles were cut by 62–79% into the new guide pages.**
+
+| Article | now | peak | cut |
+|---|---|---|---|
+| `finops/cloud-support-what-you-are-actually-paying-for` | 604 | 2,894 | 79% |
+| `finops/budgets-cost-caps-and-the-lie-of-spending-limits` | 712 | 3,149 | 77% |
+| `finops/discounts-and-commitments-math-...` | 568 | 2,214 | 74% |
+| `networking/hybrid-connectivity-expressroute-fastconnect-vpn-reality` | 655 | 2,209 | 70% |
+| `multicloud/regions-zones-availability-domains-...` | 836 | 2,518 | 67% |
+| `networking/hub-and-spoke-virtual-wan-and-drg-...` | 707 | 2,002 | 65% |
+| `multicloud/service-availability-by-region-...` | 851 | 2,236 | 62% |
+
+**This is not content loss** — verified. The ~12,000 words removed are matched by
+~11,000 words now in `src/components/{cost,resilience,connectivity}` and
+`src/data/{cost,resilience,connectivity}-*.ts`. It is the same architecture as
+`/platform`: long article → short article plus an interactive guide. Recorded so
+that a later session does not "discover" it and try to restore the text.
+
+**M2 · The sources did not move with the content.** The seven shortened articles
+now carry **no `references:`** at all, and the guide data files that absorbed
+their claims are unevenly sourced — `cost-examples.ts`, `resilience-concepts.ts`
+and `connectivity-concepts.ts` carry no URLs, against 11 source references in the
+comparable `security-calculator.ts`. So the corpus moved detail from a sourced
+place to a less-sourced one. This is the most substantive structural finding so
+far and it is a judgement call for the author, not a defect to silently fix.
+
+**M3 · Eight articles carry no `references:`** — the seven above plus
+`finops/*` overlap; the full list is the three `finops/`, the three new
+`multicloud/` recovery pieces, and the two `networking/` topology pieces.
+Against 49 of 57 that do carry them.
+
+**M4 · Three articles have no `updated:`** — `multicloud/backups-replication-...`,
+`multicloud/recovery-exercise-...`, `multicloud/rto-rpo-...`. All three are the
+September cohort.
+
+**M5 · `readTime` drift.** `devops/gitops-with-argocd` claims **9 minutes for 791
+words** (~4 at 200 wpm) — the clear outlier. `azure/azure-landing-zones` claims 11
+for 1,612 (~8); `multicloud/tenant-subscription-...` claims 13 for 2,104 (~10).
+The last two are arguable if readTime is meant to cover diagrams; the first is not.
+
+**M6 · `/platform` misattributed DORA Art. 28(8) to Art. 30.** Fixed 2026-09-09.
+The source article `compliance/dora-article-30-...` was correct throughout — it
+places Art. 28 as general obligations plus the Register of Information, Art. 29
+as concentration risk, Art. 30 as contractual arrangements. This is the origin of
+the X1 workstream: **derived pages drift from source articles**, and the drift
+runs in that direction.
