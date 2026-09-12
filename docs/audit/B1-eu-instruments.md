@@ -10,10 +10,36 @@ across the batch (see X2 in the index) and the AWS sovereign-cloud status in
 `sovereign-cloud-products-2026-landscape`. P4, P5, P6(b), P7 — the four that are settled by the
 regulation text alone and needed no judgement about current events.
 
-**Independently re-verified in the main session before applying anything:** P1
-(fetched the EBA press release — it does publish the designated CTPP list) and
-P2 (Gibson Dunn confirms Annex I high-risk deferred to 2 August 2028). The rest
-carry the reviewer's fetched sources; each is checked again at apply time.
+## Re-verification, 2026-09-12 (second pass)
+
+B1 was applied on a thinner evidence base than B2. At apply time I had fetched
+sources for P1, P2 (secondary only), P8, P9 and P11 — but **P3, P4, P5, P6(a),
+P6(b) and P7 went in on the reviewer's word plus my own recall**, and those are
+precisely the ones where I published direct quotations from regulation text.
+That gap has now been closed. Every applied finding was re-checked against the
+primary instrument.
+
+| # | Claim | Primary source | Result |
+|---|---|---|---|
+| P1 | 19 CTPPs designated 18 Nov 2025 | EBA press release; names via PwC Legal | ✅ |
+| P2 | High-risk deferred to 2 Dec 2027 / 2 Aug 2028 | **EUR-Lex CELEX 32026R1744**: "set to 2 December 2027 … and to 2 August 2028" | ✅ |
+| P2 | Omnibus in force 27 July 2026 | Same: "third day following … publication", OJ 24.7.2026 | ✅ |
+| P2 | Art. 4 softened | Same: "shall **take measures to support the development of** AI literacy" | ✅ |
+| P3 | 4h / 24h / 72h / 1 month | **CELEX 32025R0301** verbatim, all three anchors | ✅ |
+| P4 | In force 16 Jan 2023, applies 17 Jan 2025 | **CELEX 32022R2554** Art. 64: "twentieth day following … publication … shall apply from 17 January 2025" | ✅ |
+| P5 | Exit-plan testing is Art. 28(8) | Same, Art. 28: "Exit plans shall be comprehensive, documented and … sufficiently tested and reviewed periodically" | ✅ |
+| P6(a) | Art. 30(2) covers every ICT contract | Same: "The contractual arrangements on the use of ICT services shall include at least the following elements" | ✅ |
+| P6(b) | Cost clause | Same, 30(2)(f): "at no additional cost **or at a cost determined ex-ante**" | ✅ |
+| P7 | Essential = *exceeds* medium ceilings | **CELEX 32022L2555** Art. 3(1)(a): "which **exceed** the ceilings for medium-sized enterprises" | ✅ |
+| P7 | Important = €7M / 1.4% | Same: "EUR 7 000 000 or … 1,4 % of the total worldwide annual turnover" | ✅ |
+| P8 | Joint statement 17 Nov 2025 | BSI publication page, "date 17.11.2025" | ✅ |
+| P9 | CADA four sovereignty levels; CSA revision | Commission policy pages | ✅ |
+| P10 | AWS not an EU Cloud CoC adherent | eucoc.cloud register renders Microsoft, Google, Oracle and SAP — **zero** Amazon/AWS, so the absence is real, not a rendering artefact | ✅ |
+| P11 | Cbw in force 15 Aug 2026 | RDI: "is ingegaan op 15 augustus 2026" | ✅ |
+
+**Result: 14 of 14 verified. No finding in B1 was a hallucination, and no
+correction I applied was wrong.** The only errors introduced in this batch were
+mine, in the bulk-replace (recorded in the index), not the reviewer's.
 
 ---
 
