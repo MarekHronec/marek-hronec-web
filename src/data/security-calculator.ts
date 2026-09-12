@@ -384,7 +384,7 @@ export const CATEGORIES: Category[] = [
   },
 ];
 
-/* ── Minimum security measures, Act 69/2018 §20(3) and §20(4)(a) ──────── */
+/* ── Minimum security measures, Act 69/2018 §20(2) and §20(4)(a) ──────── */
 
 export type Obligation = 'mandatory' | 'recommended';
 
@@ -397,23 +397,44 @@ export interface ControlArea {
 const M: Obligation = 'mandatory';
 const R: Obligation = 'recommended';
 
+/*
+ * The obligation split per category comes from the Opatrenia sheet of the
+ * national workbook and was checked against it. The *citations* were not:
+ * these carried "§20(3)(a)" … "§20(3)(p)", and § 20 ods. 3 of Act 69/2018 has
+ * no lettered points at all — it is a single prose paragraph. The security
+ * measure areas live in **§ 20 ods. 2**, which since the 2024–25 amendments
+ * runs a) to r), eighteen of them.
+ *
+ * The refs now say §20(2), which is true, rather than a letter that is not.
+ * They deliberately do not claim a per-letter mapping: these sixteen area
+ * names track the older vyhláška's structure, not ods. 2's lettering, and
+ * inventing a correspondence would be a worse error than a general citation.
+ *
+ * OPEN: two ods. 2 areas have no counterpart here, and both matter to a cloud
+ * audience — q) dodávateľský reťazec (supply chain) and r) obstarávanie a
+ * využívanie certifikovaných produktov IKT, služieb IKT a procesov IKT.
+ * Adding them needs their mandatory/recommended split per category, which is
+ * not derivable from the statute; it needs the vyhláška annex or the workbook.
+ * Note also that when vyhláška 184/2026 takes effect on 1 January 2027, the
+ * category criteria below lose the legal base they inherited from 179/2020.
+ */
 export const CONTROL_AREAS: ControlArea[] = [
-  { ref: '§20(3)(a)', name: 'Organisation of cyber and information security',      byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(b)', name: 'Cyber and information security risk management',      byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(c)', name: 'Personnel security',                                  byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(d)', name: 'Access management',                                   byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(e)', name: 'Third-party security management',                     byCategory: { I: M, II: M, III: M } },
-  { ref: '§20(3)(f)', name: 'Security of systems and network operation',           byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(g)', name: 'Vulnerability assessment and security patching',      byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(h)', name: 'Protection against malicious code',                   byCategory: { I: R, II: M, III: M } },
-  { ref: '§20(3)(i)', name: 'Network and communication security',                  byCategory: { I: R, II: R, III: M } },
-  { ref: '§20(3)(j)', name: 'Acquisition, development and maintenance of systems', byCategory: { I: R, II: R, III: M } },
-  { ref: '§20(3)(k)', name: 'Event logging and monitoring',                        byCategory: { I: M, II: M, III: M } },
-  { ref: '§20(3)(l)', name: 'Physical and environmental security',                 byCategory: { I: R, II: R, III: M } },
-  { ref: '§20(3)(m)', name: 'Cyber security incident response',                    byCategory: { I: M, II: M, III: M } },
-  { ref: '§20(3)(n)', name: 'Cryptographic measures',                              byCategory: { I: R, II: R, III: M } },
-  { ref: '§20(3)(o)', name: 'Business continuity',                                 byCategory: { I: R, II: R, III: M } },
-  { ref: '§20(3)(p)', name: 'Audit, compliance management and control activity',   byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Organisation of cyber and information security',      byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Cyber and information security risk management',      byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Personnel security',                                  byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Access management',                                   byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Third-party security management',                     byCategory: { I: M, II: M, III: M } },
+  { ref: '§20(2)', name: 'Security of systems and network operation',           byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Vulnerability assessment and security patching',      byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Protection against malicious code',                   byCategory: { I: R, II: M, III: M } },
+  { ref: '§20(2)', name: 'Network and communication security',                  byCategory: { I: R, II: R, III: M } },
+  { ref: '§20(2)', name: 'Acquisition, development and maintenance of systems', byCategory: { I: R, II: R, III: M } },
+  { ref: '§20(2)', name: 'Event logging and monitoring',                        byCategory: { I: M, II: M, III: M } },
+  { ref: '§20(2)', name: 'Physical and environmental security',                 byCategory: { I: R, II: R, III: M } },
+  { ref: '§20(2)', name: 'Cyber security incident response',                    byCategory: { I: M, II: M, III: M } },
+  { ref: '§20(2)', name: 'Cryptographic measures',                              byCategory: { I: R, II: R, III: M } },
+  { ref: '§20(2)', name: 'Business continuity',                                 byCategory: { I: R, II: R, III: M } },
+  { ref: '§20(2)', name: 'Audit, compliance management and control activity',   byCategory: { I: R, II: M, III: M } },
   { ref: '§20(4)(a)', name: 'Designated cyber security manager',                   byCategory: { I: M, II: M, III: M } },
 ];
 
