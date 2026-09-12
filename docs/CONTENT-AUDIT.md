@@ -138,7 +138,8 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 |---|---|---|---|---|---|---|
 | B1 | EU-level instruments | 7 | opus | **applied** | [12 findings](audit/B1-eu-instruments.md) | 8 full, 3 part, 1 open |
 | B2 | National frameworks, CZ–IT | 5 | opus | **applied** | [25 findings](audit/B2-national-cz-it.md) | 9 high + 4 med |
-| B3 | National frameworks, NL–UK | 7 | opus | todo | — | — |
+| B3a | Slovakia, Poland, Netherlands | 3 | opus | running | — | — |
+| B3b | Norway, Spain, Switzerland, UK | 4 | opus | todo | — | — |
 | B4 | Assurance and attestation | 5 | sonnet | todo | — | — |
 | B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
@@ -163,10 +164,30 @@ political position, which the article itself frames as moving.
 `france-anssi-secnumcloud-qualification` · `germany-bsi-c5-cloud-attestation` ·
 `italy-acn-cloud-qualification`
 
-### B3 — National frameworks, NL–UK (opus)
-`netherlands-bio2-baseline` · `norway-nsm-cloud-frameworks` · `poland-ksc-cybersecurity-system` ·
-`slovakia-ksvc-mirri-government-cloud` · `spain-ens-national-security-framework` ·
+### B3a — Slovakia, Poland, Netherlands (opus)
+`slovakia-ksvc-mirri-government-cloud` · `poland-ksc-cybersecurity-system` · `netherlands-bio2-baseline`
+
+Slovakia leads and gets the deepest treatment: home market, and its material
+feeds the live ISVS calculator (`src/data/security-calculator.ts`). The reviewer
+is asked to diff the article against the calculator — a contradiction between
+the two would mean the page and the tool tell a reader different things.
+
+### B3b — Norway, Spain, Switzerland, UK (opus)
+`norway-nsm-cloud-frameworks` · `spain-ens-national-security-framework` ·
 `switzerland-finma-cloud-frameworks` · `united-kingdom-ncsc-cloud-security-principles`
+
+### Batch sizing — learned the hard way
+
+**B3 was originally seven articles and died on a session rate limit**, right as
+it began verification. It returned nothing usable and the tokens were spent for
+no output.
+
+The numbers, for planning: B1 consumed ~234k subagent tokens for 7 articles,
+B2 ~252k for 5. A seven-article national-framework batch needs ~300k+ because
+each country requires native-language searching and primary-source fetching.
+
+**Cap a batch at 3–5 articles.** The marginal cost of an extra batch is one
+dispatch; the cost of an over-sized batch that dies at 90% is the whole thing.
 
 ### B4 — Assurance and attestation (sonnet)
 `iso-27001-27017-27018-27701-cloud-baselines` · `soc-2-reports-how-to-actually-read-them` ·
