@@ -72,14 +72,22 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited** (read end to end, claims checked against fetched sources) | **7** — the B1 batch |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **7** — the B1 batch |
 | Citation repointed only, content never examined | 15 |
 | Touched by a single verified correction, rest of the article unexamined | 1 (`sovereign-cloud-products-2026-landscape`) |
 | Inventoried and link-checked only | all 57 |
 | **Never opened** | **50** |
 
 So: **50 of 57 articles have not been audited.** B2–B8 is not a formality; it is
-almost all of the work.
+almost all of the work. B2 is running as of 2026-09-12.
+
+**What B1 cost, as a planning input for the rest.** Seven articles produced
+twelve findings, of which four were errors that were wrong *when published*
+rather than merely aged — the CTPP designations, the NIS2 essential/important
+thresholds, the Article 30(2)(f) cost clause, and the exit-plan testing
+attribution. If that rate holds, the remaining 22 compliance articles carry
+something like a dozen more errors of the same class. Budget accordingly:
+this is not a proofread.
 
 **A mistake made and corrected on the first day.** Repointing dead references
 bumped `updated:` to today on 22 articles. That was wrong — it told a reader
@@ -95,8 +103,8 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 
 | # | Batch | Articles | Model | Status | Findings | Applied |
 |---|---|---|---|---|---|---|
-| B1 | EU-level instruments | 7 | opus | **reported** | [12 findings](audit/B1-eu-instruments.md) | 4 of 12 |
-| B2 | National frameworks, CZ–IT | 5 | opus | todo | — | — |
+| B1 | EU-level instruments | 7 | opus | **applied** | [12 findings](audit/B1-eu-instruments.md) | 8 full, 3 part, 1 open |
+| B2 | National frameworks, CZ–IT | 5 | opus | running | — | — |
 | B3 | National frameworks, NL–UK | 7 | opus | todo | — | — |
 | B4 | Assurance and attestation | 5 | sonnet | todo | — | — |
 | B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
