@@ -154,7 +154,7 @@ The sovereign cloud market is not just technical — it is shaped by industrial 
 Watch items for the medium-term:
 
 - **EUCS** — if it eventually adopts a High+ tier with sovereignty requirements, JVs and EU-native operators benefit; dedicated sovereign regions may or may not qualify depending on the substantive requirements.
-- **ANSSI/BSI joint statement** (March 2026) — early signal of FR–DE convergence on sovereignty criteria. Could accelerate harmonisation or remain a statement of direction.
+- **ANSSI/BSI joint statement** (November 2025) — early signal of FR–DE convergence on sovereignty criteria. Could accelerate harmonisation or remain a statement of direction.
 - **AWS European Sovereign Cloud qualification outcomes** — now that it is live, the open question moves from whether it ships to whether a hyperscaler's dedicated sovereign region can satisfy strict national frameworks, SecNumCloud above all, without a JV ownership structure.
 - **Hyperscaler EU Data Boundary maturation** — increasing technical specificity of what is and is not in the boundary, with audit-level verification.
 - **EU Commission €180M sovereign cloud framework** (April 2026) — selected four consortia: Post Telecom + Clever Cloud + OVHcloud, STACKIT, Scaleway, and Proximus + S3NS + Clarence + Mistral. Industrial-policy validation of EU-native pure-play providers over hyperscaler EU regions for institutional EU procurement. See the [EU-native cloud providers article](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for context on the winning providers.

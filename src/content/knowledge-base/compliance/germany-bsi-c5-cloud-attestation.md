@@ -14,7 +14,7 @@ references:
     domain: "bsi.bund.de"
   - title: "BSI — C5:2026 Catalogue"
     url: "https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Cloud-Computing/Kriterienkatalog-C5/C5_2025/C5_2025_node.html"
-    description: "BSI's page for the C5:2026 catalogue published in March 2026 — restructured for EUCS alignment, with new criteria for containers, supply-chain security, post-quantum cryptography, and confidential computing."
+    description: "BSI's page for the C5:2026 catalogue published in November 2025 — restructured for EUCS alignment, with new criteria for containers, supply-chain security, post-quantum cryptography, and confidential computing."
     domain: "bsi.bund.de"
   - title: "C5:2020 — Full Criteria Catalogue (PDF)"
     url: "https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/CloudComputing/ComplianceControlsCatalogue-Cloud_Computing-C5.pdf"
@@ -64,7 +64,7 @@ C5 sits in an unusual legal position. It is not anchored in a single dedicated s
 For regulated industries beyond federal procurement:
 
 - **BAIT / VAIT** — the banking and insurance supervisory authority guidance — references C5 as an acceptable attestation form.
-- **NIS2-Umsetzungsgesetz (NIS2UmsuCG)** — the German NIS2 transposition. **In force since 6 December 2025** (entered into force the day after publication in the Bundesgesetzblatt). Substantially revises the BSIG. The BSI registration portal opened on 6 January 2026; the registration deadline for regulated entities was 6 March 2026. Scope expanded from approximately 4,500 to approximately 29,500 entities. C5 reports are treated as relevant evidence for the cloud-as-supply-chain controls that fall on essential entities. Fines of up to €10 million or 2% of global turnover.
+- **NIS2-Umsetzungsgesetz (NIS2UmsuCG)** — the German NIS2 transposition. **In force since 6 December 2025** (entered into force the day after publication in the Bundesgesetzblatt). Substantially revises the BSIG. The BSI registration portal opened on 6 January 2026; the registration deadline for regulated entities was 6 November 2025. Scope expanded from approximately 4,500 to approximately 29,500 entities. C5 reports are treated as relevant evidence for the cloud-as-supply-chain controls that fall on essential entities. Fines of up to €10 million or 2% of global turnover.
 
 C5 is mandatory by procurement gravity, not by direct statutory command. The effect is the same in practice.
 
@@ -172,7 +172,7 @@ The political position is that a regulated customer should be able to *see* the 
 
 In the EUCS debate, C5 is the reference for the **Substantial** level — the rigorous-but-non-sovereign tier. The political flexibility of C5 is what made it adoptable by US hyperscalers and what positions it as the natural EUCS Substantial baseline.
 
-In March 2026, ANSSI and BSI published a **joint statement on harmonised cloud-sovereignty criteria** — a notable bilateral step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS. The statement does not yet constitute a binding agreement on EUCS High+ content, but it is the first public signal that the two anchor positions (French exclusion-based sovereignty, German transparency-based) are seeking common operational ground.
+In November 2025, ANSSI and BSI published a **joint statement on harmonised cloud-sovereignty criteria** — a notable bilateral step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS. The statement does not yet constitute a binding agreement on EUCS High+ content, but it is the first public signal that the two anchor positions (French exclusion-based sovereignty, German transparency-based) are seeking common operational ground.
 
 ## Multicloud factor
 
@@ -201,7 +201,7 @@ C5 attestation is sometimes treated as the "gold standard" that, once held, sett
 - **Two versions are operative as of mid-2026: C5:2020** for audit periods beginning before 1 June 2027; **C5:2026** (published March 2026) for audit periods beginning on or after that date.
 - C5:2020 covers 17 control domains derived from ISO 27001:2013, IT-Grundschutz, CSA CCM, AICPA TSC. C5:2026 updates to ISO/IEC 27001:2022, CSA CCM v4, integrates NIS2, and adds explicit coverage of container management, supply chain, post-quantum cryptography, and confidential computing.
 - Type 2 reports are issued annually. Annual cadence is the strongest C5 discipline; slipping it breaks procurement continuity.
-- **NIS2-Umsetzungsgesetz in force since 6 December 2025.** BSI registration deadline 6 March 2026. Roughly 29,500 entities in scope. Fines up to €10 million or 2% of global turnover for essential entities.
+- **NIS2-Umsetzungsgesetz in force since 6 December 2025.** BSI registration deadline 6 November 2025. Roughly 29,500 entities in scope. Fines up to €10 million or 2% of global turnover for essential entities.
 - There is no central catalogue. Each provider publishes its report in their trust centre. Procurement teams verify directly.
 - Sovereignty posture is transparency, not exclusion. C5:2026 adds explicit sovereignty treatment but does not exclude non-EU providers.
 - Run C5 jointly with SOC 2 Type 2. The overlap is large; the marginal cost is low; the operational discipline is shared.

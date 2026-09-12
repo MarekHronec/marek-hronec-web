@@ -148,7 +148,7 @@ Art. 21 generally — a bank doing supply-chain assessment is not in its scope.
 
 Source: [NIS2 Art. 3](https://www.nis-2-directive.com/NIS_2_Directive_Article_3.html)
 
-## P8 ☐ WRONG — ANSSI/BSI joint statement date, replicated in five files
+## P8 ☑ APPLIED — WRONG — ANSSI/BSI joint statement date, replicated in five files
 
 `eucs-watch-...` L9, 39, 109, 117, 131, 245 · `france-anssi-secnumcloud-...` L136, 169 ·
 `germany-bsi-c5-...` L175 · `cloud-data-security-eu-national-frameworks-overview` L105 ·
@@ -166,7 +166,7 @@ which both agencies now build on.
 Source: [BSI joint statement](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/ANSSI-BSI-joint-releases/Cloud-Sovereignty-Criteria.html) ·
 [BSI C3A](https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Cloud-Computing/C3A/C3A.html)
 
-## P9 ☐ STALE — the EUCS picture moved twice after the article's date
+## P9 ☑ APPLIED — STALE — the EUCS picture moved twice after the article's date
 
 `eucs-watch-political-tracking-2026.md` L37, 105, 111, 242
 
