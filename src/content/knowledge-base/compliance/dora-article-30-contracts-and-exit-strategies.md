@@ -190,7 +190,7 @@ Material changes that require advance notification include:
 - Material architecture changes affecting risk profile.
 - Changes in regulatory or supervisory status.
 
-The notification period is typically 90 days for material changes, though DORA does not prescribe a specific period. Financial entities negotiate notification periods based on the materiality of the change and the financial entity's ability to react.
+DORA itself prescribes no notification period, and the 90 days often quoted is market practice rather than a rule. What does regulate this is **Commission Delegated Regulation (EU) 2025/532** of 24 March 2025 (OJ 2 July 2025), the RTS “specifying the elements that a financial entity has to determine and assess when subcontracting ICT services supporting critical or important functions”. It covers, among other things, material changes a provider makes to existing subcontracting arrangements. If you are drafting or reviewing an Article 30 contract that permits subcontracting of a critical or important function, this RTS is the document that fills in what Article 30(2)(a) leaves open, and it is routinely missed. Financial entities negotiate notification periods based on the materiality of the change and the financial entity's ability to react.
 
 ## Termination and exit strategies — the planning clause
 

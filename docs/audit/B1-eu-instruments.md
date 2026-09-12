@@ -266,11 +266,14 @@ publish on a corroborating source that could not be opened. Someone should
 confirm it against the Commission's July 2026 infringement package before the
 France and Spain rows are touched.
 
-## P12 ☐ Lower severity
+## P12 ◐ PART-APPLIED — Lower severity
 
-- `dora-article-30-...` L177–186: 90-day change-notification claim is unsourced,
-  and the article never mentions **Delegated Reg. (EU) 2025/532** (subcontracting
-  RTS, OJ 2 July 2025) — the biggest content gap for a clause-by-clause piece.
+- ☑ `dora-article-30-...`: the unsourced 90-day claim now says plainly that DORA
+  prescribes no period and 90 days is market practice, and the article names
+  **Delegated Reg. (EU) 2025/532** — verified from EUR-Lex, "specifying the
+  elements that a financial entity has to determine and assess when
+  subcontracting ICT services supporting critical or important functions",
+  24 March 2025, OJ 2 July 2025. This was the biggest content gap in the piece.
 - `dora-ctpp-...` L98: periodic penalty payments correct at 1% daily worldwide
   turnover, but omit the Art. 35 cap — **max six months**, after 30 days' notice.
 - `eu-ai-act-...` L116: AI Office was established by Commission Decision of
