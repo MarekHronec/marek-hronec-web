@@ -79,7 +79,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
-| X2 | Link liveness + metadata | all | haiku | todo | — | — |
+| X2 | Link liveness + metadata | all | curl + haiku | **reported** | 35 dead refs | — |
 | X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
 
 ### B1 — EU-level instruments (opus)
@@ -225,3 +225,80 @@ places Art. 28 as general obligations plus the Register of Information, Art. 29
 as concentration risk, Art. 30 as contractual arrangements. This is the origin of
 the X1 workstream: **derived pages drift from source articles**, and the drift
 runs in that direction.
+
+---
+
+## X2 · Link liveness — reported 2026-09-12
+
+237 unique reference URLs checked with `curl`; no agent needed. Every non-200 was
+re-tested with browser-like headers, which turned out to matter.
+
+| Result | Count | Meaning |
+|---|---|---|
+| 200 | 184 | Fine |
+| **404** | **35 refs across 22 articles** | **Genuinely dead**, verified |
+| 403 → 200 on retry | 4 | iso.org was blocking the plain user agent. Alive. |
+| 403 / 000 unresolved | 9 | Bot or geo protection, *not* evidence of death |
+| 302 | 2 | Polish ISAP session redirect, fine |
+| 504 | 1 | AICPA timeout, transient |
+
+**Three false positives, recorded so a later sweep does not repeat them:**
+
+- The four `iso.org` links returned 403 to plain curl and **200** with a normal
+  browser user agent. Any future sweep must retry non-200s with real headers
+  before reporting anything.
+- Five "connection failures" were `url: "/knowledge-base/..."` entries in
+  `cloud-compliance-decision-framework.md` — deliberate internal cross-references
+  carrying `domain: "internal"`. Not defects.
+- `bleu.fr` and `ens.ccn.cni.es` resolve in DNS but refuse connections from this
+  machine — almost certainly geo-blocking. Recorded as unverified, not dead.
+  Someone on an EU connection should confirm.
+
+### The 35 dead references
+
+A dead citation is not a wrong claim. These need the URL re-pointed, not the text
+rewritten — with two exceptions below. They cluster, because the cause is site
+reorganisation rather than rot:
+
+**EU institutions — 13.** Every EBA, ESMA, EIOPA, ENISA and EDPB link in the
+corpus is dead. One fix applied thirteen times, not thirteen investigations.
+`dora-for-cloud` (4) · `dora-ctpp-regime` (3) · `dora-article-30` (3, including an
+ECB banking-supervision press release) · `nis2-supply-chain` (2) · `eu-ai-act` (2) ·
+`gdpr-article-28` (1) · `cloud-encryption-key-custody` (1)
+
+**Oracle docs — 4**, including `shared_responsibility.htm`, cited by two articles.
+`iaas-paas-saas-without-marketing-layer` · `shared-responsibility-...` ·
+`tenant-subscription-management-...` · `policy-as-code-and-quotas-...`
+
+**National authorities — 7.** France ×3 (`numerique.gouv.fr` doctrine,
+`cyber.gouv.fr/recyf`, `/monespacenis2`) · Germany BSI NIS-2 · Italy ACN
+`normativa` · Netherlands `cyberbeveiligingswet` · Norway NSM `skytenester`.
+
+**Vendors and standards bodies — 11.** Microsoft Learn customer-managed-keys ·
+Google Workspace ×2 · AWS EU Sovereign Cloud · CSA CAIQ v4 · IAASB ISAE 3000 ·
+FinOps Foundation tagging capability · FINMA 2019 cloud FAQ.
+
+**Two may be substantive rather than cosmetic** — check the claim, not just the URL:
+
+- `aws.amazon.com/eu-sovereign-cloud/`, cited by
+  `sovereign-cloud-products-2026-landscape`. The AWS European Sovereign Cloud has
+  been moving; if it launched, was renamed, or slipped, the article's text is
+  affected and not only its footnote.
+- `nsm.no/.../skytenester/`, cited by `norway-nsm-cloud-frameworks`. NSM
+  withdrawing or replacing its cloud guidance would change what that article says.
+
+Replacement URLs are being looked up mechanically. Nothing is applied until each
+replacement has been fetched and returned 200.
+
+---
+
+## Session log
+
+**2026-09-12.** Opened the audit. Inventory, batch plan, protocol. Mechanical pass
+(M1–M6). Link liveness (X2, above). B1 dispatched to opus.
+
+⚠ **A second session works in this repo concurrently.** While this branch was
+checked out it committed connectivity work onto it, then cherry-picked that to
+`main` and left the tree on `main`. No work was lost — `git rebase main` dropped
+the duplicate — but check `git branch --show-current` before committing, and do
+not assume the tree is where you left it.
