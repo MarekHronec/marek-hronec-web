@@ -3,7 +3,7 @@ title: "Data Security in the Cloud — How EU Member States Actually Decide What
 category: compliance
 tags: ["EU", "Compliance", "Data Security", "Sovereignty", "EUCS", "NIS2"]
 date: 2026-04-02
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 14
 level: beginner
 excerpt: "Every EU member state grades cloud security differently, and the 'European' scheme that was supposed to harmonise them has been stuck for two years. Here is the actual map — who leads, who drifts, and what a multicloud operator has to navigate."
@@ -133,7 +133,7 @@ A hyperscaler serving public sector and regulated workloads across the EU today 
 - **BSI C5 (Germany)** — Type 2 attestation, refreshed annually.
 - **SecNumCloud (France)** — for sovereign cloud joint ventures (Bleu, S3NS), not for the mainline regions.
 - **ENS (Spain)** — *Alta* or *Media* for relevant regions.
-- **ACN Qualificazione (Italy)** — QC2 or QC3 for relevant services; QC4 only via Polo Strategico Nazionale partnerships.
+- **ACN Qualificazione (Italy)** — QC2 or QC3 for relevant services. Strategic data is admitted at QC3 as well as QC4 (Art. 17(4)(c)); QC4 is distinguished by HYOK key custody, not by being reserved to the PSN.
 - **PiTuKri (Finland)** — ISAE 3000 Type 2.
 - **BIO Thema-uitwerking Clouddiensten (Netherlands)** — typically validated via EY CertifyPoint.
 - **EU Cloud CoC Level 2** — published in CSA STAR Registry.

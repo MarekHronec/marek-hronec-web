@@ -3,7 +3,7 @@ title: "Italy — ACN Qualificazione: The Most Procedural Cloud Framework in the
 category: compliance
 tags: ["Italy", "ACN", "Qualificazione", "NIS2", "Compliance", "Data Security", "PSN", "Sovereignty"]
 date: 2026-04-30
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 11
 level: intermediate
 excerpt: "Italy's qualification framework is the most formally structured in the EU — statutory timelines, four levels, mandatory public catalogue, and a state-controlled Polo Strategico Nazionale for the strictest workloads."
@@ -55,8 +55,8 @@ The Italian framework is anchored in an explicit statutory and decretal stack:
 - **Decreto-Legge no. 82 of 14 June 2021** — established ACN.
 - **Art. 33-septies of Decreto-Legge no. 179 of 2012** — provides the statutory basis for cloud service qualification and for the Polo Strategico Nazionale.
 - **Direttoriale Decree no. 29 of 2 January 2023** — ACN's acceptance of the qualification mandate from AgID.
-- **Determinazione no. 307 of 18 January 2022** and Annex — the technical-organisational measures the qualified services must implement.
-- **Determinazione no. 306 of 18 January 2022** — the classification model for public-administration data and services.
+- **Allegato 4 to the Regolamento** — the technical-organisational measures qualified services must implement. This replaced Determinazione 307/2022, which Article 26 of the Regolamento repealed with effect from 1 August 2024, together with Determinazione 306/2022 and AgID Determination 628/2021. Guidance still citing 306 or 307 as live is out of date.
+- **Allegato 3 to the Regolamento** — the classification model for public-administration data and services.
 - **Direttoriale Decree no. 20610 of 28 July 2023** — modifications.
 - **Direttoriale Decree no. 2927 of 30 January 2024** — extension of the transitional regime.
 - **Direttoriale Decree no. 21007/24 of 27 June 2024** — the steady-state regulation, effective 1 August 2024.
@@ -94,13 +94,13 @@ Two parallel classification axes:
 
 For public or in-house infrastructure, the equivalent designations are **AI1–AI4** (Adeguamento Infrastruttura). The QI/AI distinction is whether the qualification is for a commercial provider (QI) or an in-house public/state-controlled infrastructure (AI).
 
-**LIV4** — the QC4 / QI4 / AI4 tier — is the strictest. It applies to *Strategici* data and critical infrastructure, and in practice routes to the PSN.
+**LIV4** — the QC4 / QI4 / AI4 tier — is the strictest. Note what it is *not*: strategic data is not confined to it. Article 17(4)(c) admits *strategici* data to services accredited under "le tipologie di cui al comma 1, **lettere c) e d)**" — QC3 as well as QC4. What QC4 adds is HYOK encryption with a customer-controlled HSM, exclusive customer access to keys and plaintext, provider autonomy over the underlying infrastructure, and personnel-vetting disclosure with unilateral removal rights.
 
 The framework operationalises an additional doctrine: **principio di filiazione** or **catena di qualificazione** — the qualification chain. A qualified service may only be delivered on a substrate qualified at the same level or higher. A QC4 SaaS cannot sit on a QC2 PaaS; the PaaS must also be QC4 or above. This propagates qualification depth through the stack.
 
 ## Evaluation criteria
 
-The criteria are in the Annex to Determinazione 307/2022 — a comprehensive set of technical-organisational measures. The set covers the standard cloud security domains (organisation, IAM, encryption, network, operations, incident response, continuity) with Italian-specific elaboration.
+The criteria are in **Allegato 4 to the Regolamento** — a comprehensive set of technical-organisational measures. The set covers the standard cloud security domains (organisation, IAM, encryption, network, operations, incident response, continuity) with Italian-specific elaboration.
 
 The assessment route differs by provider type:
 
@@ -136,7 +136,7 @@ The 36-month cycle is longer than most EU frameworks ([Spain's ENS](/knowledge-b
 
 ## Sanctions and oversight
 
-ACN performs periodic checks under Determinazione 307/2022. The sanctioning mechanism:
+ACN performs periodic checks under the Regolamento. The sanctioning mechanism:
 
 - For non-compliance, ACN can require remediation.
 - If remediation is not provided, ACN can **suspend or revoke** the qualification.
@@ -157,7 +157,7 @@ The Italian sovereignty posture is **layered**:
 
 - **QC1 / QC2** — no strict sovereignty constraints. Hyperscalers participate readily.
 - **QC3** — stricter operational requirements that include jurisdictional considerations.
-- **QC4 / LIV4** — effectively routed to **PSN**. The strategic-data tier is reserved for state-controlled infrastructure operated by Italian entities. Hyperscalers can serve the substrate through partnerships (PSN operates on hyperscaler technology in some configurations), but the qualification is held by the PSN operator, not the underlying technology provider.
+- **QC4 / LIV4** — hard to reach, but not reserved to the state. The barrier is the HYOK key-custody and infrastructure-autonomy requirements in Allegato 4, which resold or hyperscaler-substrate offers struggle to meet — not a rule confining the tier to Italian public entities. Strategic data can also be served at **QC3**, and a commercial provider holds it: Aruba qualified its Hosted and Virtual Private Cloud at QC3 in January 2025. Hyperscalers can serve the substrate through partnerships (PSN operates on hyperscaler technology in some configurations), but the qualification is held by the PSN operator, not the underlying technology provider.
 
 The PSN is the Italian answer to the SecNumCloud question. Rather than imposing ownership rules across the framework, Italy partitions: commercial qualification for ordinary and critical data, PSN for strategic data. This is more accommodating to hyperscalers than the French model while still preserving sovereignty at the top tier.
 
