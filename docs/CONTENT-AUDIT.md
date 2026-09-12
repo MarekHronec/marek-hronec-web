@@ -53,7 +53,17 @@ Two rules follow, and they apply to every batch:
 
 1. **Never bulk-replace a date, name or number on a keyword match.** Read each
    occurrence and decide. Fifteen lines is not too many to look at.
-2. **Verify by reading the diff, not by re-grepping the source.** `git show
+2. **A finding usually occurs more than once. Grep for the claim, not just the
+   line the reviewer cited.** B3a's Slovak repeal finding named one line; the
+   same claim sat in two more places, and fixing only the cited one left the
+   article contradicting itself — "repealed by 184/2026" in one paragraph and
+   "no formal repeal has been verified" in two others. Reviewers cite examples,
+   not inventories.
+3. **After splicing out a section, diff what was removed.** Replacing the Dutch
+   BBN section dropped an enumeration of classification levels that had nothing
+   to do with BBNs and should have survived. Index-based splices take
+   neighbouring content with them silently.
+4. **Verify by reading the diff, not by re-grepping the source.** `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".

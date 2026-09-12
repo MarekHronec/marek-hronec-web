@@ -171,7 +171,7 @@ BIO does **not** impose strict sovereignty requirements:
 - No headquartering requirement.
 - No immunity-from-extraterritorial-law clause.
 
-The strongest sovereignty-adjacent rule is the **categorical exclusion of EU/NATO-classified information** (CONFIDENTIEEL and above) from public cloud. Below that line, hyperscalers are accepted as providers. Note that this exclusion was historically expressed as "above BBN3"; with the BBNs withdrawn it stands on the classification of the information itself, which is where it always really sat.
+The strongest sovereignty-adjacent rule is the **categorical exclusion of EU/NATO-classified information** from public cloud — information marked **Stg. CONFIDENTIEEL**, **SECRET** or **TOP SECRET** under the EU/NATO scheme. Below that line, hyperscalers are accepted as providers. Note that this exclusion was historically expressed as "above BBN3"; with the BBNs withdrawn it stands on the classification of the information itself, which is where it always really sat.
 
 The Dutch political position on EUCS sovereignty has been on the more permissive side of the debate. The Netherlands has resisted strict EUCS sovereignty rules at the EU level, consistent with the BIO posture of accepting hyperscalers below the classified-information threshold.
 
