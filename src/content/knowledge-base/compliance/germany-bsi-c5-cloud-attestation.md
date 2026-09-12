@@ -3,7 +3,7 @@ title: "Germany — BSI C5: The Attestation That Quietly Became Europe's Referen
 category: compliance
 tags: ["Germany", "BSI C5", "BSI", "NIS2", "Compliance", "Data Security", "Attestation"]
 date: 2026-04-14
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 12
 level: intermediate
 excerpt: "C5 is not a certification, it is an attestation — and that distinction matters. The framework most adopted by hyperscalers, the de facto reference for EUCS Substantial, and the one that pairs cleanly with SOC 2. C5:2026 was published in March 2026, with C5:2020 remaining operative until audit periods beginning on or after 1 June 2027."
@@ -63,8 +63,8 @@ C5 sits in an unusual legal position. It is not anchored in a single dedicated s
 
 For regulated industries beyond federal procurement:
 
-- **BAIT / VAIT** — the banking and insurance supervisory authority guidance — references C5 as an acceptable attestation form.
-- **NIS2-Umsetzungsgesetz (NIS2UmsuCG)** — the German NIS2 transposition. **In force since 6 December 2025** (entered into force the day after publication in the Bundesgesetzblatt). Substantially revises the BSIG. The BSI registration portal opened on 6 January 2026; the registration deadline for regulated entities was 6 November 2025. Scope expanded from approximately 4,500 to approximately 29,500 entities. C5 reports are treated as relevant evidence for the cloud-as-supply-chain controls that fall on essential entities. Fines of up to €10 million or 2% of global turnover.
+- **DORA, not BAIT/VAIT.** BaFin repealed VAIT, KAIT and ZAIT with effect from the end of 16 January 2025, and is phasing out BAIT — institutions subject to DORA left its scope on 17 January 2025 — to avoid double regulation. The financial-sector hook is now DORA and BaFin's supervision of it. C5 reports remain usable as third-party evidence within that.
+- **NIS2-Umsetzungsgesetz (NIS2UmsuCG)** — the German NIS2 transposition. **In force since 6 December 2025** (entered into force the day after publication in the Bundesgesetzblatt). Substantially revises the BSIG. Registration was due within three months of entry into force, so the deadline was **6 March 2026**; the BSI portal opened on 6 January 2026; the registration deadline for regulated entities was 6 November 2025. Scope expanded from approximately 4,500 to approximately 29,500 entities. C5 reports are treated as relevant evidence for the cloud-as-supply-chain controls that fall on essential entities. Fines of up to €10 million or 2% of global turnover.
 
 C5 is mandatory by procurement gravity, not by direct statutory command. The effect is the same in practice.
 
@@ -172,6 +172,8 @@ The political position is that a regulated customer should be able to *see* the 
 
 In the EUCS debate, C5 is the reference for the **Substantial** level — the rigorous-but-non-sovereign tier. The political flexibility of C5 is what made it adoptable by US hyperscalers and what positions it as the natural EUCS Substantial baseline.
 
+On **27 April 2026** BSI published **C3A — Criteria enabling Cloud Computing Autonomy**, its first assessment framework for digital sovereignty. C3A takes the structure of the EU Cloud Sovereignty Framework, turns it into auditable criteria, and **requires C5 compliance as a prerequisite**. It is a procurement instrument rather than a certificate, and BSI positions it to become a minimum requirement in future tenders. That changes the answer to "what is Germany's sovereignty story": C5 is the floor, and C3A now sits on top of it.
+
 In November 2025, ANSSI and BSI published a **joint statement on harmonised cloud-sovereignty criteria** — a notable bilateral step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS. The statement does not yet constitute a binding agreement on EUCS High+ content, but it is the first public signal that the two anchor positions (French exclusion-based sovereignty, German transparency-based) are seeking common operational ground.
 
 ## Multicloud factor
@@ -201,9 +203,9 @@ C5 attestation is sometimes treated as the "gold standard" that, once held, sett
 - **Two versions are operative as of mid-2026: C5:2020** for audit periods beginning before 1 June 2027; **C5:2026** (published March 2026) for audit periods beginning on or after that date.
 - C5:2020 covers 17 control domains derived from ISO 27001:2013, IT-Grundschutz, CSA CCM, AICPA TSC. C5:2026 updates to ISO/IEC 27001:2022, CSA CCM v4, integrates NIS2, and adds explicit coverage of container management, supply chain, post-quantum cryptography, and confidential computing.
 - Type 2 reports are issued annually. Annual cadence is the strongest C5 discipline; slipping it breaks procurement continuity.
-- **NIS2-Umsetzungsgesetz in force since 6 December 2025.** BSI registration deadline 6 November 2025. Roughly 29,500 entities in scope. Fines up to €10 million or 2% of global turnover for essential entities.
+- **NIS2-Umsetzungsgesetz in force since 6 December 2025.** BSI registration deadline **6 March 2026** — three months from entry into force, not before it. Roughly 29,500 entities in scope. Fines up to €10 million or 2% of global turnover for essential entities.
 - There is no central catalogue. Each provider publishes its report in their trust centre. Procurement teams verify directly.
-- Sovereignty posture is transparency, not exclusion. C5:2026 adds explicit sovereignty treatment but does not exclude non-EU providers.
+- Sovereignty posture is transparency, not exclusion. C5:2026 adds explicit sovereignty treatment but does not exclude non-EU providers — and **C3A** (April 2026) layers auditable autonomy criteria on top of C5 for procurement.
 - Run C5 jointly with SOC 2 Type 2. The overlap is large; the marginal cost is low; the operational discipline is shared.
 - For multinational CSPs, C5 is the natural baseline. Layered on top of ISO 27001/27017/27018 and SOC 2, it gives you Germany. For France, Italy PSN tier, or Slovak U4, additional sovereignty-specific work is required.
 - Plan the C5:2020 → C5:2026 transition: align audit scope with the new reference standards (ISO/IEC 27001:2022, CSA CCM v4) ahead of the 1 June 2027 cut-over so the first C5:2026 audit is not a fresh remediation cycle.
