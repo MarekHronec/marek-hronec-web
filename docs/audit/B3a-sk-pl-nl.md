@@ -44,6 +44,38 @@ all four layers.
 **Spillovers** — `cloud-compliance-decision-framework` corrected for the Slovak
 U-level and the BBN withdrawal.
 
+## The U-scheme's legal basis — raised by the author, verified 2026-09-12
+
+The author's reading, checked against 184/2026's own text and confirmed:
+
+- **The U1–U4 levels never rested on a decree.** They come from a MIRRI
+  *metodické usmernenie* under Act 95/2019 § 8 ods. 1 písm. c) — guidance.
+- **What had statutory backing was the input**: the C/I/A → security-category
+  chain from vyhláška 179/2020.
+- **184/2026 does not restate that model, it replaces it.** Categories attach to
+  the **orgán riadenia** — institution type and size, municipalities split at
+  6 000 inhabitants — and measures follow a **risk analysis** ("vyhodnotenie
+  rizík podľa použitej metódy", measures per identified risk graded by
+  severity). NBÚ's 227/2025 already did the equivalent on the cybersecurity
+  side from 1 September 2025.
+- **So from 1 January 2027 the calculator's C/I/A → category → U chain has no
+  statutory base.** C/I/A survives as an input to risk analysis, not as a lookup.
+- **MIRRI has published no bridging guidance.** Its methodology page still lists
+  only the 11 April 2025 document, which predates both decrees and still cites
+  362/2018 and 179/2020 in its own *Legislatíva* list.
+
+Precision worth keeping: **U1–U4 is still what MIRRI applies today.** The
+catalogue is live and the scheme has not been withdrawn. What has gone is the
+scaffolding underneath it.
+
+**Applied.** The article now carries the 184/2026 mechanism and this analysis,
+and says a classification should be confirmed by the organisation's *manažér
+kybernetickej bezpečnosti* — a role Act 69/2018 § 20 ods. 4 písm. a) requires to
+be independent of IT operations — or a certified *audítor kybernetickej
+bezpečnosti*. The calculator's notice now states the 1 January 2027 sunset and
+the same verification point, so the tool no longer implies more authority than
+it has.
+
 ## Open
 
 - **#8 UNVERIFIED — SK encryption and key-custody tiers.** The article says
