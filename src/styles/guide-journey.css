@@ -1,0 +1,47 @@
+.journey { padding-block:var(--space-8) var(--space-12); scroll-margin-top:calc(var(--nav-height) + var(--space-5)); }
+.journey [hidden] { display:none; }
+.journey__intro h2 { font:var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); }
+.journey p { line-height:var(--leading-relaxed); }
+.journey__intro p { max-width:78ch; margin-block:var(--space-3) var(--space-6); color:var(--color-on-surface-muted); }
+.journey__overview { display:grid; gap:var(--space-5); padding-bottom:var(--space-7); align-items:center; }
+.journey__overview > div { min-width:0; }
+.journey__overview h3 { font-size:var(--text-title-lg); margin-block:var(--space-2) var(--space-3); }
+.journey__progress { font:var(--text-label-md) var(--font-mono); color:var(--color-primary); }
+.journey__manifest { display:grid; gap:var(--space-3); margin-bottom:var(--space-5); }
+.journey__manifest li { display:grid; grid-template-columns:var(--space-6) 1fr; gap:var(--space-3); color:var(--color-on-surface-muted); font-size:var(--text-label-md); }
+.journey__manifest li[data-loaded='true'] { color:var(--color-navy); }
+.journey__manifest strong { display:block; font-weight:var(--weight-semibold); }
+.journey button { border:0; padding:var(--space-3) var(--space-4); color:var(--color-navy); background:var(--color-primary-tint); font:var(--text-label-md)/var(--leading-snug) var(--font-body); cursor:pointer; }
+.journey button:disabled { opacity:.5; cursor:default; }
+.journey button:enabled:hover { background:var(--color-navy); color:var(--color-on-primary); }
+.journey__steps { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-bottom:var(--space-6); }
+.journey__steps button { display:flex; gap:var(--space-2); align-items:center; min-height:var(--space-10); }
+.journey__steps button[aria-current='step'] { background:var(--color-navy); color:var(--color-on-primary); }
+.journey__stage { scroll-margin-top:calc(var(--nav-height) + var(--space-5)); }
+.journey__stage-title { font:var(--weight-semibold) var(--text-title-lg) var(--font-display); margin-bottom:var(--space-4); color:var(--color-primary); }
+.journey__scope { display:grid; gap:var(--space-3); padding:var(--space-5); margin-block:var(--space-5); border:0; background:var(--color-surface-container-low); }
+.journey__scope legend { font-weight:var(--weight-semibold); padding-top:var(--space-4); }
+.journey__scope label { display:flex; gap:var(--space-3); align-items:baseline; line-height:var(--leading-relaxed); }
+.journey__scope-note { padding:var(--space-5); background:var(--color-primary-tint); }
+.journey .calc__inner.container { width:100%; max-width:none; padding-inline:0; }
+.journey .calc__readout { position:static; }
+.journey .pc { padding-top:0; }
+.journey__actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-4); margin-block:var(--space-6); padding:var(--space-5); background:var(--color-surface-container-low); }
+.journey__actions p { flex:1 1 15rem; color:var(--color-on-surface-muted); font-size:var(--text-label-md); }
+.journey [data-journey-next] { background:var(--color-navy); color:var(--color-on-primary); }
+.journey__final h3 { font-size:var(--text-headline-md); margin-bottom:var(--space-3); }
+.journey__final article { margin-block:var(--space-5); padding:var(--space-5); background:var(--color-surface-container-low); }
+.journey__final h4 { color:var(--color-navy); font-size:var(--text-title-lg); margin-bottom:var(--space-3); }
+.journey__final h5 { margin-top:var(--space-4); font-size:var(--text-body-lg); }
+.journey__final ul { list-style:disc; padding-left:var(--space-5); }
+.journey__final li { margin-top:var(--space-3); line-height:var(--leading-relaxed); }
+.journey__final details { margin-top:var(--space-4); }
+.journey__final summary { color:var(--color-primary); cursor:pointer; }
+@media(min-width:1024px) { .journey__overview { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); } }
+
+.journey [data-unassessed="true"] { opacity:.35; }
+
+.journey__overview { scroll-margin-top:calc(var(--nav-height) + var(--space-4)); }
+.journey__checkpoint { display:flex; flex-wrap:wrap; gap:var(--space-4); align-items:center; justify-content:space-between; padding:var(--space-5); margin-bottom:var(--space-5); background:var(--color-primary-tint); }
+.journey__checkpoint > div { flex:1 1 20rem; }
+.journey__checkpoint h3 { color:var(--color-navy); font-size:var(--text-title-lg); margin-bottom:var(--space-2); }

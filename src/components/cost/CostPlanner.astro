@@ -1,6 +1,8 @@
 ---
 import { COST_QUESTIONS } from '../../data/cost-planner';
 import ChooserQuestion from '../platform/ChooserQuestion.astro';
+interface Props { embedded?: boolean }
+const { embedded = false } = Astro.props;
 import GuideNextSteps from '../shared/GuideNextSteps.astro';
 ---
 <section class="cost-planner" id="cost-planner" aria-labelledby="cost-planner-title">
@@ -9,7 +11,7 @@ import GuideNextSteps from '../shared/GuideNextSteps.astro';
   <noscript><p>Enable JavaScript to prepare the checklist. The four explanations above and the reading below remain available without it.</p></noscript>
   <div class="cost-planner__grid">
     <form data-cost-form>
-      <ol role="list">{COST_QUESTIONS.map((question,index)=><ChooserQuestion question={{...question,options:[...question.options]}} index={index} total={COST_QUESTIONS.length} />)}</ol>
+      <ol role="list">{COST_QUESTIONS.map((question,index)=><ChooserQuestion idPrefix="cost" question={{...question,options:[...question.options]}} index={index} total={COST_QUESTIONS.length} />)}</ol>
       <button type="button" data-cost-reset disabled>↺ Start over</button>
     </form>
     <aside class="cost-planner__result">
@@ -24,7 +26,7 @@ import GuideNextSteps from '../shared/GuideNextSteps.astro';
           <div data-cost-gaps hidden><h4>Measure first</h4><ul></ul></div>
           <ol data-cost-priorities></ol>
         </div>
-        <GuideNextSteps current="cost" />
+        {!embedded && <GuideNextSteps current="cost" />}
       </div>
     </aside>
   </div>

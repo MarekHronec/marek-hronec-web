@@ -8,6 +8,8 @@
  * transmitted; the whole calculation runs in the browser.
  */
 
+interface Props { embedded?: boolean }
+const { embedded = false } = Astro.props;
 import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
 import GuideNextSteps from '../shared/GuideNextSteps.astro';
 import CiaExplainer from './CiaExplainer.astro';
@@ -17,8 +19,8 @@ import CalculatorGuide from './CalculatorGuide.astro';
 <section class="calc" id="calculator">
   <div class="calc__inner container">
 
-    <CiaExplainer />
-    <CalculatorGuide />
+    {!embedded && <CiaExplainer />}
+    {!embedded && <CalculatorGuide />}
 
     <!-- Running readout — fills in as the classification is made -->
     <div class="calc__readout" id="calc-readout">
@@ -138,11 +140,13 @@ import CalculatorGuide from './CalculatorGuide.astro';
     </ol>
 
     <div id="calc-result" aria-live="polite"></div>
-    <GuideNextSteps current="compliance" />
+    {!embedded && <GuideNextSteps current="compliance" />}
   </div>
 </section>
 
 <script>
+  import { publishGuideResult } from '../../scripts/guide-results';
+  const calculator = document.querySelector<HTMLElement>('.calc')!;
   import {
     INCIDENT_QUESTIONS, DEGREE_LABEL,
     isViable, lockReason, matchCategories, incidentDegree, evaluate,
@@ -217,6 +221,7 @@ import CalculatorGuide from './CalculatorGuide.astro';
   }
 
   function render() {
+    publishGuideResult(calculator,{complete:false,title:'Slovak ISVS classification',summary:'Complete the classification, incident impact and applicable criteria.',points:[],gaps:[]});
     applyLocks();
     document.querySelectorAll<HTMLElement>('[data-axis-selection]').forEach((status) => {
       const axis = status.dataset.axisSelection as AxisKey;
@@ -339,6 +344,7 @@ import CalculatorGuide from './CalculatorGuide.astro';
 
     const mandatory = out.controls.filter((c) => c.obligation === 'mandatory');
     const recommended = out.controls.filter((c) => c.obligation === 'recommended');
+    publishGuideResult(calculator,{complete:true,title:'U'+out.u+' · C'+ctx.c+' I'+ctx.i+' A'+ctx.a,summary:out.governing.name+' · '+mandatory.length+' mandatory measures; '+recommended.length+' recommended.',points:[...mandatory.map(c=>'Mandatory: '+c.area.name+' ('+c.area.ref+')'),...recommended.map(c=>'Recommended: '+c.area.name+' ('+c.area.ref+')')],gaps:['Slovak ISVS workbook guidance only. Confirm the classification, applicability and current source requirements with the operator and formal risk analysis.']});
     const list = (rows: typeof mandatory) =>
       rows.map((c) => `<li><span>${c.area.name}</span><span class="calc__control-ref">${c.area.ref}</span></li>`).join('');
 
@@ -366,6 +372,13 @@ import CalculatorGuide from './CalculatorGuide.astro';
       </div>`;
   }
 
+  calculator.addEventListener('guide:reset',()=>{
+    Object.keys(sel).forEach(k=>delete sel[k as AxisKey]);
+    Object.keys(incident).forEach(k=>delete incident[k]);
+    Object.keys(answers).forEach(k=>delete answers[k]);
+    calculator.querySelectorAll<HTMLInputElement>('input').forEach(i=>{i.checked=false;i.disabled=false;});
+    render();
+  });
   render();
 </script>
 

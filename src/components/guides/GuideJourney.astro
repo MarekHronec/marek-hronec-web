@@ -1,0 +1,41 @@
+---
+import { VOYAGE } from '../../data/guide-voyage';
+import VoyageScene from './VoyageScene.astro';
+import SecurityCalculator from '../compliance/SecurityCalculator.astro';
+import CalculatorNotice from '../compliance/CalculatorNotice.astro';
+import PlatformChooser from '../platform/PlatformChooser.astro';
+import ConnectivityPlanner from '../connectivity/ConnectivityPlanner.astro';
+import RecoveryPlanner from '../resilience/RecoveryPlanner.astro';
+import CostPlanner from '../cost/CostPlanner.astro';
+import '../../styles/guide-journey.css';
+---
+<section class="journey container" id="cloud-plan" data-journey aria-labelledby="journey-title">
+  <header class="journey__intro"><h2 id="journey-title" tabindex="-1">Your cloud plan, one decision at a time.</h2><p>Use one workload throughout. Answers stay in this page while it is open; nothing is sent or saved to an account. Changing an earlier decision asks you to review the later stages again.</p></header>
+  <noscript><p>JavaScript is needed for the connected plan. The five guide links above remain available.</p></noscript>
+  <div data-journey-workspace hidden>
+    <div class="journey__overview" tabindex="-1"><VoyageScene mode="plan"/><div><p class="journey__progress" data-journey-progress aria-live="polite">0 of 5 results added</p><h3>Your cargo manifest</h3><ol class="journey__manifest" data-journey-manifest role="list"></ol><button type="button" data-journey-reset>Start the whole plan over</button></div></div>
+    <div class="journey__checkpoint" data-journey-checkpoint hidden><div><h3 data-journey-checkpoint-title></h3><p data-journey-checkpoint-summary></p></div><button type="button" data-journey-proceed>Continue →</button></div>
+    <nav aria-label="Planning stages"><ol class="journey__steps" role="list">{VOYAGE.map((s,i)=><li><button type="button" data-journey-step={i} disabled={i>0}><span>{String(i+1).padStart(2,'0')}</span>{s.label}</button></li>)}</ol></nav>
+    <div class="journey__stage" data-journey-panel="0">
+      <h3 class="journey__stage-title" tabindex="-1">01 · Know your cargo</h3>
+      <p>The classification calculator applies the Slovak ISVS workbook. Confirm that scope before using it; it is not a general EU compliance assessment.</p>
+      <fieldset class="journey__scope"><legend>Does the Slovak ISVS classification apply to this workload?</legend>
+        <label><input type="radio" name="journey-scope" value="isvs"/> Yes — use the Slovak ISVS calculator</label>
+        <label><input type="radio" name="journey-scope" value="outside"/> No, or applicability is not established</label>
+      </fieldset>
+      <div data-journey-classification hidden><CalculatorNotice/><SecurityCalculator embedded/></div>
+      <p class="journey__scope-note" data-journey-outside hidden>This stage will be recorded as “Not assessed”. Identify the applicable classification and placement requirements separately. No cloud service level or compliance approval is inferred.</p>
+    </div>
+    <div class="journey__stage" data-journey-panel="1" hidden><h3 class="journey__stage-title" tabindex="-1">02 · Choose your vessel</h3><PlatformChooser embedded/></div>
+    <div class="journey__stage" data-journey-panel="2" hidden><h3 class="journey__stage-title" tabindex="-1">03 · Plot the passage</h3><ConnectivityPlanner embedded/></div>
+    <div class="journey__stage" data-journey-panel="3" hidden><h3 class="journey__stage-title" tabindex="-1">04 · Prepare for rough water</h3><RecoveryPlanner embedded/></div>
+    <div class="journey__stage" data-journey-panel="4" hidden><h3 class="journey__stage-title" tabindex="-1">05 · Account for the voyage</h3><CostPlanner embedded/></div>
+    <div class="journey__actions" data-journey-actions><button type="button" data-journey-back disabled>← Previous stage</button><p data-journey-hint aria-live="polite">Choose the classification scope to begin.</p><button type="button" data-journey-next disabled>Add result & continue →</button></div>
+    <section class="journey__final" data-journey-final hidden aria-labelledby="journey-final-title"><h3 id="journey-final-title" tabindex="-1">Your voyage brief.</h3><p>These are the five planning results together, not a validated architecture or a certification. Review the open questions and confirm that the choices fit the same workload.</p><div data-journey-results></div><button type="button" data-journey-download>Save the brief as text ↓</button></section>
+  </div>
+</section>
+<script>
+import { initializeGuideJourney } from '../../scripts/guide-journey';
+initializeGuideJourney();
+document.addEventListener('astro:page-load',initializeGuideJourney);
+</script>

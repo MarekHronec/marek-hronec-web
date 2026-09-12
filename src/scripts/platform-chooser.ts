@@ -1,3 +1,4 @@
+import { publishGuideResult } from './guide-results';
 /*
  * Chooser wiring. Reads the same model the page was built from, so the answer a
  * reader sees can never drift from the config in src/data/platform-chooser.ts.
@@ -65,6 +66,7 @@ export function initializeChooser() {
       const selection = read();
       const result = evaluate(selection);
 
+      publishGuideResult(root, {complete:result.complete,title:result.undecided ? 'Platform shortlist — options tied' : result.top ? APPROACH_BY_KEY.get(result.top.key)!.name : 'Platform shortlist',summary:result.undecided ? 'Several approaches remain level. Compare the joint leaders before selecting a service.' : result.top ? APPROACH_BY_KEY.get(result.top.key)!.oneLine : 'Answer all seven questions.',points:[...QUESTIONS.map(q=>q.label+': '+(q.options.find(o=>o.value===selection[q.key])?.label??'Unanswered')),...result.ranked.map(v=>APPROACH_BY_KEY.get(v.key)!.name+' — '+(v.excluded ? 'ruled out: '+v.reasons.join(' ') : 'score '+v.score))],gaps:[...result.notes,...(result.undecided ? ['Resolve the tied approaches with service limits, costs and a workload trial.'] : []),...(result.close ? ['The top two approaches are close. Treat them as a tie and let the operating team test the trade-offs.'] : []),...(selection.exit && LOCK_IN_NOTE[selection.exit] ? [LOCK_IN_NOTE[selection.exit]] : [])]});
       renderSelectionLabels(selection);
       progress.textContent = String(result.answered);
       resetButtons.forEach((button) => { button.disabled = result.answered === 0; });
@@ -149,11 +151,13 @@ export function initializeChooser() {
 
     form.addEventListener('submit', (event) => event.preventDefault());
     form.addEventListener('change', render);
-    resetButtons.forEach((button) => button.addEventListener('click', () => {
+    const reset = () => {
       form.reset();
       render();
       form.querySelector<HTMLInputElement>('input[type="radio"]')?.focus();
-    }));
+    };
+    resetButtons.forEach(button=>button.addEventListener('click',reset));
+    root.addEventListener('guide:reset',reset);
 
     render();
   });

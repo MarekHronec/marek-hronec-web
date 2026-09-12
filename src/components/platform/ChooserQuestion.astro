@@ -14,10 +14,11 @@ interface Props {
   question: ChooserQuestion;
   index: number;
   total: number;
+  idPrefix?: string;
 }
 
-const { question, index, total } = Astro.props;
-const titleId = `pc-q-${question.key}`;
+const { question, index, total, idPrefix = 'pc' } = Astro.props;
+const titleId = idPrefix + "-q-" + question.key;
 ---
 
 <li class="pcq" data-question={question.key}>

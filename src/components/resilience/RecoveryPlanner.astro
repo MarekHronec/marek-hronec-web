@@ -1,6 +1,8 @@
 ---
 import { RECOVERY_QUESTIONS } from '../../data/resilience-planner';
 import ChooserQuestion from '../platform/ChooserQuestion.astro';
+interface Props { embedded?: boolean }
+const { embedded = false } = Astro.props;
 import GuideNextSteps from '../shared/GuideNextSteps.astro';
 ---
 <section class="recovery-planner" id="recovery-planner" aria-labelledby="recovery-planner-title">
@@ -9,7 +11,7 @@ import GuideNextSteps from '../shared/GuideNextSteps.astro';
   <noscript><p>Enable JavaScript to prepare the brief. The four explanations above and the reading below remain available without it.</p></noscript>
   <div class="recovery-planner__grid">
     <form data-recovery-form>
-      <ol role="list">{RECOVERY_QUESTIONS.map((question,index)=><ChooserQuestion question={{...question,options:[...question.options]}} index={index} total={RECOVERY_QUESTIONS.length} />)}</ol>
+      <ol role="list">{RECOVERY_QUESTIONS.map((question,index)=><ChooserQuestion idPrefix="recovery" question={{...question,options:[...question.options]}} index={index} total={RECOVERY_QUESTIONS.length} />)}</ol>
       <button type="button" data-recovery-reset disabled>↺ Start over</button>
     </form>
     <aside class="recovery-planner__result">
@@ -24,7 +26,7 @@ import GuideNextSteps from '../shared/GuideNextSteps.astro';
           <div data-recovery-gaps hidden><h4>Resolve first</h4><ul></ul></div>
           <ol data-recovery-priorities></ol>
         </div>
-        <GuideNextSteps current="resilience" />
+        {!embedded && <GuideNextSteps current="resilience" />}
       </div>
     </aside>
   </div>

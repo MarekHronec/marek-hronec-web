@@ -1,0 +1,59 @@
+---
+import { VOYAGE } from '../../data/guide-voyage';
+interface Props { mode?: 'overview' | 'plan' }
+const { mode = 'overview' } = Astro.props;
+---
+<svg class="voyage-scene" data-voyage-scene={mode} viewBox="0 0 800 390" role="img" aria-labelledby={'voyage-title-'+mode}>
+  <title id={'voyage-title-'+mode}>{mode === 'overview' ? 'Five connected decisions prepare a ship for its voyage.' : 'Your cloud plan takes shape: protection, platform, connections, recovery and cost. Completed stages are labelled in the manifest below.'}</title>
+  <path class="sea" d="M12 279 Q168 256 325 273 T789 277 V342 Q595 368 401 349 T12 339 Z"/>
+  <g class="contours"><path d="M18 308 Q150 286 294 304 T786 306 M59 335 Q220 319 344 334 T757 335 M326 354 Q460 364 598 355"/></g>
+  <path class="quay" d="M18 235 H175 V254 H18 Z M28 254 V292 M76 254 V292 M130 254 V292 M166 254 V292"/>
+  <path class="rig" d="M71 235 V48 H622 M78 55 H615 M72 49 L176 114 M55 235 H90 M62 235 L72 178 L83 235 M71 107 L128 55"/>
+  <g class="trolley" data-voyage-trolley transform="translate(240 55)">
+    <path class="solid" d="M-13 0 H13 V9 H-13 Z"/><path class="fine" d="M0 9 V49 M-20 62 L0 49 L20 62"/><path class="rig" d="M-29 62 H29"/>
+  </g>
+  <g data-ship-part="platform" data-loaded={mode === 'overview'}>
+    <path class="hull" d="M199 261 Q412 282 717 253 L682 298 Q486 342 232 297 Z"/>
+    <path class="hull-detail" d="M217 271 Q449 299 702 268 M243 292 Q439 324 671 291"/>
+    <path class="paper" d="M628 249 V192 H689 V250 M637 192 V164 H679 V192"/>
+    <path class="fine" d="M638 207 H651 V220 H638 Z M665 207 H678 V220 H665 Z M646 176 H670 M670 165 V110"/>
+    <path class="solid" d="M670 110 L707 123 L670 133 Z"/>
+    <circle class="porthole" cx="566" cy="293" r="4"/><circle class="porthole" cx="583" cy="291" r="4"/><circle class="porthole" cx="600" cy="288" r="4"/>
+  </g>
+  {VOYAGE.map((step,i)=><g class="load" data-load={step.key} data-loaded={mode === 'overview'} transform={`translate(${220+i*80} 206)`}>
+    <g class="load__arrival"><path class="container" d="M0 0 H73 V48 H0 Z"/><path class="corrugation" d="M8 6 V42 M16 6 V42 M57 6 V42 M65 6 V42"/><text x="36" y="32" text-anchor="middle">{String(i+1).padStart(2,'0')}</text></g>
+  </g>)}
+  <g class="chart-part" data-ship-part="connectivity" data-loaded={mode === 'overview'}>
+    <path class="course" d="M531 346 Q638 375 757 348"/>
+    <path class="fine" d="M742 341 l15 7 -13 9"/>
+  </g>
+  <g class="chart-part" data-ship-part="resilience" data-loaded={mode === 'overview'}>
+    <path class="paper" d="M737 253 L747 187 H766 L776 253 Z M744 187 V171 H769 V187 Z M741 171 L756 159 L772 171 Z"/>
+    <path class="fine" d="M745 188 H768 M753 204 H760 V214 H753 Z M732 254 H782 M749 182 H763"/>
+    <path class="beam" d="M745 178 L693 158 M745 182 L692 196"/>
+  </g>
+  <text class="caption" x="24" y="376">{mode === 'overview' ? 'ONE WORKLOAD · FIVE CONNECTED DECISIONS' : 'YOUR PLAN · BUILT ONE DECISION AT A TIME'}</text>
+</svg>
+<style>
+.voyage-scene { width:100%; height:auto; display:block; overflow:visible; }
+.sea { fill:var(--color-primary-tint); opacity:.55; }
+.contours { fill:none; stroke:var(--color-primary); opacity:.2; stroke-width:var(--nautical-fine-stroke); }
+.fine, .rig, .quay, .paper { fill:none; stroke:var(--color-primary); stroke-width:var(--nautical-stroke); stroke-linejoin:round; stroke-linecap:round; }
+.rig { stroke-width:var(--nautical-heavy-stroke); }
+.quay, .paper { fill:var(--color-surface); }
+.solid, .hull { fill:var(--color-navy); }
+.hull-detail { fill:none; stroke:var(--color-on-primary); opacity:.65; }
+.porthole { fill:var(--color-on-primary); }
+.container { fill:var(--color-primary); stroke:var(--color-navy); stroke-width:var(--nautical-heavy-stroke); }
+.corrugation { fill:none; stroke:var(--color-on-primary); opacity:.3; }
+.load text { fill:var(--color-on-primary); font:var(--nautical-number) var(--font-mono); }
+.caption { fill:var(--color-primary); font:var(--nautical-diagram-label) var(--font-mono); }
+.course, .beam { fill:none; stroke:var(--color-primary); stroke-width:var(--nautical-stroke); stroke-dasharray:5 7; }
+[data-loaded='false'] { opacity:.15; }
+[data-loaded='true'] { opacity:1; }
+.load[data-loaded='true'] .load__arrival { animation:load-arrival var(--duration-slow) var(--ease-standard) both; }
+.load[data-current='true'] .container { fill:var(--color-navy); }
+.trolley { transition:transform var(--duration-slow) var(--ease-standard); }
+@keyframes load-arrival { from { transform:translateY(-32px);opacity:0; } to { transform:translateY(0);opacity:1; } }
+@media(prefers-reduced-motion:reduce) { .load[data-loaded='true'] .load__arrival { animation:none; } .trolley { transition:none; } }
+</style>

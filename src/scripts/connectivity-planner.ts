@@ -1,3 +1,4 @@
+import { publishGuideResult } from './guide-results';
 import { CONNECTIVITY_QUESTIONS, planConnectivity, type ConnectivitySelection } from '../data/connectivity-planner';
 export function initializeConnectivityPlanner() {
   document.querySelectorAll<HTMLElement>('.connectivity-planner:not([data-ready])').forEach(root=>{
@@ -31,11 +32,14 @@ export function initializeConnectivityPlanner() {
       }));
       gaps.hidden=result.gaps.length===0;
       gaps.querySelector('ul')?.replaceChildren(...result.gaps.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+      publishGuideResult(root,{complete:result.complete,title:'Connectivity brief',summary:result.summary,points:[...CONNECTIVITY_QUESTIONS.map(q=>q.label+': '+(q.options.find(o=>o.value===selection[q.key])?.label??'Unanswered')),...result.priorities.map(p=>p.title+' — '+p.detail)],gaps:result.gaps});
       body.scrollTop=0;
     };
     form.addEventListener('submit',event=>event.preventDefault());
     form.addEventListener('change',render);
-    resets.forEach(button=>button.addEventListener('click',()=>{form.reset();render();form.querySelector<HTMLInputElement>('input')?.focus();}));
+    const reset=()=>{form.reset();render();form.querySelector<HTMLInputElement>('input')?.focus();};
+    resets.forEach(button=>button.addEventListener('click',reset));
+    root.addEventListener('guide:reset',reset);
     render();
   });
 }

@@ -1,0 +1,45 @@
+---
+import { VOYAGE } from '../../data/guide-voyage';
+import { base } from '../../utils/base';
+import VoyageScene from './VoyageScene.astro';
+---
+<section class="guide-harbour container" aria-labelledby="harbour-title">
+  <div class="guide-harbour__intro"><h2 id="harbour-title">Prepare one workload for the voyage.</h2><p>Follow the sequence, or go straight to the decision you need. These are connected planning questions; completing them does not certify a design.</p></div>
+  <div class="guide-harbour__layout">
+    <figure class="guide-harbour__drawing"><VoyageScene/><figcaption>From knowing the cargo to accounting for the voyage. Each numbered container is one part of the plan.</figcaption></figure>
+    <ol class="guide-harbour__stops" role="list">
+      {VOYAGE.map((step,i)=><li><a href={base+step.href} data-harbour-stop={step.key}><span class="guide-harbour__number">{String(i+1).padStart(2,'0')}</span><span><span class="guide-harbour__label">{step.label}</span><strong>{step.name} <span aria-hidden="true">↗</span></strong><span class="guide-harbour__detail">{step.detail}</span></span></a></li>)}
+    </ol>
+  </div>
+  <div class="guide-harbour__offer"><div><h2>Prefer one connected plan?</h2><p>Work through all five tools here. Keep your answers together and watch the vessel take shape as you add each result.</p></div><a class="guide-harbour__start" href="#cloud-plan" data-start-voyage>Build my cloud plan <span aria-hidden="true">→</span></a></div>
+</section>
+<script>
+document.querySelectorAll<HTMLElement>('[data-harbour-stop]').forEach((link,index)=>{
+  const highlight=()=>{const scene=document.querySelector('[data-voyage-scene="overview"]');scene?.querySelector('[data-voyage-trolley]')?.setAttribute('transform','translate('+(256+index*80)+' 55)');scene?.querySelectorAll<HTMLElement>('[data-load]').forEach(el=>el.dataset.current=String(el.dataset.load===link.dataset.harbourStop));};
+  link.addEventListener('pointerenter',highlight);link.addEventListener('focus',highlight);
+});
+</script>
+<style>
+.guide-harbour { padding-bottom:var(--space-10); }
+.guide-harbour__intro { display:grid; gap:var(--space-3); max-width:75ch; }
+h2 { font:var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); letter-spacing:var(--tracking-tight); }
+p, figcaption { color:var(--color-on-surface-muted); line-height:var(--leading-relaxed); }
+.guide-harbour__layout { display:grid; gap:var(--space-6); margin-block:var(--space-7); align-items:center; }
+.guide-harbour__drawing { min-width:0; }
+figcaption { padding:var(--space-3); font-size:var(--text-label-md); max-width:60ch; }
+.guide-harbour__stops { display:grid; gap:var(--space-3); }
+.guide-harbour__stops a { display:grid; grid-template-columns:var(--space-10) minmax(0,1fr); gap:var(--space-3); padding:var(--space-3); color:var(--color-navy); text-decoration:none; transition:background var(--duration-fast); }
+.guide-harbour__stops a:hover, .guide-harbour__stops a:focus-visible { background:var(--color-primary-tint); }
+.guide-harbour__stops li { position:relative; }
+.guide-harbour__stops li:not(:last-child)::before { content:''; position:absolute; left:var(--space-6); top:var(--space-10); bottom:calc(-1 * var(--space-3)); width:calc(var(--nautical-heavy-stroke) * 1px); background:var(--color-primary-tint); }
+.guide-harbour__number { align-self:start; padding-top:var(--space-1); font:var(--text-title-lg) var(--font-mono); color:var(--color-primary); }
+.guide-harbour__stops strong, .guide-harbour__label, .guide-harbour__detail { display:block; }
+.guide-harbour__stops strong { font-size:var(--text-body-lg); margin-block:var(--space-1); }
+.guide-harbour__label { font:var(--text-label-sm) var(--font-mono); color:var(--color-primary); }
+.guide-harbour__detail { color:var(--color-on-surface-muted); font-size:var(--text-label-md); line-height:var(--leading-relaxed); }
+.guide-harbour__offer { display:grid; gap:var(--space-5); padding:var(--space-6); background:var(--color-navy); color:var(--color-on-primary); }
+.guide-harbour__offer h2 { color:var(--color-on-primary); }
+.guide-harbour__offer p { color:var(--color-on-primary); margin-top:var(--space-3); max-width:68ch; }
+.guide-harbour__start { padding:var(--space-4) var(--space-5); background:var(--color-surface); color:var(--color-navy); text-decoration:none; font-weight:var(--weight-semibold); align-self:center; justify-self:start; }
+@media(min-width:1024px) { .guide-harbour__layout { grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); } .guide-harbour__offer { grid-template-columns:1fr auto; align-items:center; } }
+</style>

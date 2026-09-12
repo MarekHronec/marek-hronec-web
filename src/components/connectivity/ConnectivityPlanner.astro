@@ -1,6 +1,8 @@
 ---
 import { CONNECTIVITY_QUESTIONS } from '../../data/connectivity-planner';
 import ChooserQuestion from '../platform/ChooserQuestion.astro';
+interface Props { embedded?: boolean }
+const { embedded = false } = Astro.props;
 import GuideNextSteps from '../shared/GuideNextSteps.astro';
 ---
 <section class="connectivity-planner" id="connectivity-planner" aria-labelledby="connectivity-planner-title">
@@ -9,7 +11,7 @@ import GuideNextSteps from '../shared/GuideNextSteps.astro';
   <noscript><p>Enable JavaScript to prepare the brief. The four explanations above and the reading below remain available without it.</p></noscript>
   <div class="connectivity-planner__grid">
     <form data-connectivity-form>
-      <ol role="list">{CONNECTIVITY_QUESTIONS.map((question,index)=><ChooserQuestion question={{...question,options:[...question.options]}} index={index} total={CONNECTIVITY_QUESTIONS.length} />)}</ol>
+      <ol role="list">{CONNECTIVITY_QUESTIONS.map((question,index)=><ChooserQuestion idPrefix="connectivity" question={{...question,options:[...question.options]}} index={index} total={CONNECTIVITY_QUESTIONS.length} />)}</ol>
       <button type="button" data-connectivity-reset disabled>↺ Start over</button>
     </form>
     <aside class="connectivity-planner__result">
@@ -24,7 +26,7 @@ import GuideNextSteps from '../shared/GuideNextSteps.astro';
           <div data-connectivity-gaps hidden><h4>Resolve first</h4><ul></ul></div>
           <ol data-connectivity-priorities></ol>
         </div>
-        <GuideNextSteps current="connectivity" />
+        {!embedded && <GuideNextSteps current="connectivity" />}
       </div>
     </aside>
   </div>

@@ -6,6 +6,8 @@
  * hidden, so the scoring genuinely needs scripting — hence the <noscript>.
  * The tabbed explainer above degrades properly; this does not.
  */
+interface Props { embedded?: boolean }
+const { embedded = false } = Astro.props;
 import { QUESTIONS } from '../../data/platform-chooser';
 import ChooserQuestion from './ChooserQuestion.astro';
 import ChooserResult from './ChooserResult.astro';
@@ -32,7 +34,7 @@ import ChooserResult from './ChooserResult.astro';
       <button type="button" class="pc__reset" data-chooser-reset disabled>↺ Start over</button>
     </form>
 
-    <ChooserResult />
+    <ChooserResult embedded={embedded} />
   </div>
 </div>
 
