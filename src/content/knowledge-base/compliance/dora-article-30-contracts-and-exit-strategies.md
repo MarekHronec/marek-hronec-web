@@ -3,7 +3,7 @@ title: "DORA Article 30 — Cloud Contracts, Audit Rights, and Exit Strategies"
 category: compliance
 tags: ["DORA", "Article 30", "Contracts", "Financial Sector", "Exit Strategy", "Compliance", "Data Security"]
 date: 2026-04-28
-updated: 2026-04-28
+updated: 2026-09-12
 readTime: 12
 level: advanced
 excerpt: "DORA Article 30 specifies the contractual content every financial entity must obtain from its cloud providers. The list is long, the substance is operational, and most pre-DORA cloud contracts do not meet it. This article walks through each clause, what it means in practice, and what financial entities and cloud providers actually negotiate."
@@ -121,7 +121,7 @@ This is also where customer-controlled encryption ([BYOK / HYOK](/knowledge-base
 
 ## Assistance with incidents — the cooperation clause
 
-The cooperation clause requires the provider to assist with incident management **at no additional cost**. The "no additional cost" wording matters — it prevents providers from monetising incident-cooperation as a premium service.
+Article 30(2)(f) requires the provider to assist the financial entity when an ICT incident occurs, **"at no additional cost, or at a cost that is determined ex-ante"**. The second half of that phrase is usually dropped in summaries, and it changes the clause: cooperation *can* be charged for. What it cannot be is priced opportunistically after an incident, when the customer has no leverage. Fix the price in the contract or get it for nothing.
 
 The substance covered:
 
@@ -187,15 +187,16 @@ The notification period is typically 90 days for material changes, though DORA d
 
 ## Termination and exit strategies — the planning clause
 
-Article 30 requires clear termination conditions. For arrangements supporting critical or important functions, **exit strategies** are separately specified and must include:
+Article 30 requires clear termination conditions, and Article 30(3)(f) requires the contract to provide for **exit strategies, in particular a mandatory adequate transition period**. What the contract must carry:
 
 - **Documented exit plan** — describing how the financial entity would transition away from the provider.
 - **Data return or destruction** — provisions for the financial entity's data at exit.
 - **Migration assistance** — provider support during exit transition.
 - **Continuity period** — service continuation during exit at agreed terms.
-- **Tested capabilities** — exit plans should be tested, not only documented.
 
-The exit-strategy requirement is one of DORA's clearest practical innovations. Pre-DORA cloud contracts often had bare-bones termination clauses; DORA expects detailed, operational, tested exit plans.
+**Testing is a different article, and a different party's duty.** The requirement that exit plans be "comprehensive, documented and … sufficiently tested and reviewed periodically" is **Article 28(8)**, and it binds the financial entity, not the provider. The contract has to make that testing possible; the obligation to actually run it is not an Article 30 clause. Getting these two the wrong way round is the most common misreading of DORA's exit provisions.
+
+The exit-strategy requirement is one of DORA's clearest practical innovations. Pre-DORA cloud contracts often had bare-bones termination clauses; DORA expects the contract to make a real exit executable.
 
 For cloud providers, supporting customer exit strategies requires:
 
@@ -300,7 +301,7 @@ Cloud providers serving the EU financial sector commonly publish a "DORA-ready" 
 - Service levels must be quantitative + qualitative with measurable methodology. Move beyond credit-based remedy frameworks.
 - Cooperation with incidents is at no additional cost and supports the financial entity's 24-hour notification cadence.
 - Audit rights are the most contentious clause. Pooled audit programmes + expanded SOC 2 / C5 disclosure handles most cases; direct audits reserved for largest customers.
-- Exit strategies must be documented, operational, and tested. Maintaining a real alternative addresses concentration risk.
+- The contract must provide an exit strategy with an adequate transition period (Art. 30(3)(f)); the financial entity must keep that plan documented and tested (Art. 28(8)). Maintaining a real alternative addresses concentration risk.
 - The Register of Information under Article 28 requires structured data export from cloud providers. Build register-data export capability.
 - Build a structured DORA contract template; avoid bespoke-per-customer drift.
 - Three-layer contract stack: base contract + DORA annex (Article 30) + GDPR DPA (Article 28) + sector-specific annexes as needed.

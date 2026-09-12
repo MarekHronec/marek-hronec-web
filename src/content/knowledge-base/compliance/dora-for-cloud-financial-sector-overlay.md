@@ -3,7 +3,7 @@ title: "DORA for Cloud — Overview of the EU Financial-Sector Operational Resil
 category: compliance
 tags: ["DORA", "Financial Sector", "NIS2", "Compliance", "Data Security", "Sectoral"]
 date: 2026-04-18
-updated: 2026-04-18
+updated: 2026-09-12
 readTime: 10
 level: advanced
 excerpt: "The Digital Operational Resilience Act has been in force since January 2025 and applies to every financial entity in the EU. This article is the overview — what DORA is, its five pillars, and how it fits with national frameworks. For the CTPP regime and contractual content, see the dedicated deep-dive articles."
@@ -30,7 +30,7 @@ references:
     domain: "enisa.europa.eu"
 ---
 
-The Digital Operational Resilience Act (DORA) entered into force on **17 January 2025**. For cloud providers serving any EU financial entity — banks, insurers, asset managers, payment institutions, central counterparties, crypto-asset service providers — DORA is not an overlay on top of national frameworks. It is the **primary regulatory framework** that defines the cloud provider's obligations to its financial customer, and it can result in hyperscalers being directly supervised by European Supervisory Authorities. This article is the overview; the deep dives sit in dedicated articles linked below.
+The Digital Operational Resilience Act (DORA) entered into force on **16 January 2023** and has applied since **17 January 2025**. For cloud providers serving any EU financial entity — banks, insurers, asset managers, payment institutions, central counterparties, crypto-asset service providers — DORA is not an overlay on top of national frameworks. It is the **primary regulatory framework** that defines the cloud provider's obligations to its financial customer, and it can result in hyperscalers being directly supervised by European Supervisory Authorities. This article is the overview; the deep dives sit in dedicated articles linked below.
 
 ## What DORA is and why it matters for cloud
 

@@ -3,7 +3,7 @@ title: "NIS2 Supply Chain — What Essential Entities Actually Need From Cloud P
 category: compliance
 tags: ["NIS2", "Supply Chain", "Essential Entities", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-04-11
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 11
 level: advanced
 excerpt: "NIS2 doesn't just regulate operators directly — it regulates their supply chains, including cloud providers. This article unpacks what NIS2 supply-chain obligations actually look like for cloud customers and what evidence cloud providers must produce, with the per-country variation that matters in practice."
@@ -32,7 +32,7 @@ NIS2 — Directive (EU) 2022/2555 — does not regulate cloud providers only as 
 
 NIS2 hits cloud providers from two sides simultaneously:
 
-**Side 1 — Cloud provider as essential entity.** Cloud computing service providers, datacentre services, and content delivery networks are listed in NIS2 Annex I as digital infrastructure. Above size thresholds (≥50 employees and ≥€10M annual turnover, with stricter thresholds for some sectors), they are **essential entities** subject to direct NIS2 obligations: risk management, incident reporting (24h/72h/1 month), governance accountability, sanctions up to €10M or 2% of global turnover.
+**Side 1 — Cloud provider as essential entity.** Cloud computing service providers, datacentre services, and content delivery networks are listed in NIS2 Annex I as digital infrastructure. Size decides which of two regimes applies, and the thresholds are widely misquoted. A provider that **exceeds** the medium-sized ceilings — 250+ staff, or turnover above €50M with a balance sheet above €43M — is an **essential entity**: sanctions up to €10M or 2% of global turnover, and *ex ante* supervision. A medium-sized provider, from 50 staff or €10M turnover, is an **important entity** — the same substantive Article 21 duties, but *ex post* supervision and a lower ceiling of €7M or 1.4%. Two exceptions run the other way: public electronic communications providers are essential at medium size, and qualified trust service providers, TLD registries and DNS providers are essential at any size. Either way the duties are the same: risk management, incident reporting (24h/72h/1 month), governance accountability.
 
 **Side 2 — Cloud provider as supply-chain participant.** Every customer that is itself an essential or important entity has NIS2 supply-chain obligations under Article 21. The customer must assess and manage the risks posed by its ICT supply chain — which includes the cloud providers it consumes. The cloud provider is not directly regulated through this side, but the customer's obligations create operational demands on the provider.
 

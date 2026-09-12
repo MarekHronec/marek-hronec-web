@@ -70,7 +70,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 
 | # | Batch | Articles | Model | Status | Findings | Applied |
 |---|---|---|---|---|---|---|
-| B1 | EU-level instruments | 7 | opus | running | — | — |
+| B1 | EU-level instruments | 7 | opus | **reported** | [12 findings](audit/B1-eu-instruments.md) | 4 of 12 |
 | B2 | National frameworks, CZ–IT | 5 | opus | todo | — | — |
 | B3 | National frameworks, NL–UK | 7 | opus | todo | — | — |
 | B4 | Assurance and attestation | 5 | sonnet | todo | — | — |
