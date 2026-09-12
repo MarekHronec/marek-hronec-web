@@ -51,8 +51,16 @@ financial hook; C3A added to the sovereignty section.
 
 ## Not applied
 
-- **Finding 14** (Italy NIS2 determinazioni 379907/2025, 127437/2026) — plausible
-  but not verified here. Unverified findings do not get applied.
+- **Finding 14** (Italy NIS2 determinazioni 379907/2025, 127437/2026) —
+  **⊘ rejected on review, 2026-09-12.** Checked against ACN's own NIS pages. The
+  article's substance is already right: ACN states that entities must have
+  adopted the security measures "entro ottobre dello stesso anno", which is what
+  the article says — "basic notification obligations from January 2026; basic
+  security measures by October 2026". The finding proposed adding specific
+  determinazione numbers and a 31 May 2026 *fornitori rilevanti* deadline, and
+  neither could be sourced from ACN's site here. Adding unverifiable instrument
+  numbers to an article whose dates are already correct would trade accuracy for
+  the appearance of precision. Left as is.
 - **Finding 18** (France NIS2 CJEU referral) — same unverified CJEU claim B1
   declined to publish. Still open.
 - **Findings 17, 19–25** — EUCS framing overtaken (partly handled in B1's P9),
