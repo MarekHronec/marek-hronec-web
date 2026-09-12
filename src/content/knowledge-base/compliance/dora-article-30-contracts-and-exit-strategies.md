@@ -42,7 +42,7 @@ Article 30 sits alongside:
 - **Article 30** — contractual arrangements (this article's focus).
 - **Articles 31-44** — the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision).
 
-Article 30 applies to **all** ICT third-party arrangements supporting critical or important functions, not only to CTPP-designated providers. Every financial entity's cloud contract must meet it.
+Scope is wider than it is usually described. **Article 30(2) applies to every contract for ICT services**, not only to those supporting critical or important functions — its chapeau reads "the contractual arrangements on the use of ICT services shall include at least the following elements". Article 30(3) then *adds* requirements, "in addition to the elements referred to in paragraph 2", for arrangements that do support critical or important functions. So a non-critical cloud contract is not out of scope; it is in scope for the paragraph 2 list. None of this is limited to CTPP-designated providers.
 
 ## The fifteen clause categories
 
@@ -131,7 +131,7 @@ The substance covered:
 - Remediation cooperation.
 - Post-incident review participation.
 
-The 24-hour clock under DORA (initial notification to competent authority within 24 hours of incident classification) drives operational requirements on the cooperation clause. Cloud providers must support customer reporting within timelines that allow customers to meet the 24-hour deadline — meaning the cloud provider needs an established incident-cooperation interface, not ad-hoc handling.
+The initial-notification clock under DORA — **four hours** from classifying an incident as major, with a 24-hour backstop from awareness (Delegated Reg. (EU) 2025/301) — drives operational requirements on the cooperation clause. Cloud providers must support customer reporting within timelines that allow customers to meet the 24-hour deadline — meaning the cloud provider needs an established incident-cooperation interface, not ad-hoc handling.
 
 ## Cooperation with competent authorities
 

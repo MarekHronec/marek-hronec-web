@@ -36,7 +36,7 @@ The Digital Operational Resilience Act (DORA) entered into force on **16 January
 
 DORA is Regulation (EU) 2022/2554 — a **directly applicable** EU regulation (no national transposition required) that establishes uniform ICT operational resilience requirements for the EU financial sector. It applies to approximately **22,000 financial entities** across the EU and to their **critical ICT third-party providers** — which includes any cloud provider whose services are material to the financial entity's operations.
 
-DORA's key innovation: it brings critical ICT third-party providers — meaning hyperscalers and major SaaS platforms — under **direct European supervision** by the European Supervisory Authorities (ESAs: **EBA** for banking, **EIOPA** for insurance and pensions, **ESMA** for securities markets). For the first time, AWS, Microsoft, Google, and other major cloud providers can be required to answer to European financial regulators directly. This is the [Critical Third-Party Provider (CTPP) regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) — covered in detail in its own article.
+DORA's key innovation: it brings critical ICT third-party providers — meaning hyperscalers and major SaaS platforms — under **direct European supervision** by the European Supervisory Authorities (ESAs: **EBA** for banking, **EIOPA** for insurance and pensions, **ESMA** for securities markets). That is no longer prospective: on 18 November 2025 the ESAs designated the first **19 CTPPs**, among them Amazon Web Services EMEA, Microsoft Ireland Operations, Google Cloud EMEA, Oracle Nederland, IBM and SAP. For the first time, major cloud providers answer to European financial regulators directly rather than only through their customers. This is the [Critical Third-Party Provider (CTPP) regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) — covered in detail in its own article.
 
 ## The five pillars
 
@@ -45,7 +45,7 @@ DORA structures the regime around five pillars:
 | # | Pillar | What it covers |
 |---|---|---|
 | 1 | **ICT risk management** | The financial entity's responsibilities for managing ICT risk: governance, risk framework, ICT systems, ICT-related incidents, business continuity |
-| 2 | **ICT-related incident management** | Classification, reporting timelines (24h initial / 72h intermediate / 1-month final), post-incident review |
+| 2 | **ICT-related incident management** | Classification, reporting timelines (see below — they are not the 24h/72h/1-month most summaries state), post-incident review |
 | 3 | **Digital operational resilience testing** | Vulnerability assessments, network security tests, scenario-based testing, **threat-led penetration testing (TLPT)** every 3 years for systemically important entities |
 | 4 | **ICT third-party risk management** | Contractual requirements (Article 30), exit strategies, concentration risk, the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) |
 | 5 | **Information and intelligence sharing** | Coordination on cyber threats across financial entities |
@@ -84,13 +84,19 @@ DORA imposes one of the strictest incident reporting regimes in EU regulation:
 
 | Stage | Timeline |
 |---|---|
-| **Initial notification** | **24 hours** from classification of a major ICT-related incident |
-| **Intermediate report** | **72 hours** from classification |
-| **Final report** | **One month** from the resolution of the incident |
+| **Initial notification** | **4 hours** from classifying the incident as major — and in any case no later than **24 hours** from becoming aware of it |
+| **Intermediate report** | **72 hours** from submitting the initial notification |
+| **Final report** | **One month** from the latest intermediate report |
 
-The clock starts at **classification**, not at detection. The financial entity must classify the incident according to DORA's classification criteria (impact, geographical spread, duration, criticality of services, economic impact).
+These are set by Commission Delegated Regulation (EU) 2025/301, and they are widely misquoted as a flat 24h / 72h / one month. Three details matter in practice:
 
-For cloud providers, the operational consequence is the **cooperation obligation** detailed in [Article 30](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies). The provider must support the customer's reporting timelines — providing technical details, impact assessments, and remediation status fast enough that the customer can meet the 24-hour deadline. Cloud providers without an established cooperation interface tend to become the bottleneck.
+- The initial deadline is **four hours**, not twenty-four. The 24-hour figure is a backstop measured from *awareness*, which exists to stop an entity delaying the clock by delaying classification.
+- The later deadlines chain off **the previous report**, not off classification. Intermediate runs from the initial notification; final runs from the intermediate.
+- The final report is anchored to the intermediate report, **not to resolution**. An incident that stays open does not postpone it.
+
+The financial entity classifies the incident against DORA's criteria — impact, geographical spread, duration, criticality of services, economic impact — and the four-hour clock starts there.
+
+For cloud providers, the operational consequence is the **cooperation obligation** detailed in [Article 30](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies). The provider must support the customer's reporting timelines — providing technical details, impact assessments, and remediation status fast enough that the customer can meet a four-hour deadline. Cloud providers without an established cooperation interface tend to become the bottleneck.
 
 Reports go to the financial entity's national competent authority (the financial supervisor in the entity's home Member State).
 

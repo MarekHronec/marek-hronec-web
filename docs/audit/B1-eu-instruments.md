@@ -17,7 +17,7 @@ carry the reviewer's fetched sources; each is checked again at apply time.
 
 ---
 
-## P1 ☐ WRONG — CTPPs have been designated. The article says they have not.
+## P1 ☑ APPLIED — WRONG — CTPPs have been designated. The article says they have not.
 
 `dora-ctpp-regime-direct-esa-supervision.md` L74, L110–116, L214, L219
 
@@ -69,7 +69,7 @@ Source: [Reg. (EU) 2026/1744](https://eur-lex.europa.eu/eli/reg/2026/1744/oj) ·
 [Gibson Dunn](https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/) ·
 [Mayer Brown](https://www.mayerbrown.com/en/insights/publications/2026/07/eu-ai-act-news-digital-omnibus-on-ai-new-guidance-on-risk-classification-gpai-and-transparency-obligations)
 
-## P3 ☐ WRONG — DORA incident-reporting deadlines, in three articles
+## P3 ◐ APPLIED (partly rejected) — WRONG — DORA incident-reporting deadlines, in three articles
 
 `dora-for-cloud-...` L48, 85–89, 93, 149, 196 · `dora-article-30-...` L134, 301 ·
 `nis2-supply-chain-...` L151
@@ -88,6 +88,13 @@ contradiction: the NIS2 article correctly anchors its final report to the
 notification, so the two tables imply a false symmetry.
 
 Source: [Delegated Reg. (EU) 2025/301](https://eur-lex.europa.eu/eli/reg_del/2025/301/oj/eng)
+
+**Partly rejected on review.** The reviewer listed `nis2-supply-chain-...` L151
+as carrying the same error. It does not — that line describes **NIS2's** own
+cadence (24h early warning and 72h notification from awareness, final report one
+month from the notification), which is correct. Only the two DORA statements were
+wrong. Flagging a correct line as an error is the cheaper mistake of the two, but
+it is why findings are checked before they are applied.
 
 ## P4 ☑ APPLIED — WRONG — "DORA entered into force on 17 January 2025"
 
@@ -109,7 +116,7 @@ mandatory adequate transition period. The duty that exit plans be
 "comprehensive, documented and … sufficiently tested and reviewed periodically"
 is **Art. 28(8)**, and it falls on the financial entity, not the contract.
 
-## P6 ◐ (b) APPLIED, (a) and (c) open — WRONG — Art. 30 scope, the cost clause, and the clause list
+## P6 ◐ (a) and (b) APPLIED, (c) open — WRONG — Art. 30 scope, the cost clause, and the clause list
 
 **(a) Scope, L45.** "applies to all ICT third-party arrangements supporting
 critical or important functions" — Art. 30(2) applies to *every* ICT services
@@ -186,7 +193,7 @@ branch. ENISA's visible certification work since is EUMSS, not EUCS.
 Source: [Commission Q&A](https://digital-strategy.ec.europa.eu/en/faqs/cybersecurity-package-questions-answers) ·
 [CADA](https://digital-strategy.ec.europa.eu/en/policies/cloud-and-ai-development-act)
 
-## P10 ☐ WRONG — AWS is not an EU Cloud CoC adherent
+## P10 ☑ APPLIED — WRONG — AWS is not an EU Cloud CoC adherent
 
 `gdpr-article-28-and-eu-cloud-code-of-conduct.md`
 

@@ -3,7 +3,7 @@ title: "GDPR Article 28 and the EU Cloud Code of Conduct — What They Actually 
 category: compliance
 tags: ["GDPR", "EU Cloud CoC", "Article 28", "Compliance", "Data Security", "Cross-Cutting", "Privacy"]
 date: 2026-04-09
-updated: 2026-04-09
+updated: 2026-09-12
 readTime: 10
 level: advanced
 excerpt: "GDPR Article 28 is the operative article for every controller-processor cloud relationship. The EU Cloud Code of Conduct is the most pragmatic instrument for demonstrating Article 28 compliance at scale. This article walks through what Article 28 actually requires and what the CoC actually demonstrates."
@@ -30,7 +30,7 @@ references:
     domain: "edpb.europa.eu"
 ---
 
-GDPR Article 28 is the operative article for every controller-processor cloud relationship in the EU. Every public administration article in this series references it, every national framework demands evidence of alignment with it, and every cloud provider's procurement conversation eventually arrives at it. The **EU Cloud Code of Conduct** is the most pragmatic instrument for demonstrating Article 28 compliance at scale — and it is the only EU-wide cloud compliance instrument currently in widespread production use. This article walks through what Article 28 actually requires, what the CoC actually demonstrates, and where the limits sit.
+GDPR Article 28 is the operative article for every controller-processor cloud relationship in the EU. Every public administration article in this series references it, every national framework demands evidence of alignment with it, and every cloud provider's procurement conversation eventually arrives at it. The **EU Cloud Code of Conduct** is the most pragmatic instrument for demonstrating Article 28 compliance at scale — and it is the most widely used EU-wide cloud compliance instrument in production today — though not the only one, since the CISPE code is a second pan-European Article 40 cloud code with its own adherents, AWS among them. This article walks through what Article 28 actually requires, what the CoC actually demonstrates, and where the limits sit.
 
 ## Article 28 — what it actually requires
 
@@ -107,13 +107,14 @@ For most large cloud providers, **Level 2** is the operational target. It maps e
 
 ## Who adheres and where to find it
 
-EU Cloud CoC adoption is broad among major cloud providers. Public adherents include:
+Adoption among major cloud providers is wide but not universal. Public adherents include:
 
-- **AWS** — Level 2.
 - **Microsoft Azure** — Level 2 (Verification ID 2021LVL02SCOPE116).
 - **Google Cloud** — Level 2.
 - **Google Workspace** — Level 2.
 - **Alibaba Cloud** — multiple services.
+
+**AWS is not on this register.** It adheres to a different Article 40 instrument, the **CISPE Data Protection Code of Conduct**, with services verified by EY CertifyPoint under CNIL accreditation. If a procurement question asks whether AWS adheres to "the cloud code of conduct", the accurate answer is that it adheres to CISPE's, not SCOPE Europe's — and pointing at the wrong register is a fast way to lose credibility in a supplier assessment.
 - **IBM Cloud** — multiple services.
 - **Oracle** — multiple services.
 - **Salesforce** — multiple services.
@@ -143,7 +144,7 @@ The EU Cloud CoC includes a **Third Country Transfer Module** — a supplementar
 - Provides additional safeguards aligned with the EDPB's recommendations on transfer impact assessments.
 - Addresses the Schrems II decision's requirements on supplementary measures.
 
-The transfer module is the cloud-industry's answer to the post-Schrems-II uncertainty around standard contractual clauses (SCCs). It provides a structured framework for assessing and documenting transfer risks specific to cloud services. As of mid-2026, transfer-module adherence is increasing but is not yet as broadly adopted as base CoC adherence.
+The transfer module is intended as the cloud industry's answer to post-Schrems-II uncertainty around standard contractual clauses. **It is not yet in force, and nobody adheres to it.** SCOPE Europe describes it as still in its development phase; it becomes an Article 46 transfer safeguard only once it has a positive EDPB opinion, approval from the lead supervisory authority, and General Validity granted by the Commission. Treat it as a signal of direction, not as a transfer mechanism you can rely on today.
 
 ## What the EU Cloud CoC does *not* demonstrate
 
