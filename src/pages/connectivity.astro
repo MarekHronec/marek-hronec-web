@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GuideHero from '../components/shared/GuideHero.astro';
+import ConnectivityReading from '../components/connectivity/ConnectivityReading.astro';
+import ConnectivityPlanner from '../components/connectivity/ConnectivityPlanner.astro';
+import ConnectivityExplainer from '../components/connectivity/ConnectivityExplainer.astro';
+---
+<BaseLayout title="Connectivity — Design How Your Systems Connect" description="Understand public and private access, routing, DNS and redundant connections. Prepare a connectivity brief for a cloud workload.">
+<GuideHero title="Design how your" accent="systems connect" description="A line on an architecture diagram hides several decisions. Who can reach the service, which path traffic takes, how its name resolves and what happens when that path fails." tool={{href:'#connectivity-planner',title:'Prepare a connectivity brief',description:'Identify endpoints, access, performance, failure requirements and owners.'}} reference={{href:'#options',title:'Understand the four concepts',description:'Explore access, routing, DNS and redundant paths.'}} />
+<section id="options" class="connectivity-section container"><ConnectivityExplainer/></section>
+<div class="connectivity-section container"><ConnectivityPlanner/></div>
+<div class="connectivity-section container"><ConnectivityReading/></div>
+</BaseLayout>
+<style>.connectivity-section { padding-block:var(--space-8); }</style>

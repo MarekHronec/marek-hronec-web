@@ -1,0 +1,32 @@
+export const CONNECTIVITY_QUESTIONS=[
+{key:'scope',label:'Endpoints',prompt:'Where must this connection run?',help:'Choose one connection to assess. Record the actual source and destination names in the brief you take into design.',options:[{value:'cloud',label:'Within one cloud environment'},{value:'hybrid',label:'Between our premises and cloud'},{value:'multicloud',label:'Between cloud providers'}]},
+{key:'access',label:'Access',prompt:'Who needs to reach the destination?',help:'Decide reachability separately from identity and encryption. A private IP does not grant permission to use a service.',options:[{value:'public',label:'Internet users or public clients'},{value:'private',label:'Only clients on approved private networks'},{value:'unknown',label:'We have not agreed the permitted audience'}]},
+{key:'performance',label:'Performance',prompt:'Have you measured the traffic requirements?',help:'Include peak throughput, latency, packet loss tolerance, transaction behaviour and expected growth.',options:[{value:'measured',label:'Yes, including peaks and acceptable latency'},{value:'estimate',label:'Only averages or estimates'},{value:'unknown',label:'No measurements yet'}]},
+{key:'failure',label:'Continuity',prompt:'What should happen if the primary connection fails?',help:'A fallback must have working DNS, routing and security rules as well as enough capacity.',options:[{value:'continue',label:'The operation must continue on another path'},{value:'interrupt',label:'An agreed interruption is acceptable'},{value:'unknown',label:'The tolerance is not agreed'}]},
+{key:'ownership',label:'Operation',prompt:'Are DNS, routing and incident responsibilities assigned?',help:'Include both ends and any carrier. Someone must own changes, monitoring and the recovery procedure.',options:[{value:'owned',label:'Yes, with an agreed operating procedure'},{value:'split',label:'Several teams are involved; hand-offs are unclear'},{value:'unknown',label:'Ownership is not established'}]}
+] as const;
+export type ConnectivitySelection=Partial<Record<(typeof CONNECTIVITY_QUESTIONS)[number]['key'],string>>;
+export function planConnectivity(selection:ConnectivitySelection){
+const answers:ConnectivitySelection={};
+for(const q of CONNECTIVITY_QUESTIONS)if(q.options.some(o=>o.value===selection[q.key]))answers[q.key]=selection[q.key];
+const answered=Object.keys(answers).length,priorities:{title:string;detail:string}[]=[],gaps:string[]=[];
+if(answered!==5)return{answered,complete:false,priorities,gaps,summary:'Complete the five questions to prepare a connectivity brief.'};
+const add=(title:string,detail:string)=>priorities.push({title,detail});
+add('Write down the connection contract','Record source and destination, service name, address ranges, ports, protocols, connection initiator, data classification and expected traffic in each direction.');
+if(answers.scope==='cloud')add('Compare direct connectivity with an intentional transit path','Check supported peering or service endpoints, address overlap and effective routes. Peering two networks to a hub does not by itself provide transit between them.');
+if(answers.scope==='hybrid')add('Compare VPN and private connectivity against the requirements','Include gateway and carrier capacity, lead time, physical paths, encryption and both routing domains. A private circuit is not automatically application-to-application encryption.');
+if(answers.scope==='multicloud')add('Check the whole cross-cloud path','Compare supported private interconnect, provider transit and encrypted internet paths. Verify regional availability, address overlap, both providers’ routing policies and operating responsibilities.');
+if(answers.access==='unknown')gaps.push('Agree the permitted audience and access boundary before selecting the endpoint design.');
+else if(answers.access==='private')add('Prove private access and test the public boundary','Configure a supported private endpoint or path with appropriate DNS. Explicitly restrict public access where required; a private endpoint alone may leave the public endpoint enabled. Test permitted and denied clients.');
+else add('Protect the public entry point','Define authentication, authorisation, encryption and appropriate edge protection. Limit exposed ports and management paths; public reachability need not imply public data.');
+add('Verify DNS and the return path','Query the service name from every client location. Check zones, forwarding, resolver availability and cached answers, then test the real application connection in both directions through any stateful inspection.');
+if(answers.performance!=='measured')gaps.push('Measure representative peak traffic and latency before sizing a connection. Average throughput or a circuit’s headline bandwidth is insufficient.');
+else add('Validate end-to-end performance','Test representative transactions through the gateway, inspection devices and destination. Record peak throughput, latency, loss, single-flow limits and headroom, not just circuit speed.');
+if(answers.failure==='unknown')gaps.push('Agree interruption tolerance and the failure boundary before claiming redundant connectivity.');
+else if(answers.failure==='continue')add('Exercise a genuinely surviving path','Trace shared ducts, routers, providers and locations. Confirm backup capacity and route convergence, then test existing sessions, new connections and failback. Two logical circuits can share physical failure points.');
+else add('Document the accepted interruption','Record the tolerated duration, detection method and restoration owner. Keep recovery access and communications available when this connection is down.');
+if(answers.ownership!=='owned')gaps.push('Assign named owners for both endpoints, DNS, routes, inspection, carrier escalation and the change hand-offs.');
+else add('Keep ownership and evidence current','Record the change procedure, rollback, monitoring and escalation contacts. Revalidate after route, DNS, firewall or carrier changes.');
+add('Price the whole connection','Include ports, circuit/provider fees, gateways, inspection, DNS, data processing and transfer, plus backup paths and operating effort. Apply current service and contractual rates.');
+return{answered,complete:true,priorities,gaps,summary:gaps.length?'Your brief identifies open requirements to resolve before selecting a design.':'Use this brief to compare designs and agree an end-to-end validation plan.'};
+}

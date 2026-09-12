@@ -4,10 +4,11 @@ import { base } from '../../utils/base';
 interface Props { current: GuideKey }
 const { current } = Astro.props;
 const offers: Record<GuideKey, Partial<Record<GuideKey, string>>> = {
-  platform: { cost: 'Check the full cost of this platform', compliance: 'Check the data and compliance requirements', resilience: 'Plan how this workload will recover' },
-  compliance: { cost: 'Include protection and governance in the cost', platform: 'Explore suitable platform approaches', resilience: 'Turn availability needs into recovery targets' },
-  resilience: { cost: 'Budget for standby, copies and recovery tests', compliance: 'Check where recovery copies may live', platform: 'Review who operates the recovery platform' },
-  cost: { platform: 'Compare what each platform leaves you to operate', compliance: 'Check the protection requirements before cutting cost', resilience: 'Include the recovery design in your estimate' },
+  platform: { connectivity: 'Plan how clients reach this platform', cost: 'Check the full cost of this platform', compliance: 'Check the data and compliance requirements', resilience: 'Plan how this workload will recover' },
+  compliance: { connectivity: 'Design the permitted network access', cost: 'Include protection and governance in the cost', platform: 'Explore suitable platform approaches', resilience: 'Turn availability needs into recovery targets' },
+  resilience: { connectivity: 'Test the paths your recovery depends on', cost: 'Budget for standby, copies and recovery tests', compliance: 'Check where recovery copies may live', platform: 'Review who operates the recovery platform' },
+  cost: { connectivity: 'Identify the network services and traffic to price', platform: 'Compare what each platform leaves you to operate', compliance: 'Check the protection requirements before cutting cost', resilience: 'Include the recovery design in your estimate' },
+  connectivity: { platform: 'Check endpoint and platform capabilities', compliance: 'Confirm the permitted data and access boundaries', resilience: 'Agree recovery targets for the connection', cost: 'Price the paths and traffic you have identified' },
 };
 ---
 <aside class="guide-next" aria-label="Continue your architecture decision">

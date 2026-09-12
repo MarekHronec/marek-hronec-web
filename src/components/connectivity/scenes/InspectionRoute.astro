@@ -1,0 +1,24 @@
+---
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import Harbour from '../../resilience/scenes/Harbour.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="routing-title">
+<title id="routing-title">A direct route bypasses the checkpoint. The demonstrated route curves through the inspection quay before reaching the service.</title>
+<ChartWater id="connect-routing"/>
+<g transform="translate(445 148)"><Harbour label="DESTINATION"/></g>
+<g transform="translate(224 265) scale(.7)"><Harbour label="INSPECTION"/></g>
+<path class="scene__route direct" d="M70 178 H493"/>
+<text class="scene__label" x="225" y="151">DIRECT · BYPASSES INSPECTION</text>
+<path class="scene__route via" d="M70 178 C121 178 158 295 268 295 S430 295 493 209"/>
+<g class="route-boat"><g transform="scale(.44)"><SailingVessel/></g></g>
+<text class="scene__label" x="300" y="344" text-anchor="middle">OUTBOUND SHOWN · CHECK THE RETURN PATH TOO</text>
+</svg>
+<style>
+.route-boat { offset-path:path("M70 178 C121 178 158 295 268 295 S430 295 493 209"); offset-anchor:0 0; offset-rotate:0deg; }
+.via { opacity:.15; }
+:global(.cp[data-demonstrate='true']) .direct { opacity:.12; }
+:global(.cp[data-demonstrate='true']) .via { opacity:1; }
+:global(.cp[data-demonstrate='true']) .route-boat { animation:inspection-route var(--nautical-story-duration) linear both; }
+@keyframes inspection-route { to { offset-distance:100%; } }
+</style>

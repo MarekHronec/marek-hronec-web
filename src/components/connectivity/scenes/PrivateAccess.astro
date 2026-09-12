@@ -1,0 +1,23 @@
+---
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import Harbour from '../../resilience/scenes/Harbour.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="access-title">
+<title id="access-title">The public entrance closes while a vessel on the prepared private route still reaches the service.</title>
+<ChartWater id="connect-access"/>
+<g transform="translate(439 151)"><Harbour label="SERVICE"/></g>
+<path class="scene__route" d="M80 158 C210 128 354 151 488 211"/>
+<text class="scene__label" x="80" y="95">PUBLIC ENTRANCE</text>
+<g transform="translate(100 151) scale(.4)" class="public-boat"><SailingVessel/></g>
+<path class="scene__route" d="M90 281 C235 321 407 306 490 228"/>
+<text class="scene__label" x="72" y="339">PREPARED PRIVATE ROUTE</text>
+<g class="private-boat"><g transform="scale(.46)"><SailingVessel/></g></g>
+<g class="scene__after"><path class="scene__heavy" d="M267 135 L301 174 M301 135 L267 174"/><text class="scene__label" x="284" y="119" text-anchor="middle">CLOSED</text></g>
+</svg>
+<style>
+.private-boat { offset-path:path("M90 281 C235 321 407 306 490 228"); offset-anchor:0 0; offset-rotate:0deg; }
+:global(.cp[data-demonstrate='true']) .private-boat { animation:access-route var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .public-boat { opacity:.3; }
+@keyframes access-route { to { offset-distance:100%; } }
+</style>

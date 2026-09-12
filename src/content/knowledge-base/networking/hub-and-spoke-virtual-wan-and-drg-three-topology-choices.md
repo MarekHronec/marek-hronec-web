@@ -1,220 +1,65 @@
 ---
-title: "Hub-and-Spoke, Virtual WAN, and DRG — Three Topology Choices, Two Clouds, One Conversation"
+title: "Hub-and-Spoke, Virtual WAN and DRG — Choose the Traffic Paths First"
 category: networking
-tags: ["Azure", "OCI", "Networking", "Hub-Spoke", "Virtual WAN"]
+tags: ["Azure", "OCI", "Networking", "Connectivity"]
 date: 2026-04-30
-updated: 2026-05-13
-readTime: 13
+updated: 2026-09-12
+readTime: 4
 level: intermediate
-excerpt: "Hub-and-spoke, Virtual WAN, OCI DRG v2 — three topologies, overlapping trade-offs. Decision framework and the non-transitive peering gotcha nobody warns about."
-references:
-  - title: "Hub-spoke network topology in Azure"
-    url: "https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke"
-    description: "Microsoft's reference architecture for classic hub-and-spoke on Azure — hub VNet design, spoke peering configuration, UDR patterns for spoke-to-spoke transit, and on-prem gateway placement."
-    domain: "learn.microsoft.com"
-  - title: "Azure Virtual WAN overview"
-    url: "https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about"
-    description: "Microsoft's documentation for Virtual WAN — the managed hub model that replaces customer-managed hub VNets, enabling any-to-any spoke connectivity and built-in multi-region transit."
-    domain: "learn.microsoft.com"
-  - title: "OCI Dynamic Routing Gateway (DRG)"
-    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm"
-    description: "Oracle's DRG v2 reference — VCN attachments, route tables, transit routing between VCNs, FastConnect integration, and remote peering for cross-region connectivity."
-    domain: "docs.oracle.com"
-  - title: "Define an Azure network topology — CAF"
-    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/define-an-azure-network-topology"
-    description: "CAF guidance on choosing between traditional hub-and-spoke and Virtual WAN — the decision framework that complements the comparison in this article with Microsoft's recommended selection criteria."
-    domain: "learn.microsoft.com"
+excerpt: "Compare transit approaches by permitted flows, inspection, operations and cost rather than assuming the diagram controls routing."
 ---
 
-Pick a network topology too early and you live with it. Pick it too late and you have already built three workloads on the wrong foundation. Both clouds offer broadly similar topology choices, but the implementation details and pricing models diverge enough to change the recommendation.
+## Topology expresses intent; routes determine traffic
 
-This article is about the three patterns — classic hub-and-spoke, Azure Virtual WAN, OCI Dynamic Routing Gateway v2 — what each is for, where each falls down, and how to make the choice without locking yourself into a topology you will regret.
+Begin with a flow list: who needs to talk to whom, in which direction, and through which controls. Mark flows that must remain isolated. Only then compare a classic hub, managed transit or a simpler direct connection.
 
-## The three topologies
+A spoke connected to a hub does not automatically send every packet through the hub firewall. Local traffic, direct peerings, service routes and more specific destinations can take other paths. Verify effective routes and security behaviour.
 
-**Classic hub-and-spoke** — A central hub VNet/VCN hosts shared services (firewalls, gateways, DNS, monitoring). Spoke VNets/VCNs peer to the hub. All cross-spoke traffic transits the hub. This remains the de facto enterprise pattern and the default recommendation in many landing zone designs, including the OCI Core Landing Zone.
+## Three approaches, with different boundaries
 
-**Azure Virtual WAN (vWAN)** — Microsoft-managed hub infrastructure. You create a vWAN resource and deploy virtual hubs in each region; Microsoft manages the routing fabric, transit between hubs, and connectivity options. Less operational overhead, more managed-service cost.
+| Approach | What it provides | What you still decide |
+|---|---|---|
+| Classic hub-and-spoke | A shared network for gateways, DNS or inspection services | Forwarding, spoke transit, inspection placement, capacity and operations |
+| Azure Virtual WAN | Managed virtual hubs and supported connectivity capabilities | Service tier, associations, propagation, segmentation, inspection and gateway configuration |
+| OCI DRG | A managed virtual router with network attachments and route tables | Which routes each attachment learns and uses, security controls and inspection paths |
 
-**OCI Dynamic Routing Gateway v2** — A regional virtual router that connects multiple VCNs in a hub-and-spoke fashion *without* requiring a central hub VCN. Each VCN attaches to the DRG; the DRG handles routing between them. Closer to vWAN's "managed routing fabric" model than to classic hub-and-spoke, but still customer-managed at the policy level.
+These constructs are not interchangeable. A DRG is not an entire managed branch-network service, and a Virtual WAN hub is not an arbitrary workload-hosting VNet.
 
-These are not directly equivalent — vWAN is a Microsoft-managed transit hub, DRG v2 is an OCI customer-managed transit element — but they solve overlapping problems.
+## Azure peering is not transitive
 
-## Classic hub-and-spoke — what it is
+If A peers with a hub and B peers with the same hub, that alone does not establish A-to-B transit. Depending on the design, you might use direct peering or a supported transit path with forwarding, routes and policy configured.
 
-The hub VNet (or VCN) holds:
+Check both directions. A stateful firewall can reject traffic when the return flow bypasses the required state. Azure’s [routing documentation](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview) explains route selection; the intended next hop must be confirmed at the relevant interface or subnet.
 
-- A firewall (Azure Firewall, third-party NVA, OCI Network Firewall, or third-party).
-- A VPN gateway for site-to-site VPN to on-prem.
-- An ExpressRoute / FastConnect gateway for private dedicated connectivity.
-- Optionally Bastion / OS Management Hub / management subnets.
-- Optionally a DNS resolver.
+Do not interpret a route as permission. A correct path can still be blocked by a network rule or application authorisation.
 
-Spokes peer to the hub. Each peering allows the spoke to reach hub services and, with allowGatewayTransit configured, reach on-prem via the hub's gateways.
+## Virtual WAN reduces infrastructure work, not design responsibility
 
-The model that works:
+Azure Virtual WAN capabilities depend on the service tier and configuration. Standard Virtual WAN supports broader transit scenarios than Basic. Associations, propagation and routing policies shape which networks can communicate; inspection must be deliberately configured. Consult the [Virtual WAN overview](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about) for current capabilities.
 
-```
-                    On-prem
-                       |
-                  ExpressRoute
-                       |
-                --------+--------
-                |   Hub VNet    |
-                |  ----------  |
-                |  |Firewall|  |
-                |  | VPN GW |  |
-                |  |  ER GW |  |
-                |  ----------  |
-                ----+------+--+--
-                   |      |  |
-        -----------     |  -----------
-        |                |            |
-   ----------       ----------   ----------
-   |Spoke 1 |       |Spoke 2 |   |Spoke 3 |
-   |(prod)  |       |(prod)  |   |(non-prod)|
-   ----------       ----------   ----------
-```
+Avoid the blanket statement that managed transit automatically solves every spoke-to-spoke requirement. Also avoid assuming that third-party inspection necessarily rules it out: verify supported integrations against the appliance and features you need.
 
-The pros:
+## OCI DRG routing remains explicit
 
-- Maximum control. You choose the firewall, the gateway tier, the routing rules.
-- Cost predictable. You pay for what you deploy; no platform "managed hub" fee.
-- Well-documented patterns. This is what every CAF document, every OCI Core Landing Zone variant, every cloud architect course teaches.
+OCI DRGs use attachments, route tables and route distributions to govern connectivity. A VCN attachment does not remove the need for appropriate VCN routes and security rules. Multiple DRGs can exist in a region; “one per region” can be a design choice rather than a platform rule. [Oracle DRG documentation](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm).
 
-The cons:
+Trace traffic entering each attachment and determine which route table applies. If inspection is required, verify the complete supported insertion path and the return flow rather than relying on the firewall’s presence in a hub VCN.
 
-- Transit between spokes requires explicit configuration. By default, peerings are non-transitive — Spoke 1 cannot reach Spoke 2 just because both peer to the hub. You configure user-defined routes (UDRs) on Azure or route tables on OCI to force the traffic through the hub firewall.
-- Multi-region requires hub-to-hub peering and careful route management. Easy to get wrong; asymmetric routing is a common bug.
-- Operations on the hub matter. A misconfiguration on the hub firewall affects every workload.
+## Compare candidates against the same requirements
 
-## Azure Virtual WAN — what it adds
+Create two candidate designs for an illustrative estate with application, database and management networks. Record allowed flows, operational owners and failure boundaries for each.
 
-Virtual WAN replaces the customer-managed hub VNet with a Microsoft-managed virtual hub. You still have spokes (your VNets), but the hub is now a service:
+| Evaluation | Evidence |
+|---|---|
+| Segmentation | Permitted connections succeed; prohibited ones fail |
+| Inspection | Required traffic traverses the configured control in both directions |
+| Performance | Representative transactions meet latency and throughput requirements |
+| Recovery | The selected failure leaves a usable path with adequate capacity |
+| Operation | Changes, diagnostics and rollback have named owners |
+| Cost | Current service charges, traffic meters and team effort |
 
-- Each virtual hub is in a region. Microsoft manages the routing fabric, the gateways, the high-availability aspects.
-- You deploy the gateways inside the virtual hub: VPN gateway, ExpressRoute gateway, optionally Azure Firewall (deployed as part of the virtual hub).
-- Hub-to-hub connectivity is automatic. If you have virtual hubs in West Europe and East US, vWAN automatically establishes connectivity between them.
-- Spokes connect to a virtual hub via VNet connections (a special form of peering).
+A managed topology may reduce operating work while increasing provider charges. A classic hub may offer useful control while creating a larger maintenance burden. Neither is universally cheaper.
 
-The pros:
+For multicloud, choose the routing design in each cloud deliberately, then validate the interconnection. Do not assume traffic crosses both hub firewalls unless effective routing proves that it does.
 
-- Less operational overhead. Microsoft manages the routing engine.
-- Multi-region transit is built-in. Hub-to-hub routing happens automatically.
-- Branch connectivity (SD-WAN) integration is first-class. If you have hundreds of branch sites connecting via SD-WAN, vWAN scales for this.
-- Any-to-any spoke connectivity is built into the managed routing fabric, removing the need for custom UDR patterns for most scenarios.
-
-The cons:
-
-- Cost. The virtual hub has a per-hour platform cost on top of the gateways and traffic charges. For a single region with a few VNets, vWAN is more expensive than self-managed hub-and-spoke.
-- Less customisation. You cannot place arbitrary VMs in the virtual hub; the hub is for routing, not for hosting workloads.
-- Some features are vWAN-specific and cannot be replicated in classic hub-and-spoke easily (and vice versa).
-
-The CAF guidance: vWAN for organisations with global footprint, branch connectivity at scale, or multi-region managed transit needs. Classic hub-and-spoke for everyone else.
-
-## OCI DRG v2 — the OCI-native pattern
-
-OCI's evolution. The Dynamic Routing Gateway v2 (introduced in 2021) supports multiple VCN attachments per DRG, transit routing between attached VCNs, and integrates with FastConnect for private connectivity.
-
-The shape:
-
-- One DRG per region.
-- VCNs attach to the DRG (each attachment is a separate object with its own route policy).
-- The DRG routes between attached VCNs based on its route tables.
-- FastConnect circuits attach to the DRG.
-- Site-to-Site VPN attaches to the DRG.
-- DRGs in different regions can be remote-peered for cross-region transit.
-
-```
-                    On-prem
-                       |
-                  FastConnect
-                       |
-                  ------+-----
-                  |   DRG    |
-                  ---+--+--+--
-                    |  |  |  |
-            --------  |  |  --------
-            |         |  |         |
-       ------------  ------------  ------------
-       |  VCN 1   |  |  VCN 2   |  | Hub VCN  |
-       |(payments)|  | (orders) |  |(firewall)|
-       |   prod   |  |   prod   |  |   ...    |
-       ------------  ------------  ------------
-```
-
-Note: in OCI, you can choose to put the firewall in a dedicated "hub VCN" attached to the DRG, with route policies forcing inter-VCN traffic through it. This produces something between vWAN (managed transit) and classic hub-and-spoke (customer-managed firewall).
-
-The pros:
-
-- The DRG is OCI-native and integrated with FastConnect, IPSec, and inter-region peering.
-- No equivalent of the Azure "non-transitive peering by default" issue — DRG attachments are inherently transit-capable through DRG route policies.
-- Cost-effective. The DRG itself is free; you pay for FastConnect, VPN, and traffic.
-
-The cons:
-
-- The surrounding reference architectures and community patterns are less extensive than Azure's ecosystem; DRG v2 itself is production-ready, but you may need to build out more of your own patterns.
-- Firewall integration is your problem. OCI Network Firewall or third-party NVAs need explicit placement in a hub VCN attached to the DRG.
-
-## The decision framework
-
-Six questions:
-
-**1. Single region or multi-region?**
-Single region: classic hub-and-spoke (Azure or OCI) is fine. Multi-region with global transit: vWAN on Azure, multi-DRG with remote peering on OCI.
-
-**2. Do you have hundreds of branch sites with SD-WAN?**
-Yes: vWAN on Azure is the right tool. OCI's branch connectivity story is less developed; if branch SD-WAN is core to your architecture, Azure is structurally better.
-No: any topology works.
-
-**3. How customised does your firewall need to be?**
-Standard requirements (Azure Firewall, OCI Network Firewall): managed hub options work.
-Heavily customised (third-party NGFW with deep packet inspection, advanced threat protection, custom IDS rules): classic hub-and-spoke gives you full control.
-
-**4. What is your operational maturity?**
-High: classic hub-and-spoke gives you the most control. You will run it well.
-Lower: vWAN reduces the surface area. Microsoft handles the routing fabric.
-
-**5. What is your scale?**
-Small (a few VNets / VCNs in one region): classic hub-and-spoke is cheaper and simpler.
-Large (hundreds of VNets, multiple regions, branch connectivity): vWAN's cost is justified by the operational savings.
-
-**6. Are you committed to Azure-native vs cloud-agnostic patterns?**
-Azure-native: vWAN's managed approach fits. OCI DRG v2 fits similarly on OCI.
-Cloud-agnostic: classic hub-and-spoke is more portable in mental model. The patterns transfer to AWS Transit Gateway or GCP NCC.
-
-:::tip[Architectural Pro Tip]
-Topology decisions are sticky. A workload that is built on classic hub-and-spoke can move to vWAN, but the migration is a real project — Microsoft documents it in detail and it usually takes a quarter or more. Choose deliberately, with a multi-year horizon. The right answer for the workload you have now may not be the right answer for the workload you will have in three years; choose the one that scales.
-:::
-
-## Spoke-to-spoke — the asterisk
-
-A subtle point that bites people on Azure classic hub-and-spoke: **VNet peering is not transitive**. If Spoke 1 peers to Hub, and Spoke 2 peers to Hub, Spoke 1 cannot reach Spoke 2 just because of the two peerings. You need *user-defined routes* on Spoke 1 pointing Spoke 2's CIDR at the hub firewall (and vice versa), plus the hub firewall configured to allow the traffic.
-
-vWAN handles this automatically — any-to-any spoke connectivity is built-in.
-
-OCI DRG v2 handles this through route tables on the DRG itself; you control which attachments can route to which.
-
-The default Azure behaviour catches new architects regularly. Document it; build the UDR pattern as part of your spoke vending; or move to vWAN where the issue does not exist.
-
-## Multicloud factor
-
-For multicloud architectures, the topology choice on each cloud is independent. You have an Azure topology and an OCI topology. The Interconnect bridges them.
-
-The interaction worth thinking about:
-
-- Each cloud's hub becomes the local routing point for that cloud's workloads.
-- Cross-cloud traffic transits both hubs (the Azure hub firewall, the OCI hub firewall) typically.
-- Cross-cloud routing tables need to know about both clouds' CIDRs (which is why the address plan must be unified).
-
-Architectural symmetry across clouds is aesthetically appealing but often operationally wrong; each cloud should use the topology best aligned to its native strengths. The mistake to avoid: assuming one cloud's hub design dictates the other's. They are independent decisions; choose what fits each cloud's workload best.
-
-## Closing checklist
-
-- Default to classic hub-and-spoke for single-region environments and smaller estates where operational simplicity outweighs managed-transit benefits. It is well-understood and cheaper.
-- Move to vWAN when you have global footprint, branch connectivity at scale, or operational simplification is worth the platform cost.
-- On OCI, prefer DRG v2 with attached VCNs as the modern pattern. Place firewalls in a dedicated hub VCN attached to the DRG.
-- Document spoke-to-spoke connectivity explicitly. Azure non-transitive peering is a footgun; vWAN solves it; OCI DRG v2 handles it via route policies.
-- For multicloud, choose each cloud's topology independently. Bridge them via Interconnect, not by forcing symmetry.
-- Topology migrations are real projects. Choose with a multi-year horizon.
-- Keep address planning and route governance centralised; topology choices fail faster when CIDR ownership is fragmented.
+Use the [connectivity guide](/connectivity) to frame the decision and the [cost guide](/cost) to compare the complete operating cost.

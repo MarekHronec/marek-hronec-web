@@ -1,0 +1,24 @@
+---
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import Harbour from '../../resilience/scenes/Harbour.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="paths-title">
+<title id="paths-title">A closure blocks the primary channel. A vessel follows a prepared alternate route outside that failure area.</title>
+<ChartWater id="connect-paths"/>
+<g transform="translate(437 162)"><Harbour label="DESTINATION"/></g>
+<path class="scene__paper" d="M218 130 Q291 95 367 137 L352 208 Q277 227 216 193 Z"/>
+<text class="scene__label" x="291" y="162" text-anchor="middle">SHARED FAILURE</text>
+<text class="scene__label" x="291" y="181" text-anchor="middle">AREA</text>
+<path class="scene__route primary" d="M72 225 C172 154 367 154 486 213"/>
+<path class="scene__route" d="M72 225 C196 331 397 333 486 238"/>
+<g class="scene__after"><path class="scene__heavy" d="M281 178 L311 207 M311 178 L281 207"/></g>
+<g class="backup-boat"><g transform="scale(.45)"><SailingVessel/></g></g>
+<text class="scene__label" x="300" y="346" text-anchor="middle">SURVIVING ROUTE · CAPACITY STILL NEEDS TESTING</text>
+</svg>
+<style>
+.backup-boat { offset-path:path("M72 225 C196 331 397 333 486 238"); offset-anchor:0 0; offset-rotate:0deg; }
+:global(.cp[data-demonstrate='true']) .primary { opacity:.14; }
+:global(.cp[data-demonstrate='true']) .backup-boat { animation:backup-route var(--nautical-story-duration) linear both; }
+@keyframes backup-route { to { offset-distance:100%; } }
+</style>

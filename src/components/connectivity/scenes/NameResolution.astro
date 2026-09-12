@@ -1,0 +1,25 @@
+---
+import ChartWater from '../../compliance/scenes/ChartWater.astro';
+import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
+import Harbour from '../../resilience/scenes/Harbour.astro';
+---
+<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="dns-title">
+<title id="dns-title">The client directory changes from the old address to 10.20.0.4, then the vessel travels toward the intended private pier.</title>
+<ChartWater id="connect-dns"/>
+<path class="scene__paper" d="M25 18 H339 V92 H25 Z"/>
+<text class="scene__label" x="40" y="41">CLIENT’S DNS ANSWER · orders.example</text>
+<text class="scene__text scene__before" x="40" y="72">10.20.0.9 · old pier</text>
+<text class="scene__text scene__after" x="40" y="72">10.20.0.4 · intended pier</text>
+<g transform="translate(420 165) scale(.8)" class="old-pier"><Harbour label="OLD · .9"/></g>
+<g transform="translate(420 295) scale(.8)"><Harbour label="INTENDED · .4"/></g>
+<path class="scene__route" d="M80 228 C215 151 345 150 465 195"/>
+<path class="scene__route" d="M80 228 C216 301 350 327 465 315"/>
+<g class="dns-boat"><g transform="scale(.42)"><SailingVessel/></g></g>
+<text class="scene__label" x="70" y="346">ILLUSTRATIVE PRIVATE ADDRESSES</text>
+</svg>
+<style>
+.dns-boat { offset-path:path("M80 228 C216 301 350 327 465 315"); offset-anchor:0 0; offset-rotate:0deg; }
+:global(.cp[data-demonstrate='true']) .dns-boat { animation:dns-route var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .old-pier { opacity:.3; }
+@keyframes dns-route { to { offset-distance:100%; } }
+</style>

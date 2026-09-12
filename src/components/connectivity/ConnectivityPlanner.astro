@@ -1,0 +1,62 @@
+---
+import { CONNECTIVITY_QUESTIONS } from '../../data/connectivity-planner';
+import ChooserQuestion from '../platform/ChooserQuestion.astro';
+import GuideNextSteps from '../shared/GuideNextSteps.astro';
+---
+<section class="connectivity-planner" id="connectivity-planner" aria-labelledby="connectivity-planner-title">
+  <h2 id="connectivity-planner-title">Prepare a connectivity brief.</h2>
+  <p class="connectivity-planner__lede">Five questions about one workload connection. Identify the requirements, owners and tests you need before selecting a design. This brief does not verify your network or choose a provider for you.</p>
+  <noscript><p>Enable JavaScript to prepare the brief. The four explanations above and the reading below remain available without it.</p></noscript>
+  <div class="connectivity-planner__grid">
+    <form data-connectivity-form>
+      <ol role="list">{CONNECTIVITY_QUESTIONS.map((question,index)=><ChooserQuestion question={{...question,options:[...question.options]}} index={index} total={CONNECTIVITY_QUESTIONS.length} />)}</ol>
+      <button type="button" data-connectivity-reset disabled>↺ Start over</button>
+    </form>
+    <aside class="connectivity-planner__result">
+      <div class="connectivity-planner__toolbar">
+        <p data-connectivity-progress aria-live="polite" aria-atomic="true">0 of 5 answered</p>
+        <button type="button" data-connectivity-reset disabled>↺ Start over</button>
+      </div>
+      <div class="connectivity-planner__body" tabindex="0" role="region" aria-label="Connectivity priorities">
+        <p data-connectivity-summary>Complete the five questions to prepare a connectivity brief.</p>
+        <div data-connectivity-output hidden>
+          <h3>Connectivity priorities</h3>
+          <div data-connectivity-gaps hidden><h4>Resolve first</h4><ul></ul></div>
+          <ol data-connectivity-priorities></ol>
+        </div>
+        <GuideNextSteps current="connectivity" />
+      </div>
+    </aside>
+  </div>
+</section>
+<script>
+  import { initializeConnectivityPlanner } from '../../scripts/connectivity-planner';
+  initializeConnectivityPlanner();
+  document.addEventListener('astro:page-load', initializeConnectivityPlanner);
+</script>
+<style>
+  h2 { font: var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); letter-spacing: var(--tracking-tight); }
+  .connectivity-planner__lede { max-width: 75ch; margin-block: var(--space-3) var(--space-6); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
+  .connectivity-planner__grid { display: grid; gap: var(--space-6); align-items: start; }
+  form > ol { display: grid; gap: var(--space-5); }
+  button { border: 0; padding: var(--space-3); background: var(--color-primary-tint); color: var(--color-navy); font: var(--text-label-md) var(--font-body); cursor: pointer; }
+  form > button { margin-top: var(--space-4); }
+  button:disabled { opacity: .5; cursor: default; }
+  button:hover:enabled { background: var(--color-navy); color: var(--color-on-primary); }
+  .connectivity-planner__result { display: flex; flex-direction: column; min-width: 0; background: var(--color-surface-container-low); }
+  .connectivity-planner__toolbar { display: flex; gap: var(--space-3); align-items: center; justify-content: space-between; padding: var(--space-4); }
+  .connectivity-planner__toolbar p { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
+  .connectivity-planner__body { padding: var(--space-5); min-height: 0; line-height: var(--leading-relaxed); overflow-wrap: anywhere; }
+  [hidden] { display: none; }
+  h3 { margin-top: var(--space-4); font-size: var(--text-title-lg); color: var(--color-navy); }
+  [data-connectivity-gaps] { padding: var(--space-4); margin-block: var(--space-4); background: var(--color-primary-tint); }
+  [data-connectivity-gaps] ul { list-style: disc; padding-left: var(--space-4); }
+  .connectivity-planner__body :global(li) { margin-top: var(--space-3); }
+  .connectivity-planner__body :global(h4) { color: var(--color-navy); font-weight: var(--weight-semibold); }
+  .connectivity-planner__body :global(li p) { font-size: var(--text-label-md); color: var(--color-on-surface-muted); }
+  @media(min-width: 1024px) {
+    .connectivity-planner__grid { grid-template-columns: minmax(0,1fr) minmax(0,24rem); gap: var(--space-8); }
+    .connectivity-planner__result { position: sticky; top: calc(var(--nav-height) + var(--space-4)); max-height: calc(100dvh - var(--nav-height) - var(--space-8)); }
+    .connectivity-planner__body { overflow-y: auto; scrollbar-gutter: stable; }
+  }
+</style>
