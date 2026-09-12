@@ -1,0 +1,18 @@
+---
+interface Props { label: string }
+const { label } = Astro.props;
+---
+<div class="connectivity-figure">
+  <p class="connectivity-figure__hint" aria-hidden="true">Scroll diagram to follow the full connection →</p>
+  <div class="connectivity-figure__viewport" role="region" aria-label={label} tabindex="0"><slot /></div>
+</div>
+<style>
+.connectivity-figure { min-width:0; }
+.connectivity-figure__hint { color:var(--color-primary); font:var(--text-label-md)/var(--leading-relaxed) var(--font-body); padding:var(--space-3); }
+.connectivity-figure__viewport { overflow-x:auto; overscroll-behavior-inline:contain; scrollbar-color:var(--color-primary) var(--color-primary-tint); }
+.connectivity-figure__viewport :global(.net) { min-width:560px; }
+@media (min-width:640px) {
+  .connectivity-figure__hint { display:none; }
+  .connectivity-figure__viewport :global(.net) { min-width:0; }
+}
+</style>

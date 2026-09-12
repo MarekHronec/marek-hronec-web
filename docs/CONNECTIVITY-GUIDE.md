@@ -15,3 +15,13 @@ Validation: 243 complete planner combinations plus invalid/partial inputs, requi
 Astro check: 145 files, zero errors/warnings/hints. Production build and Pagefind succeeded: 72 pages. Existing Markdown configuration deprecation and large Knowledge Base bundle notices remain outside this change.
 
 Merged locally to main after verification. No push or deployment.
+
+## Connectivity visual redesign
+
+Replaced the repeated vessel/harbour scenes with four different mechanisms in the marine palette: three staged network/identity tests; a route selector with request and reply inspection receipts; a DNS lookup returning an address before a separate application connection; and a cable break with a delivery record that retains the interruption after recovery. Each scene has its own choreography and visible outcome. Updated the surrounding explanations and controls to match.
+
+Shared ConnectivityFigure keeps labels readable on phones with a 560-unit scrollable figure, a visible scroll instruction and a keyboard-focusable region. Scene typography is tokenised; all motion remains on the existing explainer timeline, with no extra client controller or dependencies.
+
+Two independent reviews identified and resolved three issues: service-specific public-access wording, preserving earlier delivery history, and mobile label size. Follow-up reviews confirmed the fixes. Browser checks passed for all four timelines, replay/pause/reset, reduced motion, no-JavaScript content and five viewport widths. Additional timeline assertions verified ordered access outcomes, request/reply receipts, DNS answer before connection and retained missed-delivery marks after recovery. Desktop scene screenshots and a phone screenshot were inspected; keyboard scrolling was verified independently. The pause test now awaits Animation.ready rather than assuming the asynchronous browser pause has settled after a fixed delay.
+
+Final validation: Astro check 146 files, zero errors/warnings/hints; production build 72 pages and successful Pagefind indexing. Existing Markdown deprecation and Knowledge Base chunk-size notices remain. Locally merged after verification; no push.

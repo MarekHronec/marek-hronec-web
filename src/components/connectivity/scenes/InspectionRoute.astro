@@ -1,24 +1,57 @@
 ---
-import ChartWater from '../../compliance/scenes/ChartWater.astro';
-import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
-import Harbour from '../../resilience/scenes/Harbour.astro';
+import ConnectivityFigure from '../ConnectivityFigure.astro';
 ---
-<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="routing-title">
-<title id="routing-title">A direct route bypasses the checkpoint. The demonstrated route curves through the inspection quay before reaching the service.</title>
-<ChartWater id="connect-routing"/>
-<g transform="translate(445 148)"><Harbour label="DESTINATION"/></g>
-<g transform="translate(224 265) scale(.7)"><Harbour label="INSPECTION"/></g>
-<path class="scene__route direct" d="M70 178 H493"/>
-<text class="scene__label" x="225" y="151">DIRECT · BYPASSES INSPECTION</text>
-<path class="scene__route via" d="M70 178 C121 178 158 295 268 295 S430 295 493 209"/>
-<g class="route-boat"><g transform="scale(.44)"><SailingVessel/></g></g>
-<text class="scene__label" x="300" y="344" text-anchor="middle">OUTBOUND SHOWN · CHECK THE RETURN PATH TOO</text>
+<ConnectivityFigure label="Request and reply diagram">
+<svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="routing-title routing-desc">
+  <title id="routing-title">Route a request and its reply through inspection</title>
+  <desc id="routing-desc">The direct route bypasses the firewall. Select the inspected route to follow a filled request marker through the checkpoint to the application, then an outlined reply marker back through the same checkpoint. Both inspection receipts appear as traffic passes.</desc>
+  <text class="label" x="24" y="32">FOLLOW ONE COMPLETE EXCHANGE</text>
+  <path class="line direct" d="M80 147 H520"/>
+  <text class="small direct" x="196" y="128">Direct · no inspection</text>
+  <path class="line quiet" d="M80 147 C150 147 157 258 260 258 H340 C443 258 450 147 520 147"/>
+  <path class="line chosen" d="M80 147 C150 147 157 258 260 258 H340 C443 258 450 147 520 147"/>
+  <g class="switch"><path class="line" d="M111 147 H155"/><circle class="paper line" cx="111" cy="147" r="4"/></g>
+  <rect class="wash" x="34" y="77" width="92" height="52"/>
+  <path class="line" d="M53 92 h54 v23 H53 Z M68 120 h24"/>
+  <text x="46" y="182">Client</text>
+  <rect class="wash" x="474" y="77" width="92" height="52"/>
+  <path class="line" d="M492 91 h56 v10 h-56 Z M492 107 h56 v10 h-56 Z"/>
+  <text x="469" y="182">Application</text>
+  <rect class="wash" x="252" y="215" width="96" height="88"/>
+  <path class="line" d="M273 239 h54 v38 h-54 Z M273 251 h54 M273 264 h54 M288 239 v12 M311 251 v13 M288 264 v13"/>
+  <text class="label" x="244" y="325">INSPECTION</text>
+  <circle class="packet travel outbound" r="7"/>
+  <circle class="reply travel inbound" r="7"/>
+  <g class="reveal checked-out"><text class="small" x="51" y="245">Request checked</text><path class="line" d="M210 235 l6 7 11 -14"/></g>
+  <g class="reveal checked-back"><text class="small" x="366" y="284">Reply checked</text><path class="line" d="M505 274 l6 7 11 -14"/></g>
+  <g class="scene__before"><text x="24" y="374">A firewall beside the route sees no traffic.</text></g>
+  <g class="scene__after">
+    <text class="pending" x="24" y="374">Following the request and its reply…</text>
+    <text class="reveal complete" x="24" y="374">1 exchange completed · both directions inspected</text>
+  </g>
+  <circle class="packet" cx="32" cy="416" r="5"/><text class="small" x="46" y="421">Request</text>
+  <circle class="reply" cx="158" cy="416" r="5"/><text class="small" x="172" y="421">Reply</text>
+  <text class="label" x="304" y="421">ILLUSTRATIVE ROUTE + POLICY</text>
 </svg>
+</ConnectivityFigure>
 <style>
-.route-boat { offset-path:path("M70 178 C121 178 158 295 268 295 S430 295 493 209"); offset-anchor:0 0; offset-rotate:0deg; }
-.via { opacity:.15; }
-:global(.cp[data-demonstrate='true']) .direct { opacity:.12; }
-:global(.cp[data-demonstrate='true']) .via { opacity:1; }
-:global(.cp[data-demonstrate='true']) .route-boat { animation:inspection-route var(--nautical-story-duration) linear both; }
-@keyframes inspection-route { to { offset-distance:100%; } }
+.chosen, .inbound { opacity:0; }
+.switch { transform-box:view-box; transform-origin:111px 147px; transition:transform var(--duration-slow) var(--ease-standard); }
+.outbound { offset-path:path("M80 147 C150 147 157 258 260 258 H340 C443 258 450 147 520 147"); }
+.inbound { offset-path:path("M520 147 C450 147 443 258 340 258 H260 C157 258 150 147 80 147"); }
+:global(.cp[data-demonstrate='true']) .direct { opacity:.16; }
+:global(.cp[data-demonstrate='true']) .chosen { opacity:1; }
+:global(.cp[data-demonstrate='true']) .switch { transform:rotate(40deg); }
+:global(.cp[data-demonstrate='true']) .outbound { animation: request-trip var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .inbound { animation: reply-trip var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .checked-out { animation: checked-out var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .checked-back { animation: checked-back var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .complete { animation: completed var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .pending { animation: pending var(--nautical-story-duration) step-end both; }
+@keyframes request-trip { 0% {offset-distance:0%;opacity:1;} 46% {offset-distance:100%;opacity:1;} 47%,100% {offset-distance:100%;opacity:0;} }
+@keyframes reply-trip { 0%,48% {offset-distance:0%;opacity:0;} 49% {offset-distance:0%;opacity:1;} 95%,100% {offset-distance:100%;opacity:1;} }
+@keyframes checked-out { 0% {opacity:0;} 24%,100% {opacity:1;} }
+@keyframes checked-back { 0% {opacity:0;} 73%,100% {opacity:1;} }
+@keyframes completed { 0% {opacity:0;} 95%,100% {opacity:1;} }
+@keyframes pending { 0% {opacity:1;} 95%,100% {opacity:0;} }
 </style>

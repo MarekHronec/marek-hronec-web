@@ -226,3 +226,6 @@
   --nautical-cycle-duration: 12s;
   --nautical-drift-duration: 24s;
 }
+
+/* Readable labels in the connectivity instrument diagrams. */
+:root { --nautical-diagram-text: 17px; --nautical-diagram-label: 14px; }

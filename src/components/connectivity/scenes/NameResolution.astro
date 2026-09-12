@@ -1,25 +1,60 @@
 ---
-import ChartWater from '../../compliance/scenes/ChartWater.astro';
-import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
-import Harbour from '../../resilience/scenes/Harbour.astro';
+import ConnectivityFigure from '../ConnectivityFigure.astro';
 ---
-<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="dns-title">
-<title id="dns-title">The client directory changes from the old address to 10.20.0.4, then the vessel travels toward the intended private pier.</title>
-<ChartWater id="connect-dns"/>
-<path class="scene__paper" d="M25 18 H339 V92 H25 Z"/>
-<text class="scene__label" x="40" y="41">CLIENT’S DNS ANSWER · orders.example</text>
-<text class="scene__text scene__before" x="40" y="72">10.20.0.9 · old pier</text>
-<text class="scene__text scene__after" x="40" y="72">10.20.0.4 · intended pier</text>
-<g transform="translate(420 165) scale(.8)" class="old-pier"><Harbour label="OLD · .9"/></g>
-<g transform="translate(420 295) scale(.8)"><Harbour label="INTENDED · .4"/></g>
-<path class="scene__route" d="M80 228 C215 151 345 150 465 195"/>
-<path class="scene__route" d="M80 228 C216 301 350 327 465 315"/>
-<g class="dns-boat"><g transform="scale(.42)"><SailingVessel/></g></g>
-<text class="scene__label" x="70" y="346">ILLUSTRATIVE PRIVATE ADDRESSES</text>
+<ConnectivityFigure label="DNS lookup diagram">
+<svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="dns-title dns-desc">
+  <title id="dns-title">DNS lookup first, application connection second</title>
+  <desc id="dns-desc">The client asks a resolver for orders.example. The resolver returns 10.20.0.4 instead of the old cached address 10.20.0.9. Only after receiving the address does the client connect directly to the intended service. Application traffic does not pass through DNS.</desc>
+  <text class="label" x="24" y="32">A NAME IS NOT YET A DESTINATION</text>
+  <rect class="wash" x="24" y="63" width="214" height="174"/>
+  <text class="label" x="40" y="88">CLIENT</text>
+  <text x="40" y="117">orders.example</text>
+  <text class="small" x="40" y="150">Address in use</text>
+  <text class="old-address" x="40" y="181">10.20.0.9</text>
+  <text class="reveal new-address" x="40" y="181">10.20.0.4</text>
+  <text class="small old-address" x="40" y="214">Old cached answer</text>
+  <text class="small reveal new-address" x="40" y="214">Fresh answer received</text>
+  <rect class="paper" x="365" y="63" width="211" height="174"/>
+  <path class="line" d="M365 66 v168 M380 135 h180"/>
+  <text class="label" x="382" y="88">DNS RESOLVER</text>
+  <text class="small" x="382" y="117">Looks up the name</text>
+  <text class="small" x="382" y="162">Current answer</text>
+  <text x="382" y="192">10.20.0.4</text>
+  <path class="line quiet" d="M238 108 H359 M359 191 H238"/>
+  <text class="small" x="254" y="93">1. Ask</text>
+  <text class="small" x="252" y="220">2. Answer</text>
+  <circle class="packet travel query" r="6"/>
+  <g class="travel answer"><rect class="ink" x="-25" y="-14" width="50" height="28"/><text class="label white" x="-10" y="5">.4</text></g>
+  <path class="line quiet" d="M130 237 V289 Q130 307 149 307 H459"/>
+  <text class="small" x="176" y="288">3. Connect to that address</text>
+  <circle class="packet travel connection" r="7"/>
+  <rect class="wash" x="461" y="266" width="115" height="75"/>
+  <text class="label" x="477" y="290">SERVICE</text>
+  <text x="477" y="316">10.20.0.4</text>
+  <g class="scene__before"><text x="24" y="378">This client is still using the old address.</text></g>
+  <g class="scene__after">
+    <text class="pending" x="24" y="378">Refresh this client’s answer, then connect…</text>
+    <text class="reveal complete" x="24" y="378">New answer received → intended service reached</text>
+  </g>
+  <text class="small" x="24" y="418">One client shown. Other cached answers can remain unchanged.</text>
 </svg>
+</ConnectivityFigure>
 <style>
-.dns-boat { offset-path:path("M80 228 C216 301 350 327 465 315"); offset-anchor:0 0; offset-rotate:0deg; }
-:global(.cp[data-demonstrate='true']) .dns-boat { animation:dns-route var(--nautical-story-duration) linear both; }
-:global(.cp[data-demonstrate='true']) .old-pier { opacity:.3; }
-@keyframes dns-route { to { offset-distance:100%; } }
+.query { offset-path:path("M238 108 H359"); opacity:0; }
+.answer { offset-path:path("M339 191 H208"); opacity:0; }
+.connection { offset-path:path("M130 237 V289 Q130 307 149 307 H459"); opacity:0; }
+:global(.cp[data-demonstrate='true']) .query { animation: query var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .answer { animation: answer var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .connection { animation: connect var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .old-address { animation: old-answer var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .new-address { animation: fresh-answer var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .pending { animation: pending var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .complete { animation: complete var(--nautical-story-duration) step-end both; }
+@keyframes query { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 23%,100% {offset-distance:100%;opacity:0;} }
+@keyframes answer { 0%,26% {offset-distance:0%;opacity:0;} 27% {offset-distance:0%;opacity:1;} 48% {offset-distance:100%;opacity:1;} 49%,100% {offset-distance:100%;opacity:0;} }
+@keyframes connect { 0%,53% {offset-distance:0%;opacity:0;} 54% {offset-distance:0%;opacity:1;} 94%,100% {offset-distance:100%;opacity:1;} }
+@keyframes old-answer { 0% {opacity:1;} 49%,100% {opacity:0;} }
+@keyframes fresh-answer { 0% {opacity:0;} 49%,100% {opacity:1;} }
+@keyframes pending { 0% {opacity:1;} 94%,100% {opacity:0;} }
+@keyframes complete { 0% {opacity:0;} 94%,100% {opacity:1;} }
 </style>

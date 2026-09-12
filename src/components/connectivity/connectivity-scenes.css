@@ -1,0 +1,17 @@
+/* SVG coordinates are illustration geometry; palette and typography use site tokens. */
+.connectivity-explainer .net { color: var(--color-primary); }
+.connectivity-explainer .net text { fill: var(--color-navy); font: var(--nautical-diagram-text) var(--font-body); }
+.connectivity-explainer .net .label { font: var(--nautical-diagram-label) var(--font-mono); fill: var(--color-primary); }
+.connectivity-explainer .net .small { font: var(--nautical-diagram-label) var(--font-body); }
+.connectivity-explainer .net .value { font: var(--nautical-number) var(--font-mono); }
+.connectivity-explainer .net .paper { fill: var(--color-surface); }
+.connectivity-explainer .net .wash { fill: var(--color-primary-tint); }
+.connectivity-explainer .net .ink { fill: var(--color-navy); }
+.connectivity-explainer .net .white { fill: var(--color-on-primary); }
+.connectivity-explainer .net .line { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-heavy-stroke); stroke-linecap: round; stroke-linejoin: round; }
+.connectivity-explainer .net .quiet { opacity: .25; }
+.connectivity-explainer .net .dash { stroke-dasharray: 5 7; }
+.connectivity-explainer .net .packet { fill: var(--color-navy); stroke: var(--color-surface); stroke-width: var(--nautical-heavy-stroke); }
+.connectivity-explainer .net .reply { fill: var(--color-surface); stroke: var(--color-primary); stroke-width: var(--nautical-heavy-stroke); }
+.connectivity-explainer .net .travel { offset-anchor: 0 0; offset-rotate: 0deg; }
+.connectivity-explainer .net .reveal { opacity: 0; }

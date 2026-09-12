@@ -1,24 +1,63 @@
 ---
-import ChartWater from '../../compliance/scenes/ChartWater.astro';
-import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
-import Harbour from '../../resilience/scenes/Harbour.astro';
+import ConnectivityFigure from '../ConnectivityFigure.astro';
 ---
-<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="paths-title">
-<title id="paths-title">A closure blocks the primary channel. A vessel follows a prepared alternate route outside that failure area.</title>
-<ChartWater id="connect-paths"/>
-<g transform="translate(437 162)"><Harbour label="DESTINATION"/></g>
-<path class="scene__paper" d="M218 130 Q291 95 367 137 L352 208 Q277 227 216 193 Z"/>
-<text class="scene__label" x="291" y="162" text-anchor="middle">SHARED FAILURE</text>
-<text class="scene__label" x="291" y="181" text-anchor="middle">AREA</text>
-<path class="scene__route primary" d="M72 225 C172 154 367 154 486 213"/>
-<path class="scene__route" d="M72 225 C196 331 397 333 486 238"/>
-<g class="scene__after"><path class="scene__heavy" d="M281 178 L311 207 M311 178 L281 207"/></g>
-<g class="backup-boat"><g transform="scale(.45)"><SailingVessel/></g></g>
-<text class="scene__label" x="300" y="346" text-anchor="middle">SURVIVING ROUTE · CAPACITY STILL NEEDS TESTING</text>
+<ConnectivityFigure label="Connection recovery diagram">
+<svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="paths-title paths-desc">
+  <title id="paths-title">A cut cable interrupts delivery before a separate connection restores it</title>
+  <desc id="paths-desc">Before the cut, deliveries use the primary cable. During the demonstration one request stops at the break and two delivery slots are missed while the route changes. A subsequent request travels over the independent backup cable and delivery resumes. The delivery record makes the interruption visible; timings and capacity are illustrative.</desc>
+  <text class="label" x="24" y="32">A SECOND CABLE. A VISIBLE RECOVERY.</text>
+  <rect class="wash" x="24" y="84" width="104" height="139"/>
+  <rect class="wash" x="472" y="84" width="104" height="139"/>
+  <text x="41" y="113">Office</text><text x="486" y="113">Cloud</text>
+  <path class="line" d="M50 133 h51 v39 H50 Z M65 181 h22 M492 133 h63 v12 h-63 Z M492 154 h63 v12 h-63 Z"/>
+  <path class="line primary" d="M128 145 H282 M318 145 H472"/>
+  <path class="line cable-join" d="M282 145 H318"/>
+  <path class="line quiet" d="M128 198 C196 288 402 288 472 198"/>
+  <path class="line backup" d="M128 198 C196 288 402 288 472 198"/>
+  <text class="small" x="214" y="117">Primary cable · site A</text>
+  <text class="small" x="202" y="294">Backup cable · site B</text>
+  <g class="reveal cut"><path class="line" d="M289 132 l23 26 M312 132 l-23 26"/><text class="label" x="273" y="85">CUT</text></g>
+  <circle class="packet travel lost" r="7"/>
+  <circle class="packet travel recovered" r="7"/>
+  <rect class="ink" x="24" y="318" width="552" height="105"/>
+  <text class="label white" x="40" y="342">DELIVERY RECORD</text>
+  <g class="history">
+    <path class="white" d="M43 383 v-23 h21 v23 Z M79 383 v-23 h21 v23 Z M115 383 v-23 h21 v23 Z"/>
+    <path class="future" d="M151 383 h21 M187 383 h21 M223 383 h21 M259 383 h21"/>
+    <path class="misses" d="M153 371 l16 12 M169 371 l-16 12 M189 371 l16 12 M205 371 l-16 12"/>
+    <path class="white reveal receipt-one" d="M223 383 v-23 h21 v23 Z"/>
+    <path class="white reveal receipt-two" d="M259 383 v-23 h21 v23 Z"/>
+  </g>
+  <text class="small white" x="40" y="407">Earlier → later · illustrative slots</text>
+  <g class="scene__before"><text class="white" x="338" y="373">Delivering normally</text></g>
+  <g class="scene__after">
+    <text class="white pending" x="338" y="373">Delivery interrupted</text>
+    <text class="white reveal complete" x="338" y="373">Delivery resumed</text>
+    <text class="small white" x="338" y="399">A gap remains in the record.</text>
+  </g>
 </svg>
+</ConnectivityFigure>
 <style>
-.backup-boat { offset-path:path("M72 225 C196 331 397 333 486 238"); offset-anchor:0 0; offset-rotate:0deg; }
-:global(.cp[data-demonstrate='true']) .primary { opacity:.14; }
-:global(.cp[data-demonstrate='true']) .backup-boat { animation:backup-route var(--nautical-story-duration) linear both; }
-@keyframes backup-route { to { offset-distance:100%; } }
+.backup, .cut, .misses { opacity:0; }
+.future { fill:none; stroke:var(--color-on-primary); stroke-width:var(--nautical-heavy-stroke); opacity:.25; }
+.misses { fill:none; stroke:var(--color-on-primary); stroke-width:var(--nautical-heavy-stroke); }
+.lost { offset-path:path("M128 145 H280"); opacity:0; }
+.recovered { offset-path:path("M128 198 C196 288 402 288 472 198"); opacity:0; }
+:global(.cp[data-demonstrate='true']) .cable-join { opacity:0; }
+:global(.cp[data-demonstrate='true']) .primary { opacity:.3; }
+:global(.cp[data-demonstrate='true']) .cut { opacity:1; }
+:global(.cp[data-demonstrate='true']) .lost { animation: lost var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .recovered { animation: recover var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .backup { animation: switch-route var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .misses { animation: missed var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .receipt-one, :global(.cp[data-demonstrate='true']) .complete { animation: received var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .receipt-two { animation: next-received var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .pending { animation: pending var(--nautical-story-duration) step-end both; }
+@keyframes lost { 0% {offset-distance:0%;opacity:1;} 22% {offset-distance:100%;opacity:1;} 27%,100% {offset-distance:100%;opacity:0;} }
+@keyframes recover { 0%,40% {offset-distance:0%;opacity:0;} 41% {offset-distance:0%;opacity:1;} 84%,100% {offset-distance:100%;opacity:1;} }
+@keyframes switch-route { 0% {opacity:0;} 40%,100% {opacity:1;} }
+@keyframes missed { 0% {opacity:0;} 27%,100% {opacity:1;} }
+@keyframes received { 0% {opacity:0;} 84%,100% {opacity:1;} }
+@keyframes next-received { 0% {opacity:0;} 98%,100% {opacity:1;} }
+@keyframes pending { 0% {opacity:1;} 84%,100% {opacity:0;} }
 </style>

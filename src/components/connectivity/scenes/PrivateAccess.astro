@@ -1,23 +1,59 @@
 ---
-import ChartWater from '../../compliance/scenes/ChartWater.astro';
-import SailingVessel from '../../compliance/scenes/SailingVessel.astro';
-import Harbour from '../../resilience/scenes/Harbour.astro';
+import ConnectivityFigure from '../ConnectivityFigure.astro';
 ---
-<svg class="scene" viewBox="0 0 600 360" role="img" aria-labelledby="access-title">
-<title id="access-title">The public entrance closes while a vessel on the prepared private route still reaches the service.</title>
-<ChartWater id="connect-access"/>
-<g transform="translate(439 151)"><Harbour label="SERVICE"/></g>
-<path class="scene__route" d="M80 158 C210 128 354 151 488 211"/>
-<text class="scene__label" x="80" y="95">PUBLIC ENTRANCE</text>
-<g transform="translate(100 151) scale(.4)" class="public-boat"><SailingVessel/></g>
-<path class="scene__route" d="M90 281 C235 321 407 306 490 228"/>
-<text class="scene__label" x="72" y="339">PREPARED PRIVATE ROUTE</text>
-<g class="private-boat"><g transform="scale(.46)"><SailingVessel/></g></g>
-<g class="scene__after"><path class="scene__heavy" d="M267 135 L301 174 M301 135 L267 174"/><text class="scene__label" x="284" y="119" text-anchor="middle">CLOSED</text></g>
+<ConnectivityFigure label="Access test diagram">
+<svg class="scene net" viewBox="0 0 600 440" role="img" aria-labelledby="access-title access-desc">
+  <title id="access-title">Private access and identity are two separate checks</title>
+  <desc id="access-desc">Close public access, then test three requests. The public client stops at the network boundary. A private client without permission reaches the identity check but is denied. An authorised private client reaches the application.</desc>
+  <text class="label" x="24" y="32">01 / REACH THE ENTRANCE</text>
+  <text class="label" x="354" y="32">02 / CHECK IDENTITY</text>
+  <rect class="wash" x="282" y="58" width="294" height="262" rx="0"/>
+  <path class="line dash quiet" d="M282 58 V320"/>
+  <path class="line quiet" d="M462 72 V306"/>
+  <text class="small" x="296" y="79">Private network</text>
+  <text class="small" x="487" y="79">Service</text>
+  <text x="24" y="102">Public client</text>
+  <text class="small" x="24" y="127">Outside the network</text>
+  <text x="24" y="182">Private client</text>
+  <text class="small" x="24" y="207">No app permission</text>
+  <text x="24" y="262">Private client</text>
+  <text class="small" x="24" y="287">App permission</text>
+  <path class="line quiet" d="M196 116 H550 M196 196 H550 M196 276 H550"/>
+  <g class="gate"><path class="line" d="M274 100 L290 132 M290 100 L274 132"/></g>
+  <g class="identity"><path class="line" d="M452 187 L472 207 M472 187 L452 207"/><path class="line" d="M451 276 l8 9 15 -20"/></g>
+  <circle class="packet travel public-request" r="7"/>
+  <circle class="packet travel denied-request" r="7"/>
+  <circle class="packet travel accepted-request" r="7"/>
+  <g class="reveal public-result"><rect class="paper" x="300" y="102" width="140" height="27"/><text class="label" x="310" y="121">UNREACHABLE</text></g>
+  <g class="reveal denied-result"><rect class="paper" x="484" y="182" width="84" height="28"/><text class="label" x="492" y="201">DENIED</text></g>
+  <g class="reveal accepted-result"><rect class="ink" x="487" y="263" width="81" height="27"/><text class="label white" x="496" y="282">ALLOWED</text></g>
+  <g class="scene__before">
+    <text x="24" y="361">Both network entrances are open.</text>
+    <text class="small" x="24" y="386">Check public access separately for each service.</text>
+  </g>
+  <g class="scene__after">
+    <text x="24" y="361">Private access is only the first check.</text>
+    <text class="small" x="24" y="386">Reaching an application does not grant permission to use it.</text>
+  </g>
+  <text class="label" x="24" y="421">THREE TEST REQUESTS · ILLUSTRATIVE POLICY</text>
 </svg>
+</ConnectivityFigure>
 <style>
-.private-boat { offset-path:path("M90 281 C235 321 407 306 490 228"); offset-anchor:0 0; offset-rotate:0deg; }
-:global(.cp[data-demonstrate='true']) .private-boat { animation:access-route var(--nautical-story-duration) linear both; }
-:global(.cp[data-demonstrate='true']) .public-boat { opacity:.3; }
-@keyframes access-route { to { offset-distance:100%; } }
+.public-request { offset-path:path("M196 116 H267"); }
+.denied-request { offset-path:path("M196 196 H449"); }
+.accepted-request { offset-path:path("M196 276 H550"); }
+.gate, .identity { opacity:0; }
+:global(.cp[data-demonstrate='true']) .gate, :global(.cp[data-demonstrate='true']) .identity { opacity:1; }
+:global(.cp[data-demonstrate='true']) .public-request { animation: public-test var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .denied-request { animation: denied-test var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .accepted-request { animation: accepted-test var(--nautical-story-duration) linear both; }
+:global(.cp[data-demonstrate='true']) .public-result { animation: public-result var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .denied-result { animation: denied-result var(--nautical-story-duration) step-end both; }
+:global(.cp[data-demonstrate='true']) .accepted-result { animation: accepted-result var(--nautical-story-duration) step-end both; }
+@keyframes public-test { 0% {offset-distance:0%;} 22%,100% {offset-distance:100%;} }
+@keyframes denied-test { 0%,25% {offset-distance:0%;} 58%,100% {offset-distance:100%;} }
+@keyframes accepted-test { 0%,60% {offset-distance:0%;} 94%,100% {offset-distance:100%;} }
+@keyframes public-result { 0% {opacity:0;} 22%,100% {opacity:1;} }
+@keyframes denied-result { 0% {opacity:0;} 58%,100% {opacity:1;} }
+@keyframes accepted-result { 0% {opacity:0;} 94%,100% {opacity:1;} }
 </style>
