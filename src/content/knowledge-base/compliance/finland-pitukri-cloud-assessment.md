@@ -3,7 +3,7 @@ title: "Finland — PiTuKri: Guidance That Doubles as the Gate for Classified In
 category: compliance
 tags: ["Finland", "PiTuKri", "Traficom", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-08
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 11
 level: intermediate
 excerpt: "PiTuKri is officially guidance, not statutory. In practice, it is the gate for handling Finnish classified information in the cloud. The Finnish NIS2 transposition (Act 124/2025) has been in force since April 2025; the replacement criteria library is in public consultation and scheduled for finalisation in autumn 2026 — until then, a real gap between the new risk-based law and the 2020 cloud framework exists."
@@ -101,7 +101,7 @@ PiTuKri v1.1 contains **52 criteria across 11 sub-areas**:
 - Information Systems Security.
 - Encryption.
 - Operational Security.
-- Continuity.
+- Transferability and compatibility.
 - Change Management.
 
 The reference standards on which PiTuKri is built:
@@ -109,7 +109,7 @@ The reference standards on which PiTuKri is built:
 - **[ISO/IEC 27001 and 27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines)**.
 - **[BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation)**.
 - **[Cloud Security Alliance Cloud Controls Matrix (CCM)](/knowledge-base/compliance/csa-star-registry-cross-cutting-trust-layer)**.
-- **Katakri 2015** — the Finnish national audit tool for public authorities. Used in parallel for assessing organisations handling classified information.
+- **Katakri** — the Finnish national audit tool for public authorities. PiTuKri v1.1 cites the **2015** edition because it predates the update; the current edition an auditor works from is **Katakri 2020**. Used in parallel for assessing organisations handling classified information.
 
 The framework imposes strict requirements on:
 
