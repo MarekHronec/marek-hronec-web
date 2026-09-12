@@ -3,7 +3,7 @@ title: "Italy — ACN Qualificazione: The Most Procedural Cloud Framework in the
 category: compliance
 tags: ["Italy", "ACN", "Qualificazione", "NIS2", "Compliance", "Data Security", "PSN", "Sovereignty"]
 date: 2026-04-30
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 11
 level: intermediate
 excerpt: "Italy's qualification framework is the most formally structured in the EU — statutory timelines, four levels, mandatory public catalogue, and a state-controlled Polo Strategico Nazionale for the strictest workloads."
@@ -33,7 +33,7 @@ references:
     description: "The Italian NIS2 transposition. Published in Gazzetta Ufficiale 1 October 2024; in force since 16 October 2024. Phased compliance for cloud, datacentre, and domain providers."
     domain: "normattiva.it"
   - title: "Determinazione ACN n. 127437/2026 — NIS2 Fornitori Rilevanti"
-    url: "https://www.acn.gov.it/portale/it/normativa"
+    url: "https://www.acn.gov.it/portale/it/sistema-europeo-normativa-nazionale"
     description: "Supplementary ACN determinazione on the classification of NIS2 'relevant suppliers' (fornitori rilevanti), operating alongside Regolamento 21007/24 rather than replacing it."
     domain: "acn.gov.it"
 ---

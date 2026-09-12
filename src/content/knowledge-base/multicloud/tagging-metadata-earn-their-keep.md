@@ -3,7 +3,7 @@ title: "Tagging and Metadata That Actually Earn Their Keep"
 category: multicloud
 tags: ["Azure", "OCI", "Tagging", "FinOps", "Governance"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-12
 readTime: 12
 level: beginner
 excerpt: "Without enforcement, tagging is fiction. Most orgs believe coverage is higher than reality. The schema, enforcement model, and gotchas on Azure and OCI."
@@ -21,7 +21,7 @@ references:
     description: "Oracle's tagging reference covering free-form tags, defined tags with namespaces, tag defaults, cost-tracking tags, and the lifecycle of tag namespaces — the OCI side of the comparison in this article."
     domain: "docs.oracle.com"
   - title: "FinOps capability — tagging, account, and metadata hierarchy"
-    url: "https://www.finops.org/framework/capabilities/tagging-account-metadata-hierarchy/"
+    url: "https://www.finops.org/framework/capabilities/allocation/"
     description: "The FinOps Foundation's framework capability for tagging strategy — the vendor-neutral governance model that underpins the cross-cloud tag schema approach described in this article."
     domain: "finops.org"
 ---

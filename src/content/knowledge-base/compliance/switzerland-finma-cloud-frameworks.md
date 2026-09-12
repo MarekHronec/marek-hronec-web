@@ -3,7 +3,7 @@ title: "Switzerland — FINMA, nFADP, and the Cloud Framework Outside the EU"
 category: compliance
 tags: ["Switzerland", "FINMA", "nFADP", "FDPIC", "Compliance", "Data Security", "Adjacent Jurisdiction"]
 date: 2026-05-12
-updated: 2026-05-12
+updated: 2026-09-12
 readTime: 10
 level: intermediate
 excerpt: "Switzerland is not in the EU and not in the EEA, but is deeply bilateral with both. The cloud framework is composed: FINMA Circular 2018/3 for financial services, the revised nFADP for data protection (GDPR-aligned with lower penalties), and sector-specific regulation for healthcare, defence, and classified information. For Slovak organisations with Swiss customers — and Swiss organisations consuming EU cloud — the regime is adjacent but procedurally distinct."
@@ -29,7 +29,7 @@ references:
     description: "The Swiss National Cyber Security Centre — the operational federal authority for cybersecurity coordination and incident response, distinct from the UK NCSC despite the name."
     domain: "ncsc.admin.ch"
   - title: "FINMA — Cloud Computing Guidance"
-    url: "https://www.finma.ch/en/news/2019/12/20191210-mm-praktische-fragen-zu-cloud-im-banken-und-versicherungsbereich/"
+    url: "https://www.finma.ch/en/documentation/dossier/dossier-cyberrisiken/cyberrisiken-und-outsourcing-2024/"
     description: "FINMA's practical guidance on cloud questions for banks and insurers, complementing the outsourcing circular with operational interpretation."
     domain: "finma.ch"
 ---

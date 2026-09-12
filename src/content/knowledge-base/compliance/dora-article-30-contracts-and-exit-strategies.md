@@ -25,7 +25,7 @@ references:
     description: "The Commission implementing regulation specifying the format of the Register of Information that financial entities must maintain about their ICT third-party arrangements under DORA Article 28."
     domain: "eur-lex.europa.eu"
   - title: "ECB Cyber Resilience Stress Test Methodology"
-    url: "https://www.bankingsupervision.europa.eu/press/pr/date/2024/html/ssm.pr240103~38a1ad7039.en.html"
+    url: "https://www.bankingsupervision.europa.eu/press/pr/date/2024/html/ssm.pr240103~a26e1930b0.en.html"
     description: "ECB's methodology for cyber resilience testing of significant banks, including the cloud-arrangement testing scope under DORA."
     domain: "bankingsupervision.europa.eu"
 ---

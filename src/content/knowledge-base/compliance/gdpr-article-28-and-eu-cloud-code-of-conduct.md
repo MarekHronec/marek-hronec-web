@@ -3,7 +3,7 @@ title: "GDPR Article 28 and the EU Cloud Code of Conduct — What They Actually 
 category: compliance
 tags: ["GDPR", "EU Cloud CoC", "Article 28", "Compliance", "Data Security", "Cross-Cutting", "Privacy"]
 date: 2026-04-09
-updated: 2026-04-09
+updated: 2026-09-12
 readTime: 10
 level: advanced
 excerpt: "GDPR Article 28 is the operative article for every controller-processor cloud relationship. The EU Cloud Code of Conduct is the most pragmatic instrument for demonstrating Article 28 compliance at scale. This article walks through what Article 28 actually requires and what the CoC actually demonstrates."
@@ -25,7 +25,7 @@ references:
     description: "SCOPE Europe srl, the Brussels-based monitoring body accredited by the Belgian Data Protection Authority in May 2021 to operate the EU Cloud CoC."
     domain: "scope-europe.eu"
   - title: "EDPB — Code of Conduct Register"
-    url: "https://www.edpb.europa.eu/our-work-tools/accountability-tools/register-code-of-conduct/2021/eu-cloud-code-conduct_en"
+    url: "https://www.edpb.europa.eu/registers/register-of-consistency-and-of-accountability-tools/codes-of-conduct_en?page=2"
     description: "The EDPB's register entry for the EU Cloud Code of Conduct, including the formal approval documentation."
     domain: "edpb.europa.eu"
 ---

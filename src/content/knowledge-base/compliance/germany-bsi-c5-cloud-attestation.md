@@ -3,7 +3,7 @@ title: "Germany — BSI C5: The Attestation That Quietly Became Europe's Referen
 category: compliance
 tags: ["Germany", "BSI C5", "BSI", "NIS2", "Compliance", "Data Security", "Attestation"]
 date: 2026-04-14
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 12
 level: intermediate
 excerpt: "C5 is not a certification, it is an attestation — and that distinction matters. The framework most adopted by hyperscalers, the de facto reference for EUCS Substantial, and the one that pairs cleanly with SOC 2. C5:2026 was published in March 2026, with C5:2020 remaining operative until audit periods beginning on or after 1 June 2027."
@@ -21,7 +21,7 @@ references:
     description: "The full text of the C5:2020 criteria catalogue — 17 control domains, basic and additional criteria. Remains operative for audit periods beginning before 1 June 2027."
     domain: "bsi.bund.de"
   - title: "NIS2-Umsetzungsgesetz (NIS2UmsuCG)"
-    url: "https://www.bsi.bund.de/DE/Das-BSI/Auftrag/Gesetze-und-Verordnungen/NIS-2/nis-2_node.html"
+    url: "https://www.bsi.bund.de/DE/Das-BSI/Auftrag/Gesetze-und-Verordnungen/NIS-2-Richtlinie/nis-2-richtlinie.html"
     description: "BSI's reference page for the German NIS2 transposition law, in force since 6 December 2025. Substantially revises the BSIG and brings approximately 29,500 entities into NIS2 scope."
     domain: "bsi.bund.de"
   - title: "AWS — BSI C5 Compliance"

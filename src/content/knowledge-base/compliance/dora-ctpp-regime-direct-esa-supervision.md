@@ -3,17 +3,17 @@ title: "DORA CTPP Regime — Direct ESA Supervision of Critical Cloud Providers"
 category: compliance
 tags: ["DORA", "CTPP", "ESA", "Financial Sector", "Compliance", "Data Security", "Hyperscaler"]
 date: 2026-04-24
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 12
 level: advanced
 excerpt: "The Critical Third-Party Provider regime is the most consequential innovation in DORA. For the first time in EU law, the European Supervisory Authorities can directly supervise cloud providers — not via their financial-services customers, but as named regulated entities. This article walks through how CTPP designation actually works, what direct supervision means operationally, and what hyperscalers do to prepare."
 references:
   - title: "Oversight Framework for Critical ICT Third-Party Providers"
-    url: "https://www.eba.europa.eu/regulation-and-policy/operational-risk/dora/oversight-framework-critical-ict-third-party-providers"
+    url: "https://www.eba.europa.eu/activities/direct-supervision-and-oversight/digital-operational-resilience-act/dora-oversight"
     description: "EBA's framework for designating ICT third-party providers as critical under DORA and bringing them under direct European supervision by the ESAs."
     domain: "eba.europa.eu"
   - title: "ESMA — DORA Joint Oversight"
-    url: "https://www.esma.europa.eu/policy-activities/digital-finance-and-innovation/digital-operational-resilience-act-dora"
+    url: "https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/digital-operational-resilience-act-dora"
     description: "ESMA's role in the Joint Oversight Network coordinating CTPP designation and supervision across the three European Supervisory Authorities."
     domain: "esma.europa.eu"
   - title: "Commission Delegated Regulation 2024/1502 — CTPP Criticality Criteria"
@@ -25,7 +25,7 @@ references:
     description: "The articles of DORA establishing the CTPP regime: designation, Lead Overseer assignment, joint oversight network, supervisory powers, recommendations, fees, and penalties."
     domain: "eur-lex.europa.eu"
   - title: "EIOPA — DORA Implementation"
-    url: "https://www.eiopa.europa.eu/digital-operational-resilience-act_en"
+    url: "https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en"
     description: "EIOPA's DORA implementation page covering insurance and pensions sector specifics under the CTPP regime."
     domain: "eiopa.europa.eu"
 ---

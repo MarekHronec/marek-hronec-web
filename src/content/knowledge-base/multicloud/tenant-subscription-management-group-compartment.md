@@ -3,7 +3,7 @@ title: "Tenant, Subscription, Management Group, Compartment — and What Actuall
 category: multicloud
 tags: ["Azure", "OCI", "Governance", "Landing Zones", "Billing"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-12
 readTime: 13
 level: beginner
 excerpt: "Organisational, billing, and governance boundaries collapse differently across Azure and OCI. Get the mental model wrong on day one and spend years undoing it."
@@ -21,7 +21,7 @@ references:
     description: "CAF guidance on subscription democratisation and why using many subscriptions with managed governance is the right model for enterprise estates — the operational case for the subscription-per-workload pattern."
     domain: "learn.microsoft.com"
   - title: "OCI service limits and quotas reference"
-    url: "https://docs.oracle.com/en-us/iaas/Content/General/Reference/aqsquickref.htm"
+    url: "https://docs.oracle.com/en-us/iaas/Content/General/service-limits/default.htm"
     description: "Oracle's service limits reference for OCI — the tenancy-level capacity caps that differ fundamentally from Azure's per-subscription quota model and shape how OCI compartment hierarchies are designed."
     domain: "docs.oracle.com"
 ---

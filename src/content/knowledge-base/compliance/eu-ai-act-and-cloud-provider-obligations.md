@@ -3,7 +3,7 @@ title: "EU AI Act × Cloud — How AI Regulation Reaches Cloud Providers and The
 category: compliance
 tags: ["EU AI Act", "AI", "GPAI", "Compliance", "Data Security", "Cross-Cutting", "Sectoral"]
 date: 2026-05-14
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 12
 level: advanced
 excerpt: "The EU AI Act applies progressively from 2025 through 2027. For cloud providers, two roles matter: provider of general-purpose AI models, and infrastructure for customer-deployed AI systems. For customers, deployer obligations apply at scale. This article walks through what AI Act actually requires of cloud providers, where it intersects with GDPR and NIS2, and what to plan for."
@@ -21,11 +21,11 @@ references:
     description: "Implementation timeline for the AI Act covering the phased application from February 2025 through August 2027 across different obligation categories."
     domain: "artificialintelligenceact.eu"
   - title: "EDPB Guidelines on AI and Personal Data"
-    url: "https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines_en"
+    url: "https://www.edpb.europa.eu/documents_en"
     description: "EDPB guidelines on the intersection of AI processing and personal data protection under GDPR."
     domain: "edpb.europa.eu"
   - title: "ENISA AI Cybersecurity Framework"
-    url: "https://www.enisa.europa.eu/topics/cybersecurity-policy/cybersecurity-of-artificial-intelligence"
+    url: "https://www.enisa.europa.eu/topics/artificial-intelligence-and-next-gen-technologies"
     description: "ENISA's cybersecurity guidance for AI systems, complementing the AI Act with operational security recommendations."
     domain: "enisa.europa.eu"
 ---

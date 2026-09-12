@@ -3,7 +3,7 @@ title: "Netherlands — BIO2: Government Baseline Becoming a Statutory Obligatio
 category: compliance
 tags: ["Netherlands", "BIO2", "BZK", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-05
-updated: 2026-05-05
+updated: 2026-09-12
 readTime: 10
 level: intermediate
 excerpt: "BIO2 v1.3 is the Dutch government's security baseline since 5 March 2026, superseding BIO v1.04zv. The Cyberbeveiligingswet — the Dutch NIS2 transposition — was approved by the Tweede Kamer on 15 April 2026 and is in Senate review. The cloud profile is operated by hyperscalers via independent attestation."
@@ -29,7 +29,7 @@ references:
     description: "The Dutch Digital Government English-language overview of BIO, its scope, the four government layers it covers, and its relationship to the Cyberbeveiligingswet (Cbw) — the NIS2 transposition."
     domain: "nldigitalgovernment.nl"
   - title: "Cyberbeveiligingswet (Cbw) — Dutch NIS2 Transposition"
-    url: "https://www.rijksoverheid.nl/onderwerpen/cybersecurity/cyberbeveiligingswet"
+    url: "https://www.rdi.nl/onderwerpen/digitale-weerbaarheid/cyberbeveiligingswet"
     description: "Rijksoverheid landing page for the Cyberbeveiligingswet — approved by the Tweede Kamer on 15 April 2026; in Senate (Eerste Kamer) review; entry into force targeted Q2 2026."
     domain: "rijksoverheid.nl"
   - title: "BIO2 v1.3 — Staatscourant Publication (5 March 2026)"

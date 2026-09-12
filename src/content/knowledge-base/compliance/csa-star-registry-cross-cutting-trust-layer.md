@@ -3,7 +3,7 @@ title: "CSA STAR Registry — The Cross-Cutting Trust Layer Across Frameworks"
 category: compliance
 tags: ["CSA STAR", "CSA CCM", "Compliance", "Data Security", "Cross-Cutting", "Attestation"]
 date: 2026-04-16
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 9
 level: intermediate
 excerpt: "The Cloud Security Alliance STAR Registry is the closest thing the cloud industry has to a global trust register. Three assurance levels, the CCM as the underlying control matrix, and integration with most major national frameworks. Useful as a navigation layer when comparing CSPs across heterogeneous compliance regimes."
@@ -17,7 +17,7 @@ references:
     description: "The CCM v4 — 197 control objectives across 17 domains. The control catalogue STAR audits against and the framework most heavily referenced by BSI C5, EU Cloud CoC, and other national schemes."
     domain: "cloudsecurityalliance.org"
   - title: "CSA Consensus Assessments Initiative Questionnaire (CAIQ)"
-    url: "https://cloudsecurityalliance.org/artifacts/consensus-assessments-initiative-questionnaire-v4/"
+    url: "https://cloudsecurityalliance.org/artifacts/star-level-1-security-questionnaire-caiq-v4"
     description: "The standardised CSP self-assessment questionnaire that underlies STAR Level 1. The reusable form most procurement teams use as the first-pass evaluation document for a new CSP."
     domain: "cloudsecurityalliance.org"
   - title: "CSA STAR Attestation"

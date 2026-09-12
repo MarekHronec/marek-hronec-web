@@ -3,7 +3,7 @@ title: "Reading Cloud Attestation Reports — A Practitioner's Guide"
 category: compliance
 tags: ["Attestation", "Audit Reports", "Practitioner", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-15
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 11
 level: intermediate
 excerpt: "A SOC 2 report, a C5 attestation, an ENS audit certificate, an ACN qualification dossier — what to look for, what to ignore, what to ask follow-up questions about. The practitioner skill that turns compliance documents into actual signal."
@@ -17,7 +17,7 @@ references:
     description: "BSI's overview of the C5 audit methodology, including the ISAE 3000 / ISAE 3402 basis and the report structure expected from accredited auditors."
     domain: "bsi.bund.de"
   - title: "ISAE 3000 (Revised)"
-    url: "https://www.iaasb.org/publications/international-standard-assurance-engagements-isae-3000-revised-assurance-engagements-other-audits"
+    url: "https://www.iaasb.org/publications/international-standard-assurance-engagements-isae-3000-revised-assurance-engagements-other-audits-or"
     description: "International Standard on Assurance Engagements 3000 — the assurance engagement standard underlying C5 attestation and PiTuKri ISAE 3000 Type 2 reports."
     domain: "iaasb.org"
   - title: "AICPA SSAE 18"

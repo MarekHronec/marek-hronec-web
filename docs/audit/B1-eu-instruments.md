@@ -5,7 +5,9 @@ Index: [../CONTENT-AUDIT.md](../CONTENT-AUDIT.md)
 
 Status key: ☐ open · ◐ part-applied · ☑ applied · ⊘ rejected on review
 
-**Applied 2026-09-12:** P4, P5, P6(b), P7 — the four that are settled by the
+**Applied 2026-09-12:** P4, P5, P6(b), P7, plus all dead reference URLs
+across the batch (see X2 in the index) and the AWS sovereign-cloud status in
+`sovereign-cloud-products-2026-landscape`. P4, P5, P6(b), P7 — the four that are settled by the
 regulation text alone and needed no judgement about current events.
 
 **Independently re-verified in the main session before applying anything:** P1

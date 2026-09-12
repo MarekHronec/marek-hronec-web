@@ -3,7 +3,7 @@ title: "Norway — NSM Grunnprinsipper, Sikkerhetsloven, and the EEA Cloud Posit
 category: compliance
 tags: ["Norway", "NSM", "Sikkerhetsloven", "Finanstilsynet", "Compliance", "Data Security", "Adjacent Jurisdiction"]
 date: 2026-05-13
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 10
 level: intermediate
 excerpt: "Norway is in the EEA. Most EU cloud regulation reaches Norway via EEA incorporation, including GDPR (directly applicable) and NIS2/DORA (in progress). On top, NSM's Grunnprinsipper guide ICT security, Sikkerhetsloven governs classified information, and Finanstilsynet supervises financial-sector cloud. This article maps how the Norwegian regime relates to the EU base."
@@ -29,7 +29,7 @@ references:
     description: "The Norwegian financial supervisor, overseeing banks, insurers, and securities firms including their cloud and outsourcing arrangements."
     domain: "finanstilsynet.no"
   - title: "NSM Cloud Strategy and Guidance"
-    url: "https://nsm.no/regelverk-og-hjelp/rad-og-anbefalinger/skytenester/"
+    url: "https://nsm.no/regelverk-og-hjelp/rad-og-anbefalinger/introduksjon/bruk-av-tjenesteutsetting-og-skytjenester/"
     description: "NSM's specific guidance on cloud services for public sector and critical infrastructure, including risk assessment, supplier selection, and jurisdictional considerations."
     domain: "nsm.no"
 ---

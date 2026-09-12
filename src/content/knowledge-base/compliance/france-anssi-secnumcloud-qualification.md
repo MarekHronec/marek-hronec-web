@@ -3,7 +3,7 @@ title: "France — ANSSI SecNumCloud: The Strictest Sovereignty Framework in the
 category: compliance
 tags: ["France", "ANSSI", "SecNumCloud", "NIS2", "Compliance", "Data Security", "Sovereignty"]
 date: 2026-04-22
-updated: 2026-05-16
+updated: 2026-09-12
 readTime: 12
 level: intermediate
 excerpt: "Single qualification level, 350+ requirements, hard caps on non-EU ownership, immunity from extraterritorial law. SecNumCloud is the framework that defined the modern EU sovereignty debate."
@@ -33,11 +33,11 @@ references:
     description: "Senate dossier for the projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques — the French NIS2 transposition bill. Adopted by the Senate 12 March 2025; in National Assembly review."
     domain: "senat.fr"
   - title: "ANSSI ReCyF — French Cyber Reference Framework"
-    url: "https://cyber.gouv.fr/recyf"
+    url: "https://messervices.cyber.gouv.fr/nis2#exigences"
     description: "ANSSI's French Cyber Reference Framework, published 17 March 2026 — recommended measures aligned with NIS2 objectives. Works alongside SecNumCloud rather than replacing it."
     domain: "cyber.gouv.fr"
   - title: "MonEspaceNIS2 — ANSSI Entity Self-Assessment Portal"
-    url: "https://cyber.gouv.fr/monespacenis2"
+    url: "https://messervices.cyber.gouv.fr/nis2"
     description: "Live ANSSI portal for entity identification and NIS2 self-assessment under the forthcoming Loi Résilience regime."
     domain: "cyber.gouv.fr"
 ---

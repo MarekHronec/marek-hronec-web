@@ -3,7 +3,7 @@ title: "Shared Responsibility — For People Who Stopped Believing the Marketing
 category: multicloud
 tags: ["Azure", "OCI", "Security", "Shared Responsibility", "Compliance"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-12
 readTime: 12
 level: beginner
 excerpt: "The shared responsibility chart is tidy on a slide. In production it falls apart. Managed never means hands-off. What stays on you — every service, every time."
@@ -13,7 +13,7 @@ references:
     description: "Microsoft's breakdown of which security responsibilities belong to the provider versus the customer at each service model layer — the reference document this article interrogates and extends."
     domain: "learn.microsoft.com"
   - title: "OCI shared security responsibility model"
-    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/shared_responsibility.htm"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/security_overview.htm"
     description: "Oracle's equivalent shared responsibility breakdown for OCI — comparing it with Azure's version reveals how the boundary shifts differently across service tiers on each cloud."
     domain: "docs.oracle.com"
   - title: "Microsoft Cloud Security Benchmark"

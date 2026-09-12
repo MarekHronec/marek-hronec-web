@@ -3,7 +3,7 @@ title: "Cloud Encryption Key Custody — BYOK, HYOK, and the Practical Sovereign
 category: compliance
 tags: ["Encryption", "BYOK", "HYOK", "Key Management", "Sovereignty", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-13
-updated: 2026-05-13
+updated: 2026-09-12
 readTime: 12
 level: advanced
 excerpt: "Provider-managed keys, BYOK, HYOK, External Key Stores. Every cloud sovereignty conversation eventually arrives at key custody. This article walks through the patterns, the hyperscaler implementations (AWS XKS, Azure CMK, Google EKM), the operational trade-offs, and why customer-held keys are the most practical sovereignty answer short of full sovereign cloud."
@@ -13,7 +13,7 @@ references:
     description: "AWS Key Management Service External Key Store documentation — the most advanced hyperscaler implementation of customer-held key custody with hardware-backed key managers outside AWS."
     domain: "docs.aws.amazon.com"
   - title: "Azure Customer-Managed Keys with HSM"
-    url: "https://learn.microsoft.com/en-us/azure/key-vault/keys/customer-managed-keys-overview"
+    url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/key-management"
     description: "Microsoft Azure's customer-managed keys overview — Azure Key Vault, Managed HSM, and the customer-controlled encryption configurations across Azure services."
     domain: "learn.microsoft.com"
   - title: "Google Cloud External Key Manager (EKM)"
@@ -21,7 +21,7 @@ references:
     description: "Google Cloud External Key Manager documentation — keys held outside Google Cloud in customer-controlled key managers, with cryptographic operations gated by external authorisation."
     domain: "cloud.google.com"
   - title: "Google Workspace Client-side Encryption"
-    url: "https://workspace.google.com/learn-more/client-side-encryption/"
+    url: "https://knowledge.workspace.google.com/admin/security/about-client-side-encryption"
     description: "Google Workspace Client-side Encryption — end-to-end encryption with customer-held keys for Drive, Calendar, Meet, and other Workspace services."
     domain: "workspace.google.com"
   - title: "FIPS 140-3 Cryptographic Module Validation"
@@ -29,7 +29,7 @@ references:
     description: "NIST's FIPS 140-3 standard for cryptographic modules — the international reference for HSM and software cryptographic-module certification."
     domain: "csrc.nist.gov"
   - title: "ENISA Cloud Encryption Guidance"
-    url: "https://www.enisa.europa.eu/topics/data-protection/data-protection-engineering"
+    url: "https://www.enisa.europa.eu/publications/data-protection-engineering"
     description: "ENISA's guidance on encryption practices for cloud, including key management patterns and recommendations for sovereignty-relevant deployments."
     domain: "enisa.europa.eu"
 ---

@@ -79,7 +79,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
-| X2 | Link liveness + metadata | all | curl + haiku | **reported** | 35 dead refs | — |
+| X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
 | X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
 
 ### B1 — EU-level instruments (opus)
@@ -343,3 +343,55 @@ would have propagated into an article had it been trusted.
 yes/no — but must not be asked to *find* one, and its negative results are not
 evidence. Absence of a search result is not absence of a page. The remaining 31
 went to sonnet with the two counterexamples quoted in the brief.
+
+---
+
+## X2 · Replacements applied — 2026-09-12
+
+**All 35 dead references are fixed.** Sonnet resolved 28 of 28 it was given; I
+re-fetched every replacement myself and all 27 distinct targets returned 200
+before anything was written. 31 substitutions across 22 files (some URLs were
+cited by two articles). Grepped afterwards: no old URL survives anywhere.
+
+Patterns worth knowing, because the rest of the corpus will hit them:
+
+- EBA `regulation-and-policy/…` → `activities/…`
+- ESMA `policy-activities/…` → `esmas-activities/…`
+- ENISA abandoned topic-tag URLs; publications now have their own pages
+- EDPB collapsed the codes-of-conduct register into one paginated page — the EU
+  Cloud CoC entry has no permalink any more and sits on page 3
+- Oracle merged shared-responsibility into `security_overview.htm`, moved
+  service limits and Security Zones
+- ANSSI folded ReCyF and MonEspaceNIS2 into one **MesServicesCyber** portal
+- CSA renamed CAIQ v4 → *STAR Level 1 Security Questionnaire (CAIQ v4)*
+- FinOps folded the tagging capability into **Allocation**
+
+One trap avoided: the URL search engines offer as the EDPB guidelines successor
+302-redirects to a *different* page (public consultations). The unified
+`documents_en` hub is the right target.
+
+### Two substantive answers, not just link fixes
+
+**AWS European Sovereign Cloud is live** — general availability January 2026,
+first region Brandenburg. The article said "under construction … not yet
+operational" as of mid-2026. Corrected. I verified operability independently of
+the reviewer: AWS's own page carries a customer story about it, and
+`ec2.eusc-de-east-1.amazonaws.eu` answers on the dedicated `.eu` domain AWS
+reserved for the sovereign cloud. *Caveat: the precise GA date comes from the
+reviewer's fetch of the Amazon press release; I corroborated that it is
+operational and that the launch was January 2026, not the exact day.*
+
+Note this also disposes of the haiku claim that AWS "has not launched a
+dedicated European Sovereign Cloud product" — it was wrong, and it was the sort
+of claim that would have gone straight into an article.
+
+**Norway's NSM has not withdrawn its cloud guidance.** The page was renamed and
+broadened from *skytenester* to *Bruk av tjenesteutsetting og skytjenester* and
+renested. `norway-nsm-cloud-frameworks` needs no text change — only the URL,
+which is done. The 403 was bot detection, as suspected.
+
+### Metadata
+
+`updated:` bumped to 2026-09-12 on the 22 articles touched. This closes M4 for
+those files; the three September-cohort articles still carry no `updated:` and
+are handled in B8.
