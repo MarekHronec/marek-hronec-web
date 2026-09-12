@@ -105,13 +105,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **12** — B1 and B2 |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **15** — B1, B2, B3a |
 | Citation repointed only, content never examined | 15 |
 | Touched by a single verified correction, rest of the article unexamined | 1 (`sovereign-cloud-products-2026-landscape`) |
 | Inventoried and link-checked only | all 57 |
 | **Never opened** | **50** |
 
-So: **45 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **42 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -138,7 +138,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 |---|---|---|---|---|---|---|
 | B1 | EU-level instruments | 7 | opus | **applied** | [12 findings](audit/B1-eu-instruments.md) | 8 full, 3 part, 1 open |
 | B2 | National frameworks, CZ–IT | 5 | opus | **applied** | [25 findings](audit/B2-national-cz-it.md) | 9 high + 4 med |
-| B3a | Slovakia, Poland, Netherlands | 3 | opus | running | — | — |
+| B3a | Slovakia, Poland, Netherlands | 3 | opus | **applied** | [15 findings](audit/B3a-sk-pl-nl.md) | 12 + 2 spillovers |
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | todo | — | — |
 | B4 | Assurance and attestation | 5 | sonnet | todo | — | — |
 | B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
