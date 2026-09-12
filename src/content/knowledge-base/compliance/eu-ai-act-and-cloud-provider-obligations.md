@@ -3,7 +3,7 @@ title: "EU AI Act × Cloud — How AI Regulation Reaches Cloud Providers and The
 category: compliance
 tags: ["EU AI Act", "AI", "GPAI", "Compliance", "Data Security", "Cross-Cutting", "Sectoral"]
 date: 2026-05-14
-updated: 2026-09-12
+updated: 2026-05-15
 readTime: 12
 level: advanced
 excerpt: "The EU AI Act applies progressively from 2025 through 2027. For cloud providers, two roles matter: provider of general-purpose AI models, and infrastructure for customer-deployed AI systems. For customers, deployer obligations apply at scale. This article walks through what AI Act actually requires of cloud providers, where it intersects with GDPR and NIS2, and what to plan for."

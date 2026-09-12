@@ -64,6 +64,31 @@ costly.
 
 ---
 
+## Coverage — read this before claiming anything is done
+
+Honest scorecard as of 2026-09-12. The distinction that matters is between an
+article whose **claims were read and verified** and one that merely had a
+**citation repointed**. Only the first is an audit.
+
+| | Articles |
+|---|---|
+| **Content-audited** (read end to end, claims checked against fetched sources) | **7** — the B1 batch |
+| Citation repointed only, content never examined | 15 |
+| Touched by a single verified correction, rest of the article unexamined | 1 (`sovereign-cloud-products-2026-landscape`) |
+| Inventoried and link-checked only | all 57 |
+| **Never opened** | **50** |
+
+So: **50 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+almost all of the work.
+
+**A mistake made and corrected on the first day.** Repointing dead references
+bumped `updated:` to today on 22 articles. That was wrong — it told a reader
+those articles had been reviewed today, on exactly the compliance pieces whose
+claims are known to be four months stale and unexamined. The stamp was reverted
+on the 18 that received metadata only; it stands on the four with genuine
+content corrections. A repointed footnote is not a review, and the frontmatter
+must not imply that it is.
+
 ## Batch table
 
 Status: `todo` · `running` · `reported` (findings in, not yet applied) · `done`

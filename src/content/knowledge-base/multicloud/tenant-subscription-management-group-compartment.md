@@ -3,7 +3,7 @@ title: "Tenant, Subscription, Management Group, Compartment — and What Actuall
 category: multicloud
 tags: ["Azure", "OCI", "Governance", "Landing Zones", "Billing"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-05-13
 readTime: 13
 level: beginner
 excerpt: "Organisational, billing, and governance boundaries collapse differently across Azure and OCI. Get the mental model wrong on day one and spend years undoing it."

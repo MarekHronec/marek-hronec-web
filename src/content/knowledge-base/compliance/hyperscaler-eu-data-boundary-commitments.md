@@ -3,7 +3,7 @@ title: "Hyperscaler EU Data Boundary Commitments — What They Actually Mean"
 category: compliance
 tags: ["EU Data Boundary", "Hyperscaler", "Data Residency", "Sovereignty", "Compliance", "Data Security", "Vendor"]
 date: 2026-05-10
-updated: 2026-09-12
+updated: 2026-05-16
 readTime: 11
 level: intermediate
 excerpt: "Microsoft EU Data Boundary, AWS European Sovereign Cloud, Google Workspace EU Data Boundary. Three different commitments, three different scopes, three different things being promised. This article unpacks what each actually covers, what each excludes, and how to read the technical small print."

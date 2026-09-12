@@ -3,7 +3,7 @@ title: "Shared Responsibility — For People Who Stopped Believing the Marketing
 category: multicloud
 tags: ["Azure", "OCI", "Security", "Shared Responsibility", "Compliance"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-05-13
 readTime: 12
 level: beginner
 excerpt: "The shared responsibility chart is tidy on a slide. In production it falls apart. Managed never means hands-off. What stays on you — every service, every time."

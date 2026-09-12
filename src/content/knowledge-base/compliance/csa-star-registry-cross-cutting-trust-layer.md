@@ -3,7 +3,7 @@ title: "CSA STAR Registry — The Cross-Cutting Trust Layer Across Frameworks"
 category: compliance
 tags: ["CSA STAR", "CSA CCM", "Compliance", "Data Security", "Cross-Cutting", "Attestation"]
 date: 2026-04-16
-updated: 2026-09-12
+updated: 2026-05-15
 readTime: 9
 level: intermediate
 excerpt: "The Cloud Security Alliance STAR Registry is the closest thing the cloud industry has to a global trust register. Three assurance levels, the CCM as the underlying control matrix, and integration with most major national frameworks. Useful as a navigation layer when comparing CSPs across heterogeneous compliance regimes."

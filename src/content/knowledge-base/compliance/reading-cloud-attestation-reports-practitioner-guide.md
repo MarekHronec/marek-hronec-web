@@ -3,7 +3,7 @@ title: "Reading Cloud Attestation Reports — A Practitioner's Guide"
 category: compliance
 tags: ["Attestation", "Audit Reports", "Practitioner", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-15
-updated: 2026-09-12
+updated: 2026-05-15
 readTime: 11
 level: intermediate
 excerpt: "A SOC 2 report, a C5 attestation, an ENS audit certificate, an ACN qualification dossier — what to look for, what to ignore, what to ask follow-up questions about. The practitioner skill that turns compliance documents into actual signal."

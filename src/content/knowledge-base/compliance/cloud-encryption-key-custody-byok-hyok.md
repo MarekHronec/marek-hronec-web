@@ -3,7 +3,7 @@ title: "Cloud Encryption Key Custody — BYOK, HYOK, and the Practical Sovereign
 category: compliance
 tags: ["Encryption", "BYOK", "HYOK", "Key Management", "Sovereignty", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-13
-updated: 2026-09-12
+updated: 2026-05-13
 readTime: 12
 level: advanced
 excerpt: "Provider-managed keys, BYOK, HYOK, External Key Stores. Every cloud sovereignty conversation eventually arrives at key custody. This article walks through the patterns, the hyperscaler implementations (AWS XKS, Azure CMK, Google EKM), the operational trade-offs, and why customer-held keys are the most practical sovereignty answer short of full sovereign cloud."

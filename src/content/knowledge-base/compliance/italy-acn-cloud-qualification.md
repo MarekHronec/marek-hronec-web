@@ -3,7 +3,7 @@ title: "Italy — ACN Qualificazione: The Most Procedural Cloud Framework in the
 category: compliance
 tags: ["Italy", "ACN", "Qualificazione", "NIS2", "Compliance", "Data Security", "PSN", "Sovereignty"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-05-16
 readTime: 11
 level: intermediate
 excerpt: "Italy's qualification framework is the most formally structured in the EU — statutory timelines, four levels, mandatory public catalogue, and a state-controlled Polo Strategico Nazionale for the strictest workloads."

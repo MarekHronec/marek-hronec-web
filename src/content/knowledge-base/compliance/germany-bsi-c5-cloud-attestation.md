@@ -3,7 +3,7 @@ title: "Germany — BSI C5: The Attestation That Quietly Became Europe's Referen
 category: compliance
 tags: ["Germany", "BSI C5", "BSI", "NIS2", "Compliance", "Data Security", "Attestation"]
 date: 2026-04-14
-updated: 2026-09-12
+updated: 2026-05-16
 readTime: 12
 level: intermediate
 excerpt: "C5 is not a certification, it is an attestation — and that distinction matters. The framework most adopted by hyperscalers, the de facto reference for EUCS Substantial, and the one that pairs cleanly with SOC 2. C5:2026 was published in March 2026, with C5:2020 remaining operative until audit periods beginning on or after 1 June 2027."

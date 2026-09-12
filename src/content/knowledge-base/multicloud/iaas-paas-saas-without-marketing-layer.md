@@ -3,7 +3,7 @@ title: "IaaS, PaaS, and SaaS Without the Marketing Layer"
 category: multicloud
 tags: ["Azure", "OCI", "IaaS", "PaaS", "SaaS"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-05-13
 readTime: 12
 level: intermediate
 excerpt: "The service model pyramid tells you nothing operational. What the provider manages, what stays on you, and where lock-in lives — connector, not runtime."

@@ -3,7 +3,7 @@ title: "Policy as Code and Quotas — Where Governance Stops Being a Wiki Page"
 category: security
 tags: ["Azure", "OCI", "Policy as Code", "Governance", "Compliance"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-05-13
 readTime: 13
 level: intermediate
 excerpt: "Governance as a wiki page is fiction. Governance is what the platform enforces. EPAC, Security Zones, quotas, Cloud Guard — the gaps and how to combine them."

@@ -3,7 +3,7 @@ title: "GDPR Article 28 and the EU Cloud Code of Conduct — What They Actually 
 category: compliance
 tags: ["GDPR", "EU Cloud CoC", "Article 28", "Compliance", "Data Security", "Cross-Cutting", "Privacy"]
 date: 2026-04-09
-updated: 2026-09-12
+updated: 2026-04-09
 readTime: 10
 level: advanced
 excerpt: "GDPR Article 28 is the operative article for every controller-processor cloud relationship. The EU Cloud Code of Conduct is the most pragmatic instrument for demonstrating Article 28 compliance at scale. This article walks through what Article 28 actually requires and what the CoC actually demonstrates."

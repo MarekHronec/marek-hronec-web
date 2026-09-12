@@ -3,7 +3,7 @@ title: "Tagging and Metadata That Actually Earn Their Keep"
 category: multicloud
 tags: ["Azure", "OCI", "Tagging", "FinOps", "Governance"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-05-13
 readTime: 12
 level: beginner
 excerpt: "Without enforcement, tagging is fiction. Most orgs believe coverage is higher than reality. The schema, enforcement model, and gotchas on Azure and OCI."

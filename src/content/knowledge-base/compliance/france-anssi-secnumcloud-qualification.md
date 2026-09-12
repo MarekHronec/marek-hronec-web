@@ -3,7 +3,7 @@ title: "France — ANSSI SecNumCloud: The Strictest Sovereignty Framework in the
 category: compliance
 tags: ["France", "ANSSI", "SecNumCloud", "NIS2", "Compliance", "Data Security", "Sovereignty"]
 date: 2026-04-22
-updated: 2026-09-12
+updated: 2026-05-16
 readTime: 12
 level: intermediate
 excerpt: "Single qualification level, 350+ requirements, hard caps on non-EU ownership, immunity from extraterritorial law. SecNumCloud is the framework that defined the modern EU sovereignty debate."

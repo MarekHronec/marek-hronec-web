@@ -3,7 +3,7 @@ title: "DORA CTPP Regime — Direct ESA Supervision of Critical Cloud Providers"
 category: compliance
 tags: ["DORA", "CTPP", "ESA", "Financial Sector", "Compliance", "Data Security", "Hyperscaler"]
 date: 2026-04-24
-updated: 2026-09-12
+updated: 2026-05-15
 readTime: 12
 level: advanced
 excerpt: "The Critical Third-Party Provider regime is the most consequential innovation in DORA. For the first time in EU law, the European Supervisory Authorities can directly supervise cloud providers — not via their financial-services customers, but as named regulated entities. This article walks through how CTPP designation actually works, what direct supervision means operationally, and what hyperscalers do to prepare."

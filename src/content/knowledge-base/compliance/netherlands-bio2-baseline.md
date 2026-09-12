@@ -3,7 +3,7 @@ title: "Netherlands — BIO2: Government Baseline Becoming a Statutory Obligatio
 category: compliance
 tags: ["Netherlands", "BIO2", "BZK", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-05
-updated: 2026-09-12
+updated: 2026-05-05
 readTime: 10
 level: intermediate
 excerpt: "BIO2 v1.3 is the Dutch government's security baseline since 5 March 2026, superseding BIO v1.04zv. The Cyberbeveiligingswet — the Dutch NIS2 transposition — was approved by the Tweede Kamer on 15 April 2026 and is in Senate review. The cloud profile is operated by hyperscalers via independent attestation."
