@@ -23,3 +23,9 @@ Existing model tests passed 288 recovery, 243 cost, 243 connectivity and 186 bil
 Connectivity cargo now follows a matched crane trolley and hoist, rejected permits receive a visible stamp, inspected cargo remains aboard, radio replies and selected courses receive emphasis, mooring follows arrivals, and missed arrivals appear sequentially. Existing seven-second finite timelines, pause/replay/reset and reduced-motion behavior remain. Source reviews and staged browser assertions checked the cause/effect order.
 
 Both changes were developed in an isolated worktree so the separate content audit checkout could continue. Merge is local only; no push or deployment.
+
+## Harbour illustration refinement
+
+Replaced the draft crane with a two-legged portal, wheel bogies, machinery cabin, braced tower, continuous truss boom, attached stays and twin hoist cables. The vessel now uses coastal cargo proportions, aft accommodation and bridge, a flat working deck, raised foredeck, railings, anchor and merchant hull markings. Numbered containers retain the existing stage hooks and gain top/side faces and corner castings. The lighthouse stands on its own headland and projects a restrained beam into open water to the right, clear of the ship.
+
+Two independent reviews verified geometry and progressive-rendering hooks. A stale development stylesheet initially rendered new classes black; a fresh production build was inspected and confirmed the intended marine tints, visible stays and bundled fonts. Full guides browser regression passed both scope branches, stage edits/reset, export and four widths. Astro check: 153 files with no diagnostics. Build: 72 pages plus successful search index. Preview serves the production build on port 4322. No push.
