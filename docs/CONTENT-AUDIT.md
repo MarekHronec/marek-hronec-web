@@ -151,7 +151,8 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B3a | Slovakia, Poland, Netherlands | 3 | opus | **applied** | [15 findings](audit/B3a-sk-pl-nl.md) | 12 + 2 spillovers |
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
 | B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
-| B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
+| B5a | Vendor and product landscape | 3 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B5b | Overview and decision framework | 2 | sonnet | todo | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
@@ -204,14 +205,28 @@ dispatch; the cost of an over-sized batch that dies at 90% is the whole thing.
 `csa-star-registry-cross-cutting-trust-layer` · `reading-cloud-attestation-reports-practitioner-guide` ·
 `cloud-encryption-key-custody-byok-hyok`
 
-### B5 — Market and sovereignty (sonnet)
-`sovereign-cloud-products-2026-landscape` · `eu-native-cloud-providers-landscape` ·
-`hyperscaler-eu-data-boundary-commitments` · `cloud-data-security-eu-national-frameworks-overview` ·
-`cloud-compliance-decision-framework`
+### B5a — Vendor and product landscape (sonnet)
+`eu-native-cloud-providers-landscape` · `sovereign-cloud-products-2026-landscape` ·
+`hyperscaler-eu-data-boundary-commitments`
 
-Product landscape, so the risk is renamed/withdrawn offerings and changed
-commitments rather than legal error. `eu-native-cloud-providers-landscape` has
-14 references and 5,099 words — the largest single article.
+Product landscape, so the risk is renamed/withdrawn offerings, changed
+ownership and changed commitments rather than legal error.
+`eu-native-cloud-providers-landscape` has 14 references and 5,099 words — the
+largest single article in the corpus.
+
+**Why B5 was split.** The original five totalled 16,872 words against B4's
+12,600, which took 257k subagent tokens. The three vendor articles share their
+subject matter, so one reviewer checking a provider once serves all three. The
+remaining two are synthesis pieces whose work is mostly internal consistency
+against the rest of the corpus — a different job, and one that gets easier
+after the vendor facts are settled.
+
+### B5b — Overview and decision framework (sonnet)
+`cloud-data-security-eu-national-frameworks-overview` · `cloud-compliance-decision-framework`
+
+Both aggregate claims owned by other articles, so this is chiefly an INTERNAL
+consistency pass. Run it **after** B5a so the vendor facts are settled first.
+Note both already carry B3b corrections to their country tables.
 
 ### B6 — Cloud platform and network (sonnet)
 `azure/azure-landing-zones` · `multicloud/landing-zones-what-they-solve-and-the-honest-catch` ·
