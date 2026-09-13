@@ -115,13 +115,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **19** — B1, B2, B3a, B3b |
-| Citation repointed only, content never examined | 11 |
-| Touched by a single verified correction, rest of the article unexamined | 1 (`sovereign-cloud-products-2026-landscape`) |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **24** — B1, B2, B3a, B3b, B4 |
+| Citation repointed only, content never examined | 8 |
+| Touched by a single verified correction, rest of the article unexamined | 2 (`sovereign-cloud-products-2026-landscape`, `landing-zones-what-they-solve-and-the-honest-catch`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **46** |
+| **Never opened** | **41** |
 
-So: **38 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **33 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -150,7 +150,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B2 | National frameworks, CZ–IT | 5 | opus | **applied** | [25 findings](audit/B2-national-cz-it.md) | 9 high + 4 med |
 | B3a | Slovakia, Poland, Netherlands | 3 | opus | **applied** | [15 findings](audit/B3a-sk-pl-nl.md) | 12 + 2 spillovers |
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
-| B4 | Assurance and attestation | 5 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
 | B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
@@ -550,3 +550,66 @@ bullet while five other places still said "in Senate review". This is the
 **third** time partial application has left an article contradicting itself.
 The standing rule already covers it; the rule is not the problem, remembering
 to apply it is.
+
+## Session 7 — B4 applied (2026-09-13)
+
+**Assurance and attestation.** Five articles, 17 findings, 12 applied and 4
+left unverified with what would settle each. Detail in
+[B4](audit/B4-assurance-attestation.md).
+
+Reviewer accuracy holds: **10 of 10 externally checkable findings confirmed.**
+Across B1–B4 no reviewer has yet fabricated a finding.
+
+### The ISO stack had moved underneath the article
+
+ISO/IEC 27701 is no longer an extension of 27001. The 2025 second edition
+"has been redrafted as a stand-alone management system standard" in ISO's own
+foreword, and the 2019 edition is withdrawn. ISO's titles say it plainly: the
+old one was called "Extension to ISO/IEC 27001 and ISO/IEC 27002", the new one
+"Privacy information management systems". The article asserted the extension
+relationship in five places, including that 27001 is a prerequisite and that
+certification "is granted as an extension". All of that is now wrong.
+
+Three of the four standards in the article's own summary table were on
+superseded editions, two of them already superseded *before* the article's
+stated update date. 27017:2026 also restructured its controls, so the
+"seven additional cloud-specific controls" line no longer describes anything.
+
+### Getting past ISO's bot block
+
+`iso.org` returns 403 to curl and its OBP search widget is a Vaadin shell.
+Two routes work and are worth reusing:
+
+- The **SC 27 committee catalogue** at
+  `iso.org/committee/45306/x/catalogue/p/1/u/0/w/0/d/0`, loaded in the browser
+  pane, lists every standard in the family with `[Withdrawn]` markers. One
+  page answers every version question at once.
+- The **Online Browsing Platform** serves each standard's foreword and
+  introduction free at
+  `iso.org/obp/ui/en/#iso:std:iso-iec:<number>:ed-<n>:v1:en`. That is where
+  the authoritative "what changed in this edition" wording lives.
+
+### A citation that was right by accident
+
+The reviewer cited `iso.org/standard/27017` for "ISO/IEC 27017:2026". That
+path is a catalogue *record id*, not a standard number; with `.html` appended
+it resolves to ISO 7547:2002, on ship ventilation. The reviewer's conclusion
+was correct but it came from search-engine snippets, not from the page it
+cited. Same lesson as B3b's FINMA parse, from the other direction: **a right
+answer and a sound citation are separate things, and only the citation
+survives into next year.**
+
+### One UNVERIFIED closed by following a redirect
+
+The reviewer could not establish whether Equinix SmartKey still exists as a
+product, because Equinix 403s. It correctly refused to call it WRONG.
+Following the redirect settles it: Equinix's own product URL now lands on
+`fortanix.com/platform/data-security-manager`. The article had been listing
+one product twice, under both names.
+
+### Metadata
+
+`updated:` bumped on the five audited articles only. `sovereign-cloud-products-2026-landscape`
+and `landing-zones-what-they-solve-and-the-honest-catch` received the Microsoft
+Sovereign Cloud rename as propagation and were **not** bumped — one verified
+correction is not a review, and both are still due their own batch.
