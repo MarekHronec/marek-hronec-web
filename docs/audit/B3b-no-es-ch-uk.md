@@ -1,8 +1,9 @@
 # Batch B3b — Norway, Spain, Switzerland, UK
 
 Reviewer: Sonnet (research agent), reported 2026-09-12. **Reviewer did not edit any file.**
-Verification of each finding by Opus before application is recorded in the table at the
-bottom of this file. Raw reviewer report follows verbatim.
+Verification of each finding by Opus before application is recorded at the bottom of this
+file: **18 of 18 externally checkable findings confirmed, none hallucinated.** The raw
+reviewer report follows verbatim; the verification table is after it.
 
 ---
 
@@ -406,3 +407,87 @@ Corroborated independently by Hunton Andrews Kurth's Privacy & Information Secur
 - UK Def Stan 05-138 (L110) — currency not checked.
 - Spain: the INES/AMPARO description (L143) and the 2-year Media/Alta recertification cadence (L147) were not independently verified against RD 311/2022 Art. 31, though nothing contradicted them.
 - Switzerland: the Swiss–US DPF status (L172) and the EU's Swiss adequacy decision (L164, L170) were not re-verified this batch.
+---
+
+# Verification and application — Opus, 2026-09-13
+
+Every externally checkable finding was re-verified against a primary source I
+fetched myself before anything was applied. **All 18 held. None was a
+hallucination.** Three findings (#19, #20, #21) are internal and needed no
+source.
+
+| # | Claim | How I checked it | Verdict |
+|---|---|---|---|
+| 1 | RDL 7/2025 is not a NIS2 transposition | Fetched both BOE records. BOE-A-2025-7187 is the Banco de España euro reference-rate resolution of 8 Apr 2025. BOE-A-2025-12857 is the electricity decree, flagged `[Disposición derogada]`, "Norma derogada por Acuerdo del Congreso … 22 de julio de 2025. Ref. BOE-A-2025-15313" | **Confirmed** |
+| 2 | Annex II holds 73 measures | Counted the measure codes myself from the BOE consolidated XML, Anexo II segment only, deduplicated: org 4 + op 33 + mp 36 = 73 | **Confirmed independently** |
+| 3 | The hook is artículo 2.3 | Same XML. DA tercera is "Respeto del principio de «no causar un perjuicio significativo» al medioambiente". Art. 2.3 carries the private-sector clause verbatim | **Confirmed** |
+| 4 | Adequacy replaced 19 Dec 2025, sunset 27 Dec 2031 | Commission adequacy page lists both 19 December 2025 renewal decisions; the GDPR decision PDF reads "This Decision shall expire on 27 December 2031" | **Confirmed** |
+| 5 | Data (Use and Access) Act 2025 was enacted | legislation.gov.uk: UK Public General Acts 2025 c. 18; enacting formula carries "[19th June 2025]" | **Confirmed** |
+| 6 | SS2/21 is PRA, PS7/21, dual-regulated | Bank of England page: "Prudential Regulation // Policy statement", "following PS7/21", scope list is banks, building societies, PRA-designated investment firms, Solvency II insurers, third-country branches | **Confirmed, plus a version the reviewer missed** — current is Nov 2024 eff. 31 Dec 2024; a March 2026 version takes effect 18 March 2027 |
+| 7 | First CTP designations 10 July 2026 | Bank of England announcement names all four providers and "Monday 13 July 2026"; also names the Critical Third Parties (Designation) Regulations 2026 | **Confirmed** |
+| 8 | The act is digitalsikkerhetsloven, in force 1 Oct 2025 | Lovdata: LOV-2023-12-20-108, "Ikrafttredelse 01.10.2025", EØS vedlegg XI nr. 5cpa, direktiv (EU) 2016/1148 | **Confirmed** |
+| 9 | DORA in force in Norway 1 July 2025 | Lovdata: FOR-2025-06-24-1296, "Ikrafttredelse 01.07.2025", under LOV-2025-05-27-18 | **Confirmed** |
+| 10 | No AWS Norway region | AWS global infrastructure page: 39 regions, "announced plans for … Saudi Arabia, and Chile". Zero occurrences of Norway or Oslo | **Confirmed** |
+| 11 | FINMA 2018/3 excludes asset managers and FMIs | Read the addressee table by coordinate from FINMA's own circular PDF (7 marks), then cross-checked against FINMA's separate "Adressaten FINMA-Rundschreiben" matrix by rendering the page. Both leave *Vermögensverwalter* and every FinfraG column blank | **Confirmed twice** |
+| 12 | The DPO claim is inverted | Fedlex filestore HTML. FADP Art. 10(1) "Private controllers **may** appoint"; Ordinance Art. 25 "**Every federal body shall appoint**" | **Confirmed** |
+| 13 | The Spanish ministry no longer exists | La Moncloa composition of government: no Ministerio de Asuntos Económicos y Transformación Digital; the portfolio is Ministerio para la Transformación Digital y de la Función Pública | **Confirmed** |
+| 14 | NHS England, DSPT v8.0.0, CAF-aligned | NHS standards page: publisher NHS England, version 8.0.0, 12 August 2025, aligned to the NDG 10 standards "and the National Cyber Security Centre Cyber Assessment Framework" | **Confirmed** |
+| 15 | The Cyber Security and Resilience Bill is not an Act | Parliament Bills API, bill 4035: `"isAct": false`, currentHouse Lords, currentStage Report stage, lastUpdate 2026-09-08 | **Confirmed** |
+| 16 | BACS since 1 January 2024 | admin.ch: the NCSC became a federal office in the DDPS on 1 Jan 2024 per the Federal Council decision of 2 Dec 2022. The live site is `bacs.admin.ch` | **Confirmed** |
+| 17 | ISA Art. 74b reporting duty, 1 April 2025 | BACS reporting-obligation page, German and English: "Art. 74b", in force 1 April 2025, 24 hours to report, 14 days to complete | **Confirmed** |
+| 18 | FINMA 2023/1 and the Swiss Government Cloud | FINMA-RS 23/1 PDF: "Erlass 7. Dezember 2022 / Inkraftsetzung 1. Januar 2024", replacing 08/21. Federal Council dispatch of 22 May 2024, CHF 246.9m of CHF 319.4m total | **Confirmed** |
+| 19–21 | Arithmetic and category errors | Internal — "Five years later" is six; GDPR has no "essential entities"; RDL 12/2018 is the NIS1 instrument | **Applied** |
+
+## The CJEU referral — published
+
+I reproduced the reviewer's test rather than taking it on trust. The
+presscorner print-PDF endpoint returned a 75,556-byte PDF for `ip_26_1499`
+confirming the 8 July 2026 referral of Ireland, Spain, France and the
+Netherlands, with Spain at INFR(2024)0270. An invented reference,
+`ip_26_9987`, returned **HTTP 404**. A third reference I guessed at,
+`ip_25_2967`, returned a real but entirely unrelated release about the 2040
+climate target — which is the stronger form of the same proof: the endpoint
+resolves per document rather than serving one page for everything.
+
+This settles a claim I had twice declined to publish. It is now in the Spain
+article, the France article and the EU frameworks overview. It is deliberately
+**not** in the Netherlands article: the Dutch act entered into force on
+15 August 2026, a month after the referral.
+
+## What the reviewer got wrong
+
+Nothing factual. Two small things worth recording:
+
+- It reported the November 2024 SS2/21 as current without noticing the
+  March 2026 version listed directly beneath it on the same page.
+- Its coordinate extraction of the FINMA matrix was right, but mine initially
+  was not — my first parse mis-assigned columns and appeared to contradict it.
+  Rendering the page settled it in the reviewer's favour. Worth remembering
+  before treating a parse as evidence against a source.
+
+## Spillover found while applying
+
+Grepping for the claims rather than the cited lines turned up a defect the
+reviewer never saw, left by **B3a**: the Dutch Cyberbeveiligingswet had been
+corrected to "in force since 15 August 2026" in one bullet while four other
+places in the same article, plus a row in the EU frameworks overview, still
+said it was in Senate review. Confirmed in force on the RDI's own page and
+fixed in all six places. Third occurrence of this failure mode.
+
+## Still unverified
+
+Carried forward, not applied:
+
+- **Spain L122** — whether CCN news item 13155 supersedes the 17 June 2025
+  STIC update. `ccn-cert.cni.es` serves a bot check to curl and 403s WebFetch.
+  Needs a browser session.
+- **Spain L187** — hyperscaler ENS certifications at Media/Alta. Needs the CCN
+  register on `ens.ccn.cni.es`.
+- **Norway L210** — whether Google Cloud has announced a Norwegian region. The
+  locations page renders client-side. Left as written.
+- **UK L105** — whether FG16/5 has been formally withdrawn. No source either
+  way; the article now says solo-regulated firms "sit outside" SS2/21 rather
+  than making a claim about FG16/5's status.
+- **Switzerland** — whether a partial revision of FINMA 2018/3 is in
+  consultation. The circulars index is JavaScript-rendered; my URL probing for
+  the 2023/1 PDF 404'd four times before a search found the real path.

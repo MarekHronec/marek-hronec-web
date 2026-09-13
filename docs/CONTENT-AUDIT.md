@@ -109,19 +109,19 @@ costly.
 
 ## Coverage — read this before claiming anything is done
 
-Honest scorecard as of 2026-09-12. The distinction that matters is between an
+Honest scorecard as of 2026-09-13. The distinction that matters is between an
 article whose **claims were read and verified** and one that merely had a
 **citation repointed**. Only the first is an audit.
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **15** — B1, B2, B3a |
-| Citation repointed only, content never examined | 15 |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **19** — B1, B2, B3a, B3b |
+| Citation repointed only, content never examined | 11 |
 | Touched by a single verified correction, rest of the article unexamined | 1 (`sovereign-cloud-products-2026-landscape`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **50** |
+| **Never opened** | **46** |
 
-So: **42 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **38 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -149,7 +149,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B1 | EU-level instruments | 7 | opus | **applied** | [12 findings](audit/B1-eu-instruments.md) | 8 full, 3 part, 1 open |
 | B2 | National frameworks, CZ–IT | 5 | opus | **applied** | [25 findings](audit/B2-national-cz-it.md) | 9 high + 4 med |
 | B3a | Slovakia, Poland, Netherlands | 3 | opus | **applied** | [15 findings](audit/B3a-sk-pl-nl.md) | 12 + 2 spillovers |
-| B3b | Norway, Spain, Switzerland, UK | 4 | opus | todo | — | — |
+| B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
 | B4 | Assurance and attestation | 5 | sonnet | todo | — | — |
 | B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
@@ -492,3 +492,61 @@ which is done. The 403 was bot detection, as suspected.
 `updated:` bumped to 2026-09-12 on the 22 articles touched. This closes M4 for
 those files; the three September-cohort articles still carry no `updated:` and
 are handled in B8.
+
+## Session 6 — B3b applied (2026-09-13)
+
+**Norway, Spain, Switzerland, UK.** Four articles, 21 findings, all applied or
+recorded. Detail in [B3b](audit/B3b-no-es-ch-uk.md).
+
+The reviewer's record for this batch is **18 of 18 externally checkable
+findings confirmed against sources I fetched myself, none hallucinated.** That
+is now the pattern across B1, B2, B3a and B3b: reviewers report accurately;
+the defects have all come from *my* application of their findings.
+
+### The three that mattered most
+
+**Spain was citing a currency table as a NIS2 transposition.** The reference
+`BOE-A-2025-7187` is a Banco de España resolution publishing ECB euro
+reference rates for 8 April 2025. The real Real Decreto-ley 7/2025 is
+emergency electricity measures, repealed by the Congreso on 22 July 2025. So
+the article's whole "dual-track NIS2 regime" framing rested on a decree that
+had nothing to do with cybersecurity and no longer existed. Spain has notified
+no NIS2 transposition at all.
+
+**The UK CTP regime had made its first designations and the article described
+powers nobody had used.** HM Treasury designated AWS, Google Cloud, Microsoft
+and Oracle on 10 July 2026, with oversight from 13 July. For an article whose
+audience is cloud architects, four named hyperscalers under live FCA/PRA/BoE
+oversight was the most consequential missing UK fact.
+
+**Norway had a law that does not exist and a regulation described as pending
+that had been in force for ten months.** There is no "NIS-loven from 2018";
+the NIS1 implementation is digitalsikkerhetsloven, in force only from
+1 October 2025. DORA has applied in Norway since 1 July 2025. The Pro Tip
+advised readers to wait for something that had already happened before the
+article's own stated update date.
+
+### The CJEU referral, finally published
+
+I had declined this claim twice on the grounds that the presscorner HTML page
+is a JavaScript shell. The reviewer found the way through: the **print-PDF
+endpoint** returns the real document. I reproduced it and ran two negative
+controls — an invented reference 404s, and a different real reference returns
+a different real document. Published in the Spain and France articles.
+
+### Method note — a parse is not a source
+
+My first coordinate extraction of the FINMA addressee matrix appeared to
+contradict the reviewer, showing marks for FMI columns. Rendering the page as
+an image showed my column mapping had bled into an adjacent row; the reviewer
+was right. **Before treating your own parse as evidence against a source,
+look at the source.**
+
+### A fourth self-inflicted defect, from B3a
+
+Grepping for claims rather than cited lines turned up an incomplete B3a
+application: the Dutch Cyberbeveiligingswet was corrected to "in force" in one
+bullet while five other places still said "in Senate review". This is the
+**third** time partial application has left an article contradicting itself.
+The standing rule already covers it; the rule is not the problem, remembering
+to apply it is.
