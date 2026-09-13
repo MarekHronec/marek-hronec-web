@@ -63,7 +63,10 @@ Two rules follow, and they apply to every batch:
    BBN section dropped an enumeration of classification levels that had nothing
    to do with BBNs and should have survived. Index-based splices take
    neighbouring content with them silently.
-4. **Verify by reading the diff, not by re-grepping the source.** `git show
+4. **Verify by reading the diff, not by re-grepping the source.**
+5. **When you correct a claim, check the article’s own checklist and excerpt too.**
+   B5b found an article whose body had been corrected in B1 while its closing
+   checklist still stated the error the body explicitly refutes. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -115,13 +118,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **27** — B1, B2, B3a, B3b, B4, B5a |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **29** — B1, B2, B3a, B3b, B4, B5a, B5b |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 1 (`landing-zones-what-they-solve-and-the-honest-catch`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **39** |
+| **Never opened** | **37** |
 
-So: **30 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **28 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -152,7 +155,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
 | B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
 | B5a | Vendor and product landscape | 3 | sonnet | **applied** | [13 findings](audit/B5a-vendor-landscape.md) | 8 + 4 spillovers |
-| B5b | Overview and decision framework | 2 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B5b | Overview and decision framework | 2 | sonnet | **applied** | [13 findings](audit/B5b-synthesis-articles.md) | 12 + 2 spillovers |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
@@ -681,3 +684,51 @@ The reviewer cited seven locations for the OVHcloud qualification claim. The
 real count was eleven, the extras being table cells and a checklist line found
 by grepping the claim. **Grep the claim, not the line** has now paid for itself
 in four consecutive batches.
+
+## Session 9 — B5b applied (2026-09-13)
+
+**Overview and decision framework.** Two synthesis articles, 13 findings, 12
+applied. Detail in [B5b](audit/B5b-synthesis-articles.md).
+
+Twelve of the thirteen were **internal contradictions**, which is what the
+brief predicted: these two articles tabulate claims other articles own, and
+they predate the corrections applied to twenty-seven of those owners. Zero
+WRONG findings came from web fetches this batch. The one claim owned by no
+file in the repo was checked externally and was correct.
+
+### A decision tree that routed to an unqualified provider
+
+The severity ranking in these articles is different from the country ones.
+Worked example 3 told a French defence-adjacent SaaS provider to use
+"sovereignty-grade cloud (Bleu, S3NS, OVHcloud, 3DS Outscale)" — a flat list
+of four, one of which is not SecNumCloud-qualified and is still in ANSSI's
+audit phase. A reader following that tree would shortlist an unqualified
+provider for precisely the workload class where qualification is mandatory.
+
+**Stale prose is a nuisance; a decision tree that names the wrong instrument
+is a defect.** Weight findings in routing articles accordingly.
+
+The same article routed Dutch workloads to BBN1 and BBN2 two tiers running,
+when BIO2 abolished the BBNs at v1.3 — and its own tier 4 already said so.
+
+### A correction that left its own checklist contradicting it
+
+The reviewer found that `gdpr-article-28-and-eu-cloud-code-of-conduct`, an
+article **audited in B1**, disagrees with itself. Its body says plainly that
+AWS is not on the SCOPE Europe register and adheres to the CISPE code instead,
+and warns that pointing at the wrong register costs credibility. Its closing
+checklist still lists AWS as an adopter.
+
+This is a new variant of the partial-application failure. The earlier ones
+were a fix landing in one article and not its siblings. This one is a fix
+landing in an article's body and not its own summary. **When correcting a
+claim, check the article's own checklist and excerpt, not just the passage
+that stated it.** Add that to the standing rules.
+
+### What the ten U-scheme locations say about aggregators
+
+The Slovak U1–U4 scheme is relied on in ten places across these two files,
+none of which mentioned that its statutory basis is repealed from 1 January
+2027 — a fact the owning article has carried since B3a. An aggregator does not
+inherit corrections. It has to be walked through them claim by claim, which is
+exactly what this batch did and what X1 will have to do for the rest.
