@@ -3,7 +3,7 @@ title: "Switzerland — FINMA, nFADP, and the Cloud Framework Outside the EU"
 category: compliance
 tags: ["Switzerland", "FINMA", "nFADP", "FDPIC", "Compliance", "Data Security", "Adjacent Jurisdiction"]
 date: 2026-05-12
-updated: 2026-05-12
+updated: 2026-09-13
 readTime: 10
 level: intermediate
 excerpt: "Switzerland is not in the EU and not in the EEA, but is deeply bilateral with both. The cloud framework is composed: FINMA Circular 2018/3 for financial services, the revised nFADP for data protection (GDPR-aligned with lower penalties), and sector-specific regulation for healthcare, defence, and classified information. For Slovak organisations with Swiss customers — and Swiss organisations consuming EU cloud — the regime is adjacent but procedurally distinct."
@@ -22,12 +22,20 @@ references:
     domain: "edoeb.admin.ch"
   - title: "Information Security Act (ISA)"
     url: "https://www.fedlex.admin.ch/eli/oc/2022/232/en"
-    description: "The Swiss federal Information Security Act, governing classified-information handling for federal administration and critical infrastructure."
+    description: "The Swiss federal Information Security Act — classified-information handling for the federal administration, and since 1 April 2025 the Art. 74b duty on critical infrastructure operators to report cyberattacks within 24 hours."
     domain: "fedlex.admin.ch"
-  - title: "NCSC Switzerland"
-    url: "https://www.ncsc.admin.ch/ncsc/en/home.html"
-    description: "The Swiss National Cyber Security Centre — the operational federal authority for cybersecurity coordination and incident response, distinct from the UK NCSC despite the name."
-    domain: "ncsc.admin.ch"
+  - title: "Federal Office for Cybersecurity (BACS)"
+    url: "https://www.bacs.admin.ch/en"
+    description: "The Swiss federal cybersecurity authority — a federal office in the DDPS since 1 January 2024, when the National Cyber Security Centre (NCSC) was converted into the Bundesamt für Cybersicherheit."
+    domain: "bacs.admin.ch"
+  - title: "BACS — Reporting obligation for cyberattacks (ISA Art. 74b)"
+    url: "https://www.bacs.admin.ch/en/reporting-obligation"
+    description: "The mandatory cyberattack reporting duty for critical infrastructure operators, in force since 1 April 2025 — 24 hours to make the initial report, 14 days to complete it."
+    domain: "bacs.admin.ch"
+  - title: "FINMA Circular 2023/1 — Operational risks and resilience (banks)"
+    url: "https://www.finma.ch/de/~/media/finma/dokumente/dokumentencenter/myfinma/rundschreiben/finma-rs-2023-01-20221207.pdf"
+    description: "Issued 7 December 2022 and in force from 1 January 2024, replacing FINMA-RS 08/21 — FINMA’s expectations on ICT risk, cyber risk, critical data and operational resilience for banks."
+    domain: "finma.ch"
   - title: "FINMA — Cloud Computing Guidance"
     url: "https://www.finma.ch/en/documentation/dossier/dossier-cyberrisiken/cyberrisiken-und-outsourcing-2024/"
     description: "FINMA's practical guidance on cloud questions for banks and insurers, complementing the outsourcing circular with operational interpretation."
@@ -40,14 +48,16 @@ Switzerland is not in the EU and not in the EEA. It maintains bilateral agreemen
 
 The framework is composed rather than centralised:
 
-- **FINMA Circular 2018/3** on outsourcing — the operative framework for Swiss financial sector cloud use.
+- **FINMA Circular 2018/3** on outsourcing — the operative framework for Swiss financial sector cloud use, alongside **FINMA Circular 2023/1** on operational risks and resilience for banks.
 - **Revised Federal Act on Data Protection (nFADP / nDSG)** — effective 1 September 2023; substantively aligned with GDPR.
 - **Federal Data Protection and Information Commissioner (FDPIC)** — the data protection supervisor.
-- **Information Security Act (ISA)** — covering classified-information handling for federal administration.
-- **NCSC Switzerland** — the federal cybersecurity centre (distinct from the UK NCSC).
+- **Information Security Act (ISA)** — classified-information handling for the federal administration, and since 1 April 2025 a mandatory cyberattack reporting duty for critical infrastructure operators.
+- **Federal Office for Cybersecurity (BACS)** — the federal cybersecurity authority, a federal office in the DDPS since 1 January 2024. It was the National Cyber Security Centre (NCSC) until then, so older material and the `ncsc.admin.ch` domain still carry the former name.
 - **Sector-specific regulation** for healthcare, defence, and critical infrastructure operators.
 
-There is no Swiss equivalent of EUCS, BSI C5, ENS, or KsVC — no centralised cloud certification scheme. Swiss government cloud procurement is handled through federal procurement processes with NCSC-style assessment against published expectations rather than catalogue-based approval. This is structurally closer to the [UK NCSC model](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) than the catalogue-driven Slovak or Italian models.
+There is no Swiss equivalent of EUCS, BSI C5, ENS, or KsVC — no centralised cloud certification scheme. Swiss government cloud procurement is handled through federal procurement processes with assessment against published expectations rather than catalogue-based approval. This is structurally closer to the [UK NCSC model](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) than the catalogue-driven Slovak or Italian models.
+
+The Confederation is, however, building its own platform. The Federal Council adopted a cloud strategy for the federal administration in December 2020, and on 22 May 2024 sent Parliament a dispatch seeking a **CHF 246.9 million commitment credit for the Swiss Government Cloud**, a hybrid programme running 2025–2032 against total programme costs of CHF 319.4 million. That is an in-house build for federal, cantonal and communal use — not a certification scheme that a commercial provider can enter.
 
 ## Legislative basis
 
@@ -55,7 +65,7 @@ The legislative stack is layered across federal acts, ordinances, and supervisor
 
 - **Federal Act on Data Protection (nFADP / nDSG)** — effective **1 September 2023**. Replaces the 1992 FADP. Broadly aligned with GDPR.
 - **Ordinance on Data Protection (FADPO / DSV)** — implementing ordinance.
-- **Information Security Act (ISA)** — covers classified-information handling for federal authorities and identified critical infrastructure operators.
+- **Information Security Act (ISA)** — covers classified-information handling for federal authorities and identified critical infrastructure operators. Since **1 April 2025** its Art. 74b also carries a mandatory cyberattack reporting duty: operators of critical infrastructure must report to BACS within **24 hours** of discovery, with 14 days to complete the report. The duty is fleshed out in the Cybersecurity Ordinance (CSV).
 - **Banking Act / Insurance Supervision Act / Financial Market Infrastructure Act** — the sectoral statutes underlying FINMA's supervisory mandate.
 - **FINMA Circular 2018/3** on outsourcing — operative implementing instrument for cloud arrangements in financial services.
 
@@ -65,7 +75,7 @@ The Swiss approach is **principle-based regulation**: high-level statutory oblig
 
 Different parts of the framework have different scopes:
 
-- **FINMA Circular 2018/3** — applies to FINMA-supervised entities: banks, insurers, securities dealers, asset managers, fund management companies, financial market infrastructures (FMIs). Cloud arrangements are explicitly within scope as material outsourcing.
+- **FINMA Circular 2018/3** — its own addressee table names banks, insurers, managers of collective assets, fund management companies, account-holding and non-account-holding securities firms, and SICAVs. It does **not** reach portfolio asset managers (*Vermögensverwalter*), trustees, or financial market infrastructures — trading venues, central counterparties, central securities depositories, trade repositories and payment systems are all unmarked. Cloud arrangements are explicitly within scope as material outsourcing.
 - **nFADP** — applies to **all personal data processing** of individuals in Switzerland, by Swiss-resident controllers and by foreign controllers processing Swiss residents' data.
 - **ISA** — applies to federal authorities, federally-controlled enterprises, and identified critical infrastructure operators handling classified information.
 - **Sector-specific** — healthcare under Swiss health data protection law; defence under DDPS-specific requirements; critical infrastructure under sector regulators.
@@ -110,7 +120,7 @@ For personal data processing, nFADP is the operative regime. It is broadly GDPR-
 - **Records of processing activities** required.
 - **Data Protection Impact Assessments** for high-risk processing.
 - **Lower penalties** than GDPR. Penalties under nFADP cap at **CHF 250,000** and target **individuals** (managers, decision-makers) rather than entities. This is a structural difference from GDPR's entity-level fines up to 4% of global turnover.
-- **No data protection officer requirement** at federal level (unlike GDPR Article 37 mandatory DPO for certain processing).
+- **DPO appointment is voluntary for private controllers** — FADP Art. 10(1) says they *may* appoint one, unlike GDPR Article 37. Appointing a qualified, independent officer and publishing their contact details is what unlocks the Art. 23(4) exception from consulting the FDPIC on a high-risk DPIA. **Federal bodies must appoint one** (Data Protection Ordinance Art. 25).
 
 For cloud providers, nFADP-aligned processing is operationally similar to GDPR Article 28 work. The contract structure mirrors EU expectations. The supervisory authority is the FDPIC.
 
@@ -122,7 +132,7 @@ The Swiss framework does not run a centralised assessment of cloud providers. Th
 2. Standard evidence requested: ISO 27001/27017/27018, SOC 2 Type 2, [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), [EU Cloud Code of Conduct](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) Level 2.
 3. **FINMA-supervised entities** report material outsourcing arrangements; FINMA can request additional information or perform on-site inspections.
 4. **FDPIC** monitors compliance with nFADP and can investigate complaints.
-5. **NCSC Switzerland** coordinates broader cybersecurity matters and operates incident response for federal authorities.
+5. **BACS** coordinates broader cybersecurity matters, operates incident response for federal authorities, and receives the Art. 74b cyberattack reports from critical infrastructure operators.
 
 There is no Swiss-specific cloud certification a CSP can obtain. The evidence base is the standard international portfolio plus contractual annexes tailored to Swiss expectations.
 
@@ -197,9 +207,9 @@ The "Switzerland is not in the EU" framing sometimes leads EU cloud providers to
 
 ## Closing checklist
 
-- Switzerland operates a composed cloud framework: FINMA 2018/3 (finance), nFADP (data protection, GDPR-aligned), ISA (classified information), sector-specific regulation. No central cloud catalogue, no multi-tier service classification.
-- **FINMA Circular 2018/3** is the operative regime for financial-sector cloud. Substance is comparable to DORA; procedural specifics differ.
-- **nFADP** (effective 1 September 2023) is GDPR-aligned with notable specifics: lower penalty cap (CHF 250,000), individual-targeted criminal sanctions, no mandatory DPO at federal level.
+- Switzerland operates a composed cloud framework: FINMA 2018/3 and 2023/1 (finance), nFADP (data protection, GDPR-aligned), ISA (classified information and the 24-hour cyberattack reporting duty), sector-specific regulation. No central cloud catalogue, no multi-tier service classification.
+- **FINMA Circular 2018/3** is the operative outsourcing regime for financial-sector cloud, with **2023/1** carrying ICT, cyber, critical-data and operational-resilience expectations for banks since 1 January 2024. Substance is comparable to DORA; procedural specifics differ.
+- **nFADP** (effective 1 September 2023) is GDPR-aligned with notable specifics: lower penalty cap (CHF 250,000), individual-targeted criminal sanctions, and a DPO that is optional for private controllers but mandatory for federal bodies.
 - Mutual EU-Swiss adequacy makes cross-border data flow with EU operationally simple.
 - **No Swiss-specific cloud certification** to obtain. The evidence base is the standard international portfolio (ISO, SOC 2, BSI C5, EU Cloud CoC) plus Swiss-tailored contractual annexes.
 - Sovereignty posture is principle-based: no explicit ownership rules for commercial cloud, but ISA classified-information handling effectively limits foreign providers from the most sensitive federal tier.
