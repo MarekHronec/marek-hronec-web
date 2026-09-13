@@ -172,7 +172,7 @@ Adjacent European jurisdictions are integrating DORA in different ways:
 
 - **United Kingdom** has built its own equivalent regime — the **Critical Third-Party (CTP) regime** under FCA/PRA/BoE supervision. See [UK NCSC article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles).
 - **Switzerland** is not under DORA but operates the substantively similar **FINMA Circular 2018/3** for financial-sector outsourcing including cloud. See [Switzerland article](/knowledge-base/compliance/switzerland-finma-cloud-frameworks).
-- **Norway** as an EEA state is incorporating DORA through the EEA Joint Committee process. See [Norway article](/knowledge-base/compliance/norway-nsm-cloud-frameworks).
+- **Norway** as an EEA state has applied DORA since **1 July 2025**, through the DORA Act of 27 May 2025 and DORA-forskriften (FOR-2025-06-24-1296). See [Norway article](/knowledge-base/compliance/norway-nsm-cloud-frameworks).
 
 For cloud providers serving European financial entities across these jurisdictions, the operational substance is convergent; the procedural and supervisory specifics differ.
 
@@ -203,6 +203,6 @@ If you arrived here via the overview and need to go deeper:
 - Mandatory **TLPT every 3 years** for systemically important entities, with cooperation requirements from cloud providers.
 - DORA, NIS2, and GDPR apply in parallel for cloud providers serving EU financial customers processing personal data. Build a single classification and reporting workflow covering all three.
 - DORA reads national framework attestations (KsVC, BSI C5, ENS, ACN, SecNumCloud) as supporting evidence. Strong national framework participation reduces DORA preparation work.
-- Adjacent jurisdictions: UK has its own CTP regime; Switzerland has FINMA 2018/3; Norway is incorporating DORA via EEA.
+- Adjacent jurisdictions: UK has its own CTP regime; Switzerland has FINMA 2018/3; Norway has applied DORA via EEA since July 2025.
 - Treat DORA as an operational programme, not a contract-template update. Substantive work happens in incident cooperation, audit handling, and exit-strategy testing — see the [Article 30 deep-dive](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies).
 - See country articles ([Slovakia](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud), [Germany](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), [France](/knowledge-base/compliance/france-anssi-secnumcloud-qualification), [Italy](/knowledge-base/compliance/italy-acn-cloud-qualification), [Spain](/knowledge-base/compliance/spain-ens-national-security-framework)) for per-country financial supervisor mapping and how each framework intersects with DORA.
