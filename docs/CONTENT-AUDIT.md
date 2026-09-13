@@ -75,6 +75,13 @@ Two rules follow, and they apply to every batch:
 7. **A citation that resolves has not been checked.** B6b found a live, current,
    topically adjacent Microsoft page cited for a claim it does not contain — zero
    occurrences of the term across 61,586 characters. Grep the fetched page.
+   B6c then found four more this way, all in reference descriptions rather than
+   article prose. Ask for a table: URL, resolves, supports the claim, what was
+   grepped, hit count.
+9. **When a reviewer’s count cannot be reproduced, check your extraction before
+   doubting the count.** The strip-tags helper deletes `<script>` blocks, so any
+   page rendering data from embedded JSON reads as empty. B6c’s 428 hits were real
+   and my zero was the artefact.
 8. **Where a claim can be checked by computation, write the check down and keep
    it.** `scripts/check-cidr-alignment.py` came out of B6b and found an error the
    reviewer missed. Mechanical invariants do not decay; fetched sources do. `git show
@@ -129,13 +136,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **37** — B1, B2, B3a, B3b, B4, B5a, B5b, B6a, B6b |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **39** — B1, B2, B3a, B3b, B4, B5a, B5b, B6a, B6b, B6c |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **29** |
+| **Never opened** | **27** |
 
-So: **20 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **18 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -169,7 +176,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B5b | Overview and decision framework | 2 | sonnet | **applied** | [13 findings](audit/B5b-synthesis-articles.md) | 12 + 2 spillovers |
 | B6a | Platform structure and landing zones | 4 | sonnet | **applied** | [11 findings](audit/B6a-platform-structure.md) | 9 + 2 spillovers |
 | B6b | Networking and addressing | 4 | sonnet | **applied** | [12 findings](audit/B6b-networking.md) | 10 + 1 found by sweep |
-| B6c | Regions and service availability | 2 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
@@ -866,3 +873,58 @@ Asked to show its greps rather than assert completeness — an instruction
 written directly out of B6a's failure — the reviewer listed eleven searches
 **including those that returned nothing**. That is what made the claim
 checkable, and it held up. Keep that wording in future briefs.
+
+## Session 12 — B6c applied, B6 complete (2026-09-13)
+
+**Regions and service availability.** Two articles, 5 findings, 4 applied, plus
+both carried-over Oracle questions closed. Detail in
+[B6c](audit/B6c-regions-availability.md).
+
+### Every finding was in a citation
+
+Both article bodies came through clean — every mechanism claim confirmed,
+several verbatim. The paired-region framing is not merely correct but ahead of
+the vendor: Microsoft's current guidance now says "Newer Azure regions aren't
+paired" and recommends zone redundancy as the default, which is where the
+article already pointed.
+
+All four findings were in reference descriptions and URLs. That is a first,
+and it happened only because the brief made citation-checking the deliverable
+rather than a side check. Of twelve URLs fetched and grepped:
+
+- Azure's "canonical table" of services by region: **zero** region names in the
+  landing page. The `/table` URL below it has 428.
+- OCI's "authoritative table": the cited `#Services` anchor does not exist, and
+  the section is one paragraph pointing off-domain. The real matrix is two hops
+  away.
+- "Home region semantics": zero occurrences of "home region" on the cited page.
+- "Three zones per region": the page states no zone count at all, and the
+  article body never claimed one — the number lived only in the description.
+
+### A method note worth more than the findings
+
+The reviewer reported 428 hits where my own check returned zero, which looked
+like a fabricated number. **It was my extraction.** The matrix is delivered as
+script-embedded data, and the HTML-stripping helper used throughout this audit
+deletes `<script>` blocks before matching. The raw file reproduces 428 exactly.
+
+**When a reviewer's count cannot be reproduced, check the extraction before
+doubting the count.** The stripped-text helper is right for prose and wrong for
+anything rendered from embedded data. The 20-fold size difference between the
+two pages was the tell.
+
+### Carried-over questions: one correction, one confirmation
+
+Folding B6b's two unresolved Oracle questions into this small batch worked, and
+is worth repeating. Oracle publishes no recommended prefix for load balancer
+subnets — zero occurrences of "/24" on the page — so that claim was corrected.
+And service limits give five DRGs per region with no asterisk, which confirmed
+the hub-and-spoke article was right; it now names the figure.
+
+**A small batch with spare budget is the right place to close open items**
+rather than letting them accumulate to the end.
+
+### B6 complete
+
+Ten articles across three passes: 28 findings, 23 applied, 3 spillovers, one
+mechanical invariant added to the repo.
