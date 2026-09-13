@@ -3,13 +3,17 @@ title: "Sovereign Cloud Products in 2026 — The European Landscape"
 category: compliance
 tags: ["Sovereign Cloud", "Product Landscape", "Sovereignty", "Compliance", "Data Security", "Vendor"]
 date: 2026-05-09
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 13
 level: intermediate
 excerpt: "Hyperscaler joint ventures, EU-native operators, partner sovereign clouds, and dedicated sovereign regions. The European sovereign cloud market in 2026 has more options than three years ago, but the variety hides real differences in what each product actually delivers. This article maps the landscape."
 references:
+  - title: "Proposal for the Cloud and AI Development Act (CADA)"
+    url: "https://digital-strategy.ec.europa.eu/en/library/proposal-cloud-and-ai-development-act-cada"
+    description: "The Commission’s CADA proposal, adopted 3 June 2026 — the industrial-policy instrument aimed at EU cloud and AI capacity, investment and infrastructure."
+    domain: "digital-strategy.ec.europa.eu"
   - title: "Bleu — Microsoft + Orange + Capgemini"
-    url: "https://www.bleu.fr/"
+    url: "https://www.bleucloud.fr/"
     description: "Bleu, the French sovereign cloud joint venture between Microsoft (technology licensor), Orange, and Capgemini, targeting SecNumCloud qualification."
     domain: "bleu.fr"
   - title: "S3NS — Thales + Google Cloud"
@@ -53,7 +57,7 @@ The patterns differ in their sovereignty posture, their feature set, and their q
 
 JVs are the operative answer to French SecNumCloud's ownership rules and to similar sovereignty requirements where they exist. The JV is a separate legal entity, EU-headquartered, with capital and voting rights structured to meet the ≤24% individual / ≤39% collective non-EU caps SecNumCloud imposes.
 
-**Bleu** is the Microsoft route into the French sovereign tier. Microsoft licenses the Azure platform to Bleu; Orange and Capgemini operate the service. Bleu is the qualified entity under SecNumCloud; Microsoft does not have direct operational access. As of mid-2026, Bleu's J0 milestone was validated in April 2025; full SecNumCloud qualification is targeted for 2025-2026.
+**Bleu** is the Microsoft route into the French sovereign tier. Microsoft licenses the Azure platform to Bleu; Orange and Capgemini operate the service. Bleu is the qualified entity under SecNumCloud; Microsoft does not have direct operational access. Bleu validated J0 in April 2025 and **J1 on 17 November 2025**, the milestone at which ANSSI accepts the evaluation strategy and the audit phase opens — covering its IaaS, PaaS and CaaS services. It is still absent from ANSSI’s qualified catalogue as of September 2026.
 
 **S3NS** is the Google route. Thales is the JV partner; Google Cloud licenses the technology. S3NS PREMI3NS was qualified under SecNumCloud in December 2025 — the first combined IaaS/PaaS/CaaS qualification.
 
@@ -74,7 +78,7 @@ For workloads with hard sovereignty requirements and tolerance for feature lag, 
 
 EU-native operators are the longest-established sovereign cloud category. They face neither the feature-lag problem of JVs (they have their own roadmaps) nor the legal-structure constraint that prevents direct hyperscaler qualification. The trade-off is **scale**: most EU-native operators do not match hyperscaler scale on service breadth, global presence, or platform maturity.
 
-**OVHcloud** is the largest EU-native operator. French-headquartered, listed on Euronext Paris, operates across 4 continents with European data residency commitments. OVHcloud holds SecNumCloud qualification for its **Hosted Private Cloud (VMware)** at Roubaix, Gravelines, and Strasbourg — not the full Public Cloud portfolio. Strong offering for IaaS and VMware-based hosted private cloud; PaaS and managed services portfolio is more limited than hyperscalers.
+**OVHcloud** is the largest EU-native operator. French-headquartered, listed on Euronext Paris, operates across 4 continents with European data residency commitments. OVHcloud holds **three** SecNumCloud qualifications: Hosted Private Cloud (VMware) since December 2023, Bare Metal Pod since March 2025, and the **SNC Cloud Platform** public-cloud offering since 31 July 2026. The last of those is still narrower than the full Public Cloud portfolio. Strong offering for IaaS and VMware-based hosted private cloud; PaaS and managed services portfolio is more limited than hyperscalers.
 
 **3DS Outscale** is a Dassault Systèmes subsidiary. SecNumCloud qualified (first operator to qualify under version 3.2, December 2023). Targets industrial and defence customers — a smaller scale than OVHcloud but with deep alignment to industrial verticals.
 
@@ -117,10 +121,10 @@ The EU Data Boundary commitments do not address ownership-based sovereignty (the
 | Product | KsVC (SK) | BSI C5 (DE) | SecNumCloud (FR) | ENS (ES) | ACN (IT) | BIO2 (NL) | PiTuKri (FI) |
 |---|---|---|---|---|---|---|---|
 | **AWS mainline EU** | U2 candidate | Attested | No | Alta | QC2 | Yes | Attested |
-| **AWS European Sovereign** | Tbd (in build) | Tbd | Likely yes | Tbd | Tbd | Tbd | Tbd |
+| **AWS European Sovereign** | Tbd (GA Jan 2026) | Tbd | Likely yes | Tbd | Tbd | Tbd | Tbd |
 | **Microsoft Azure mainline EU** | U2 candidate | Attested | No | Alta | QC2 | Yes | Attested |
 | **Microsoft Sovereign Cloud** | Tbd | Attested | Via Bleu | Alta | Tbd | Yes | Tbd |
-| **Bleu (Microsoft + Orange + Capgemini)** | Plausible | Yes (planned) | In qualification (J0 validated) | Possible | Possible | Likely | Possible |
+| **Bleu (Microsoft + Orange + Capgemini)** | Plausible | Yes (planned) | In qualification (J1 validated, audit phase) | Possible | Possible | Likely | Possible |
 | **Google Cloud mainline EU** | U2 candidate | Attested | No | Alta | QC2 | Yes | Attested |
 | **S3NS (Google + Thales)** | Plausible | Likely | **Qualified (Dec 2025)** | Possible | Possible | Likely | Possible |
 | **OVHcloud** | Likely U2/U3 | Attested | Qualified for select services | Yes | Yes | Yes | Possible |
@@ -153,6 +157,7 @@ The sovereign cloud market is not just technical — it is shaped by industrial 
 
 Watch items for the medium-term:
 
+- **The Cloud and AI Development Act (CADA)** — the Commission adopted its proposal on **3 June 2026**, aimed at strengthening the EU’s cloud and AI ecosystem, investment and infrastructure. It is a proposal, not law, and it has the whole ordinary legislative procedure ahead of it. But it is the first EU instrument to treat cloud capacity as industrial policy rather than as a security-certification question, so it is the one to watch for whether public-sector procurement acquires a sovereignty test that certification schemes have so far failed to deliver.
 - **EUCS** — if it eventually adopts a High+ tier with sovereignty requirements, JVs and EU-native operators benefit; dedicated sovereign regions may or may not qualify depending on the substantive requirements.
 - **ANSSI/BSI joint statement** (November 2025) — early signal of FR–DE convergence on sovereignty criteria. Could accelerate harmonisation or remain a statement of direction.
 - **AWS European Sovereign Cloud qualification outcomes** — now that it is live, the open question moves from whether it ships to whether a hyperscaler's dedicated sovereign region can satisfy strict national frameworks, SecNumCloud above all, without a JV ownership structure.
