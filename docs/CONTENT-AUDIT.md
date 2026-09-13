@@ -66,7 +66,10 @@ Two rules follow, and they apply to every batch:
 4. **Verify by reading the diff, not by re-grepping the source.**
 5. **When you correct a claim, check the article’s own checklist and excerpt too.**
    B5b found an article whose body had been corrected in B1 while its closing
-   checklist still stated the error the body explicitly refutes. `git show
+   checklist still stated the error the body explicitly refutes.
+6. **A reviewer saying it checked propagation is not a substitute for running the
+   grep.** B6a’s reviewer stated positively that no further propagation existed;
+   grepping the retired product name found two more articles using it as current. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -118,13 +121,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **29** — B1, B2, B3a, B3b, B4, B5a, B5b |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **33** — B1, B2, B3a, B3b, B4, B5a, B5b, B6a |
 | Citation repointed only, content never examined | 8 |
-| Touched by a single verified correction, rest of the article unexamined | 1 (`landing-zones-what-they-solve-and-the-honest-catch`) |
+| Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **37** |
+| **Never opened** | **33** |
 
-So: **28 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **24 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -156,7 +159,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
 | B5a | Vendor and product landscape | 3 | sonnet | **applied** | [13 findings](audit/B5a-vendor-landscape.md) | 8 + 4 spillovers |
 | B5b | Overview and decision framework | 2 | sonnet | **applied** | [13 findings](audit/B5b-synthesis-articles.md) | 12 + 2 spillovers |
-| B6a | Platform structure and landing zones | 4 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B6a | Platform structure and landing zones | 4 | sonnet | **applied** | [11 findings](audit/B6a-platform-structure.md) | 9 + 2 spillovers |
 | B6b | Networking and addressing | 4 | sonnet | todo | — | — |
 | B6c | Regions and service availability | 2 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
@@ -752,3 +755,58 @@ none of which mentioned that its statutory basis is repealed from 1 January
 2027 — a fact the owning article has carried since B3a. An aggregator does not
 inherit corrections. It has to be walked through them claim by claim, which is
 exactly what this batch did and what X1 will have to do for the rest.
+
+## Session 10 — B6a applied (2026-09-13)
+
+**Platform structure and landing zones.** Four articles, 11 findings, 9 applied.
+Detail in [B6a](audit/B6a-platform-structure.md).
+
+First non-regulatory batch. Platform facts fail differently from legal ones:
+limits get revised, products get renamed while the underlying thing survives,
+and reference architectures change their recommended shape between versions.
+All three happened here.
+
+### What was wrong
+
+The Azure reference architecture has **four** platform subscriptions, not
+three. CAF's own table lists Security alongside Management, Connectivity and
+Identity, holding Sentinel and SIEM tooling. The Azure article had three; the
+tenancy article already treated Security as always-separate, so the corpus
+disagreed with itself.
+
+Landing zones split **three** ways — Corp, Online and Local — not two.
+
+Hierarchy depth was overstated in two places that did not agree with each
+other, "four to five" and "four to six", against CAF's "no more than three to
+four levels" and a reference hierarchy that is three deep. The six-level
+figure the articles cite as the hard limit is correct and stayed.
+
+Oracle's landing zone applies **CIS Benchmark v2.0**. The article had the
+versions backwards, presenting v3.0 as current.
+
+### The propagation claim that was not true
+
+The reviewer's coverage statement asserted it had grepped every falsified
+claim across the corpus and found no further propagation. Grepping
+`CIS Landing Zone` finds two more articles using the retired name as current.
+
+Five batches running, the propagation search has come back short. This is the
+first time a reviewer stated positively that it was complete. **A reviewer's
+claim to have checked propagation is not a substitute for running the grep**
+— add it to the standing rules.
+
+### What the reviewer did unusually well
+
+Its "checked and correct" list is the most valuable part of the report:
+roughly twenty hard limits verified against vendor limits pages with quoted
+text, several of them not named in the brief. Two details stand out because
+references commonly get them wrong:
+
+- It kept the Windows VM **hostname** cap of 15 characters distinct from the
+  **resource name** cap of 64, quoting the footnote that separates them.
+- It **reported against its own hunch**: it expected a Terraform module path
+  to end `/azurerm`, found that 404s, confirmed the article's `/azure` was
+  right, and said so explicitly.
+
+A reviewer that documents a suspicion it disproved is worth more than one that
+only lists what it found.
