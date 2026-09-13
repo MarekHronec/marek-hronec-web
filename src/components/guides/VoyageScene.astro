@@ -4,43 +4,33 @@ interface Props { mode?: 'overview' | 'plan' }
 const { mode = 'overview' } = Astro.props;
 ---
 <svg class="voyage-scene" data-voyage-scene={mode} viewBox="0 0 800 390" role="img" aria-labelledby={'voyage-title-'+mode}>
-  <title id={'voyage-title-'+mode}>{mode === 'overview' ? 'A braced quay crane loads five planning containers onto a coastal cargo ship. A lighthouse marks open water beyond the bow.' : 'Your cloud plan takes shape: protection, platform, connections, recovery and cost. Completed stages are labelled in the manifest below.'}</title>
+  <title id={'voyage-title-'+mode}>{mode === 'overview' ? 'A quay crane loads five planning containers onto a coastal cargo ship. A lighthouse marks open water beyond the bow.' : 'Your cloud plan takes shape: protection, platform, connections, recovery and cost. Completed stages are labelled in the manifest below.'}</title>
 <g class="chart-part" data-ship-part="resilience" data-loaded={mode === 'overview'}>
-<path class="steel" d="M696 238 L704 225 L718 220 L728 205 L741 214 L753 207 L770 222 L783 232 L789 242 Z"/><path class="fine muted" d="M713 229 l13 -9 12 12 M746 225 l11 -7 14 14"/>
+<path class="steel" d="M700 238 Q739 196 786 238 Z"/>
 <path class="paper" d="M717 218 L729 140 H749 L762 218 Z"/><path class="tower-band" d="M724 166 H753 L756 181 H722 Z"/>
 <path class="paper" d="M724 140 V120 H754 V140 Z M720 120 L739 107 L758 120 Z"/>
-<path class="fine" d="M727 124 H751 M732 124 V136 M740 124 V136 M748 124 V136 M721 143 H757 M721 143 V136 M757 143 V136 M732 218 V203 Q739 195 746 203 V218"/>
+<path class="fine" d="M727 131 H751 M733 218 V202 H745 V218"/>
 <path class="light-wash" d="M755 126 L793 109 V151 L755 133 Z"/><path class="beam" d="M755 126 L793 109 M755 133 L793 151"/><path class="rig" d="M712 219 H769"/>
 </g>
   <path class="sea" d="M12 279 Q168 256 325 273 T789 277 V342 Q595 368 401 349 T12 339 Z"/>
   <g class="contours"><path d="M18 308 Q150 286 294 304 T786 306 M59 335 Q220 319 344 334 T757 335 M326 354 Q460 364 598 355"/></g>
-<path class="quay" d="M18 246 H160 V265 H18 Z M22 265 H158 V298 H22 Z"/>
-<path class="fine muted" d="M22 279 H157 M54 266 V279 M115 266 V279 M86 279 V297 M145 279 V297"/>
-<path class="rig" d="M25 242 H152 M28 237 H151"/><path class="solid" d="M149 269 H158 V289 H149 Z M28 268 H37 V288 H28 Z"/>
-<path class="steel" d="M42 235 L62 97 H75 L56 235 Z M135 235 L121 96 H134 L150 235 Z"/>
-<path class="fine" d="M56 166 H140 M55 176 H142 M57 166 L137 111 M139 166 L73 110"/>
-<path class="paper" d="M53 65 H138 V101 H53 Z M43 99 H146 V108 H43 Z"/>
-<path class="fine" d="M60 74 H88 V92 H60 Z M96 73 H131 M96 79 H131 M96 85 H131 M96 91 H131"/>
-<path class="steel" d="M118 65 V18 H134 V65 Z"/><path class="fine" d="M119 20 L133 39 L119 60 M133 20 L119 39 L133 60"/>
-<path class="stay" d="M130 19 L619 49 M119 19 L44 50"/>
-<path class="paper" d="M43 48 H623 V66 H43 Z"/>
-<path class="fine" d="M47 50 L74 64 L101 50 L128 64 L155 50 L182 64 L209 50 L236 64 L263 50 L290 64 L317 50 L344 64 L371 50 L398 64 L425 50 L452 64 L479 50 L506 64 L533 50 L560 64 L587 50 L619 64 M44 70 H622"/>
-<path class="rig" d="M36 235 H63 M130 235 H157"/><g class="solid"><circle cx="42" cy="237" r="4"/><circle cx="55" cy="237" r="4"/><circle cx="136" cy="237" r="4"/><circle cx="150" cy="237" r="4"/></g>
-<g class="trolley" data-voyage-trolley transform="translate(256 55)"><path class="solid" d="M-14 10 H14 V20 H-14 Z"/><circle class="wheel" cx="-9" cy="12" r="3"/><circle class="wheel" cx="9" cy="12" r="3"/><path class="fine" d="M-5 20 V83 M5 20 V83 M-5 83 L-28 104 M5 83 L28 104"/><path class="paper" d="M-34 104 H34 V111 H-34 Z"/><path class="fine" d="M-30 111 V117 M30 111 V117"/></g>
+<path class="quay" d="M18 246 H160 V261 H18 Z M29 262 V292 M88 262 V292 M148 262 V292"/>
+<path class="steel" d="M42 246 L62 97 H75 L56 246 Z M135 246 L121 96 H134 L150 246 Z"/>
+<path class="paper" d="M53 66 H138 V101 H53 Z"/>
+<path class="fine" d="M65 76 H125 V91 H65 Z"/>
+<path class="paper" d="M43 49 H623 V66 H43 Z"/>
+<g class="trolley" data-voyage-trolley transform="translate(256 55)"><path class="solid" d="M-12 10 H12 V19 H-12 Z"/><path class="fine" d="M0 19 V83 M-28 104 L0 83 L28 104"/><path class="paper" d="M-34 104 H34 V110 H-34 Z"/></g>
 <g data-ship-part="platform" data-loaded={mode === 'overview'}>
-<path class="paper" d="M176 260 V180 H218 V260 Z M173 180 V156 H223 V180 Z M184 156 V140 H214 V156 Z"/>
-<path class="solid" d="M179 162 H217 V173 H179 Z M181 142 V128 H195 V142 Z"/>
-<path class="fine" d="M190 162 V173 M204 162 V173 M184 190 H194 V199 H184 Z M202 190 H211 V199 H202 Z M184 211 H194 V220 H184 Z M202 211 H211 V220 H202 Z M189 259 V236 H202 V259 M171 182 H224"/>
-<path class="rig" d="M210 141 V110 M199 120 H218"/><path class="solid" d="M211 110 L236 117 L211 122 Z"/>
+<path class="paper" d="M176 260 V180 H218 V260 Z M173 180 V156 H223 V180 Z"/>
+<path class="solid" d="M180 164 H216 V173 H180 Z"/>
+<path class="fine" d="M185 194 H208 V207 H185 Z M189 259 V236 H202 V259"/>
+<path class="rig" d="M210 156 V115"/><path class="solid" d="M211 115 L236 122 L211 127 Z"/>
 <path class="steel" d="M166 253 H624 L659 242 H703 L694 265 H171 Z"/>
 <path class="hull" d="M166 261 L610 264 Q660 261 705 250 L683 291 Q678 303 660 306 H199 Q180 306 171 291 Z"/>
-<path class="hull-detail" d="M176 274 H608 Q652 272 691 263 M192 297 H656 Q671 297 680 286"/>
-<path class="rig" d="M621 248 H681 M624 248 V258 M641 248 V255 M662 248 V251"/><path class="paper" d="M647 242 V237 H659 V242 Z"/>
-<path class="hull-detail" d="M187 282 H196 M190 286 H196 M187 290 H196 M432 286 h16 M440 278 v16"/>
-<circle class="anchor" cx="677" cy="274" r="4"/><path class="anchor" d="M677 278 V288 M670 283 Q677 295 684 283 M669 284 l1 -4 4 2 M680 282 l4 -2 1 4"/>
+<path class="hull-detail" d="M182 281 H608 Q651 280 686 270"/>
 </g>
   {VOYAGE.map((step,i)=><g class="load" data-load={step.key} data-loaded={mode === 'overview'} transform={`translate(${220+i*80} 206)`}>
-    <g class="load__arrival"><path class="container-top" d="M0 0 L5 -5 H78 L73 0 Z"/><path class="solid" d="M73 0 L78 -5 V43 L73 48 Z"/><path class="container" d="M0 0 H73 V48 H0 Z"/><path class="corrugation" d="M8 6 V42 M16 6 V42 M57 6 V42 M65 6 V42"/><path class="castings" d="M2 2 H6 V6 H2 Z M67 2 H71 V6 H67 Z M2 42 H6 V46 H2 Z M67 42 H71 V46 H67 Z"/><text x="36" y="32" text-anchor="middle">{String(i+1).padStart(2,'0')}</text></g>
+    <g class="load__arrival"><path class="container" d="M0 0 H73 V48 H0 Z"/><path class="corrugation" d="M10 7 V41 M63 7 V41"/><text x="36" y="32" text-anchor="middle">{String(i+1).padStart(2,'0')}</text></g>
   </g>)}
   <g class="chart-part" data-ship-part="connectivity" data-loaded={mode === 'overview'}>
     <path class="course" d="M531 346 Q638 375 757 348"/>
@@ -62,12 +52,7 @@ const { mode = 'overview' } = Astro.props;
 .load text { fill:var(--color-on-primary); font:var(--nautical-number) var(--font-mono); }
 .caption { fill:var(--color-primary); font:var(--nautical-diagram-label) var(--font-mono); }
 .course { fill:none; stroke:var(--color-primary); stroke-width:var(--nautical-stroke); stroke-dasharray:5 7; }
-.steel, .container-top { fill:var(--color-primary-tint); stroke:var(--color-primary); stroke-width:var(--nautical-stroke); stroke-linejoin:round; }
-.stay { fill:none; stroke:var(--color-primary); stroke-width:var(--nautical-fine-stroke); }
-.wheel, .castings { fill:var(--color-on-primary); }
-.castings { opacity:.5; }
-.muted { opacity:.4; }
-.anchor { fill:none; stroke:var(--color-on-primary); stroke-width:var(--nautical-fine-stroke); opacity:.65; }
+.steel { fill:var(--color-primary-tint); stroke:var(--color-primary); stroke-width:var(--nautical-stroke); stroke-linejoin:round; }
 .tower-band { fill:var(--color-primary); }
 .light-wash { fill:var(--color-primary-tint); opacity:.6; }
 .beam { fill:none; stroke:var(--color-primary); stroke-width:var(--nautical-fine-stroke); opacity:.3; }

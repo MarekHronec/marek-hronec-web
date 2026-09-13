@@ -29,3 +29,9 @@ Both changes were developed in an isolated worktree so the separate content audi
 Replaced the draft crane with a two-legged portal, wheel bogies, machinery cabin, braced tower, continuous truss boom, attached stays and twin hoist cables. The vessel now uses coastal cargo proportions, aft accommodation and bridge, a flat working deck, raised foredeck, railings, anchor and merchant hull markings. Numbered containers retain the existing stage hooks and gain top/side faces and corner castings. The lighthouse stands on its own headland and projects a restrained beam into open water to the right, clear of the ship.
 
 Two independent reviews verified geometry and progressive-rendering hooks. A stale development stylesheet initially rendered new classes black; a fresh production build was inspected and confirmed the intended marine tints, visible stays and bundled fonts. Full guides browser regression passed both scope branches, stage edits/reset, export and four widths. Astro check: 153 files with no diagnostics. Build: 72 pages plus successful search index. Preview serves the production build on port 4322. No push.
+
+## Harbour style simplification
+
+Simplified the detailed harbour to match the other marine illustrations: a clean supported crane, single hoist, recognizable cargo hull and aft bridge, flat numbered containers and a quiet lighthouse aimed into open water. Removed latticework, machinery fittings, container hardware and small ship markings. Existing loading, stage, reset and reduced-motion behavior is retained.
+
+Two independent reviews identified support gaps after simplification; the crane feet now meet the quay and the lighthouse overlaps its island. The fresh production illustration was visually inspected. Production build and full guides browser regression passed, including both classification scopes, five stages, answer retention, invalidation, resets, export, four widths and no-JavaScript links. No push.
