@@ -3,10 +3,23 @@ title: "Hub-and-Spoke, Virtual WAN and DRG — Choose the Traffic Paths First"
 category: networking
 tags: ["Azure", "OCI", "Networking", "Connectivity"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 4
 level: intermediate
 excerpt: "Compare transit approaches by permitted flows, inspection, operations and cost rather than assuming the diagram controls routing."
+references:
+  - title: "Azure Virtual WAN overview"
+    url: "https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about"
+    description: "Microsoft's overview of Virtual WAN, including the Basic and Standard tier table — Basic supports site-to-site VPN only, while inter-hub and VNet-to-VNet transit require Standard, because only a Standard hub provisions a router."
+    domain: "learn.microsoft.com"
+  - title: "Azure virtual network peering overview"
+    url: "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
+    description: "The canonical Microsoft page on VNet peering, including its non-transitivity — peering A to B and B to C does not connect A to C."
+    domain: "learn.microsoft.com"
+  - title: "OCI — Managing Dynamic Routing Gateways"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm"
+    description: "Oracle's reference for DRG attachments, DRG route tables and route distributions — the mechanism by which a DRG learns and redistributes routes."
+    domain: "docs.oracle.com"
 ---
 
 ## Topology expresses intent; routes determine traffic

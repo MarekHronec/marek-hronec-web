@@ -3,7 +3,7 @@ title: "Address Plans — Designing IP Space for Three Clouds and a Future You C
 category: networking
 tags: ["Azure", "OCI", "Networking", "Address Planning", "CIDR"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 15
 level: intermediate
 excerpt: "IPAM tracks allocations. An address plan decides what to allocate and what to reserve. Most orgs skip the plan and pay for it in months of remediation later."
@@ -67,10 +67,10 @@ Azure: 10.100.0.0/14 (10.100–10.103)
     (same shape as Region 1)
   - Reserved future Azure regions: 10.102.0.0/15
 
-OCI: 10.150.0.0/14 (10.150–10.153)
-  - Region 1 (Frankfurt):      10.150.0.0/16
+OCI: 10.152.0.0/14 (10.152–10.155)
+  - Region 1 (Frankfurt):      10.152.0.0/16
     (same shape as Azure regions)
-  - Reserved future OCI:       10.152.0.0/15
+  - Reserved future OCI:       10.154.0.0/15
 
 DR / cross-cloud failover: 10.200.0.0/16
 
@@ -83,7 +83,7 @@ The pattern: every region in every cloud has the same internal shape. Predictabl
 
 Why does contiguity matter? **Route summarisation.**
 
-If your spoke pool in West Europe is 10.100.16.0/20, the on-prem firewall can advertise a single route — 10.100.16.0/20 → Azure ExpressRoute — and reach every spoke. If the spokes are 10.100.16.0/22, 10.100.20.0/22, 10.100.40.0/22, 10.100.55.0/22, scattered across the /16, the firewall needs four separate routes. Multiply this across regions, clouds, and tiers and the routing table becomes unmanageable.
+If your spoke pool in West Europe is 10.100.16.0/20, the on-prem firewall can advertise a single route — 10.100.16.0/20 → Azure ExpressRoute — and reach every spoke. If the spokes are 10.100.16.0/22, 10.100.20.0/22, 10.100.40.0/22, 10.100.56.0/22, scattered across the /16, the firewall needs four separate routes. Multiply this across regions, clouds, and tiers and the routing table becomes unmanageable.
 
 Route summarisation is not a hypothetical concern. ExpressRoute, FastConnect, and most enterprise routers have route limits. Hitting them is a real production-affecting event.
 
@@ -109,6 +109,8 @@ A standard T-shirt size table:
 | L | /20 | ~4000 | Large workload, many environments |
 | XL | /18 | ~16000 | Very large workload, multiple subnets, AKS at scale |
 
+Those usable counts assume **Azure’s** five reserved addresses per subnet. An OCI subnet of the same prefix length has two more usable addresses, because Oracle reserves three. Size against the cloud you are actually deploying into.
+
 The team requests M for their payments service; the platform team allocates the next available /22. The team does not need to understand /22 vs /20; they request a T-shirt size that matches their needs, and the IPAM allocates from the contiguous pool.
 
 This is the interface Microsoft's CAF guidance recommends, and it works. Workload teams stop debating CIDR sizes and start describing actual needs.
@@ -119,15 +121,15 @@ Before committing to T-shirt sizes for hub VNets and VCNs, the platform team mus
 
 **Azure fixed-size requirements:**
 
-- **Azure Firewall subnet (`AzureFirewallSubnet`)**: must be /26 minimum (64 IPs). Deployments expecting zone-redundant scaling benefit from /25.
+- **Azure Firewall subnet (`AzureFirewallSubnet`)**: must be /26 minimum (64 IPs). Microsoft’s own FAQ is unqualified on this — "a /26 subnet is sufficient for all scaling scenarios" — so do not oversize it for zone redundancy.
 - **Gateway Subnet (`GatewaySubnet`)**: Microsoft recommends /27 minimum for VPN and ExpressRoute gateways. /29 is the absolute minimum but leaves no room for co-located resources or dual-gateway deployments.
 - **Azure Bastion subnet (`AzureBastionSubnet`)**: /26 is a hard platform requirement, not a recommendation.
-- **AKS with Azure CNI**: pods receive IPs directly from the VNet subnet. A node pool with 30 nodes and a 30-pod maximum consumes 900 IPs — a /22 (1,022 usable) fills quickly with a single medium cluster. Azure CNI Overlay and Cilium-based networking decouple pod IPs from VNet address space and deserve evaluation before sizing. With traditional CNI, overestimate generously.
+- **AKS with Azure CNI**: pods receive IPs directly from the VNet subnet. A node pool with 30 nodes and a 30-pod maximum consumes 900 IPs — a /22 (1,019 usable, after Azure’s five reserved) fills quickly with a single medium cluster. Azure CNI Overlay and Cilium-based networking decouple pod IPs from VNet address space and deserve evaluation before sizing. With traditional CNI, overestimate generously.
 - **Azure reserved IPs per subnet**: Azure reserves 5 IPs in every subnet (network address, default gateway, two Azure DNS IPs, broadcast). A /29 subnet has only 3 usable addresses.
 
 **OCI constraints:**
 
-- **OCI reserved IPs per subnet**: 2 IPs reserved (network address and broadcast equivalent). Less than Azure's 5, but still relevant in small subnets.
+- **OCI reserved IPs per subnet**: 3 IPs reserved — Oracle takes "the first two addresses and the last in the subnet’s CIDR". Fewer than Azure’s 5, but still relevant in small subnets, and not the 2 that a network-plus-broadcast assumption would suggest.
 - **OCI load balancer subnets**: public and private load balancers each need a dedicated subnet; Oracle recommends /24 per load balancer subnet in production environments for scalability.
 - **OCI private endpoints**: each private endpoint for a managed service (Autonomous Database, Object Storage, etc.) consumes a private IP from the subnet. High-density environments consume /24s faster than expected.
 

@@ -3,7 +3,7 @@ title: "IPAM — IP Address Management Before You Wish You Had Done It"
 category: networking
 tags: ["Azure", "OCI", "Networking", "IPAM", "CIDR"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 11
 level: intermediate
 excerpt: "IP space looks infinite until two VNets try to peer with overlapping ranges. By then the fix is renumbering and weeks of work. IPAM costs nothing on day one."
@@ -57,8 +57,8 @@ Corporate global IP plan
 ├── Azure
 │   ├── Hub region 1 (e.g., 10.100.0.0/16)
 │   ├── Hub region 2 (e.g., 10.101.0.0/16)
-│   ├── Spoke pool region 1 (e.g., 10.110.0.0/14 — workload subnets here)
-│   └── Spoke pool region 2 (e.g., 10.114.0.0/14)
+│   ├── Spoke pool region 1 (e.g., 10.108.0.0/14 — workload subnets here)
+│   └── Spoke pool region 2 (e.g., 10.112.0.0/14)
 ├── OCI
 │   ├── Hub region 1 (e.g., 10.150.0.0/16)
 │   └── Spoke pool region 1 (e.g., 10.160.0.0/14)
@@ -109,7 +109,7 @@ resource "azurerm_network_manager_ipam_pool" "primary" {
   name               = "ipam-primary"
   network_manager_id = azurerm_network_manager.main.id
   display_name       = "Primary IPv4 Pool"
-  address_prefixes   = ["10.100.0.0/12"]
+  address_prefixes   = ["10.100.0.0/14"]
   description        = "Primary IPv4 allocation pool for all workloads"
 }
 ```
@@ -214,7 +214,7 @@ In practice, the right tool is a cloud-agnostic IPAM that models all environment
 
 - **NetBox** is the most widely adopted open-source option. Supports prefixes, IP ranges, VRFs, and custom fields. API-driven; integrates with Terraform via the NetBox provider.
 - **The open-source Azure IPAM** (published by Microsoft) is Azure-native and auto-discovers VNets, but OCI and on-prem ranges require manual entry or scripted sync.
-- **Commercial platforms** (Infoblox, Men&Mice, SolarWinds IP Address Manager) offer multicloud support and enterprise integrations at enterprise cost.
+- **Commercial platforms** (Infoblox, Micetro by BlueCat — formerly Men&Mice, SolarWinds IP Address Manager) offer multicloud support and enterprise integrations at enterprise cost.
 
 For most organisations building a greenfield multicloud estate, NetBox with an IaC-backed allocation workflow is the most practical starting point: free, cloud-agnostic, API-driven, and actively maintained.
 
