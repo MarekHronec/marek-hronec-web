@@ -152,7 +152,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
 | B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
 | B5a | Vendor and product landscape | 3 | sonnet | **applied** | [13 findings](audit/B5a-vendor-landscape.md) | 8 + 4 spillovers |
-| B5b | Overview and decision framework | 2 | sonnet | todo | — | — |
+| B5b | Overview and decision framework | 2 | sonnet | **running** (dispatched 2026-09-13) | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
