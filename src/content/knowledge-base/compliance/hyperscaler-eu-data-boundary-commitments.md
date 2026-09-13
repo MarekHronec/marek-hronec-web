@@ -114,7 +114,7 @@ The hyperscaler EU Data Boundary commitments share important limitations:
 
 **Foreign-law access** is not addressed by data location. A US-headquartered hyperscaler remains subject to US legal process (CLOUD Act, FISA) regardless of where data is stored. The substantive answer to foreign-law access concerns is either ownership-based sovereignty (JVs, EU-native operators) or strong customer-controlled encryption with customer-held keys (so that even if the hyperscaler is compelled to provide data, plaintext is not accessible without the customer's cooperation).
 
-**Sovereign certification** under the strictest national frameworks (SecNumCloud) is not automatic. EU Data Boundary commitments do not satisfy SecNumCloud's ownership-and-immunity requirements. They may satisfy other frameworks (ENS High, ACN QC2, BSI C5 with EU-localised configuration) but the specifics depend on the framework.
+**Sovereign certification** under the strictest national frameworks (SecNumCloud) is not automatic. EU Data Boundary commitments do not satisfy SecNumCloud's ownership-and-immunity requirements. They may satisfy other frameworks (ENS Alta, ACN QC2, BSI C5 with EU-localised configuration) but the specifics depend on the framework.
 
 **Service feature parity** with global mainline regions is generally maintained, but some features depend on global infrastructure (anti-abuse, certain ML services). These are usually documented as exclusions.
 

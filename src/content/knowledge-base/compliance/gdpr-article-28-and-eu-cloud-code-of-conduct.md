@@ -3,7 +3,7 @@ title: "GDPR Article 28 and the EU Cloud Code of Conduct — What They Actually 
 category: compliance
 tags: ["GDPR", "EU Cloud CoC", "Article 28", "Compliance", "Data Security", "Cross-Cutting", "Privacy"]
 date: 2026-04-09
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 10
 level: advanced
 excerpt: "GDPR Article 28 is the operative article for every controller-processor cloud relationship. The EU Cloud Code of Conduct is the most pragmatic instrument for demonstrating Article 28 compliance at scale. This article walks through what Article 28 actually requires and what the CoC actually demonstrates."
@@ -197,7 +197,7 @@ For Slovak organisations, GDPR is supplemented by **Act 18/2018 Z. z.** on perso
 - The EU Cloud Code of Conduct is the **GDPR Article 40 code** specifically for cloud services, approved by the Belgian DPA on 20 May 2021. The most pragmatic instrument for demonstrating Article 28 compliance at scale.
 - Three adherence levels differ by evidence type: Level 1 self-declared, Level 2 third-party validated (typical for hyperscalers), Level 3 third-party assured.
 - Monitoring body: **SCOPE Europe srl**, Brussels. Accredited by the Belgian DPA.
-- Adopted by AWS, Microsoft Azure, Google Cloud, IBM, Oracle, SAP, Salesforce, Alibaba, and many others. Register at `eucoc.cloud`; co-published in CSA STAR Registry since 2024.
+- Adopted by Microsoft Azure, Google Cloud, IBM, Oracle, SAP, Salesforce, Alibaba, and many others — but **not AWS**, which adheres to the CISPE code instead. Register at `eucoc.cloud`; co-published in CSA STAR Registry since 2024.
 - The **Third Country Transfer Module** addresses Chapter V transfer obligations post-Schrems II. Layer on top of base CoC adherence.
 - The CoC is a complementary instrument. It does not replace the Article 28 contract, the underlying operational controls, or sector-specific compliance (DORA, NIS2).
 - Operational programme: ISO 27018 + ISO 27701 → SOC 2 → CoC Level 2 declaration. The CoC is the publication layer; the operational substance is the ISO and SOC 2 work.

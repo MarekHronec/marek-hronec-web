@@ -3,7 +3,7 @@ title: "Choosing Your Cloud Compliance Posture — A Decision Framework"
 category: compliance
 tags: ["Decision Framework", "Practitioner", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-15
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 12
 level: intermediate
 excerpt: "The national frameworks, cross-cutting baselines, and regulatory overlays add up to dozens of acronyms. This article is the decision tree that maps 'I am [type of organisation] doing [type of workload] in [geography]' to 'these are the frameworks that actually apply to you'."
@@ -59,7 +59,7 @@ These are the floor. Every more specific framework layered above assumes these a
 
 **Always applies**:
 - KsVC catalogue listing requirement (must consume only listed services).
-- ISVS classification under MIRRI methodology (U1-U4).
+- ISVS classification under MIRRI methodology (U1–U4). The scheme has a fixed shelf life: vyhláška 179/2020, which supplies the C/I/A → category chain the U-levels rest on, is repealed by vyhláška MIRRI 184/2026 with effect from **1 January 2027**. The two regimes run in parallel until 31 December 2026. Classify against it for now, but design so the answer survives the move to risk analysis.
 - Cybersecurity Act 69/2018 (as amended by 366/2024) + vyhláška 227/2025 risk-management regime if essential or important entity under NIS2.
 - GDPR for personal data.
 
@@ -140,15 +140,15 @@ These are the floor. Every more specific framework layered above assumes these a
 
 ### Tier 1 — Public / open data
 
-Minimal compliance bar. ISO 27001 from the cloud provider is generally sufficient. National framework: typically the lowest tier (KsVC U1, ENS Básica, BBN1, QC1). No special encryption or sovereignty requirements.
+Minimal compliance bar. ISO 27001 from the cloud provider is generally sufficient. National framework: typically the lowest tier (KsVC U1, ENS Básica, QC1; BIO2 has had no baseline tiers since v1.3). No special encryption or sovereignty requirements.
 
 ### Tier 2 — Operational data (non-sensitive personal data, business operational data)
 
-Standard cloud compliance bar. ISO 27001 + 27017 + 27018, SOC 2 Type 2, EU Cloud CoC Level 2. National framework: mid-tier (KsVC U2, ENS Media, BBN2, QC2). Standard encryption at rest with provider-managed keys.
+Standard cloud compliance bar. ISO 27001 + 27017 + 27018, SOC 2 Type 2, EU Cloud CoC Level 2. National framework: mid-tier (KsVC U2, ENS Media, QC2; BIO2 is risk-based, with no baseline tier to name). Standard encryption at rest with provider-managed keys.
 
 ### Tier 3 — Regulated personal data / commercial confidential
 
-Higher compliance bar. Full ISO stack including 27701. Strong national framework participation (ENS High, ACN QC3, KsVC U3, BSI C5 with extended criteria). Customer-managed encryption keys (BYOK/HYOK). Documented data-processing locations. Audit rights for high-criticality processing.
+Higher compliance bar. ISO 27001/27017/27018, plus 27701 — stand-alone in its own right since its 2025 second edition, so 27001 is no longer a strict prerequisite, though most providers still run them together. Strong national framework participation (ENS Alta, ACN QC3, KsVC U3, BSI C5 with extended criteria). Customer-managed encryption keys (BYOK/HYOK). Documented data-processing locations. Audit rights for high-criticality processing.
 
 ### Tier 4 — National-classified information / critical infrastructure data
 
@@ -179,9 +179,10 @@ Operational pattern: build evidence to the strictest framework; map to others vi
 
 - EU national frameworks for EU operations.
 - UK NCSC 14 Cloud Security Principles for UK operations (see the [UK article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles)).
-- Swiss FINMA Circular for Swiss financial operations.
-- Norwegian NSM grunnprinsipper for Norwegian operations.
-- Adequacy decisions handle most data flows; some sectors require additional measures.
+- Swiss financial operations: **FINMA Circular 2018/3** for outsourcing and **2023/1** for operational risk and resilience, in force since 1 January 2024. Note also the Information Security Act Art. 74b duty to report cyberattacks to **BACS** within 24 hours, in force since 1 April 2025.
+- Norwegian operations: **DORA** has applied since 1 July 2025 and **digitalsikkerhetsloven** (NIS1) since 1 October 2025. NSM Grunnprinsipper is guidance layered on top of those, not a substitute for them.
+- UK financial operations: the **Critical Third Party regime** has been live since 13 July 2026 over AWS, Google Cloud, Microsoft and Oracle, and **PRA SS2/21** governs outsourcing for dual-regulated firms.
+- EU–UK data flows run on adequacy decisions **renewed 19 December 2025 and valid to 27 December 2031**; Swiss and Norwegian flows are covered by adequacy and the EEA respectively. Some sectors require additional measures.
 
 Operational pattern: extend the EU evidence base with adjacent-jurisdiction evidence; the substantive overlap is large.
 
@@ -198,7 +199,7 @@ Operational pattern: federated compliance programme with regional compliance lea
 
 ### Example 1 — Slovak ministry implementing a citizen-facing portal
 
-- **Public sector + GDPR personal data + national-classified flag (some workflows handle personal data under Act 215/2004)**.
+- **Public sector + GDPR personal data**. Personal data sits under GDPR and Act 18/2018 Z. z.; Act 215/2004 is the classified-information statute, and classified material would push the workload to U4 rather than U2.
 - **Tier 3** for the personal-data workflows.
 - **Single Member State** scope.
 
@@ -212,7 +213,7 @@ Don't apply: DORA (not a financial entity); SecNumCloud (not French); EUCS High+
 - **Tier 3**.
 - **Single Member State** scope primarily, EU scope for cross-border banking services.
 
-Apply: **[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)** as primary framework. Specifically: the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) if the cloud provider gets designated, and [Article 30 contractual content](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the cloud contract substance. Plus: [ISO 27001/27017/27018/27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines); [SOC 2 Type 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) / [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation); [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct); EU Cloud CoC Level 2; [NIS2 obligations](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) (bank is essential entity); [BYOK/HYOK key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for Tier 3 data; [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) participation may apply if the bank consumes public-sector-adjacent services.
+Apply: **[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)** as primary framework. Specifically: the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision) — already live if the bank runs on AWS, Microsoft, Google Cloud or Oracle, all designated among the first 19 CTPPs on 18 November 2025 — and and [Article 30 contractual content](/knowledge-base/compliance/dora-article-30-contracts-and-exit-strategies) for the cloud contract substance. Plus: [ISO 27001/27017/27018/27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines); [SOC 2 Type 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) / [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation); [GDPR Article 28](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct); EU Cloud CoC Level 2; [NIS2 obligations](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) (bank is essential entity); [BYOK/HYOK key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for Tier 3 data; [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) participation may apply if the bank consumes public-sector-adjacent services.
 
 Don't apply: [SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (not French OIV/OSE); national-classified information handling (no classified data).
 
@@ -222,7 +223,7 @@ Don't apply: [SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-q
 - **Tier 4** for OIV/OSE workflows.
 - **Single Member State** primarily, but possible international clients.
 
-Apply: **SecNumCloud** as primary framework (mandatory for sensitive workflows under Cloud au centre); ISO 27001/27017/27018; sovereignty-grade cloud (Bleu, S3NS, OVHcloud, 3DS Outscale); EU Cloud CoC; NIS2 obligations; GDPR Article 28.
+Apply: **SecNumCloud** as primary framework (mandatory for sensitive workflows under Cloud au centre); ISO 27001/27017/27018; sovereignty-grade cloud that actually holds the qualification (3DS Outscale, Cegedim.cloud, S3NS, OVHcloud, Numspot — **not** Bleu, which is still in ANSSI’s audit phase); EU Cloud CoC; NIS2 obligations; GDPR Article 28.
 
 Don't apply: KsVC (not Slovak); DORA (not financial); ACN (not Italian PA).
 
@@ -237,14 +238,14 @@ Apply: ISO 27001/27017/27018/27701; SOC 2 Type 2; BSI C5 (for German customers);
 Don't apply: SecNumCloud (would require structural changes); DORA (not a financial entity, unless serving financial sector — then supply-chain obligations flow from financial customers); national-classified information handling.
 
 :::tip[Architectural Pro Tip]
-For any organisation building a cloud compliance programme, the **single most leveraged decision is which framework to design controls to**. Pick the strictest framework that applies to a non-trivial portion of your workloads, design controls to its requirements, and map to all other applicable frameworks. For most EU-operating organisations, that strictest framework is one of: ENS High + Cloud PCE (Spain), ACN QC3 (Italy), KsVC U3 (Slovakia), SecNumCloud (France) for sovereign workloads, or BSI C5 + ISO 27017/27018 + EU Cloud CoC L2 as a portable European baseline. Designing to a mid-tier framework and discovering later that you need to upgrade for a stricter tier is more expensive than designing to the stricter framework from the start.
+For any organisation building a cloud compliance programme, the **single most leveraged decision is which framework to design controls to**. Pick the strictest framework that applies to a non-trivial portion of your workloads, design controls to its requirements, and map to all other applicable frameworks. For most EU-operating organisations, that strictest framework is one of: ENS Alta + Cloud PCE (Spain), ACN QC3 (Italy), KsVC U3 (Slovakia), SecNumCloud (France) for sovereign workloads, or BSI C5 + ISO 27017/27018 + EU Cloud CoC L2 as a portable European baseline. Designing to a mid-tier framework and discovering later that you need to upgrade for a stricter tier is more expensive than designing to the stricter framework from the start.
 :::
 
 ## Common decision-tree traps
 
 **Trap 1: Assuming national frameworks substitute for GDPR or NIS2.** They don't. Every national framework assumes GDPR compliance; every cloud provider above NIS2 size thresholds is an essential entity regardless of national framework participation. The frameworks layer; they don't replace.
 
-**Trap 2: Treating EUCS as imminent.** As of mid-2026, EUCS remains a draft. Plan against the actual operative regimes — the national frameworks plus the EU-wide DORA/GDPR/NIS2 layer. EUCS arriving is an upside scenario, not a base case.
+**Trap 2: Treating EUCS as imminent.** EUCS remains a draft, and the sovereignty content that made it interesting has moved out of it — into the revised Cybersecurity Act tabled 20 January 2026 and the Cloud and AI Development Act proposed 3 June 2026. Plan against the actual operative regimes: the national frameworks plus the EU-wide DORA/GDPR/NIS2 layer. EUCS arriving is an upside scenario, not a base case, and CADA is now the more useful thing to watch.
 
 **Trap 3: Confusing sovereign cloud with EU Data Boundary.** They address different concerns. EU Data Boundary is data location; sovereign cloud is ownership and jurisdiction. A workload may need one, the other, both, or neither.
 

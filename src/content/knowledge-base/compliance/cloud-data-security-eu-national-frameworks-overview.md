@@ -3,7 +3,7 @@ title: "Data Security in the Cloud — How EU Member States Actually Decide What
 category: compliance
 tags: ["EU", "Compliance", "Data Security", "Sovereignty", "EUCS", "NIS2"]
 date: 2026-04-02
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 14
 level: beginner
 excerpt: "Every EU member state grades cloud security differently, and the 'European' scheme that was supposed to harmonise them has been stuck for two years. Here is the actual map — who leads, who drifts, and what a multicloud operator has to navigate."
@@ -57,7 +57,7 @@ The Confidentiality–Integrity–Availability triad is the conceptual base for 
 
 Where countries diverge:
 
-- **Spain (ENS)** adds **authenticity** and **traceability** as fifth and sixth dimensions, making it the most operationally specific framework about audit logging.
+- **Spain (ENS)** adds **authenticity** and **traceability** as the fourth and fifth dimensions, making it the most operationally specific framework about audit logging.
 - **Finland (PiTuKri)** ties the classification dimensions directly to **national classified-information levels** (TL IV / TL III / TL II) rather than abstract C/I/A scores.
 - **France (SecNumCloud)** rolls everything into a single level — the framework's position is that "sensitive enough to matter" is one threshold, not a gradient.
 - **Slovakia (KsVC)**, **Italy (ACN)**, and **Netherlands (BIO2)** use multi-level models where the classification of the *data* drives the minimum level of the *cloud service* (rule of the form `data class X ≤ cloud level Y`).
@@ -87,12 +87,12 @@ There is no single "best" framework. Leadership depends on what you are optimisi
 | **Sovereignty strictness** | France (SecNumCloud) | Hard ownership caps, immunity to extraterritorial law, public political backing of the "Cloud au centre" doctrine |
 | **Audit rigor and reusability** | Germany (BSI C5) | ISAE 3000 Type 2, well-documented control framework, mapping to ISO 27001/27017/27018, CSA CCM, AICPA TSC — and reusable with SOC 2 |
 | **Process formality and predictability** | Italy (ACN) | Statutory timelines (60-day evaluation, 30-day for infrastructure), explicit catalogue, 36-month validity, formal "filiazione" doctrine for service composition |
-| **Breadth of control set** | Spain (ENS) | 74 controls across organisational/operational/protective categories, dedicated Cloud Services compliance profile (PCE) |
+| **Breadth of control set** | Spain (ENS) | 73 controls across organisational/operational/protective categories, dedicated Cloud Services compliance profile (PCE) |
 | **Integration with national classified info** | Finland (PiTuKri) | Tied to Facility Security Clearance and the national TL II/III/IV classification system |
 | **Public-sector enforcement bite** | Italy and Slovakia | Mandatory catalogue listing for public administration purchasing — non-listed services cannot be bought |
 | **Practitioner familiarity** | Germany (BSI C5) | The most adopted by hyperscalers; the de facto reference for the EUCS Substantial level |
 
-Slovakia's KsVC sits mid-pack in scope and procedural shape: multi-level (U1–U4), mandatory for public administration, ties higher levels to the national `zákon 69/2018` audit framework. As of mid-2026 a **transitional framework/law alignment gap** is open — MIRRI's published methodology (April 2025) still uses static U1–U4 classification while the underlying cybersecurity law moved to a risk-management regime under Act 366/2024 and vyhláška NBÚ 227/2025 (effective September 2025). Finland sits in the same position with a known closing date (autumn 2026). See the per-country articles for detail.
+Slovakia's KsVC sits mid-pack in scope and procedural shape: multi-level (U1–U4), mandatory for public administration, ties higher levels to the national `zákon 69/2018` audit framework. As of mid-2026 a **transitional framework/law alignment gap** is open — MIRRI's published methodology (April 2025) still uses static U1–U4 classification while the underlying cybersecurity law moved to a risk-management regime under Act 366/2024 and vyhláška NBÚ 227/2025 (effective September 2025). The scheme has a fixed shelf life: vyhláška 179/2020, which supplies the C/I/A → category chain the U-levels rest on, is repealed by vyhláška MIRRI 184/2026 with effect from **1 January 2027**. The two regimes run in parallel until 31 December 2026. Finland sits in the same position with a known closing date (autumn 2026). See the per-country articles for detail.
 
 ## The European layer — three things that are not quite frameworks
 
@@ -104,17 +104,19 @@ The result: EUCS is real as a draft, not real as an applicable rule. Anyone maki
 
 A notable bilateral signal: in **November 2025, ANSSI and BSI published a joint statement on harmonised cloud-sovereignty criteria**. This is the first public step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS at the High+ level. It is a statement of direction, not a binding agreement on scheme content. Watch it as a leading indicator rather than as a delivered outcome.
 
+Since then the question has moved venue. The Commission tabled a **revised Cybersecurity Act** on 20 January 2026 and proposed the **Cloud and AI Development Act (CADA)** on 3 June 2026, which sets out cloud and AI sovereignty as four assurance levels for public bodies to apply on a risk basis. Sovereignty is no longer waiting on EUCS; track CADA and the revised Cybersecurity Act instead. See the [EUCS watch article](/knowledge-base/compliance/eucs-watch-political-tracking-2026) for the detail.
+
 **Gaia-X.** Federated data infrastructure framework, not a certification scheme strictly speaking. The Compliance Document 24.06 defines a Standard Compliance baseline plus three labels (L1, L2, L3). **Label Level 3 is the closest thing to a working sovereignty marker today** — it requires EU/EEA headquartering, immunity to extraterritorial law, and full data sovereignty. Verification is automated through the Gaia-X Digital Clearing House. Adoption is slow; the multi-provider catalogue announced at Porto Summit 2025 has roughly 600 services across 15 providers.
 
-**EU Cloud Code of Conduct.** A GDPR Article 28 compliance code, approved by the Belgian DPA in May 2021. Three adherence levels differ by *evidence type* (self-declaration, third-party validated, third-party assured), not by content. Adopted by AWS, Azure, Google, Oracle, SAP, IBM, and most major SaaS providers. Integrated with the CSA STAR Registry. **This is the only EU-wide cloud compliance instrument that is in widespread production use** — because it solves a concrete problem (Article 28 demonstrability) without political baggage.
+**EU Cloud Code of Conduct.** A GDPR Article 28 compliance code, approved by the Belgian DPA in May 2021. Three adherence levels differ by *evidence type* (self-declaration, third-party validated, third-party assured), not by content. Adopted by Azure, Google, Oracle, SAP, IBM and most major SaaS providers. **Not AWS** — it adheres to a different Article 40 instrument, the CISPE Data Protection Code of Conduct. Integrated with the CSA STAR Registry. **This is the only EU-wide cloud compliance instrument that is in widespread production use** — because it solves a concrete problem (Article 28 demonstrability) without political baggage.
 
-NIS2 (Directive (EU) 2022/2555) and DORA (Regulation (EU) 2022/2554) sit alongside these and apply *regardless* of which national scheme a CSP is in. NIS2 brings cloud providers into the "essential entities" category with 24h/72h incident reporting and management-level accountability. DORA does the same for the financial sector with a separate Critical Third-Party Provider regime — the European Supervisory Authorities can designate hyperscalers as critical and supervise them directly.
+NIS2 (Directive (EU) 2022/2555) and DORA (Regulation (EU) 2022/2554) sit alongside these and apply *regardless* of which national scheme a CSP is in. NIS2 brings cloud providers into the "essential entities" category with 24h/72h incident reporting and management-level accountability. DORA does the same for the financial sector with a separate Critical Third-Party Provider regime — the European Supervisory Authorities designated the first **19 CTPPs on 18 November 2025**, AWS, Microsoft, Google Cloud and Oracle among them, and supervise them directly.
 
 NIS2 transposition status is highly heterogeneous across the member states this article covers, with concrete consequences for the framework/law alignment of each country's cloud scheme:
 
 | Country | NIS2 transposing instrument | Status (mid-2026) | Framework alignment |
 |---|---|---|---|
-| Slovakia | Act 366/2024 + vyhláška NBÚ 227/2025 | In force (1 Jan 2025 / 1 Sep 2025) | **Gap** — MIRRI methodology rev. April 2025 still static U1–U4 |
+| Slovakia | Act 366/2024 + vyhláška NBÚ 227/2025 | In force (1 Jan 2025 / 1 Sep 2025) | **Gap closing by force of law** — MIRRI methodology still static U1–U4; vyhl. 179/2020 repealed from 1 Jan 2027 by vyhl. 184/2026 |
 | Germany | NIS2-Umsetzungsgesetz (NIS2UmsuCG) | In force since 6 Dec 2025 | Aligned — C5:2026 (March 2026) closes the gap from 1 Jun 2027 |
 | France | Loi Résilience | Not yet in force — referred to the CJEU 8 Jul 2026 | ANSSI ReCyF (Mar 2026) covers NIS2 alongside SecNumCloud |
 | Spain | Anteproyecto de Ley de Coordinación y Gobernanza — not adopted | **Nothing notified** — referred to the CJEU 8 Jul 2026; NIS1 (RDL 12/2018) still operative | RD 311/2022 + CCN-STIC 800 updated June 2025 |
@@ -131,7 +133,7 @@ The two clear framework/law gap cases are Slovakia and Finland, both with transi
 A hyperscaler serving public sector and regulated workloads across the EU today carries a portfolio of certifications, not one:
 
 - **BSI C5 (Germany)** — Type 2 attestation, refreshed annually.
-- **SecNumCloud (France)** — for sovereign cloud joint ventures (Bleu, S3NS), not for the mainline regions.
+- **SecNumCloud (France)** — for sovereign cloud joint ventures, and only where the JV actually holds it. S3NS has been qualified since December 2025; Bleu has not, and is still in the audit phase. Never for the mainline regions.
 - **ENS (Spain)** — *Alta* or *Media* for relevant regions.
 - **ACN Qualificazione (Italy)** — QC2 or QC3 for relevant services. Strategic data is admitted at QC3 as well as QC4 (Art. 17(4)(c)); QC4 is distinguished by HYOK key custody, not by being reserved to the PSN.
 - **PiTuKri (Finland)** — ISAE 3000 Type 2.
@@ -151,7 +153,7 @@ The cheapest way to operate against a portfolio of national schemes is to design
 
 The single most charged topic across these frameworks is *sovereignty* — what it means, who enforces it, and whether it is a technical or a political construct.
 
-The French position, embodied in SecNumCloud 3.2 and the "Cloud au centre" doctrine, is the maximalist one: sovereignty means EU headquartering, capped non-EU ownership, immunity from extraterritorial law. This excludes US hyperscalers from running sovereign workloads under their own names. Workarounds exist via joint ventures (Bleu = Microsoft + Orange + Capgemini; S3NS = Google + Thales).
+The French position, embodied in SecNumCloud 3.2 and the "Cloud au centre" doctrine, is the maximalist one: sovereignty means EU headquartering, capped non-EU ownership, immunity from extraterritorial law. This excludes US hyperscalers from running sovereign workloads under their own names. Workarounds exist via joint ventures (Bleu = Microsoft + Orange + Capgemini; S3NS = Google + Thales), but only S3NS has converted the structure into an actual qualification so far.
 
 The German position is more layered: BSI C5 emphasises *transparency* about jurisdiction and disclosure obligations rather than excluding non-EU providers outright. AWS, Azure, and Google all hold C5 attestations.
 
@@ -209,5 +211,5 @@ Five reading paths depending on your role and immediate question:
 - Gaia-X Label 3 is the most usable voluntary sovereignty marker today. EU Cloud CoC Level 2 is the most usable GDPR Article 28 marker. Neither replaces national requirements; both reduce friction.
 - NIS2 and DORA apply on top of everything else. Cloud providers are essential entities; financial sector cloud customers operate under DORA's CTPP regime regardless of national scheme participation.
 - Multicloud CSPs run portfolios of certifications, not single ones. Design controls to the strictest applicable framework and map down. Avoid building separately to each.
-- For Slovak readers: KsVC is mid-pack on rigor and comparable to ENS and ACN in scope, mandatory for public administration, and tied to the national audit framework under `zákon 69/2018`. As of mid-2026 a transitional framework/law alignment gap is open — see the per-country article for detail.
+- For Slovak readers: KsVC is mid-pack on rigor and comparable to ENS and ACN in scope, mandatory for public administration, and tied to the national audit framework under `zákon 69/2018`. A transitional framework/law alignment gap is open, and it closes by force of law: vyhláška 179/2020 is repealed from **1 January 2027**, so U1–U4 is reliable guidance only through 31 December 2026 — see the per-country article for detail.
 - **What to read next:** the reading paths section above maps the right entry-point for your role (Slovak architect, financial services, CSP, procurement, pan-European compliance, EU-native evaluation). For depth, the [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework) is the practitioner companion; for the per-country specifics, the 12 country articles cover each national regime; for cross-cutting concepts, the [ISO baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [GDPR + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) articles cover the universal regimes; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) covers the pure-play EU operator landscape distinct from hyperscalers and sovereign JVs.
