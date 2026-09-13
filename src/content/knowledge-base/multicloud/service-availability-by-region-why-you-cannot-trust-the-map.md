@@ -3,23 +3,23 @@ title: "Service Availability by Region — Why You Cannot Trust the Map"
 category: multicloud
 tags: ["Azure", "OCI", "Service Availability", "Governance", "Region Selection"]
 date: 2026-04-30
-updated: 2026-09-10
+updated: 2026-09-13
 readTime: 5
 level: beginner
 excerpt: "Verify exact service features, quotas and recovery capacity in the regions your workload depends on."
 references:
   - title: "Azure products available by region"
-    url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/"
-    description: "Microsoft's canonical table of which Azure services are available in which regions — the first source to check before committing to a region or service in any architecture design."
+    url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/table"
+    description: "Microsoft's canonical table of which Azure services are available in which regions — the first source to check before committing to a region or service. Note this is the /table URL: the landing page above it carries no region data."
     domain: "azure.microsoft.com"
   - title: "Azure service-specific reliability guides"
     url: "https://learn.microsoft.com/en-us/azure/reliability/overview-reliability-guidance"
     description: "Per-service reliability documentation that covers AZ support, region-pair behaviour, and service-specific resilience patterns — the detail layer beneath the products-by-region table."
     domain: "learn.microsoft.com"
-  - title: "OCI service availability by region"
-    url: "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#Services"
-    description: "Oracle's authoritative table of which OCI services are available in which regions and realms — the equivalent of Azure's products-by-region for OCI workload design."
-    domain: "docs.oracle.com"
+  - title: "OCI service availability by region and realm"
+    url: "https://www.oracle.com/cloud/distributed-cloud/service-availability/"
+    description: "Oracle's per-realm service availability matrix, including the list of services not available in the EU Sovereign Cloud — the equivalent of Azure's products-by-region for OCI workload design."
+    domain: "oracle.com"
   - title: "Azure Availability Zone support by service and region"
     url: "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-service-support"
     description: "Which Azure services support Availability Zone deployment and in which regions — the table that determines whether a given resilience design is actually achievable in your chosen region."

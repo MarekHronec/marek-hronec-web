@@ -54,7 +54,7 @@ Avoid the blanket statement that managed transit automatically solves every spok
 
 ## OCI DRG routing remains explicit
 
-OCI DRGs use attachments, route tables and route distributions to govern connectivity. A VCN attachment does not remove the need for appropriate VCN routes and security rules. Multiple DRGs can exist in a region; “one per region” can be a design choice rather than a platform rule. [Oracle DRG documentation](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm).
+OCI DRGs use attachments, route tables and route distributions to govern connectivity. A VCN attachment does not remove the need for appropriate VCN routes and security rules. Multiple DRGs can exist in a region — Oracle’s service limits put the default at five per region, and that ceiling is itself raisable — so “one per region” is a design choice, not a platform rule. [Oracle DRG documentation](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm).
 
 Trace traffic entering each attachment and determine which route table applies. If inspection is required, verify the complete supported insertion path and the return flow rather than relying on the firewall’s presence in a hub VCN.
 

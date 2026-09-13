@@ -3,14 +3,14 @@ title: "Regions, Zones, Availability Domains — Where Your Data Actually Lives"
 category: multicloud
 tags: ["Azure", "OCI", "Regions", "Availability Zones", "Data Residency"]
 date: 2026-04-30
-updated: 2026-09-10
+updated: 2026-09-13
 readTime: 5
 level: beginner
 excerpt: "Region choice locks in data residency, resilience, and service availability for years. The portal calls it a dropdown. It is an architectural decision."
 references:
   - title: "Azure Availability Zones overview"
     url: "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
-    description: "Microsoft's reference for AZ architecture, zone-redundant services, and how physical separation is delivered — the operational detail behind the \"three zones per region\" model."
+    description: "Microsoft's reference for AZ architecture, zonal versus zone-redundant services, and how physical separation is delivered, including that logical zone numbers map differently between subscriptions."
     domain: "learn.microsoft.com"
   - title: "Azure global infrastructure — geographies"
     url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/"
@@ -18,7 +18,11 @@ references:
     domain: "azure.microsoft.com"
   - title: "OCI regions and availability domains"
     url: "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm"
-    description: "Oracle's reference for OCI regions, availability domain counts per region, realms, and home region semantics — essential reading before provisioning a new OCI tenancy."
+    description: "Oracle's reference for OCI regions, availability domain counts per region, and realms. Note that many regions have a single availability domain, and each AD contains three fault domains."
+    domain: "docs.oracle.com"
+  - title: "OCI — Managing Regions and the home region"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingregions.htm"
+    description: "Where Oracle defines home region semantics — the region holding your tenancy’s IAM resources, where users, groups, policies and compartments can be created and updated."
     domain: "docs.oracle.com"
   - title: "Data residency in Azure"
     url: "https://azure.microsoft.com/en-us/explore/global-infrastructure/data-residency/"
