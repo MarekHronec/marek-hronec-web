@@ -115,13 +115,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **24** — B1, B2, B3a, B3b, B4 |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **27** — B1, B2, B3a, B3b, B4, B5a |
 | Citation repointed only, content never examined | 8 |
-| Touched by a single verified correction, rest of the article unexamined | 2 (`sovereign-cloud-products-2026-landscape`, `landing-zones-what-they-solve-and-the-honest-catch`) |
+| Touched by a single verified correction, rest of the article unexamined | 1 (`landing-zones-what-they-solve-and-the-honest-catch`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **41** |
+| **Never opened** | **39** |
 
-So: **33 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **30 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -151,7 +151,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B3a | Slovakia, Poland, Netherlands | 3 | opus | **applied** | [15 findings](audit/B3a-sk-pl-nl.md) | 12 + 2 spillovers |
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
 | B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
-| B5a | Vendor and product landscape | 3 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B5a | Vendor and product landscape | 3 | sonnet | **applied** | [13 findings](audit/B5a-vendor-landscape.md) | 8 + 4 spillovers |
 | B5b | Overview and decision framework | 2 | sonnet | todo | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
@@ -628,3 +628,56 @@ one product twice, under both names.
 and `landing-zones-what-they-solve-and-the-honest-catch` received the Microsoft
 Sovereign Cloud rename as propagation and were **not** bumped — one verified
 correction is not a review, and both are still due their own batch.
+
+## Session 8 — B5a applied (2026-09-13)
+
+**Vendor and product landscape.** Three articles, 13 findings, 8 applied and 5
+left unverified. Detail in [B5a](audit/B5a-vendor-landscape.md).
+
+### The registry beats the press release
+
+The reviewer reported two SecNumCloud qualifications as dated 1 September 2026,
+from trade press and a company announcement, and honestly flagged that the
+repo's France article said July. **ANSSI's own catalogue gives 31 July 2026 for
+both** — OVHcloud SNC Cloud Platform decision 3393, Numspot decision 3395, each
+valid to 31 July 2029. September was the announcement. The repo was right.
+
+The general rule this establishes: **for a regulatory decision, the regulator's
+register is the source and the company's announcement is downstream of it.**
+ANSSI publishes a monthly PDF catalogue with decision numbers and validity
+windows for every qualified service. Use it for every future SecNumCloud
+question:
+
+`messervices.cyber.gouv.fr/visas/catalogue-produits-services-profils-de-protection-sites-certifies-qualifies-agrees-anssi.pdf`
+
+Two facts fell out of that table that no announcement would have given:
+**OVHcloud's original Hosted Private Cloud qualification expires 29 December
+2026 and Outscale's expires 30 November 2026.** Both are within months. Neither
+is an edit today, but both belong on the next pass. Absence from the catalogue
+also proved Bleu and ITS Integra remain unqualified, which is better evidence
+than their own progress announcements.
+
+### The corpus contradicted itself about a live product
+
+`hyperscaler-eu-data-boundary-commitments` said the AWS European Sovereign
+Cloud was "under construction as of mid-2026; not yet operational". Its sister
+article in the same batch said, correctly, that it has been generally available
+since January 2026. Both articles carried update stamps that postdate the
+launch. A fact can be corrected in one article and left standing in another
+for months — this is the same failure the Dutch act showed in B3b, and it is
+why X1 exists.
+
+### An error that needed no source
+
+"AWS regions in Europe (Frankfurt, Ireland, London, Paris, Stockholm, Milan,
+Zurich, Spain) have always been EU-located." London is in the United Kingdom
+and Zurich is in Switzerland. That was wrong on the day it was written, in an
+article whose entire subject is the EU boundary. Worth remembering that not
+every finding needs a fetch — some need only reading the sentence.
+
+### Cited-line undercount, fourth batch running
+
+The reviewer cited seven locations for the OVHcloud qualification claim. The
+real count was eleven, the extras being table cells and a checklist line found
+by grepping the claim. **Grep the claim, not the line** has now paid for itself
+in four consecutive batches.
