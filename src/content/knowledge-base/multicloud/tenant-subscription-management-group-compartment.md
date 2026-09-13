@@ -3,13 +3,13 @@ title: "Tenant, Subscription, Management Group, Compartment — and What Actuall
 category: multicloud
 tags: ["Azure", "OCI", "Governance", "Landing Zones", "Billing"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 13
 level: beginner
 excerpt: "Organisational, billing, and governance boundaries collapse differently across Azure and OCI. Get the mental model wrong on day one and spend years undoing it."
 references:
   - title: "Management group and subscription organisation — CAF"
-    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
+    url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org"
     description: "Microsoft's guidance on structuring management group hierarchies and using subscription democratisation — the CAF reference for the Azure side of the hierarchy design decisions in this article."
     domain: "learn.microsoft.com"
   - title: "OCI compartments — managing compartments"
@@ -45,7 +45,7 @@ Microsoft Entra Tenant (the identity boundary)
 
 Each layer does a different job. The **tenant** is the identity boundary — one Entra directory, one set of users. **Management groups** are a tree of policy and RBAC scopes. They aggregate subscriptions for governance but do not bill anything and do not own resources directly. **Subscriptions** are the unit where Azure resources accrue cost, consume quotas, and form a major governance and isolation boundary. The commercial invoice can sit above the subscription in EA or MCA billing structures, but the subscription is still the practical cloud-scale unit. **Resource groups** are lifecycle containers — you delete a resource group, you delete everything in it.
 
-The depth limit is six levels of management groups, not counting the subscription itself. That sounds like a lot. In practice, Microsoft's Cloud Adoption Framework reference architecture uses four to five levels, and most enterprises run out of organisational reasons to subdivide before they run out of levels.
+The depth limit is six levels of management groups, not counting the subscription itself. That sounds like a lot. In practice, Microsoft's Cloud Adoption Framework tells you to keep the hierarchy "reasonably flat, ideally with no more than three to four levels", and its own reference hierarchy is three deep — intermediate root, then Platform and Landing Zones, then the groups beneath them — and most enterprises run out of organisational reasons to subdivide before they run out of levels.
 
 What matters operationally is which of these boundaries actually moves money or breaks workloads. The answer is the **subscription**. Quotas are per-subscription. The 250-storage-account limit, the 5,000-disk-encryption-set limit, the vCPU-per-family-per-region limit — all subscription-scoped. The subscription is also where Microsoft's classic security boundary lives. For governed enterprise estates, do not put production and non-production in the same subscription. Wiring them together for blast-radius, IAM, and quota creates three different kinds of pain at once.
 
@@ -86,7 +86,7 @@ The other thing Azure people miss: **compartments are global**. A compartment ex
 Resource groups are the construct OCI has no exact equivalent for, and it shows. In Azure, a resource group is a practical lifecycle boundary: resources that share a lifecycle can be deployed, updated, and deleted together. You can `az group delete` a resource group and watch every dependent resource go with it — clean teardown of an environment in one command. In OCI, compartments are stronger governance and access-control containers, but they are not a clean teardown primitive. A compartment must be emptied before deletion, so lifecycle cleanup usually belongs in Terraform / Resource Manager, scripts, or resource-specific delete flows. This bites people moving the other direction: OCI architects look at Azure resource groups and either use them as governance scopes (wrong) or ignore them entirely (also wrong).
 
 :::tip[Architectural Pro Tip]
-When designing a multicloud landing zone, do not try to map Azure management groups one-to-one onto OCI compartments. A typical Azure ALZ has four to six management group levels. The equivalent OCI design is two to three compartment levels, max. Document the mapping in a single ADR before either side starts deploying.
+When designing a multicloud landing zone, do not try to map Azure management groups one-to-one onto OCI compartments. A typical Azure ALZ has three to four management group levels, which is what CAF recommends as the ceiling. The equivalent OCI design is two to three compartment levels, max. Document the mapping in a single ADR before either side starts deploying.
 :::
 
 ## How to subdivide — the patterns that hold up

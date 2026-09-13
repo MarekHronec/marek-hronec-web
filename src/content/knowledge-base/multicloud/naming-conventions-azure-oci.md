@@ -3,7 +3,7 @@ title: "Naming Conventions That Survive Both Azure and OCI"
 category: multicloud
 tags: ["Azure", "OCI", "Naming", "Governance", "IaC"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 11
 level: beginner
 excerpt: "Names are permanent — embedded in IaC, DNS, and certificates. A bad convention is debt you pay forever. The schema that survives Azure and OCI at real scale."
@@ -226,7 +226,7 @@ Microsoft's CAF naming pages look clean in a slide deck and break the moment you
 
 ## Multicloud factor
 
-A naming convention is multicloud-portable if and only if every component can be expressed identically on both sides. The schema above does that, with one caveat: regions have different abbreviations on Azure and OCI, and you do not get to harmonise them. Microsoft uses `weu` for West Europe, `eus` for East US. OCI uses `fra` for Frankfurt (which roughly maps to West Europe), `iad` for Ashburn (which roughly maps to East US). Do not try to invent a unified region code; you will end up with something neither cloud's tooling recognises. Use the native abbreviations and accept that "this is in `weu` or `fra`" tells you which cloud you are looking at, which is a feature.
+A naming convention is multicloud-portable if and only if every component can be expressed identically on both sides. The schema above does that, with one caveat: regions have different abbreviations on Azure and OCI, and you do not get to harmonise them. Note these are community convention, not a Microsoft standard: the Cloud Adoption Framework publishes an abbreviation table for resource types but none for regions, and its own naming examples use the full region id (`westus`, `eastus2`, `westeu`). Pick a form and apply it consistently. OCI uses `fra` for Frankfurt (which roughly maps to West Europe), `iad` for Ashburn (which roughly maps to East US). Do not try to invent a unified region code; you will end up with something neither cloud's tooling recognises. Use the native abbreviations and accept that "this is in `weu` or `fra`" tells you which cloud you are looking at, which is a feature.
 
 The non-negotiables for multicloud naming:
 

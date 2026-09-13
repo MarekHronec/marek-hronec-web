@@ -3,7 +3,7 @@ title: "Azure Landing Zones: Scalable Cloud Foundations at Enterprise Scale"
 category: azure
 tags: ["Azure", "Landing Zones", "Cloud Adoption Framework", "Governance", "IaC", "OCI"]
 date: 2025-01-08
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 11
 level: advanced
 excerpt: "The standardised foundation for Azure adoption at scale. Architecture, design areas, platform vs. application zones, and the right IaC deployment approach."
@@ -38,8 +38,8 @@ An Azure landing zone architecture is scalable and modular. Repeatable infrastru
 
 The reference architecture centres on a management group hierarchy that organises subscriptions by purpose:
 
-- **Platform management group** — hosts shared services: identity, connectivity, and management subscriptions
-- **Landing Zones management group** — hosts application landing zones, split into Corp and Online sub-groups
+- **Platform management group** — hosts shared services: identity, connectivity, management and security subscriptions
+- **Landing Zones management group** — hosts application landing zones, split into Corp, Online and Local sub-groups, the last for workloads on Azure Local clusters
 - **Sandboxes management group** — isolated environments for experimentation without policy inheritance
 - **Decommissioned management group** — subscriptions staged for removal
 
@@ -47,11 +47,12 @@ The reference architecture centres on a management group hierarchy that organise
 
 Understanding the distinction between platform and application landing zones is the most important mental model in this architecture.
 
-**Platform landing zone** provides shared services — identity, connectivity, and management — consumed by all application teams. One or more central platform teams manage these services. The three canonical platform subscriptions are:
+**Platform landing zone** provides shared services — identity, connectivity, and management — consumed by all application teams. One or more central platform teams manage these services. The four canonical platform subscriptions are:
 
 - *Identity subscription* — Microsoft Entra Domain Services, PKI infrastructure
 - *Connectivity subscription* — hub virtual networks, ExpressRoute/VPN gateways, Azure Firewall
-- *Management subscription* — Log Analytics workspace, Azure Monitor, Update Management
+- *Management subscription* — Log Analytics workspace, Azure Monitor, Azure Update Manager
+- *Security subscription* — Microsoft Sentinel, syslog collectors and other SIEM tooling, kept separate so security operations do not depend on workload teams
 
 **Application landing zone** contains the resources for a single workload across its environments (dev, test, prod). Each application landing zone is one or more subscriptions, pre-provisioned through code via a subscription vending process. Workload teams deploy their own resources inside the pre-configured subscription.
 
@@ -73,11 +74,11 @@ Every Azure landing zone decision maps to one of eight design areas. Decisions i
 
 1. **Azure billing and Microsoft Entra tenant** — enrolment hierarchy, tenant structure, EA/MCA agreement
 2. **Identity and access management** — Entra ID, RBAC boundaries, Privileged Identity Management
-3. **Management group and subscription organisation** — hierarchy depth, policy inheritance, subscription scale limits
+3. **Resource organization** — renamed from "management group and subscription organization", and now covering naming and tagging alongside hierarchy depth, policy inheritance and subscription scale limits
 4. **Network topology and connectivity** — hub-spoke vs. Virtual WAN, ExpressRoute, DNS, private endpoints
 5. **Security** — Microsoft Defender for Cloud, policy baselines, threat detection
 6. **Management** — Log Analytics, monitoring strategy, update management, backup
-7. **Governance** — Azure Policy, Blueprints (deprecated), regulatory compliance initiatives
+7. **Governance** — Azure Policy, regulatory compliance initiatives, and Azure Blueprints, which never left preview and **retires on 31 January 2027** under a phased schedule. Treat it as a migration task, not an option
 8. **Platform automation and DevOps** — IaC toolchain, pipeline strategy, subscription vending automation
 
 :::tip[Architectural Pro Tip]
@@ -155,7 +156,7 @@ The Azure landing zone IaC accelerator includes a curated set of policy initiati
 
 ## Multicloud factor
 
-OCI has its own landing zone framework — the OCI Landing Zone (also known as the OCI CIS Landing Zone) — that provides a comparable baseline: compartment hierarchy, IAM policies, VCN configuration, and security posture aligned with CIS benchmarks. The structural differences are significant.
+OCI has its own landing zone framework — the **OCI Core Landing Zone**, successor to the CIS Landing Zone Quick Start that Oracle retired in May 2025 — that provides a comparable baseline: compartment hierarchy, IAM policies, VCN configuration, and security posture aligned with CIS benchmarks. The structural differences are significant.
 
 Where Azure uses management groups plus subscriptions, OCI uses compartments. Where Azure uses Azure Policy deny and DINE assignments, OCI uses Security Zones and IAM policies. Where Microsoft Defender for Cloud provides the security posture management layer, OCI Cloud Guard fills the equivalent role. The intent of each layer is the same; the mechanism differs enough that a design built for one cloud does not transfer directly to the other.
 

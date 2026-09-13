@@ -133,7 +133,7 @@ resource "oci_identity_policy" "payments_team_access" {
 
 The thing OCI does well: **clean deny semantics, declarative policies, explicit path-aware scope**. The inheritance model is clear once you understand the compartment hierarchy.
 
-The thing OCI does badly: **no built-in role catalogue**. Every organisation has to build its own permission vocabulary. The CIS Landing Zone helps, but you are still defining policies, not picking from a large catalogue of ready-made Azure roles.
+The thing OCI does badly: **no built-in role catalogue**. Every organisation has to build its own permission vocabulary. The OCI Core Landing Zone helps, but you are still defining policies, not picking from a large catalogue of ready-made Azure roles.
 
 ## The mapping nobody puts in a slide
 

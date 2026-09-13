@@ -40,7 +40,7 @@ It is **not** a long-lived environment. The whole point is that you can blow it 
 
 It is **not** a place to skip security. Audit logging stays on. The identity boundary stays real. The fact that you can deploy whatever you want does not mean the platform team gives up oversight of what was deployed.
 
-The Microsoft Cloud Adoption Framework explicitly calls out sandboxes as part of the recommended landing zone hierarchy — they get their own management group, with policies that *specifically* relax some controls (allow more resource types, more regions) while *tightening* others (network isolation, mandatory budgets, cleanup automation, and stricter cost controls). Oracle's CIS Landing Zone does not have an equivalent first-class concept; you build it yourself with a dedicated compartment under the tenancy root.
+The Microsoft Cloud Adoption Framework explicitly calls out sandboxes as part of the recommended landing zone hierarchy — they get their own management group, with policies that *specifically* relax some controls (allow more resource types, more regions) while *tightening* others (network isolation, mandatory budgets, cleanup automation, and stricter cost controls). Oracle's Core Landing Zone does not have an equivalent first-class concept; you build it yourself with a dedicated compartment under the tenancy root.
 
 ## The two failure modes
 

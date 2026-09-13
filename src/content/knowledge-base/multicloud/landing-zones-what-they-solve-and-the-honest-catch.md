@@ -3,7 +3,7 @@ title: "Landing Zones — What They Actually Solve, and the Honest Catch"
 category: multicloud
 tags: ["Azure", "OCI", "Landing Zones", "Governance", "CAF"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 14
 level: intermediate
 excerpt: "The most useful and most overengineered concept in cloud adoption. What to take from reference architectures, what to skip, and the real cost of retrofitting."
@@ -58,10 +58,12 @@ Tenant Root MG
 ├── Platform MG
 │   ├── Identity (subscription)
 │   ├── Connectivity (subscription)
-│   └── Management (subscription)
+│   ├── Management (subscription)
+│   └── Security (subscription — Sentinel, SIEM tooling)
 ├── Landing Zones MG
 │   ├── Corp MG (subscriptions for connected internal workloads)
-│   └── Online MG (subscriptions for internet-facing workloads)
+│   ├── Online MG (subscriptions for internet-facing workloads)
+│   └── Local MG (workloads on Azure Local clusters)
 ├── Sandboxes MG
 │   └── (sandbox subscriptions)
 └── Decommissioned MG
@@ -74,7 +76,7 @@ The current recommended deployment path is the **Azure Landing Zones IaC Acceler
 
 ## The OCI shape
 
-Oracle's equivalent has been through some name changes that are worth tracking. The original "CIS Landing Zone Quick Start Template" was retired in May 2025. Its successor is **OCI Core Landing Zone**, which evolves the same concept. Current OCI Core Landing Zone materials target CIS OCI Foundations Benchmark v3.0, while some older documentation still references v2.0; verify the benchmark version in the release you deploy.
+Oracle's equivalent has been through some name changes that are worth tracking. The original "CIS Landing Zone Quick Start Template" was retired in May 2025. Its successor is **OCI Core Landing Zone**, which evolves the same concept. Oracle’s own Core Landing Zone documentation states that it applies **CIS OCI Foundations Benchmark v2.0**; verify the benchmark version in the release you deploy rather than assuming the newest published benchmark.
 
 A typical OCI Core Landing Zone shape:
 
