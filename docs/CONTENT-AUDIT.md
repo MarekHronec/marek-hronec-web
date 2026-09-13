@@ -150,7 +150,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B2 | National frameworks, CZ–IT | 5 | opus | **applied** | [25 findings](audit/B2-national-cz-it.md) | 9 high + 4 med |
 | B3a | Slovakia, Poland, Netherlands | 3 | opus | **applied** | [15 findings](audit/B3a-sk-pl-nl.md) | 12 + 2 spillovers |
 | B3b | Norway, Spain, Switzerland, UK | 4 | opus | **applied** | [21 findings](audit/B3b-no-es-ch-uk.md) | 21 + 6 spillovers |
-| B4 | Assurance and attestation | 5 | sonnet | todo | — | — |
+| B4 | Assurance and attestation | 5 | sonnet | **running** (dispatched 2026-09-13) | — | — |
 | B5 | Market and sovereignty | 5 | sonnet | todo | — | — |
 | B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
