@@ -10,7 +10,7 @@ export function renderVoyage(root: HTMLElement, accepted: Map<number,GuideResult
     body.append(title,detail);li.append(number,body);return li;
   }));
   const scene=root.querySelector<SVGElement>('[data-voyage-scene="plan"]')!;
-  scene.querySelector('[data-voyage-trolley]')?.setAttribute('transform','translate('+(256+Math.min(current,4)*80)+' 55)');
+  scene.querySelector('[data-voyage-trolley]')?.setAttribute('transform','translate('+(268.5+Math.min(current,4)*78)+' 55)');
   VOYAGE.forEach((step,i)=>{
     scene.querySelectorAll<SVGElement>('[data-load="'+step.key+'"],[data-ship-part="'+step.key+'"]').forEach(el=>{
       const loaded=String(accepted.has(i));if(el.dataset.loaded!==loaded)el.dataset.loaded=loaded;

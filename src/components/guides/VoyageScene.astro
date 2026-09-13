@@ -5,33 +5,37 @@ const { mode = 'overview' } = Astro.props;
 ---
 <svg class="voyage-scene" data-voyage-scene={mode} viewBox="0 0 800 390" role="img" aria-labelledby={'voyage-title-'+mode}>
   <title id={'voyage-title-'+mode}>{mode === 'overview' ? 'A quay crane loads five planning containers onto a coastal cargo ship. A lighthouse marks open water beyond the bow.' : 'Your cloud plan takes shape: protection, platform, connections, recovery and cost. Completed stages are labelled in the manifest below.'}</title>
-<g class="chart-part" data-ship-part="resilience" data-loaded={mode === 'overview'}>
+<g class="chart-part" data-ship-part="resilience" data-loaded={mode === 'overview'} transform="translate(150 0) scale(.8)">
 <path class="steel" d="M700 238 Q739 196 786 238 Z"/>
 <path class="paper" d="M717 218 L729 140 H749 L762 218 Z"/><path class="tower-band" d="M724 166 H753 L756 181 H722 Z"/>
 <path class="paper" d="M724 140 V120 H754 V140 Z M720 120 L739 107 L758 120 Z"/>
 <path class="fine" d="M727 131 H751 M733 218 V202 H745 V218"/>
-<path class="light-wash" d="M755 126 L793 109 V151 L755 133 Z"/><path class="beam" d="M755 126 L793 109 M755 133 L793 151"/><path class="rig" d="M712 219 H769"/>
+<path class="light-wash" d="M755 126 L793 109 V151 L755 133 Z"/><path class="beam" d="M755 126 L793 109 M755 133 L793 151"/><path class="rig" d="M712 219 H769"/><path class="contours" d="M684 247 H790 M710 257 H775"/>
 </g>
   <path class="sea" d="M12 279 Q168 256 325 273 T789 277 V342 Q595 368 401 349 T12 339 Z"/>
   <g class="contours"><path d="M18 308 Q150 286 294 304 T786 306 M59 335 Q220 319 344 334 T757 335 M326 354 Q460 364 598 355"/></g>
+<g transform="translate(-18 0)">
 <path class="quay" d="M18 246 H160 V261 H18 Z M29 262 V292 M88 262 V292 M148 262 V292"/>
 <path class="steel" d="M42 246 L62 97 H75 L56 246 Z M135 246 L121 96 H134 L150 246 Z"/>
 <path class="paper" d="M53 66 H138 V101 H53 Z"/>
 <path class="fine" d="M65 76 H125 V91 H65 Z"/>
+</g>
 <path class="paper" d="M43 49 H623 V66 H43 Z"/>
-<g class="trolley" data-voyage-trolley transform="translate(256 55)"><path class="solid" d="M-12 10 H12 V19 H-12 Z"/><path class="fine" d="M0 19 V83 M-28 104 L0 83 L28 104"/><path class="paper" d="M-34 104 H34 V110 H-34 Z"/></g>
+<g class="trolley" data-voyage-trolley transform="translate(268.5 55)"><path class="solid" d="M-12 10 H12 V19 H-12 Z"/><path class="fine" d="M0 19 V58 M-28 78 L0 58 L28 78"/><path class="paper" d="M-34 78 H34 V84 H-34 Z"/></g>
 <g data-ship-part="platform" data-loaded={mode === 'overview'}>
 <path class="paper" d="M176 260 V180 H218 V260 Z M173 180 V156 H223 V180 Z"/>
 <path class="solid" d="M180 164 H216 V173 H180 Z"/>
 <path class="fine" d="M185 194 H208 V207 H185 Z M189 259 V236 H202 V259"/>
 <path class="rig" d="M210 156 V115"/><path class="solid" d="M211 115 L236 122 L211 127 Z"/>
-<path class="steel" d="M166 253 H624 L659 242 H703 L694 265 H171 Z"/>
-<path class="hull" d="M166 261 L610 264 Q660 261 705 250 L683 291 Q678 303 660 306 H199 Q180 306 171 291 Z"/>
-<path class="hull-detail" d="M182 281 H608 Q651 280 686 270"/>
 </g>
-  {VOYAGE.map((step,i)=><g class="load" data-load={step.key} data-loaded={mode === 'overview'} transform={`translate(${220+i*80} 206)`}>
+  {VOYAGE.map((step,i)=><g class="load" data-load={step.key} data-loaded={mode === 'overview'} transform={`translate(${232+i*78} 206)`}>
     <g class="load__arrival"><path class="container" d="M0 0 H73 V48 H0 Z"/><path class="corrugation" d="M10 7 V41 M63 7 V41"/><text x="36" y="32" text-anchor="middle">{String(i+1).padStart(2,'0')}</text></g>
   </g>)}
+  <g data-ship-part="platform" data-loaded={mode === 'overview'}>
+    <path class="steel" d="M166 246 H222 V240 H624 V246 L705 235 L698 258 H169 Z"/>
+    <path class="hull" d="M166 246 H610 Q660 246 705 235 L683 291 Q678 303 660 306 H199 Q180 306 171 291 Z"/>
+    <path class="hull-detail" d="M180 265 H608 Q651 264 694 252"/>
+  </g>
   <g class="chart-part" data-ship-part="connectivity" data-loaded={mode === 'overview'}>
     <path class="course" d="M531 346 Q638 375 757 348"/>
     <path class="fine" d="M742 341 l15 7 -13 9"/>

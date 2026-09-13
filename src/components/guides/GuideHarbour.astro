@@ -15,7 +15,7 @@ import VoyageScene from './VoyageScene.astro';
 </section>
 <script>
 document.querySelectorAll<HTMLElement>('[data-harbour-stop]').forEach((link,index)=>{
-  const highlight=()=>{const scene=document.querySelector('[data-voyage-scene="overview"]');scene?.querySelector('[data-voyage-trolley]')?.setAttribute('transform','translate('+(256+index*80)+' 55)');scene?.querySelectorAll<HTMLElement>('[data-load]').forEach(el=>el.dataset.current=String(el.dataset.load===link.dataset.harbourStop));};
+  const highlight=()=>{const scene=document.querySelector('[data-voyage-scene="overview"]');scene?.querySelector('[data-voyage-trolley]')?.setAttribute('transform','translate('+(268.5+index*78)+' 55)');scene?.querySelectorAll<HTMLElement>('[data-load]').forEach(el=>el.dataset.current=String(el.dataset.load===link.dataset.harbourStop));};
   link.addEventListener('pointerenter',highlight);link.addEventListener('focus',highlight);
 });
 </script>

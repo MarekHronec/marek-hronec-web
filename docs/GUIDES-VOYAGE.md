@@ -35,3 +35,9 @@ Two independent reviews verified geometry and progressive-rendering hooks. A sta
 Simplified the detailed harbour to match the other marine illustrations: a clean supported crane, single hoist, recognizable cargo hull and aft bridge, flat numbered containers and a quiet lighthouse aimed into open water. Removed latticework, machinery fittings, container hardware and small ship markings. Existing loading, stage, reset and reduced-motion behavior is retained.
 
 Two independent reviews identified support gaps after simplification; the crane feet now meet the quay and the lighthouse overlaps its island. The fresh production illustration was visually inspected. Production build and full guides browser regression passed, including both classification scopes, five stages, answer retention, invalidation, resets, export, four widths and no-JavaScript links. No push.
+
+## Harbour spacing and depth
+
+Separated the dock from the stern, raised the crane spreader clear of the bridge, and placed a smaller lighthouse on a distant island with its own water marks. Cargo now sits behind a visible hold edge and foreground hull. Added clearance beside the bridge and synchronized all five trolley positions with the revised container spacing.
+
+Two independent reviews checked geometry and progressive state updates; the remaining bridge-to-cargo spacing finding was corrected. Desktop and phone renders were inspected, all five trolley alignments passed, the full guides browser regression passed, and the production build completed. Local merge only; no push.
