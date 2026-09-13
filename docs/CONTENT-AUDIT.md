@@ -156,7 +156,9 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B4 | Assurance and attestation | 5 | sonnet | **applied** | [17 findings](audit/B4-assurance-attestation.md) | 12 + 3 spillovers |
 | B5a | Vendor and product landscape | 3 | sonnet | **applied** | [13 findings](audit/B5a-vendor-landscape.md) | 8 + 4 spillovers |
 | B5b | Overview and decision framework | 2 | sonnet | **applied** | [13 findings](audit/B5b-synthesis-articles.md) | 12 + 2 spillovers |
-| B6 | Cloud platform and network | 10 | sonnet | todo | — | — |
+| B6a | Platform structure and landing zones | 4 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B6b | Networking and addressing | 4 | sonnet | todo | — | — |
+| B6c | Regions and service availability | 2 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
@@ -231,17 +233,35 @@ Both aggregate claims owned by other articles, so this is chiefly an INTERNAL
 consistency pass. Run it **after** B5a so the vendor facts are settled first.
 Note both already carry B3b corrections to their country tables.
 
-### B6 — Cloud platform and network (sonnet)
+### B6a — Platform structure and landing zones (sonnet)
 `azure/azure-landing-zones` · `multicloud/landing-zones-what-they-solve-and-the-honest-catch` ·
-`regions-zones-availability-domains-where-your-data-lives` ·
-`service-availability-by-region-why-you-cannot-trust-the-map` ·
-`tenant-subscription-management-group-compartment` · `naming-conventions-azure-oci` ·
-`hub-and-spoke-virtual-wan-and-drg-three-topology-choices` ·
-`hybrid-connectivity-expressroute-fastconnect-vpn-reality` ·
-`address-plans-designing-ip-space-for-three-clouds` · `ipam-ip-address-management-...`
+`multicloud/tenant-subscription-management-group-compartment` · `multicloud/naming-conventions-azure-oci`
 
-Service names, SKUs and limits go stale quietly. `azure-landing-zones` dates
-from 2025-01-08, the second-oldest thing in the corpus.
+8,985 words. `azure-landing-zones` dates from 2025-01-08, the second-oldest
+article in the corpus. The perishable claims here are **hard platform limits**
+— management-group hierarchy depth, resource name-length caps, subscription
+counts — and **product names**, which Microsoft renames without notice.
+
+### B6b — Networking and addressing (sonnet)
+`networking/address-plans-designing-ip-space-for-three-clouds` ·
+`networking/ipam-ip-address-management-before-you-wish-you-had-done-it` ·
+`networking/hub-and-spoke-virtual-wan-and-drg-three-topology-choices` ·
+`networking/hybrid-connectivity-expressroute-fastconnect-vpn-reality`
+
+7,493 words. Note the last two carry **zero references**, like the B8 cohort.
+Gateway SKUs, throughput figures and peering limits are the staleness risk.
+
+### B6c — Regions and service availability (sonnet)
+`multicloud/regions-zones-availability-domains-where-your-data-lives` ·
+`multicloud/service-availability-by-region-why-you-cannot-trust-the-map`
+
+Only 1,687 words but the most perishable content in the corpus — provider
+region footprints change monthly. B5a already established the current AWS
+region count and that AWS has announced only Saudi Arabia and Chile.
+
+**Why B6 was split.** Ten articles and 18,165 words, more than B5 before its
+own split, and well past the 3–5 cap. The three groups also divide by source:
+B6a and B6b check vendor documentation, B6c checks provider region pages.
 
 ### B7 — Practice and operations (sonnet)
 `gitops-with-argocd` · `source-of-truth-...` · `status-pages-...` · `policy-as-code-and-quotas-...` ·
