@@ -69,7 +69,15 @@ Two rules follow, and they apply to every batch:
    checklist still stated the error the body explicitly refutes.
 6. **A reviewer saying it checked propagation is not a substitute for running the
    grep.** B6a’s reviewer stated positively that no further propagation existed;
-   grepping the retired product name found two more articles using it as current. `git show
+   grepping the retired product name found two more articles using it as current.
+   Ask reviewers to *show the searches they ran, including the empty ones* — B6b
+   did, and its claim was checkable.
+7. **A citation that resolves has not been checked.** B6b found a live, current,
+   topically adjacent Microsoft page cited for a claim it does not contain — zero
+   occurrences of the term across 61,586 characters. Grep the fetched page.
+8. **Where a claim can be checked by computation, write the check down and keep
+   it.** `scripts/check-cidr-alignment.py` came out of B6b and found an error the
+   reviewer missed. Mechanical invariants do not decay; fetched sources do. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -121,13 +129,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **33** — B1, B2, B3a, B3b, B4, B5a, B5b, B6a |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **37** — B1, B2, B3a, B3b, B4, B5a, B5b, B6a, B6b |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **33** |
+| **Never opened** | **29** |
 
-So: **24 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **20 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -160,7 +168,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B5a | Vendor and product landscape | 3 | sonnet | **applied** | [13 findings](audit/B5a-vendor-landscape.md) | 8 + 4 spillovers |
 | B5b | Overview and decision framework | 2 | sonnet | **applied** | [13 findings](audit/B5b-synthesis-articles.md) | 12 + 2 spillovers |
 | B6a | Platform structure and landing zones | 4 | sonnet | **applied** | [11 findings](audit/B6a-platform-structure.md) | 9 + 2 spillovers |
-| B6b | Networking and addressing | 4 | sonnet | **running** (dispatched 2026-09-13) | — | — |
+| B6b | Networking and addressing | 4 | sonnet | **applied** | [12 findings](audit/B6b-networking.md) | 10 + 1 found by sweep |
 | B6c | Regions and service availability | 2 | sonnet | todo | — | — |
 | B7 | Practice and operations | 12 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
@@ -810,3 +818,51 @@ references commonly get them wrong:
 
 A reviewer that documents a suspicion it disproved is worth more than one that
 only lists what it found.
+
+## Session 11 — B6b applied (2026-09-13)
+
+**Networking and addressing.** Four articles, 12 findings, 10 applied.
+Detail in [B6b](audit/B6b-networking.md).
+
+### Numbers a reader copies
+
+Four CIDR prefixes did not sit on their own prefix boundary. `10.150.0.0/14`
+normalises to `10.148.0.0/14`, so the block spans 148–151, not the 150–153
+the article states. `10.100.0.0/12` normalises to `10.96.0.0/12`, sixteen /16s
+instead of four — and it sits inside a Terraform resource formatted for
+copy-paste.
+
+This is a different severity class from a stale date. A reader does not
+paraphrase an address plan; they type it in. Verified every replacement for
+alignment, containment and overlap before writing it.
+
+### The first mechanical invariant
+
+Extracting **every** CIDR literal in the corpus and testing each found a fifth
+error, in prose, that the reviewer's computation had not covered — its script
+checked the worked plan and the sizing table only.
+
+That sweep is now `scripts/check-cidr-alignment.py`. It scans the knowledge
+base and exits non-zero on any misaligned literal. All 51 currently pass.
+**Run it before any networking edit.** Where a claim can be checked by
+computation rather than by fetching, write the check down and keep it — it
+costs nothing to re-run and it does not decay the way a fetched source does.
+
+### Checking a citation resolves is not checking it supports the claim
+
+The hybrid-connectivity article cited Microsoft's ExpressRoute FAQ for a
+MACsec claim. That page is live, current and topically adjacent — and
+contains **zero** occurrences of "MACsec" or "encrypt" across 61,586
+characters. Every citation check in this audit until now tested whether a URL
+resolves. This one failed only because the page was fetched and grepped for
+the term it was cited for.
+
+Add to the standing rules: **a citation that resolves has not been checked.
+Grep the fetched page for the claim.**
+
+### The propagation instruction worked
+
+Asked to show its greps rather than assert completeness — an instruction
+written directly out of B6a's failure — the reviewer listed eleven searches
+**including those that returned nothing**. That is what made the claim
+checkable, and it held up. Keep that wording in future briefs.
