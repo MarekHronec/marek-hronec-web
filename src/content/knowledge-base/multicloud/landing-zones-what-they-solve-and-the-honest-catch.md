@@ -101,7 +101,7 @@ This is the part the vendor docs are diplomatic about, so here it is plainly.
 | **Small (1–10 subscriptions / compartments)** | Avoid full ALZ unless governance complexity already justifies it. Use AVM modules to build the bits you need (subscription vending, baseline policies). Maybe two MG levels. | OCI Core Landing Zone with minimal configuration. The standard patterns work for many small-to-mid orgs. |
 | **Mid-size (10–100 subscriptions / compartments)** | IaC accelerator with AVM modules. Trim the management group hierarchy if it doesn't fit. | OCI Core Landing Zone, customised. Hub-and-spoke if you have multi-VCN requirements. |
 | **Enterprise (100+ subscriptions, multiple BUs)** | Full ALZ with EPAC for policy management. Customised MG hierarchy with BU separation. | Full Core Landing Zone, possibly with Operating Entities Landing Zone for multi-stack deployments across BUs. |
-| **Regulated / sovereignty-heavy** | ALZ + EPAC + Microsoft Cloud for Sovereignty controls + sovereign region restrictions. | Zero Trust Landing Zone + sovereign realm + Access Governance. |
+| **Regulated / sovereignty-heavy** | ALZ + EPAC + Microsoft Sovereign Cloud controls + sovereign region restrictions. | Zero Trust Landing Zone + sovereign realm + Access Governance. |
 
 The trap most mid-size orgs fall into: they read the enterprise reference architecture, build the enterprise version, and discover three quarters in that they have a six-level management group hierarchy with one subscription in each leaf. That is not governance; that is overhead. Right-size for your *current* scale plus 2x headroom, not for the scale described in the reference architecture.
 

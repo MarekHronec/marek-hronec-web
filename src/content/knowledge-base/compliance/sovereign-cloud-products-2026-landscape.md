@@ -16,8 +16,8 @@ references:
     url: "https://www.s3ns.io/"
     description: "S3NS, the French sovereign cloud joint venture between Thales and Google Cloud. First combined IaaS/PaaS/CaaS provider qualified under SecNumCloud (PREMI3NS, December 2025)."
     domain: "s3ns.io"
-  - title: "Microsoft Cloud for Sovereignty"
-    url: "https://www.microsoft.com/en-us/industry/sovereignty/cloud"
+  - title: "Microsoft Sovereign Cloud"
+    url: "https://www.microsoft.com/en-us/sovereignty"
     description: "Microsoft's sovereign-controls framework on Azure and Microsoft 365, providing customer-controlled boundaries, sovereign landing zones, and integration with national-cloud partnerships."
     domain: "microsoft.com"
   - title: "AWS European Sovereign Cloud"
@@ -45,7 +45,7 @@ The market segments into four operational patterns:
 | **Joint Venture (JV)** | EU entity formed between a non-EU hyperscaler and EU partners. The JV operates the service under EU law; the hyperscaler licenses technology. | Bleu (Microsoft + Orange + Capgemini), S3NS (Google + Thales), Delos Cloud (SAP + Arvato for German federal sector) |
 | **EU-Native Operator** | Cloud provider headquartered and operating wholly in the EU/EEA with no non-EU parent. | OVHcloud, 3DS Outscale, Open Telekom Cloud (T-Systems), Cegedim.cloud, ITS Integra |
 | **Partner Sovereign Cloud** | A non-EU hyperscaler's technology operated by an EU partner under partnership agreement (lighter than JV). | T-Systems on Google Cloud (specific verticals), various national-partner arrangements |
-| **Dedicated Sovereign Region** | A non-EU hyperscaler builds a dedicated region operated exclusively by EU-resident personnel, isolated from the hyperscaler's global infrastructure. | AWS European Sovereign Cloud (Brandenburg, generally available since January 2026); Microsoft Cloud for Sovereignty (sovereign landing zones on existing Azure regions) |
+| **Dedicated Sovereign Region** | A non-EU hyperscaler builds a dedicated region operated exclusively by EU-resident personnel, isolated from the hyperscaler's global infrastructure. | AWS European Sovereign Cloud (Brandenburg, generally available since January 2026); Microsoft Sovereign Cloud (sovereign landing zones on existing Azure regions) |
 
 The patterns differ in their sovereignty posture, their feature set, and their qualification potential under national frameworks. The right choice depends on the workload's sovereignty requirements and the customer's tolerance for feature-and-cost trade-offs.
 
@@ -100,7 +100,7 @@ The most recent category. A non-EU hyperscaler builds a dedicated region — phy
 
 **AWS European Sovereign Cloud** is the leading example, and as of January 2026 it is no longer a plan. It reached general availability with its first region in Brandenburg, Germany, operated by EU-resident personnel with EU-based engineering, on infrastructure separate from existing AWS regions — including its own `amazonaws.eu` domain rather than the global `amazonaws.com`. AWS has committed EUR 7.8 billion through 2040.
 
-**Microsoft Cloud for Sovereignty** takes a different approach — sovereign controls layered on top of existing Azure regions rather than a separate region. Provides sovereign landing zones, customer-controlled boundaries (encryption with customer-managed keys including Customer Lockbox), data residency commitments, and integration with national-cloud partnerships (Bleu in France, Delos Cloud in Germany).
+**Microsoft Sovereign Cloud**, renamed from Microsoft Cloud for Sovereignty, takes a different approach — sovereign controls layered on top of existing Azure regions rather than a separate region. Provides sovereign landing zones, customer-controlled boundaries (encryption with customer-managed keys including Customer Lockbox), data residency commitments, and integration with national-cloud partnerships (Bleu in France, Delos Cloud in Germany).
 
 **Google Cloud Sovereign Solutions** is a catalogue of sovereign offerings: S3NS for France, partnerships with T-Systems for specific verticals, Sovereign Controls for assured workloads on existing Google Cloud regions. Multiple delivery models depending on customer requirements.
 
@@ -119,7 +119,7 @@ The EU Data Boundary commitments do not address ownership-based sovereignty (the
 | **AWS mainline EU** | U2 candidate | Attested | No | Alta | QC2 | Yes | Attested |
 | **AWS European Sovereign** | Tbd (in build) | Tbd | Likely yes | Tbd | Tbd | Tbd | Tbd |
 | **Microsoft Azure mainline EU** | U2 candidate | Attested | No | Alta | QC2 | Yes | Attested |
-| **Microsoft Cloud for Sovereignty** | Tbd | Attested | Via Bleu | Alta | Tbd | Yes | Tbd |
+| **Microsoft Sovereign Cloud** | Tbd | Attested | Via Bleu | Alta | Tbd | Yes | Tbd |
 | **Bleu (Microsoft + Orange + Capgemini)** | Plausible | Yes (planned) | In qualification (J0 validated) | Possible | Possible | Likely | Possible |
 | **Google Cloud mainline EU** | U2 candidate | Attested | No | Alta | QC2 | Yes | Attested |
 | **S3NS (Google + Thales)** | Plausible | Likely | **Qualified (Dec 2025)** | Possible | Possible | Likely | Possible |
@@ -164,7 +164,7 @@ The phrase "sovereign cloud" is doing a lot of work in marketing materials. It m
 :::
 
 :::tip[Slovak context]
-For Slovak public-sector procurement against [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) tiers, the practical sovereign cloud question maps to specific product candidates: **U1 / U2** workloads are well-served by hyperscaler EU mainline regions ([Microsoft Azure, AWS, Google Cloud Vienna or Frankfurt](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments)) with no sovereign-specific product needed. **U3** workloads benefit from hyperscaler EU regions combined with [customer-controlled key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) — the `EU mainline + BYOK/HYOK` pattern. **U4** is the private government cloud segment — operationally that means state-controlled or state-contracted infrastructure, typically the Slovak national cloud rather than commercial sovereign cloud products. For Slovak commercial entities serving regulated customers (banks under NBS, insurers), Microsoft Cloud for Sovereignty operating on Microsoft Azure Vienna/Frankfurt regions and S3NS PREMI3NS via partnership are the realistic candidates; Bleu is French-focused. OVHcloud and T Cloud Public (T-Systems, formerly Open Telekom Cloud) are EU-native operators with established Slovak market presence.
+For Slovak public-sector procurement against [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) tiers, the practical sovereign cloud question maps to specific product candidates: **U1 / U2** workloads are well-served by hyperscaler EU mainline regions ([Microsoft Azure, AWS, Google Cloud Vienna or Frankfurt](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments)) with no sovereign-specific product needed. **U3** workloads benefit from hyperscaler EU regions combined with [customer-controlled key custody](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) — the `EU mainline + BYOK/HYOK` pattern. **U4** is the private government cloud segment — operationally that means state-controlled or state-contracted infrastructure, typically the Slovak national cloud rather than commercial sovereign cloud products. For Slovak commercial entities serving regulated customers (banks under NBS, insurers), Microsoft Sovereign Cloud operating on Microsoft Azure Vienna/Frankfurt regions and S3NS PREMI3NS via partnership are the realistic candidates; Bleu is French-focused. OVHcloud and T Cloud Public (T-Systems, formerly Open Telekom Cloud) are EU-native operators with established Slovak market presence.
 :::
 
 ## Closing checklist
@@ -172,7 +172,7 @@ For Slovak public-sector procurement against [KsVC](/knowledge-base/compliance/s
 - Four operational patterns: Joint Ventures, EU-Native operators, Partner Sovereign Clouds, Dedicated Sovereign Regions. Each delivers a different sovereignty posture.
 - JVs (Bleu, S3NS, Delos Cloud) are the operative answer to strict national frameworks like SecNumCloud. Feature lag and cost premium are the trade-offs. **Clarence** (Proximus + LuxConnect + Google GDC Hosted) targets Belgian/Luxembourg/EU institutional workloads via air-gapped on-premises deployment rather than SecNumCloud.
 - EU-Native operators (OVHcloud, 3DS Outscale, T Cloud Public) offer full structural independence at smaller scale than hyperscalers. **Numspot** is an EU-native JV (no US hyperscaler) built on 3DS Outscale's SecNumCloud-qualified infrastructure.
-- Dedicated Sovereign Regions (AWS European Sovereign Cloud, Microsoft Cloud for Sovereignty) are the emerging hyperscaler-led approach. SecNumCloud-qualification remains a test case.
+- Dedicated Sovereign Regions (AWS European Sovereign Cloud, Microsoft Sovereign Cloud) are the emerging hyperscaler-led approach. SecNumCloud-qualification remains a test case.
 - Hyperscaler EU Data Boundary commitments address operational data residency on mainline regions — not ownership-based sovereignty. See the [dedicated article](/knowledge-base/compliance/hyperscaler-eu-data-boundary-commitments).
 - Cost premium is real: 30-100% for JVs vs mainline; varies for other patterns.
 - Sovereignty has multiple dimensions (ownership, jurisdiction, residency, foreign-law immunity). Define which apply before evaluating products.

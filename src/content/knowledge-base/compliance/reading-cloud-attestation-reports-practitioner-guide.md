@@ -3,7 +3,7 @@ title: "Reading Cloud Attestation Reports — A Practitioner's Guide"
 category: compliance
 tags: ["Attestation", "Audit Reports", "Practitioner", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-15
-updated: 2026-05-15
+updated: 2026-09-13
 readTime: 11
 level: intermediate
 excerpt: "A SOC 2 report, a C5 attestation, an ENS audit certificate, an ACN qualification dossier — what to look for, what to ignore, what to ask follow-up questions about. The practitioner skill that turns compliance documents into actual signal."
@@ -46,9 +46,9 @@ Reports don't answer questions you didn't ask. Scanning a 200-page document hopi
 
 | Report | Standard | Issued by | Audit basis | Validity |
 |---|---|---|---|---|
-| **SOC 2 Type 2** | SSAE 18 (US) | CPA audit firm | Operating effectiveness over period | 12-month period |
+| **SOC 2 Type 2** | SSAE 18 (US) | CPA audit firm | Operating effectiveness over period | 6–12 month period |
 | **BSI C5 Type 2** | ISAE 3000 / ISAE 3402 | Accredited audit firm | Operating effectiveness over period | 12-month period |
-| **ISO 27001 certificate** | ISO/IEC 27006 | Accredited certification body | Management system effectiveness | 3 years + annual surveillance |
+| **ISO 27001 certificate** | ISO/IEC 27006-1:2024 | Accredited certification body | Management system effectiveness | 3 years + annual surveillance |
 | **ENS Certificación de Conformidad** | RD 311/2022 + audit instruction | ENAC-accredited certification body | Category-specific controls | 2 years (Media/Alta) |
 | **ACN Qualificazione carta servizio** | ACN Determinazione 307/2022 | ACN ex-ante verification | QC level requirements | 36 months |
 | **SecNumCloud Visa de sécurité** | ANSSI 3.2 reference + PASSI audit | PASSI auditor + ANSSI | All 350+ requirements | 3 years + annual surveillance |
