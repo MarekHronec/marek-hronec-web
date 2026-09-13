@@ -3,7 +3,7 @@ title: "France — ANSSI SecNumCloud: The Strictest Sovereignty Framework in the
 category: compliance
 tags: ["France", "ANSSI", "SecNumCloud", "NIS2", "Compliance", "Data Security", "Sovereignty"]
 date: 2026-04-22
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 12
 level: intermediate
 excerpt: "Single qualification level, 350+ requirements, hard caps on non-EU ownership, immunity from extraterritorial law. SecNumCloud is the framework that defined the modern EU sovereignty debate."
@@ -63,7 +63,7 @@ SecNumCloud is anchored in a stack of regulatory instruments:
 - **Arrêté of 12 August 2026** (in force 15 August) — approves *référentiel SecNumCloud 3.2* as the binding purchasing rule for those data. Conformity is shown by ANSSI qualification or an ANSSI-recognised equivalent European certification.
 
 Those two texts are the substantive change of 2026: SecNumCloud stopped being doctrine plus procurement preference and became a statutory purchasing rule with a defined scope and a deadline.
-- **NIS2 transposition** — the *loi Résilience* (projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques) was adopted by the Senate on 12 March 2025 and revised by the National Assembly special commission on 10 September 2025. **Not yet in force as of mid-2026**; entry into force expected in 2026 once final adoption and implementing decrees publish. France received a reasoned opinion from the European Commission on 7 May 2025 for non-notification of full NIS2 transposition. French essential and important entities will increasingly be required to use SecNumCloud-qualified providers for sensitive workloads under the new act.
+- **NIS2 transposition** — the *loi Résilience* (projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques) was adopted by the Senate on 12 March 2025 and revised by the National Assembly special commission on 10 September 2025. **Not yet in force as of mid-2026**; entry into force expected in 2026 once final adoption and implementing decrees publish. France received a reasoned opinion from the European Commission on 7 May 2025 for non-notification of full NIS2 transposition, and on **8 July 2026 the Commission referred France to the Court of Justice** — alongside Ireland, Spain and the Netherlands — asking the Court to impose a lump sum and daily penalties until transposition is notified (France: INFR(2024)0274). French essential and important entities will increasingly be required to use SecNumCloud-qualified providers for sensitive workloads under the new act.
 - **French Cyber Reference Framework (ReCyF)** — published by ANSSI on 17 March 2026. Lists recommended measures aligned with NIS2 objectives; works alongside SecNumCloud rather than replacing it. The MonEspaceNIS2 portal (cyber.gouv.fr) is live for entity identification and self-assessment.
 
 The combined effect: SecNumCloud is binding for state administration and for Opérateurs d'Importance Vitale (OIV) and Opérateurs de Services Essentiels (OSE) handling sensitive data. The SREN law gives procurement officers the legal basis to enforce it.

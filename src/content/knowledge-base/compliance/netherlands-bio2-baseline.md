@@ -3,10 +3,10 @@ title: "Netherlands — BIO2: Government Baseline Becoming a Statutory Obligatio
 category: compliance
 tags: ["Netherlands", "BIO2", "BZK", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-05
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 10
 level: intermediate
-excerpt: "BIO2 v1.3 is the Dutch government's security baseline since 5 March 2026, superseding BIO v1.04zv. The Cyberbeveiligingswet — the Dutch NIS2 transposition — was approved by the Tweede Kamer on 15 April 2026 and is in Senate review. The cloud profile is operated by hyperscalers via independent attestation."
+excerpt: "BIO2 v1.3 is the Dutch government's security baseline since 5 March 2026, superseding BIO v1.04zv. The Cyberbeveiligingswet — the Dutch NIS2 transposition — has been in force since 15 August 2026 and makes BIO2 a statutory obligation. The cloud profile is operated by hyperscalers via independent attestation."
 references:
   - title: "BIO2 — Baseline Informatiebeveiliging Overheid (Working Version)"
     url: "https://minbzk.github.io/Baseline-Informatiebeveiliging-Overheid/"
@@ -30,7 +30,7 @@ references:
     domain: "nldigitalgovernment.nl"
   - title: "Cyberbeveiligingswet (Cbw) — Dutch NIS2 Transposition"
     url: "https://www.rdi.nl/onderwerpen/digitale-weerbaarheid/cyberbeveiligingswet"
-    description: "Rijksoverheid landing page for the Cyberbeveiligingswet — approved by the Tweede Kamer on 15 April 2026; in Senate (Eerste Kamer) review; entry into force targeted Q2 2026."
+    description: "Rijksoverheid landing page for the Cyberbeveiligingswet — approved by the Tweede Kamer on 15 April 2026 and the Eerste Kamer on 7 July 2026, in force since 15 August 2026."
     domain: "rijksoverheid.nl"
   - title: "BIO2 v1.3 — Staatscourant Publication (5 March 2026)"
     url: "https://www.bio-overheid.nl/nieuws/bio2-v13-gepubliceerd-in-de-staatscourant/"
@@ -38,7 +38,7 @@ references:
     domain: "bio-overheid.nl"
 ---
 
-The Dutch Baseline Informatiebeveiliging Overheid — BIO — is in a transition that matters for anyone selling cloud services to the Dutch government. **BIO2 v1.3** (dated 9 January 2026) was published in the Staatscourant on **5 March 2026** and **supersedes both BIO v1.04zv (the legacy BIO1) and BIO2 v1.2** in central-government digital communication. The **Cyberbeveiligingswet (Cbw)** — the Dutch NIS2 transposition — was approved by the **Tweede Kamer on 15 April 2026** and is in Senate (Eerste Kamer) review as of writing; entry into force is targeted for Q2 2026. Municipal applicability of BIO2 is being aligned via the forthcoming ministerial **Cybersecurity Regulation for the Government Sector** under the Cbw. This article walks through what BIO2 actually requires, how the cloud sub-framework works, and how a hyperscaler typically demonstrates BIO compliance.
+The Dutch Baseline Informatiebeveiliging Overheid — BIO — is in a transition that matters for anyone selling cloud services to the Dutch government. **BIO2 v1.3** (dated 9 January 2026) was published in the Staatscourant on **5 March 2026** and **supersedes both BIO v1.04zv (the legacy BIO1) and BIO2 v1.2** in central-government digital communication. The **Cyberbeveiligingswet (Cbw)** — the Dutch NIS2 transposition — has been **in force since 15 August 2026**, having passed the Tweede Kamer on 15 April 2026 and the Eerste Kamer on 7 July 2026. Municipal applicability of BIO2 was settled with it, through the ministerial **Cyberbeveiligingsregeling sector overheid**. This article walks through what BIO2 actually requires, how the cloud sub-framework works, and how a hyperscaler typically demonstrates BIO compliance.
 
 ## The system at a glance
 
@@ -194,7 +194,7 @@ For a CSP targeting Dutch public-sector consumers, the highest-leverage move is 
 ## Closing checklist
 
 - **BIO2 v1.3** (dated 9 January 2026) was published in Staatscourant on **5 March 2026** and **supersedes BIO v1.04zv and BIO2 v1.2** in central-government digital communication. Next BIO2 version planned end of 2027.
-- The **Cyberbeveiligingswet (Cbw)** — Dutch NIS2 transposition — was **approved by the Tweede Kamer on 15 April 2026** and is in Senate review; entry into force targeted Q2 2026. Will make BIO2 a statutory obligation via the ministerial Cybersecurity Regulation under the Cbw.
+- The **Cyberbeveiligingswet (Cbw)** — Dutch NIS2 transposition — has been **in force since 15 August 2026**. It makes BIO2 a statutory obligation through the ministerial Cyberbeveiligingsregeling sector overheid, in force from the same date.
 - No baseline levels: BIO2 withdrew BBN1–BBN3 in favour of a risk analysis, ISO 27002 controls applied on a risk basis plus the mandatory overheidsmaatregelen, and a Verklaring van Toepasselijkheid recording the choices. EU/NATO-classified information (CONFIDENTIEEL and above) remains categorically excluded from public cloud — not a controls question, a hard restriction.
 - BIO2 builds on ISO/IEC 27001:2023 and 27002:2022, adding approximately 200 government-specific measures. The cloud sub-framework (Thema-uitwerking Clouddiensten) maps to CIS Controls and ISO/IEC 27017.
 - No central catalogue. CSPs publish certificates through their trust centres. EY CertifyPoint is the established monitoring body for the cloud sub-framework.
