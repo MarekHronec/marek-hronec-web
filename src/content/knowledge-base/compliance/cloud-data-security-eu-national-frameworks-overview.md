@@ -18,7 +18,7 @@ references:
     domain: "eur-lex.europa.eu"
   - title: "NIS2 Directive — (EU) 2022/2555"
     url: "https://eur-lex.europa.eu/eli/dir/2022/2555/oj"
-    description: "The directive that brings cloud computing service providers under the 'essential entities' category, with 24h/72h incident reporting obligations and management-level accountability."
+    description: "The directive that brings cloud computing service providers into scope — essential or important depending on size — with 24h/72h incident reporting obligations and management-level accountability."
     domain: "eur-lex.europa.eu"
   - title: "DORA — Regulation (EU) 2022/2554"
     url: "https://eur-lex.europa.eu/eli/reg/2022/2554/oj"
@@ -60,7 +60,7 @@ Where countries diverge:
 - **Spain (ENS)** adds **authenticity** and **traceability** as the fourth and fifth dimensions, making it the most operationally specific framework about audit logging.
 - **Finland (PiTuKri)** ties the classification dimensions directly to **national classified-information levels** (TL IV / TL III / TL II) rather than abstract C/I/A scores.
 - **France (SecNumCloud)** rolls everything into a single level — the framework's position is that "sensitive enough to matter" is one threshold, not a gradient.
-- **Slovakia (KsVC)**, **Italy (ACN)**, and **Netherlands (BIO2)** use multi-level models where the classification of the *data* drives the minimum level of the *cloud service* (rule of the form `data class X ≤ cloud level Y`).
+- **Slovakia (KsVC)** and **Italy (ACN)** use multi-level models where the classification of the *data* drives the minimum level of the *cloud service* (rule of the form `data class X ≤ cloud level Y`). The **Netherlands** used to: BIO2 withdrew the three basisbeveiligingsniveaus at v1.3, so there is no longer a level for a provider to be approved for.
 
 The practical implication: a workload classified under one framework does not trivially map to another. ENS's *Alta* category is not equivalent to ACN's *QC4* even when they sound similar — the underlying control sets are not the same.
 
@@ -76,7 +76,7 @@ National schemes cluster into four operational shapes:
 
 **Baseline-with-self-assessment.** Netherlands' BIO2 and Spain's ENS *Básica* level work this way. The organisation does the assessment, files the documents, and a supervisory body checks compliance reactively. Lighter touch, less procedural overhead, less external assurance.
 
-A given country can use more than one shape across different sensitivity tiers. Spain runs all three: self-assessment for Básica, mandatory third-party audit for Media and Alta. Italy has procedural verification by ACN for private CSPs and self-declaration for in-house infrastructure.
+A given country can use more than one shape across different sensitivity tiers. Spain runs two of them: self-assessment for Básica, mandatory third-party audit for Media and Alta. Italy has procedural verification by ACN for private CSPs and self-declaration for in-house infrastructure.
 
 ## Who actually leads — and on which axis
 
@@ -110,7 +110,7 @@ Since then the question has moved venue. The Commission tabled a **revised Cyber
 
 **EU Cloud Code of Conduct.** A GDPR Article 28 compliance code, approved by the Belgian DPA in May 2021. Three adherence levels differ by *evidence type* (self-declaration, third-party validated, third-party assured), not by content. Adopted by Azure, Google, Oracle, SAP, IBM and most major SaaS providers. **Not AWS** — it adheres to a different Article 40 instrument, the CISPE Data Protection Code of Conduct. Integrated with the CSA STAR Registry. **This is the only EU-wide cloud compliance instrument that is in widespread production use** — because it solves a concrete problem (Article 28 demonstrability) without political baggage.
 
-NIS2 (Directive (EU) 2022/2555) and DORA (Regulation (EU) 2022/2554) sit alongside these and apply *regardless* of which national scheme a CSP is in. NIS2 brings cloud providers into the "essential entities" category with 24h/72h incident reporting and management-level accountability. DORA does the same for the financial sector with a separate Critical Third-Party Provider regime — the European Supervisory Authorities designated the first **19 CTPPs on 18 November 2025**, AWS, Microsoft, Google Cloud and Oracle among them, and supervise them directly.
+NIS2 (Directive (EU) 2022/2555) and DORA (Regulation (EU) 2022/2554) sit alongside these and apply *regardless* of which national scheme a CSP is in. NIS2 brings cloud providers into scope, as essential or important entities depending on whether they exceed the medium-enterprise thresholds, with 24h/72h incident reporting and management-level accountability. DORA does the same for the financial sector with a separate Critical Third-Party Provider regime — the European Supervisory Authorities designated the first **19 CTPPs on 18 November 2025**, AWS, Microsoft, Google Cloud and Oracle among them, and supervise them directly.
 
 NIS2 transposition status is highly heterogeneous across the member states this article covers, with concrete consequences for the framework/law alignment of each country's cloud scheme:
 
@@ -209,7 +209,7 @@ Five reading paths depending on your role and immediate question:
 - For sovereignty, France leads, Germany pragmatises, Italy partitions (PSN for strict, hyperscalers for the rest), and the Nordic/Benelux states resist. Position accordingly.
 - EUCS is a draft, not a rule. Plan against the national landscape that exists, with EUCS as upside if it eventually lands.
 - Gaia-X Label 3 is the most usable voluntary sovereignty marker today. EU Cloud CoC Level 2 is the most usable GDPR Article 28 marker. Neither replaces national requirements; both reduce friction.
-- NIS2 and DORA apply on top of everything else. Cloud providers are essential entities; financial sector cloud customers operate under DORA's CTPP regime regardless of national scheme participation.
+- NIS2 and DORA apply on top of everything else. Cloud providers are in scope as essential or important entities depending on size; financial sector cloud customers operate under DORA's CTPP regime regardless of national scheme participation.
 - Multicloud CSPs run portfolios of certifications, not single ones. Design controls to the strictest applicable framework and map down. Avoid building separately to each.
 - For Slovak readers: KsVC is mid-pack on rigor and comparable to ENS and ACN in scope, mandatory for public administration, and tied to the national audit framework under `zákon 69/2018`. A transitional framework/law alignment gap is open, and it closes by force of law: vyhláška 179/2020 is repealed from **1 January 2027**, so U1–U4 is reliable guidance only through 31 December 2026 — see the per-country article for detail.
 - **What to read next:** the reading paths section above maps the right entry-point for your role (Slovak architect, financial services, CSP, procurement, pan-European compliance, EU-native evaluation). For depth, the [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework) is the practitioner companion; for the per-country specifics, the 12 country articles cover each national regime; for cross-cutting concepts, the [ISO baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay), [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers), and [GDPR + EU Cloud CoC](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) articles cover the universal regimes; [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) covers the pure-play EU operator landscape distinct from hyperscalers and sovereign JVs.

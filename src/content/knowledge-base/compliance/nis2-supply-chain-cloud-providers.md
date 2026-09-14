@@ -140,7 +140,7 @@ NIS2 is a directive; each Member State transposes it into national law. The subs
 | **Italy** | ACN under D.Lgs. 138/2024 | In force since 16 October 2024; phased compliance through October 2026 |
 | **Netherlands** | NCSC and RDI under Cyberbeveiligingswet | **In force since 15 August 2026**; Senate approved 7 July 2026; replaces the Wbni |
 | **Finland** | Traficom and sectoral authorities under Kyberturvallisuuslaki | In force since 8 April 2025 |
-| **Poland** | NASK CSIRT / GOV / MON depending on sector under KSC2 | In force since 3 April 2026; Constitutional Court review pending; personal liability for management |
+| **Poland** | NASK CSIRT / GOV / MON depending on sector under KSC2 | In force since 3 April 2026; Constitutional Tribunal review pending; personal liability for management |
 
 For cloud providers serving multiple EU markets, the matrix of national supervisors and incident-reporting destinations is the operational reality. The substantive supply-chain obligation under Article 21 is uniform; the procedural plumbing varies.
 
@@ -148,7 +148,7 @@ For cloud providers serving multiple EU markets, the matrix of national supervis
 
 For a cloud provider serving a customer that is simultaneously a financial entity (under DORA), a personal-data-processing controller (under GDPR), and an essential entity (under NIS2):
 
-- **DORA** governs the financial-services-specific obligations including the 24-hour classification-based reporting to financial supervisors.
+- **DORA** governs the financial-services-specific obligations, including reporting to financial supervisors within four hours of classifying an incident as major — not the 24 hours often quoted, which is a backstop measured from awareness.
 - **GDPR Article 28** governs the personal-data processing relationship and the 72-hour breach notification to data protection authorities.
 - **NIS2** governs the operational resilience obligations and the 24-hour/72-hour/1-month reporting to national cybersecurity competent authorities.
 

@@ -348,8 +348,9 @@ import CalculatorGuide from './CalculatorGuide.astro';
         <p class="calc__verdict-body">
           This is a <strong>${out.governing.name}</strong> system (${out.governing.nameSk}).
           Look for services at cloud service level <strong>U${out.u}</strong> or higher in the
-          Government Cloud service catalogue. Of the 17 measures under §20 of Act 69/2018,
-          <strong>${mandatory.length}</strong> are mandatory here and ${recommended.length} are recommended.
+          Government Cloud service catalogue. Of the 17 control areas modelled here — 16 of the 18 in §20 ods. 2 of Act 69/2018,
+          plus the §20 ods. 4 a) cyber security manager — <strong>${mandatory.length}</strong> are mandatory
+          at this category and ${recommended.length} are recommended.
         </p>
         <div class="calc__controls">
           <div>
@@ -359,7 +360,7 @@ import CalculatorGuide from './CalculatorGuide.astro';
           <div>
             <p class="calc__control-head">Recommended &middot; ${recommended.length}</p>
             <ul class="calc__control-list" role="list">
-              ${recommended.length ? list(recommended) : '<li><span>All 17 measures are mandatory at this category.</span></li>'}
+              ${recommended.length ? list(recommended) : '<li><span>All 17 modelled control areas are mandatory at this category.</span></li>'}
             </ul>
           </div>
         </div>

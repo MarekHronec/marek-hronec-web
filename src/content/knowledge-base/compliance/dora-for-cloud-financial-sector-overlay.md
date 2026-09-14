@@ -78,7 +78,7 @@ For cloud providers, **pillars 2, 3, and 4** are where the operational demands c
 
 The CTPP designation criteria are detailed in the [dedicated CTPP article](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision).
 
-## Incident reporting — the 24-hour clock
+## Incident reporting — the four-hour clock
 
 DORA imposes one of the strictest incident reporting regimes in EU regulation:
 
@@ -152,7 +152,7 @@ For a cloud provider serving an EU bank that processes customer personal data, a
 Mature cloud providers operate a **single incident classification and reporting workflow** that satisfies all three regimes in parallel. The substantive control overlap is large; the procedural distinctness (different supervisors, different reporting destinations, different sanctions regimes) requires careful tracking.
 
 :::tip[Architectural Pro Tip]
-For a cloud provider designing its DORA-compliance posture, the highest-leverage move is to **build a single ICT incident classification and reporting workflow that satisfies DORA, NIS2, and GDPR breach notification cadences in parallel**. The control overlap is large; the timing overlap (DORA classifies-then-24h, NIS2 starts at awareness, GDPR 72-hour breach notification) requires care, but a single workflow that flags incidents into all three reporting streams is operationally cheaper than three parallel workflows. CTPP-designated providers should additionally build dedicated supervisory cooperation interfaces — the Lead Overseer's information demands are different from those of customer-level supervisors.
+For a cloud provider designing its DORA-compliance posture, the highest-leverage move is to **build a single ICT incident classification and reporting workflow that satisfies DORA, NIS2, and GDPR breach notification cadences in parallel**. The control overlap is large; the timing overlap (DORA classifies-then-4h, NIS2 starts at awareness, GDPR 72-hour breach notification) requires care, but a single workflow that flags incidents into all three reporting streams is operationally cheaper than three parallel workflows. CTPP-designated providers should additionally build dedicated supervisory cooperation interfaces — the Lead Overseer's information demands are different from those of customer-level supervisors.
 :::
 
 ## DORA and the national cloud frameworks
@@ -199,7 +199,7 @@ If you arrived here via the overview and need to go deeper:
 - DORA is Regulation (EU) 2022/2554 — **directly applicable since 17 January 2025**. No national transposition; the regulation applies directly.
 - Scope: EU financial entities (~22,000) and their ICT third-party providers, including cloud.
 - Five pillars: ICT risk management, incident management, operational resilience testing (including TLPT), third-party risk management (including CTPP regime and Article 30 contracts), information sharing.
-- Incident reporting: **24 hours initial / 72 hours intermediate / 1 month final**, starting at classification.
+- Incident reporting: **four hours** for the initial report from classifying the incident as major, with a 24-hour backstop from awareness; **72 hours** for the intermediate report **from the initial notification**; one month for the final report **after the intermediate one**. Each stage chains off the previous report, not off classification.
 - Mandatory **TLPT every 3 years** for systemically important entities, with cooperation requirements from cloud providers.
 - DORA, NIS2, and GDPR apply in parallel for cloud providers serving EU financial customers processing personal data. Build a single classification and reporting workflow covering all three.
 - DORA reads national framework attestations (KsVC, BSI C5, ENS, ACN, SecNumCloud) as supporting evidence. Strong national framework participation reduces DORA preparation work.

@@ -159,7 +159,7 @@ The Italian sovereignty posture is **layered**:
 - **QC3** — stricter operational requirements that include jurisdictional considerations.
 - **QC4 / LIV4** — hard to reach, but not reserved to the state. The barrier is the HYOK key-custody and infrastructure-autonomy requirements in Allegato 4, which resold or hyperscaler-substrate offers struggle to meet — not a rule confining the tier to Italian public entities. Strategic data can also be served at **QC3**, and a commercial provider holds it: Aruba qualified its Hosted and Virtual Private Cloud at QC3 in January 2025. Hyperscalers can serve the substrate through partnerships (PSN operates on hyperscaler technology in some configurations), but the qualification is held by the PSN operator, not the underlying technology provider.
 
-The PSN is the Italian answer to the SecNumCloud question. Rather than imposing ownership rules across the framework, Italy partitions: commercial qualification for ordinary and critical data, PSN for strategic data. This is more accommodating to hyperscalers than the French model while still preserving sovereignty at the top tier.
+The PSN is the Italian answer to the SecNumCloud question. Rather than imposing ownership rules across the framework, Italy partitions by tier rather than by operator: commercial qualification reaches ordinary and critical data, PSN for strategic data. This is more accommodating to hyperscalers than the French model while still preserving sovereignty at the top tier.
 
 ## Multicloud factor
 
@@ -182,10 +182,10 @@ The catena di qualificazione doctrine catches CSPs off-guard more often than it 
 
 - ACN Qualificazione is the most procedurally formal national cloud framework in the EU. Statutory evaluation timelines, four service levels (QC1–QC4), four infrastructure levels (QI1–QI4 or AI1–AI4), and a public catalogue.
 - Mandatory for all Italian public administration purchasing. Non-listed services cannot be purchased.
-- Strategic-data tier (QC4 / LIV4) routes to **Polo Strategico Nazionale** — state-controlled infrastructure. Hyperscalers participate through partnerships, not direct qualification.
+- Strategic data does **not** require QC4: Article 17(4)(c) admits it at QC3 as well. QC4 is distinguished by its control set, not by being reserved to the state. Hyperscalers participate through partnerships, not direct qualification.
 - The **catena di qualificazione** doctrine requires every layer in the service stack to be qualified at the target level or higher. Verify dependencies before planning.
 - Evaluation timeline: 60 days for services, 30 days for infrastructure adjustment, 15 days for catalogue publication. 36-month validity, 90-day renewal window.
 - 6-monthly consumer reporting (MON-01) is a unique operational requirement. Plan a process to assemble and submit the consumer list.
 - Sanctions are catalogue-based: suspension or revocation removes the service from the catalogue, ending public-administration access. NIS2 sanctions under D.Lgs. 138/2024 apply independently.
-- The framework is operationally tractable for hyperscalers at QC1–QC2, requires sovereignty-adjacent work at QC3, and is effectively PSN-only at QC4. Plan the roadmap accordingly.
+- The framework is operationally tractable for hyperscalers at QC1–QC2, requires sovereignty-adjacent work at QC3, and reaches its practical ceiling at QC4, which in practice today means the PSN — though nothing in the framework reserves the tier to it. Plan the roadmap accordingly.
 - **What to read next:** [EU-native cloud providers](/knowledge-base/compliance/eu-native-cloud-providers-landscape) for the broader EU-native landscape including Aruba and other ACN-qualified providers; [Sovereign Cloud Products](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) for PSN partnership routes and sovereign cloud landscape; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for D.Lgs. 138/2024 supply-chain obligations running parallel to QC qualification; [ISO 27001/27017](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the international baseline ACN audit reuses.

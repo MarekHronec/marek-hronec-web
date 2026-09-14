@@ -153,7 +153,7 @@ For multinational CSPs, the Czech framework is one of the simpler EU markets:
 - No country-specific certification to obtain — but if you sell to public authorities, registration in the cloud computing catalogue under vyhláška 505/2025 Sb. is the practical gate.
 - Standard international attestations (ISO, SOC 2, BSI C5, EU Cloud CoC) are accepted as supply-chain evidence.
 - Customers' supply-chain assessments are the operational interaction point, not a regulatory submission.
-- Incident reporting expectations are NIS2-aligned (24h/72h) and DORA-aligned for financial sector (24h to ČNB).
+- Incident reporting expectations are NIS2-aligned (24h/72h) and DORA-aligned for the financial sector (four hours from classification to ČNB, 24-hour backstop from awareness).
 
 The work is in making the standard evidence package available to Czech customers and providing operational support for their supply-chain assessments. There is no separate compliance project for Czechia in the way there is for Slovakia, Italy, or France.
 
@@ -168,7 +168,7 @@ The horizontal-regulation model is operationally lighter for CSPs but heavier fo
 - Cloud providers are assessed as supply-chain participants by the regulated subject, not certified directly by NÚKIB. There is no public catalogue.
 - Reference standards are ISO/IEC 27001 and adjacent norms; NIST CSF is referenced in NÚKIB guidance. **The implementing-decree stack is in force**: vyhláška 408/2025 (regulated-entities criteria), 409/2025 (higher-regime security measures), 410/2025 (lower-regime), plus further decrees and government regulations. Czechia avoided the lag-style framework/law gap.
 - Sanctions follow NIS2: up to €10 million or 2% turnover for essential entities; up to €7 million or 1.4% for important entities. Management-function prohibition up to 6 months is an additional enforcement tool.
-- DORA applies independently for the financial sector with 24-hour major-incident reporting to ČNB.
+- DORA applies independently for the financial sector, with major-incident reporting to ČNB within four hours of classification and no later than 24 hours from awareness.
 - For CSPs, the practical evidence package is the same as for most EU markets: ISO 27001/27017/27018, SOC 2 Type 2 or BSI C5, EU Cloud CoC adherence, demonstrable incident reporting capability.
 - The CSP work is supplying Czech customers with consumable supply-chain assessment evidence, not obtaining Czech-specific certification. This is operationally simpler than the SK/IT/FR routes.
 - **What to read next:** [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the customer-side obligation Czech regulated subjects must satisfy; [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) and [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for the international evidence baseline; [Slovakia KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) and [Poland KSC](/knowledge-base/compliance/poland-ksc-cybersecurity-system) for adjacent CEE regulatory comparisons.

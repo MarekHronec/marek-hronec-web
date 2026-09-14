@@ -152,7 +152,7 @@ Higher compliance bar. ISO 27001/27017/27018, plus 27701 — stand-alone in its 
 
 ### Tier 4 — National-classified information / critical infrastructure data
 
-Strict sovereignty and security bar. SecNumCloud, KsVC U4 (private government cloud), ACN QC4 / PSN, ENS Alta + Cloud PCE, BIO2 (risk-based, no baseline levels since v1.3), PiTuKri TL III handling. Customer-held HSM key custody. EU-controlled provider entity (JV, EU-native operator, dedicated sovereign region). Restricted access to operational personnel.
+Strict sovereignty and security bar. SecNumCloud, KsVC U4 (private government cloud), ACN QC4, ENS Alta + Cloud PCE, BIO2 (risk-based, no baseline levels since v1.3), PiTuKri TL III handling. Customer-held HSM key custody. EU-controlled provider entity (JV, EU-native operator, dedicated sovereign region). Restricted access to operational personnel.
 
 ## Decision tree by geographic scope
 

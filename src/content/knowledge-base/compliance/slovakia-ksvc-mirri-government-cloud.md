@@ -127,7 +127,7 @@ The reference frameworks for evaluation under the published MIRRI methodology ar
 
 The application package includes form `1A`, the self-assessment / evaluation form `1C`, and a ZIP of supporting evidence: ISO certificates, audit reports, general terms (VOP), contract templates, SLAs with measurable parameters, list of subcontractors with their classification levels.
 
-Where the regimes meet — and where the gap is most visible — is the cybersecurity audit. Until MIRRI updates the methodology, the U3/U4 audit references a control set whose underlying legal basis has shifted. Auditors performing work under Act 69/2018 (as amended by 366/2024) are now applying the risk-management regime; the MIRRI methodology has not formalised how that maps to the U3/U4 80% threshold.
+Where the regimes meet — and where the gap is most visible — is the cybersecurity audit. Until MIRRI updates the methodology, the U3/U4 audit references a control set whose underlying legal basis has shifted. Auditors performing work under Act 69/2018 (as amended by 366/2024) are now applying the risk-management regime; the MIRRI methodology has not formalised how that maps to the conformity threshold it publishes — which, as above, is "minimálne 90%?" at U4 and nothing at all for U3.
 
 ## The assessment process
 
