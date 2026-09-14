@@ -113,7 +113,20 @@ Two rules follow, and they apply to every batch:
     in the corpus. The tracker’s own framing was the error.
 16. **Do not leave working notes in an article.** B8 found "the earlier suggestion …
     was incorrect" in shipped prose, referring to something no version of the corpus
-    ever said. Sweep for editorial residue in X1. `git show
+    ever said. Sweep for editorial residue in X1.
+17. **A live link is not a checked link.** Three citations in two days described content
+    their page no longer carries: an OCI reference that 301s to a page of navigation, and a
+    Microsoft peering page from which the word "transitiv" has simply gone. All returned 200
+    throughout. Vendors rewrite pages without redirecting, so the URL survives and the
+    sentence leaves. **No script can catch this** — `check-internal-links.py` proves a target
+    exists, not that it says anything in particular. When a reference *description* promises
+    a specific claim, fetch the page and grep it for that claim.
+18. **Do not amend a brief by messaging a running reviewer.** X3's agent correctly refused a
+    mid-flight instruction from this session as an unauthenticated injection — it could not
+    verify the sender, and the instruction happened to be wrong as well (it redefined
+    `INTERNAL` mid-batch). There is no channel that carries authority to a subagent. Get the
+    brief right before dispatch; if it is wrong, the honest options are to let the batch
+    finish and correct on apply, or to stop it and re-run. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -273,7 +286,9 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B8 | Short-form and FinOps | 6 | sonnet | **applied** | [1 finding](audit/B8-short-form.md) | 1 + 6 refs blocks, 3 dates |
 | X1 | Cross-cutting consistency | all | opus | **applied** | [11 findings](audit/X1-cross-cutting.md) | 11 + 265 URLs swept |
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
-| X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
+| X1b | X1 follow-up: addressing + topology overlap | 4 | opus | **applied** | [6 findings](audit/X1-cross-cutting.md) | 6 |
+| X3 | Guide pages: cost, resilience, connectivity | 3 guides | sonnet | **applied** | [2 findings + 3 source gaps](audit/X3-guide-pages.md) | 7 |
+| X4 | Guide pages: platform, compliance | 2 guides | **todo** | todo | — | — |
 
 ### B1 — EU-level instruments (opus)
 `dora-for-cloud-financial-sector-overlay` · `dora-article-30-contracts-and-exit-strategies` ·
