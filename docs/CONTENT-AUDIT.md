@@ -208,7 +208,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B7c | DevOps toolchain | 3 | sonnet | **applied** | [6 findings](audit/B7c-devops-toolchain.md) | 4 applied |
 | B7d | Operating model and learning | 3 | sonnet | **applied** | [8 findings](audit/B7d-operating-model.md) | 6 applied |
 | B8 | Short-form and FinOps | 6 | sonnet | **applied** | [1 finding](audit/B8-short-form.md) | 1 + 6 refs blocks, 3 dates |
-| X1 | Cross-cutting consistency | all | opus | todo | — | — |
+| X1 | Cross-cutting consistency | all | opus | **applied** | [11 findings](audit/X1-cross-cutting.md) | 11 + 265 URLs swept |
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
 | X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
 
@@ -1255,3 +1255,52 @@ It also diagnosed its own false alarm: four pages returned zero bytes, looking
 exactly like the JSON-rendering trap, but the cause was a console encoding
 error on a non-breaking space. It re-ran with encoding forced and **reported
 the false alarm instead of filing four spurious findings.**
+
+## Session 18 — X1 applied (2026-09-14)
+
+**Cross-cutting consistency.** Six contradictions, one shipped-widget defect,
+four minor items. Detail in [X1](audit/X1-cross-cutting.md).
+
+### Extract the recurring facts mechanically, then reason over the list
+
+The pass only became tractable because the seed list was built by script:
+every date, legal instrument and version string appearing in **more than one
+article**, ranked by how many restate it. That turns "read 57 articles and
+compare everything" into about ninety ranked items.
+
+**A fact restated in a second place is where contradictions live.** One fell
+out of the extraction before any agent ran — three places citing a standard
+edition that does not exist.
+
+### The body-versus-checklist failure is now a pattern, not an incident
+
+The DORA reporting clock: the owning article debunks the "24 / 72 / one month
+from classification" formulation at three separate points, and then states it
+in its own closing checklist. B5b found exactly this shape in a different
+article. Twice is a pattern.
+
+Settled against Delegated Regulation (EU) 2025/301 itself: four hours from
+classification, 24 hours only as an awareness backstop, 72 hours **from the
+initial notification**, one month **after the intermediate report**. The
+popular version is wrong on all three stages, and it had spread to five places
+across three articles.
+
+**Standing rule 5 already says to check an article's own checklist when
+correcting it. It needs to be applied at review time, not just at fix time.**
+
+### A tool presenting its coverage as the law's scope
+
+The compliance calculator said "Of the 17 measures under §20 of Act 69/2018".
+It models 16 of the 18 areas in ods. 2, plus one requirement from ods. 4. The
+data file's own provenance comment already recorded the two gaps. Same class as
+a citation overselling its page — but in a live tool where a reader counts
+controls off the number.
+
+### The mechanical half is now three scripts
+
+`check-cidr-alignment.py`, `check-code-fences.py` and `check-internal-links.py`
+all pass. Between them they cover every address literal, every fenced block and
+all 377 internal links. **These are the part of this audit that does not decay.**
+
+Reference liveness was also swept exhaustively: 265 distinct URLs, exactly one
+dead, now repointed.
