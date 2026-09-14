@@ -194,13 +194,18 @@ of the work.
 The table above counts *articles*. It has never counted the five interactive guide pages,
 and that omission was hiding roughly as much prose as a whole batch. Found while scoping X3:
 
-| Guide | Where its content lives | Words | Status |
-|---|---|---|---|
-| `/cost` | 4 data files + 5 components | 1,641 | **X3** |
-| `/resilience` | 2 data files + 3 components | 1,429 | **X3** |
-| `/connectivity` | 2 data files + 4 components | 1,411 | **X3** |
-| `/platform` | 4 data files + 10 components | **5,794** | **not audited** |
-| `/compliance` | `cia-explainer` + `security-calculator` | 4,204 | **partial** — X1 corrected the calculator's §20 result text; nothing else read |
+Word counts are the **data files only** — the components are mostly markup and are counted
+separately, but they are in scope too, since a claim asserted in a component ships just the
+same (X1 found one there: the calculator's §20 result line).
+
+| Guide | Data files | Words in them | Components | Status |
+|---|---|---|---|---|
+| `/cost` | 4 | 1,641 | 5 | **X3** |
+| `/resilience` | 2 | 1,429 | 3 | **X3** |
+| `/connectivity` | 2 | 1,411 | 4 | **X3** |
+| `/platform` | 4 | **5,794** | 10 | **not audited** |
+| `/compliance` | 2 | 4,204 | 5 | **partial** — X1 corrected the calculator's §20 result text; nothing else read |
+| | | **14,479** | | |
 
 **`/platform` alone holds more words than the three guides X3 is auditing combined.** It is
 not a stub: `platform-chooser.ts` (1,968 words) emits a recommended shortlist from a
