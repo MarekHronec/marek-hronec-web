@@ -104,7 +104,13 @@ Two rules follow, and they apply to every batch:
     Describe the *method*, not the expected finding.
 14. **Watch for a correct fact over-generalised.** B7d found a certification renewal
     cadence that is right for two vendors and wrong for the third — the one the article
-    leads with. Wherever an article gives one rule for several vendors, check each. `git show
+    leads with. Wherever an article gives one rule for several vendors, check each.
+15. **Verify the premise of a batch before dispatching it.** B8’s six articles were
+    queued as unsourced; they carried fifteen inline citations and were the best-cited
+    in the corpus. The tracker’s own framing was the error.
+16. **Do not leave working notes in an article.** B8 found "the earlier suggestion …
+    was incorrect" in shipped prose, referring to something no version of the corpus
+    ever said. Sweep for editorial residue in X1. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -156,13 +162,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **51** — B1–B6c plus B7a–B7d |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **57 — all of them** |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **15** |
+| **Never opened** | **0** |
 
-So: **6 of 57 articles have not been audited**, all of them in B8. B2–B8 is not a formality; it is
+So: **every article has now been audited.** What remains is cross-cutting: X1 and X3. B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -201,7 +207,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B7b | Service models and ownership | 3 | sonnet | **applied** | [3 findings](audit/B7b-service-models.md) | 3 + 1 open |
 | B7c | DevOps toolchain | 3 | sonnet | **applied** | [6 findings](audit/B7c-devops-toolchain.md) | 4 applied |
 | B7d | Operating model and learning | 3 | sonnet | **applied** | [8 findings](audit/B7d-operating-model.md) | 6 applied |
-| B8 | Short-form and FinOps | 6 | sonnet | **running** (dispatched 2026-09-14) | — | — |
+| B8 | Short-form and FinOps | 6 | sonnet | **applied** | [1 finding](audit/B8-short-form.md) | 1 + 6 refs blocks, 3 dates |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
 | X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
@@ -1192,3 +1198,60 @@ they were wrong, because it shows the check happened.
 It also declined the bait a second time: told not to treat prior batches'
 reference defects as expected, it found two anyway and stated they were
 "independently observed via grep — not manufactured to match the brief's hint".
+
+## Session 17 — B8 applied. **All 57 articles audited** (2026-09-14)
+
+**Short-form FinOps and recovery.** Six articles, 1 defect, plus the corpus
+standard finally met everywhere. Detail in [B8](audit/B8-short-form.md).
+
+### The weakest cohort had the cleanest citations
+
+These six were queued as the corpus's weak point because none had a frontmatter
+`references:` block. Checking before dispatch showed that framing was wrong:
+**they carry fifteen citations inline in the prose.** Sourced all along, just
+structured differently.
+
+All fifteen resolve and support the sentence they sit in. After six consecutive
+batches where citations were the only defect, the articles flagged as unsourced
+turned out to be the best-cited in the corpus. **Verify the premise of a batch
+before dispatching it** — the tracker's own framing was the error here.
+
+### Second nil result, tested the same way
+
+Re-derived what the reviewer passed rather than what it found. The three
+savings-plan mechanics matter most, because the article's break-even table is
+built on them and a wrong one would mislead a purchase: "unused commitment for
+an hour expires and does not roll over" and "savings plan purchases can't be
+canceled or refunded", both verbatim. Support severities and Oracle's forecast
+alerts likewise.
+
+### A new defect type: editorial residue
+
+The budgets article said "The earlier suggestion that OCI has no native
+forecast budget alerts was incorrect." The fact is right; the sentence is not
+publishable, because "the earlier suggestion" means nothing to a reader. The
+reviewer checked `git log -p --follow` and confirmed **no version of any file
+in this corpus ever made that claim** — so it is not correcting anything the
+reader could have seen. It reads as a fact-check note left in shipped prose.
+
+**An audit that leaves its own working notes in an article is worse than one
+that changes nothing.** X1 should sweep for editorial residue: phrases
+addressed to an editor rather than a reader.
+
+### The corpus standard is now met everywhere
+
+- **57 of 57** articles have a `references:` block.
+- **57 of 57** have an `updated:` date; three had none at all.
+- Both mechanical checks pass: every CIDR literal aligned, every code fence
+  tagged.
+
+### Reviewer notes
+
+Second running to check the brief and report no error, listing what it had
+verified — including a fact I handed it as established context, which it
+confirmed rather than accepted.
+
+It also diagnosed its own false alarm: four pages returned zero bytes, looking
+exactly like the JSON-rendering trap, but the cause was a console encoding
+error on a non-breaking space. It re-ran with encoding forced and **reported
+the false alarm instead of filing four spurious findings.**
