@@ -92,13 +92,104 @@ Worth recording, because a clean result on a restated fact is the point of this 
   table of nineteen designated providers matching its own stated breakdown.
 - **No product-name drift**: no stale identity-service name anywhere in the corpus.
 
-## Not reached
+## Not reached at the time
 
 The agent covered every seed item but gave the **26 non-compliance articles** targeted greps
 rather than a fact-by-fact pass, on the grounds that most of their recurring facts appear in
 only one article. It flagged one area worth a short follow-up: the overlap between the
 address-plan, address-management and topology articles, which share subnet-sizing and
 topology claims.
+
+## The follow-up, done 2026-09-14 — now closed
+
+Done by Opus directly rather than by an agent: four articles, ~7,100 words, and the shared
+claims are almost all numeric, so verifying them against vendor documentation is faster than
+briefing a reviewer.
+
+**The overlap itself is clean.** Every shared number agrees across the two IPAM/addressing
+articles, and the arithmetic behind each is correct:
+
+| Restated claim | address-plans | ipam | Verdict |
+|---|---|---|---|
+| Azure reserved IPs per subnet | 5, itemised | 5, itemised | agree |
+| OCI reserved IPs per subnet | 3, "the first two addresses and the last" | 3 | agree, and verbatim Oracle |
+| Usable per prefix | /26 ~59, /24 ~250, /22 ~1000, /20 ~4000, /18 ~16000 | /28 11, /26 ~59, /24 ~250, /27 27 | agree; every subtraction of 5 checks |
+| OCI VCN CIDR range | multiple blocks per VCN | /16–/30 per block | agree, and verbatim Oracle |
+| Regional planning pool | /16 per region in the worked example | /16 to /14, /13+ needs justification | compatible |
+| Worked example, 10.100.0.0/16 | five sub-blocks | — | no overlaps, all boundary-aligned |
+
+So the thing the follow-up was opened to find was not there. What it found instead was four
+defects in claims that appear **once** — which is the argument against relying on
+cross-article comparison alone as an audit method.
+
+### 1. A hard requirement published as a recommendation
+
+> "Microsoft recommends /27 minimum for VPN and ExpressRoute gateways. /29 is the absolute
+> minimum but leaves no room for co-located resources or dual-gateway deployments."
+
+Microsoft's own wording is not a recommendation:
+
+> "While it's possible to create a gateway subnet as small as /29 (applicable to the Basic SKU
+> only), all other SKUs require a gateway subnet of size /27 or larger (/27, /26, /25 etc.)."
+
+Two errors in one bullet. /27 is **required**, not recommended, for every SKU but Basic; and
+/29 is not a general "absolute minimum" that merely leaves things tight — it is Basic-only, and
+a VpnGw1 deployment into a /29 fails outright. The article's framing tells a reader the tight
+option works. Rewritten to Microsoft's constraint, with the ExpressRoute/VPN coexistence case
+Microsoft singles out as needing more.
+
+### 2. An AKS sizing figure that counts only half the consumers
+
+> "A node pool with 30 nodes and a 30-pod maximum consumes 900 IPs"
+
+Microsoft's formula, verbatim:
+
+> `(number of nodes + max surge nodes) + ((number of nodes + max surge nodes) * maximum pods per node that you configure)`
+
+Node IPs count too, and so does the upgrade surge node. With the default single surge node:
+(31) + (31 × 30) = **961**, not 900. The article's conclusion — that a /22 fills fast — is
+*more* true with the right number, but the figure is one a reader puts straight into a plan.
+Replaced with the formula and the corrected total.
+
+### 3. Two defects in one shipped Terraform block
+
+The IPAM article publishes an `azurerm_network_manager_ipam_pool` resource. Against the
+provider's own documentation, `location` is **Required** — and the snippet omits it, so it
+cannot apply as printed. Every other argument in the block is correct.
+
+The same article's OCI snippet ends:
+
+> `# Use cidrsubnet() and cidrcontains() helpers in CI checks`
+
+`cidrsubnet()` is a Terraform built-in. **`cidrcontains()` is not** — the language's only IP
+network functions are `cidrhost`, `cidrnetmask`, `cidrsubnet` and `cidrsubnets`. Pairing the
+two implies both are built in; a reader gets "call to unknown function". It exists only as a
+third-party provider-defined function (`provider::utils::cidrcontains`, Terraform 1.8+), which
+the corrected comment now says, alongside the point that the overlap check belongs in CI.
+
+### 4. A citation that had quietly become a page of links
+
+The OCI reference promised "VCN CIDR constraints, subnet types (regional vs AD-specific),
+reserved IP addresses per subnet, and the multiple-CIDR-block-per-VCN model". The URL
+301-redirects, and the page it lands on is **1,178 characters of navigation** — none of the
+four. Repointed to `Content/Network/Concepts/overview.htm`, then checked that all four are
+actually on it. They are.
+
+This one is instructive: the X1 sweep checked all 265 reference URLs for **liveness** and this
+one passed, because a 301 to a real page is not a dead link. Liveness is not the same test as
+*still carries what the citation says it carries*. A link can rot without breaking.
+
+### 5. The one genuine cross-article gap
+
+The contiguity argument said a single summary route "reaches every spoke" — true, but only
+given gateway transit, which that article never mentions. The sibling topology article exists
+largely to warn that this is not automatic, and the four networking articles **cross-link to
+each other nowhere at all**. Added the precondition and the link.
+
+### What was applied
+
+Six edits across two files; all three mechanical invariants re-run clean (378 internal links,
+51 CIDR literals, 57 fenced blocks) and the site builds.
 
 ## Notes on the agent
 

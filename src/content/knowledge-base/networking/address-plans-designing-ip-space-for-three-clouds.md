@@ -3,7 +3,7 @@ title: "Address Plans — Designing IP Space for Three Clouds and a Future You C
 category: networking
 tags: ["Azure", "OCI", "Networking", "Address Planning", "CIDR"]
 date: 2026-04-30
-updated: 2026-09-13
+updated: 2026-09-14
 readTime: 15
 level: intermediate
 excerpt: "IPAM tracks allocations. An address plan decides what to allocate and what to reserve. Most orgs skip the plan and pay for it in months of remediation later."
@@ -17,7 +17,7 @@ references:
     description: "Microsoft's Cloud Adoption Framework guidance on IP address planning for Azure: recommended ranges, hub and spoke sizing, service-specific subnet constraints, and non-routable design patterns."
     domain: "learn.microsoft.com"
   - title: "OCI VCN and subnet overview"
-    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingVCNs_topic-Overview_of_VCNs_and_Subnets.htm"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/overview.htm"
     description: "Oracle's reference for VCN CIDR constraints, subnet types (regional vs AD-specific), reserved IP addresses per subnet, and the multiple-CIDR-block-per-VCN model relevant to address plan design."
     domain: "docs.oracle.com"
   - title: "Azure IPAM — open source reference implementation"
@@ -83,7 +83,7 @@ The pattern: every region in every cloud has the same internal shape. Predictabl
 
 Why does contiguity matter? **Route summarisation.**
 
-If your spoke pool in West Europe is 10.100.16.0/20, the on-prem firewall can advertise a single route — 10.100.16.0/20 → Azure ExpressRoute — and reach every spoke. If the spokes are 10.100.16.0/22, 10.100.20.0/22, 10.100.40.0/22, 10.100.56.0/22, scattered across the /16, the firewall needs four separate routes. Multiply this across regions, clouds, and tiers and the routing table becomes unmanageable.
+If your spoke pool in West Europe is 10.100.16.0/20, the on-prem firewall can advertise a single route — 10.100.16.0/20 → Azure ExpressRoute — and reach every spoke, provided the topology actually carries that traffic, since peering is not transitive and a spoke uses the hub’s gateway only where gateway transit is enabled. See [three topology choices](/knowledge-base/networking/hub-and-spoke-virtual-wan-and-drg-three-topology-choices). If the spokes are 10.100.16.0/22, 10.100.20.0/22, 10.100.40.0/22, 10.100.56.0/22, scattered across the /16, the firewall needs four separate routes. Multiply this across regions, clouds, and tiers and the routing table becomes unmanageable.
 
 Route summarisation is not a hypothetical concern. ExpressRoute, FastConnect, and most enterprise routers have route limits. Hitting them is a real production-affecting event.
 
@@ -122,9 +122,9 @@ Before committing to T-shirt sizes for hub VNets and VCNs, the platform team mus
 **Azure fixed-size requirements:**
 
 - **Azure Firewall subnet (`AzureFirewallSubnet`)**: must be /26 minimum (64 IPs). Microsoft’s own FAQ is unqualified on this — "a /26 subnet is sufficient for all scaling scenarios" — so do not oversize it for zone redundancy.
-- **Gateway Subnet (`GatewaySubnet`)**: Microsoft recommends /27 minimum for VPN and ExpressRoute gateways. /29 is the absolute minimum but leaves no room for co-located resources or dual-gateway deployments.
+- **Gateway Subnet (`GatewaySubnet`)**: /27 or larger is a requirement, not a recommendation. Microsoft permits /29 for the Basic SKU only; every other gateway SKU rejects anything smaller than /27. Size above /27 where an ExpressRoute and a VPN gateway coexist, which Microsoft singles out as needing more addresses than most configurations.
 - **Azure Bastion subnet (`AzureBastionSubnet`)**: /26 is a hard platform requirement, not a recommendation.
-- **AKS with Azure CNI**: pods receive IPs directly from the VNet subnet. A node pool with 30 nodes and a 30-pod maximum consumes 900 IPs — a /22 (1,019 usable, after Azure’s five reserved) fills quickly with a single medium cluster. Azure CNI Overlay and Cilium-based networking decouple pod IPs from VNet address space and deserve evaluation before sizing. With traditional CNI, overestimate generously.
+- **AKS with Azure CNI**: pods receive IPs directly from the VNet subnet. Microsoft sizes the subnet as `(nodes + max surge) + ((nodes + max surge) × max pods per node)`, so a pool of 30 nodes at a 30-pod maximum needs **961** addresses with the default single surge node — not the 900 that counting pods alone suggests. A /22 (1,019 usable, after Azure’s five reserved) is therefore all but full at one medium cluster. Azure CNI Overlay and Cilium-based networking decouple pod IPs from VNet address space and deserve evaluation before sizing. With traditional CNI, overestimate generously.
 - **Azure reserved IPs per subnet**: Azure reserves 5 IPs in every subnet (network address, default gateway, two Azure DNS IPs, broadcast). A /29 subnet has only 3 usable addresses.
 
 **OCI constraints:**

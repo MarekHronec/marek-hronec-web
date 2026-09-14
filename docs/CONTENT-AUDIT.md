@@ -66,7 +66,10 @@ Two rules follow, and they apply to every batch:
 4. **Verify by reading the diff, not by re-grepping the source.**
 5. **When you correct a claim, check the article’s own checklist and excerpt too.**
    B5b found an article whose body had been corrected in B1 while its closing
-   checklist still stated the error the body explicitly refutes.
+   checklist still stated the error the body explicitly refutes. Found again in X1,
+   in an unrelated article — so this is now **also** protocol item 5 below, and
+   belongs in every review brief rather than only in the hands of whoever applies
+   the fix.
 6. **A reviewer saying it checked propagation is not a substitute for running the
    grep.** B6a’s reviewer stated positively that no further propagation existed;
    grepping the retired product name found two more articles using it as current.
@@ -139,7 +142,22 @@ directive. So:
    the single biggest trap in this audit: a reviewer's memory and the article's
    text are from the same period, so they will agree with each other and both
    be out of date.
-5. Slovak and other national sources may need native-language search terms.
+5. **Read every article's own checklist, excerpt and frontmatter against its
+   body.** An article that debunks a claim in its prose and restates it in its
+   closing checklist is wrong for a reader who skims — which is most readers of
+   a checklist. This has now been found twice, in unrelated articles: B5b caught a
+   body corrected in B1 whose checklist kept the error, and X1 caught an article
+   that refutes the "24 / 72 / one month" DORA clock at three separate points and
+   then states it in its own summary. Twice makes it a pattern, and the pattern is
+   structural: a fix lands where the reviewer was reading, and summaries are written
+   once and never re-read.
+
+   **This is a reviewing instruction, not just a fixing one.** It was previously
+   filed under bulk-edit discipline (rule 5 above), which only helps someone already
+   applying a correction — it never told a reviewer to go looking. Compare the
+   body against the summary for every article in the batch, as a first-class check,
+   and report a body/summary disagreement as `INTERNAL` even when the body is right.
+6. Slovak and other national sources may need native-language search terms.
 
 ## Model per batch
 
@@ -1304,3 +1322,69 @@ all 377 internal links. **These are the part of this audit that does not decay.*
 
 Reference liveness was also swept exhaustively: 265 distinct URLs, exactly one
 dead, now repointed.
+
+---
+
+## Session 19 — X1 follow-up and a rule promotion (2026-09-14)
+
+### The follow-up found nothing where it was looking, and four things where it was not
+
+X1 left one item open: the overlap between the address-plan, address-management
+and topology articles. Done directly rather than by an agent — four articles,
+~7,100 words, and the shared claims are nearly all numeric, so checking them
+against vendor documentation is faster than writing a brief.
+
+**The overlap is clean.** Every restated number agrees across the two addressing
+articles and every subtraction of Azure's five reserved addresses checks out;
+the worked /16 carve-up has no overlaps and every block is boundary-aligned;
+OCI's three reserved addresses and its /16–/30 VCN range match Oracle verbatim.
+
+The four defects were all in claims that appear **once**. That is the argument
+against treating cross-article comparison as the whole audit: a fact restated
+twice is where contradictions live, but a fact stated once is where an
+uncorrected error lives undisturbed.
+
+1. **A hard requirement published as a recommendation.** "Microsoft recommends
+   /27 minimum … /29 is the absolute minimum" — Microsoft's actual text is
+   "all other SKUs require a gateway subnet of size /27 or larger", with /29
+   reserved to the Basic SKU. A reader following the article into a /29 with any
+   modern SKU gets a deployment failure, not a tight fit.
+2. **A sizing figure counting half the consumers.** 30 nodes at 30 pods was
+   given as 900 IPs. Microsoft's formula counts node IPs and the upgrade surge
+   node too: (31) + (31 × 30) = 961.
+3. **Two defects in one Terraform block.** The `azurerm_network_manager_ipam_pool`
+   snippet omits `location`, which the provider marks Required — it cannot apply
+   as printed. And `cidrcontains()` was presented beside the genuine
+   `cidrsubnet()`; it is not a Terraform built-in at all, only a third-party
+   provider-defined function.
+4. **A citation that had become a page of links.** The OCI reference promised
+   four specific things; the URL 301-redirects to 1,178 characters of navigation
+   carrying none of them.
+
+**Finding 4 is the one worth generalising.** X1 checked all 265 reference URLs
+for liveness and this one passed — a 301 to a real page is not a dead link.
+*Live* and *still carries what the citation claims* are different tests, and only
+the first is mechanisable. `check-internal-links.py` cannot catch this class; a
+human reading the description against the page can.
+
+### The rule the user asked to promote
+
+Standing rule 5 — check an article's own checklist and excerpt when you correct
+its body — was filed under bulk-edit discipline. That only ever helps someone
+already applying a fix; it never told a reviewer to go looking.
+
+It is now **also protocol item 5**, in the list every review brief is built from,
+with the instruction to report a body/summary disagreement as `INTERNAL` even
+where the body is right. The evidence for promoting it is that it has appeared
+twice in unrelated articles (B5b, X1), and the mechanism is structural rather
+than accidental: corrections land where the reviewer was reading, and summaries
+are written once and never re-read.
+
+The rule was applied immediately — the running X3 reviewer was sent the check
+mid-flight, since its brief predated the promotion.
+
+### State
+
+Six edits across two articles. All three mechanical invariants re-run clean:
+**378** internal links, **51** CIDR literals, **57** fenced blocks. Site builds,
+57 pages indexed.
