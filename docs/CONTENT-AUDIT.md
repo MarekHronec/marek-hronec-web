@@ -84,7 +84,14 @@ Two rules follow, and they apply to every batch:
    and my zero was the artefact.
 8. **Where a claim can be checked by computation, write the check down and keep
    it.** `scripts/check-cidr-alignment.py` came out of B6b and found an error the
-   reviewer missed. Mechanical invariants do not decay; fetched sources do. `git show
+   reviewer missed. Mechanical invariants do not decay; fetched sources do.
+   B7a added `scripts/check-code-fences.py` the same way. **When a reviewer finds
+   one instance of a rule violation, sweep the corpus for the rule.** Six reported
+   unlabeled fences turned into nineteen.
+10. **A correct finding does not make the proposed fix correct.** B7a's reviewer was
+    right that a figure was incomplete and wrong about its replacement, and right
+    that a quota family was inconsistent while wrong about what the vendor page says.
+    Verify the replacement against a source, not just the defect. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -136,13 +143,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **39** — B1, B2, B3a, B3b, B4, B5a, B5b, B6a, B6b, B6c |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **42** — B1–B6c plus B7a |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **27** |
+| **Never opened** | **24** |
 
-So: **18 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **15 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -177,7 +184,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B6a | Platform structure and landing zones | 4 | sonnet | **applied** | [11 findings](audit/B6a-platform-structure.md) | 9 + 2 spillovers |
 | B6b | Networking and addressing | 4 | sonnet | **applied** | [12 findings](audit/B6b-networking.md) | 10 + 1 found by sweep |
 | B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
-| B7a | Governance and access control | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
+| B7a | Governance and access control | 3 | sonnet | **applied** | [14 findings](audit/B7a-governance-access.md) | 9 + 13 fences swept |
 | B7b | Service models and ownership | 3 | sonnet | todo | — | — |
 | B7c | DevOps toolchain | 3 | sonnet | todo | — | — |
 | B7d | Operating model and learning | 3 | sonnet | todo | — | — |
@@ -959,3 +966,64 @@ rather than letting them accumulate to the end.
 
 Ten articles across three passes: 28 findings, 23 applied, 3 spillovers, one
 mechanical invariant added to the repo.
+
+## Session 13 — B7a applied (2026-09-14)
+
+**Governance and access control.** Three articles, 14 findings, 9 applied.
+Detail in [B7a](audit/B7a-governance-access.md).
+
+### Code that would not apply
+
+Fifteen fenced blocks checked, twelve clean. The important defect:
+`oci_identity_tag_default` omitted `value`, which the provider documents as
+"(Required) (Updatable)". Neither copy would pass `terraform plan`, and the
+snippet had been reused in a second article **without** even the hedging
+comment the first one carried. Grepping the resource name rather than the
+article is what found the second copy.
+
+### Where the reviewer's reasoning was wrong
+
+It reported that Oracle's syntax page uses `compute-core` throughout and
+"never bare `compute`". Oracle's own worked example on that page reads
+`set compute quota standard-e4-core-count …`. **Oracle's documentation
+contradicts itself**, and neither of the two reference pages that could
+arbitrate is usable — one 404s, the other is a 13 KB stub with no quota names
+in it at all.
+
+The edit still stands, because the corpus had two files using each form and a
+grammar definition outranks an example. But the finding is "the corpus
+disagreed with itself and the vendor is no help", not "the article was wrong".
+
+It also got the Always Free finding right and the replacement figure wrong:
+blocked by a 403, it proposed a core count from search synthesis, where
+Oracle's own docs give 1,500 OCPU hours and 9,000 GB hours a month.
+
+**Both are the same lesson: a correct finding does not make the proposed fix
+correct. Verify the replacement, not just the defect.**
+
+### The reviewer corrected my brief
+
+I told it the articles carried 26 code blocks. It opened by pointing out that
+8 and 14 count fence *delimiters* while 4 counts *blocks*, so the numbers were
+not computed the same way, and the real total is 15. It was right —
+`grep -c '^```'` counts opening and closing fences separately.
+
+Second batch running where a reviewer has argued with the brief and won. Worth
+keeping the instruction that invites it.
+
+### Third mechanical invariant
+
+The reviewer cited `.claude/rules/content-files.md` — "Code blocks must specify
+language" — for six unlabeled fences. Sweeping the corpus found **thirteen
+more** in nine articles it was not auditing. All nineteen are now tagged, and
+`scripts/check-code-fences.py` enforces the rule.
+
+**When a reviewer finds one instance of a rule violation, check the rule across
+the corpus, then write the check down.** Two of these scripts now exist.
+
+### Deliberately not resolved
+
+Two articles use different names for the same object-storage quota. I could not
+settle which is right — the reference page is a stub — so both stay. Picking
+one to tidy away a contradiction without evidence is the failure this audit
+exists to prevent.
