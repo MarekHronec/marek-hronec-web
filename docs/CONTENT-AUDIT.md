@@ -101,7 +101,10 @@ Two rules follow, and they apply to every batch:
     Weight silent-failure defects above loud ones in operational articles.
 13. **Do not prime a reviewer for a pattern.** B7c’s brief mentioned a defect type from
     earlier batches; the reviewer correctly reported it could not reproduce it here.
-    Describe the *method*, not the expected finding. `git show
+    Describe the *method*, not the expected finding.
+14. **Watch for a correct fact over-generalised.** B7d found a certification renewal
+    cadence that is right for two vendors and wrong for the third — the one the article
+    leads with. Wherever an article gives one rule for several vendors, check each. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -153,13 +156,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **48** — B1–B6c plus B7a–B7c |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **51** — B1–B6c plus B7a–B7d |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **18** |
+| **Never opened** | **15** |
 
-So: **9 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **6 of 57 articles have not been audited**, all of them in B8. B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -197,7 +200,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B7a | Governance and access control | 3 | sonnet | **applied** | [14 findings](audit/B7a-governance-access.md) | 9 + 13 fences swept |
 | B7b | Service models and ownership | 3 | sonnet | **applied** | [3 findings](audit/B7b-service-models.md) | 3 + 1 open |
 | B7c | DevOps toolchain | 3 | sonnet | **applied** | [6 findings](audit/B7c-devops-toolchain.md) | 4 applied |
-| B7d | Operating model and learning | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
+| B7d | Operating model and learning | 3 | sonnet | **applied** | [8 findings](audit/B7d-operating-model.md) | 6 applied |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
@@ -1135,3 +1138,57 @@ It also **refused to reproduce a pattern I had primed it for.** My brief
 mentioned that recent batches found references supporting no claim at all; it
 reported plainly that it could not reproduce that here. A reviewer that
 declines to find what you suggested is worth more than one that obliges.
+
+## Session 16 — B7d applied, B7 complete (2026-09-14)
+
+**Operating model and learning.** Three articles, 8 findings, 6 applied. Detail
+in [B7d](audit/B7d-operating-model.md). **All long-form content batches are now
+done** — only the six short-form articles and the two cross-cutting passes
+remain.
+
+### The primary target was correct
+
+The BPM article's three dated Camunda lifecycle claims all verified against
+Camunda's own pages, tense included. The reviewer noted that the October 2025
+cutoff has since passed and the article was written after it, so **time made
+the wording more accurate, not less** — the opposite of the usual direction.
+
+### A rule true of some vendors, stated as true of all
+
+"Refresh roughly every two years" is right for Oracle and the CNCF Kubernetes
+certifications and **wrong for Microsoft**, which is annual with a six-month
+renewal window — and Microsoft Learn is the baseline the article leads with.
+Fundamentals-level certifications do not expire at all.
+
+That is a distinct error shape worth naming: not a stale fact, but a correct
+fact over-generalised. Worth watching for wherever an article gives one rule
+for multiple vendors.
+
+### Consolidated, not dead
+
+Kogito's runtimes repository is archived and the code moved into the Apache KIE
+monorepo seven weeks before the audit. The reviewer was careful not to call the
+technology dead — it is consolidated — and the article now says that, and
+points readers at Apache KIE's activity rather than Kogito's own site, whose
+getting-started guide still asks for JDK 11.
+
+### Sixth consecutive batch with reference defects
+
+Two more references that support no claim in their articles: Flowable in an
+engine-comparison article that never compares it, and Diátaxis in an article
+that builds its own taxonomy and never maps to it. Both found by grepping each
+article's body for its own referenced term.
+
+**X1 must sweep every reference description against its page and against its
+own article body.** Six batches is no longer a pattern, it is the corpus's
+defining weakness.
+
+### The reviewer found no error in my brief
+
+First time in five batches — and it said so explicitly, listing what it had
+checked. Reporting that the instructions were right is as useful as reporting
+they were wrong, because it shows the check happened.
+
+It also declined the bait a second time: told not to treat prior batches'
+reference defects as expected, it found two anyway and stated they were
+"independently observed via grep — not manufactured to match the brief's hint".
