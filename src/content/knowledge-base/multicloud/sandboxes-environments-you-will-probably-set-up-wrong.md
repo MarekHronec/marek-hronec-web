@@ -22,7 +22,7 @@ references:
     domain: "docs.oracle.com"
   - title: "OCI Always Free tier"
     url: "https://www.oracle.com/cloud/free/"
-    description: "Oracle's always-free resources, kept indefinitely: up to two AMD VM.Standard.E2.1.Micro instances, plus 1,500 Arm Ampere A1 OCPU hours and 9,000 GB hours a month, Autonomous Database, object storage and more — the recommended starting point for personal OCI sandboxes before organisational environments are provisioned."
+    description: "Oracle's always-free resources, kept indefinitely: up to two AMD VM.Standard.E2.1.Micro instances, plus 1,500 Arm Ampere A1 OCPU hours and 9,000 GB hours a month, Autonomous AI Database, object storage and more — the recommended starting point for personal OCI sandboxes before organisational environments are provisioned."
     domain: "oracle.com"
 ---
 

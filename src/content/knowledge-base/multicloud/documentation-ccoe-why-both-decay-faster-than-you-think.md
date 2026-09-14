@@ -30,7 +30,7 @@ Neither failure mode is inevitable. Both require treating these as maintained ca
 
 Cloud documentation breaks into five categories. They have different audiences, different lifecycles, and different decay rates.
 
-**Architecture decision records (ADRs).** Long-lived, narrative documents that capture a decision and its context: why we chose Azure over GCP for this workload, why we picked one VPC topology over another, why we are using OCI Autonomous Database despite the lock-in. ADRs should be treated as append-only decision records; when decisions change, new ADRs supersede prior ones rather than rewriting history. Decay rate: low, but the *applicability* fades as the world changes.
+**Architecture decision records (ADRs).** Long-lived, narrative documents that capture a decision and its context: why we chose Azure over GCP for this workload, why we picked one VPC topology over another, why we are using OCI Autonomous AI Database despite the lock-in. ADRs should be treated as append-only decision records; when decisions change, new ADRs supersede prior ones rather than rewriting history. Decay rate: low, but the *applicability* fades as the world changes.
 
 **Runbooks.** Step-by-step procedures for operational tasks: how to rotate a key, how to recover from a regional failover, how to onboard a new workload. High-decay because the underlying procedures change as services evolve. Should be tested regularly and updated when they fail.
 

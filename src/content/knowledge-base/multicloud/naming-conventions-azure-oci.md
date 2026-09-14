@@ -3,7 +3,7 @@ title: "Naming Conventions That Survive Both Azure and OCI"
 category: multicloud
 tags: ["Azure", "OCI", "Naming", "Governance", "IaC"]
 date: 2026-04-30
-updated: 2026-09-13
+updated: 2026-09-14
 readTime: 11
 level: beginner
 excerpt: "Names are permanent — embedded in IaC, DNS, and certificates. A bad convention is debt you pay forever. The schema that survives Azure and OCI at real scale."
@@ -82,7 +82,7 @@ OCI is forgiving about display names because most resources are addressed by OCI
 
 - **Object Storage buckets** must be unique within the tenancy's Object Storage namespace.
 - **Compartment names** must be unique within their parent compartment, with a maximum of 100 characters and a restricted character set.
-- **Autonomous Database names and database identifiers** have service-specific constraints; validate them separately in IaC.
+- **Autonomous AI Database names and database identifiers** have service-specific constraints; validate them separately in IaC.
 
 OCI lets you reuse display names more freely than Azure, which is convenient but dangerous: two resources with the same display name in different regions or compartments are valid, but painful in dashboards unless your convention disambiguates them.
 
@@ -97,7 +97,7 @@ What OCI does *not* give you: a CAF-equivalent abbreviation list. Oracle has not
 | Block volume | `bv-` |
 | Object Storage bucket | `bkt-` |
 | Vault | `vlt-` |
-| Autonomous DB | `adb-` |
+| Autonomous AI DB | `adb-` |
 | OKE cluster | `oke-` |
 | Functions application | `fn-` |
 

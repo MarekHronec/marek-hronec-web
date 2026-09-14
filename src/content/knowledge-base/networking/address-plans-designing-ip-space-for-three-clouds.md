@@ -131,7 +131,7 @@ Before committing to T-shirt sizes for hub VNets and VCNs, the platform team mus
 
 - **OCI reserved IPs per subnet**: 3 IPs reserved — Oracle takes "the first two addresses and the last in the subnet’s CIDR". Fewer than Azure’s 5, but still relevant in small subnets, and not the 2 that a network-plus-broadcast assumption would suggest.
 - **OCI load balancer subnets**: Oracle publishes no recommended prefix size here, only functional requirements. A public load balancer needs either one public regional subnet or two public AD-specific subnets in separate availability domains; a private one needs at least one private subnet. Each load balancer consumes two or three private IPs. Size for the number of load balancers plus failover headroom, not a blanket /24.
-- **OCI private endpoints**: each private endpoint for a managed service (Autonomous Database, Object Storage, etc.) consumes a private IP from the subnet. High-density environments consume /24s faster than expected.
+- **OCI private endpoints**: each private endpoint for a managed service (Autonomous AI Database, Object Storage, etc.) consumes a private IP from the subnet. High-density environments consume /24s faster than expected.
 
 The practical consequence: a hub VNet carrying an Azure Firewall, VPN Gateway, Bastion, and load balancer consumes most of a /23 before a single workload VM exists. Allocate hub address space with service-specific constraints as the input, not the T-shirt table.
 
@@ -141,7 +141,7 @@ Azure Private Endpoints and OCI Private Access Gateways change the east-west IP 
 
 When a PaaS service (storage account, database, service bus) is accessed via a private endpoint, traffic stays on the VNet fabric and the public endpoint is removed from the routing picture. This has two address planning implications:
 
-**It reduces cross-cloud IP pressure.** If an Azure application accesses an OCI Autonomous Database via Oracle Private Access Channel plus a private endpoint, neither VNet nor VCN needs to route to the other cloud's service IP range. The private endpoint consumes a single IP from the local VNet. For multicloud designs where east-west routable address space is already constrained, this is a meaningful lever.
+**It reduces cross-cloud IP pressure.** If an Azure application accesses an OCI Autonomous AI Database via Oracle Private Access Channel plus a private endpoint, neither VNet nor VCN needs to route to the other cloud's service IP range. The private endpoint consumes a single IP from the local VNet. For multicloud designs where east-west routable address space is already constrained, this is a meaningful lever.
 
 **It creates a new class of IP consumers.** A mid-size PaaS estate — 15 databases, 8 storage accounts, several service bus namespaces — can consume 25–30 IPs in private endpoint subnets. Plan a dedicated /24 or /23 per hub region for private endpoints if you expect more than a handful of managed services.
 

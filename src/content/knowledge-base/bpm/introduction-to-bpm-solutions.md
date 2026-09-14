@@ -155,7 +155,7 @@ The important distinction is not only technical. It is also strategic: Camunda 7
 | Runtime model | Embedded / shared engine | Distributed orchestration cluster | Embedded / cloud-native components | Process/rule services |
 | State storage | Relational database | Zeebe state / distributed log architecture | Relational database | Runtime-specific persistence |
 | Primary stack | Java / Spring Boot | Polyglot clients, Kubernetes-oriented | Java / Spring Boot | Quarkus / Java / Kubernetes |
-| Maturity | Very high, but legacy | High and strategic | Mature core, smaller ecosystem | Younger / narrower ecosystem |
+| Maturity | Very high, but legacy | High and strategic | Mature core, smaller ecosystem | No longer standalone — folded into Apache KIE |
 | Throughput | Medium to high | Very high | Medium | Depends on architecture |
 | Best for | Existing Java BPM estates, migrations, embedded workflow | New cloud-native orchestration, high-volume processes, SaaS | Lightweight BPMN embedding, Alfresco-adjacent use cases | Quarkus/OpenShift-native process and decision services |
 | SaaS option | No native Camunda 7 SaaS path | Yes | No mainstream native SaaS | No mainstream native SaaS |
@@ -220,7 +220,7 @@ The practical implication: choose an engine based on ecosystem fit and long-term
 - For Camunda 7: appropriate for existing estates or Enterprise Edition programmes. Community Edition no longer receives security patches after October 2025; do not start new greenfield production deployments on it.
 - For Camunda 8: confirm current licensing requirements before committing to self-managed production use. The SaaS route offloads operational overhead but has its own cost and data-residency considerations.
 - For Activiti: suitable for lightweight embedding or Alfresco-adjacent projects. Verify current community activity and maintenance posture before adopting for a new project.
-- For Kogito: strongest fit when the organisation already runs Quarkus, OpenShift or Red Hat middleware. Evaluate ecosystem maturity for your specific process complexity.
+- For Kogito: no longer a standalone project — the `kogito-runtimes` repository is archived and the code now ships inside Apache KIE, so read "adopting Kogito" as adopting Apache KIE. Strongest fit when the organisation already runs Quarkus, OpenShift or Red Hat middleware.
 - Do not model everything as a BPM process. Short-lived, synchronous operations do not benefit from process state management. BPM overhead is justified for long-running, stateful, multi-step workflows that need auditability and resumption.
 - Decide on an expression language early — JUEL, FEEL, and Groovy are not interchangeable across engines. Changing mid-project is expensive.
 - Test process resumption explicitly. Stateful engines survive restarts; your test suite should prove that a process interrupted at any state resumes correctly.

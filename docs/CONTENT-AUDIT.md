@@ -114,13 +114,22 @@ Two rules follow, and they apply to every batch:
 16. **Do not leave working notes in an article.** B8 found "the earlier suggestion …
     was incorrect" in shipped prose, referring to something no version of the corpus
     ever said. Sweep for editorial residue in X1.
-17. **A live link is not a checked link.** Three citations in two days described content
-    their page no longer carries: an OCI reference that 301s to a page of navigation, and a
-    Microsoft peering page from which the word "transitiv" has simply gone. All returned 200
-    throughout. Vendors rewrite pages without redirecting, so the URL survives and the
-    sentence leaves. **No script can catch this** — `check-internal-links.py` proves a target
-    exists, not that it says anything in particular. When a reference *description* promises
-    a specific claim, fetch the page and grep it for that claim.
+17. **A live link is not a checked link.** **Five** citations in three days described
+    content their page does not carry: an OCI reference that 301s to a page of navigation, a
+    Microsoft peering page from which the word "transitiv" has simply gone, a title naming a
+    different Oracle product than its own URL documents, and a landing-zone repository whose
+    README says it was retired. All returned 200 throughout. Vendors rewrite and retire pages
+    without redirecting, so the URL survives and the sentence leaves. **No script can catch
+    this** — `check-internal-links.py` proves a target exists, not that it says anything in
+    particular. When a reference *description* promises a specific claim, fetch the page and
+    grep it for that claim. This is now the most common defect class in the corpus.
+19. **A product rename outranks everything else you might check.** X1c found one Oracle
+    rename — Autonomous Database to Autonomous AI Database, October 2025 — sitting in nine
+    places across six articles, eleven months stale. No other single finding in the audit had
+    that reach. Check names before behaviour: a renamed product is cheap to detect, spreads
+    silently, and makes an article look unmaintained to anyone who knows the current name.
+    **Count occurrences by the thing, not by the phrasing** — the brief said the term appeared
+    twice because it counted one exact string; the bare form appeared in four more articles.
 18. **Do not amend a brief by messaging a running reviewer.** X3's agent correctly refused a
     mid-flight instruction from this session as an unauthenticated injection — it could not
     verify the sender, and the instruction happened to be wrong as well (it redefined
@@ -288,6 +297,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
 | X1b | X1 follow-up: addressing + topology overlap | 4 | opus | **applied** | [6 findings](audit/X1-cross-cutting.md) | 6 |
 | X3 | Guide pages: cost, resilience, connectivity | 3 guides | sonnet | **applied** | [2 findings + 3 source gaps](audit/X3-guide-pages.md) | 7 |
+| X1c | Cross-article pass, 28 non-compliance articles | 28 | sonnet | **applied** | [6 findings](audit/X1c-non-compliance-cross-cutting.md) | 6, across 9 locations |
 | X4 | Guide pages: platform, compliance | 2 guides | **todo** | todo | — | — |
 
 ### B1 — EU-level instruments (opus)

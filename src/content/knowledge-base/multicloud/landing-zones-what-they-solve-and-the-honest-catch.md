@@ -3,7 +3,7 @@ title: "Landing Zones — What They Actually Solve, and the Honest Catch"
 category: multicloud
 tags: ["Azure", "OCI", "Landing Zones", "Governance", "CAF"]
 date: 2026-04-30
-updated: 2026-09-13
+updated: 2026-09-14
 readTime: 14
 level: intermediate
 excerpt: "The most useful and most overengineered concept in cloud adoption. What to take from reference architectures, what to skip, and the real cost of retrofitting."
@@ -17,7 +17,7 @@ references:
     description: "The eight design areas — billing, identity, management group hierarchy, network topology, security, management, governance, and platform automation — that each ALZ deployment must address."
     domain: "learn.microsoft.com"
   - title: "OCI Core Landing Zone — GitHub"
-    url: "https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart"
+    url: "https://github.com/oci-landing-zones/terraform-oci-core-landingzone"
     description: "Oracle's reference implementation for the OCI Core Landing Zone, evolving from the original CIS Landing Zone Quick Start — compartment structure, security services, network patterns, and Terraform source."
     domain: "github.com"
   - title: "Enterprise Azure Policy as Code (EPAC)"

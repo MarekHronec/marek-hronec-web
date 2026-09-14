@@ -6,7 +6,7 @@ date: 2026-04-30
 updated: 2026-09-14
 readTime: 11
 level: beginner
-excerpt: "Most cloud training is free if you know where to look. Certification names expire in 18–24 months. The durable approach: learn by role track, not by exam code."
+excerpt: "Most cloud training is free if you know where to look. Renewal cadence differs by vendor: Microsoft annually, Oracle and the CNCF roughly every two years, Azure fundamentals never. The durable approach: learn by role track, not by exam code."
 references:
   - title: "Microsoft Learn"
     url: "https://learn.microsoft.com/en-us/training/"
@@ -100,7 +100,7 @@ Reading and certs build vocabulary. Building things builds skill. The gap betwee
 
 Some places to actually build:
 
-**A free-tier or always-free account on each cloud.** OCI's Always Free tier is genuinely useful — two AMD VMs, an Autonomous Database, object storage, and a few other services, kept indefinitely. Azure's free tier is more time-bound (12 months on most services) but credible for getting started. Use them.
+**A free-tier or always-free account on each cloud.** OCI's Always Free tier is genuinely useful — two AMD VMs, an Autonomous AI Database, object storage, and a few other services, kept indefinitely. Azure's free tier is more time-bound (12 months on most services) but credible for getting started. Use them.
 
 **The Cloud Resume Challenge** is a project-based path that walks through deploying a multi-service application end-to-end: static site, API, database, CI/CD, monitoring. Free, vendor-agnostic versions exist for most clouds. Worth the time even if you never publish the resume.
 
