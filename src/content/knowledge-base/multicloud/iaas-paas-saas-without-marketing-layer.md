@@ -3,7 +3,7 @@ title: "IaaS, PaaS, and SaaS Without the Marketing Layer"
 category: multicloud
 tags: ["Azure", "OCI", "IaaS", "PaaS", "SaaS"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 12
 level: intermediate
 excerpt: "The service model pyramid tells you nothing operational. What the provider manages, what stays on you, and where lock-in lives — connector, not runtime."
@@ -48,6 +48,8 @@ Both Azure and OCI offer roughly the same shape, but the names are different and
 | Workflow PaaS | Logic Apps Consumption | OCI Process Automation | Designer-built workflows are highly proprietary. |
 | Data PaaS | Azure SQL, Cosmos DB | Autonomous Database | Query syntax, performance characteristics, backup format. |
 | SaaS | Microsoft Fabric, Microsoft 365 | Oracle Fusion Apps, NetSuite | Almost everything. You consume; you don't own. |
+
+One caveat on the bottom row: the column headings say Azure and OCI, but the SaaS examples are Microsoft and Oracle products rather than services of either cloud platform. That is the nature of the layer — at SaaS you are buying an application from a vendor, not a service from a cloud.
 
 The pattern that matters: container-level PaaS keeps you reasonably portable because the container is the unit of deployment and Kubernetes is an open spec. App-level and workflow-level PaaS are where the trapdoors open. Data PaaS varies widely — managed Postgres is mostly portable; Cosmos DB and Autonomous Database can be portable only within narrower boundaries, depending on API choice, extensions, operational model, and surrounding integrations.
 
