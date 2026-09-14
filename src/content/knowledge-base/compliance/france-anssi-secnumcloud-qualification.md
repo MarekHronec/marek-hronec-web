@@ -21,7 +21,7 @@ references:
     description: "A practitioner walkthrough of the SecNumCloud qualification process from a French CSP that has undergone it — costs, timelines, and operational implications."
     domain: "scalingo.com"
   - title: "Cloud at the Centre Doctrine (DINUM)"
-    url: "https://www.numerique.gouv.fr/doctrine-cloud-au-centre/"
+    url: "https://www.numerique.gouv.fr/services/cloud/doctrine/"
     description: "The French government's official 'Cloud au centre' doctrine — the policy framework that mandates SecNumCloud-qualified hosting for sensitive public-sector workloads."
     domain: "numerique.gouv.fr"
   - title: "SREN Law (10 April 2024)"
