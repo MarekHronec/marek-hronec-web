@@ -201,7 +201,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B7b | Service models and ownership | 3 | sonnet | **applied** | [3 findings](audit/B7b-service-models.md) | 3 + 1 open |
 | B7c | DevOps toolchain | 3 | sonnet | **applied** | [6 findings](audit/B7c-devops-toolchain.md) | 4 applied |
 | B7d | Operating model and learning | 3 | sonnet | **applied** | [8 findings](audit/B7d-operating-model.md) | 6 applied |
-| B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
+| B8 | Short-form and FinOps | 6 | sonnet | **running** (dispatched 2026-09-14) | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
 | X3 | Guide pages absorbed article claims | 3 | sonnet | todo | — | — |
