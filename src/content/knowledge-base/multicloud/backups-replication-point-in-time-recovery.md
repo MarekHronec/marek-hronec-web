@@ -3,9 +3,19 @@ title: "Backups, Replication and Point-in-Time Recovery — Three Different Jobs
 category: multicloud
 tags: ["Resilience", "Disaster Recovery", "Azure", "OCI"]
 date: 2026-09-11
+updated: 2026-09-14
 readTime: 4
 level: intermediate
 excerpt: "Separate live copies from recoverable history, choose a clean point and reconcile the valid work that came later."
+references:
+  - title: "Azure — redundancy, replication and backup"
+    url: "https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup"
+    description: "Microsoft's own statement that replication is not backup: it synchronises every change, so a deletion propagates to all replicas."
+    domain: "learn.microsoft.com"
+  - title: "Azure SQL — recovery using automated backups"
+    url: "https://learn.microsoft.com/en-us/azure/azure-sql/database/recovery-using-backups?view=azuresql"
+    description: "Point-in-time restore mechanics, including that it creates a new database on the same server and does not support cross-server, cross-subscription or cross-geo restore."
+    domain: "learn.microsoft.com"
 ---
 
 ## A second live copy answers only part of the question

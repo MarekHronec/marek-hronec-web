@@ -3,10 +3,23 @@ title: "Discounts and Commitments — Test the Saving Against Actual Usage"
 category: finops
 tags: ["Azure", "OCI", "FinOps", "Cost Management"]
 date: 2026-04-30
-updated: 2026-09-11
+updated: 2026-09-14
 readTime: 4
 level: intermediate
 excerpt: "Calculate break-even usage, separate billing discounts from capacity guarantees and test the downside before committing."
+references:
+  - title: "Azure reservations — save on compute costs"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/save-compute-costs-reservations"
+    description: "Reservations are a billing discount and do not change the runtime state of a resource or guarantee capacity. Terms, scope and instance-size flexibility are set out here."
+    domain: "learn.microsoft.com"
+  - title: "Azure savings plans overview"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/savings-plan/savings-plan-overview"
+    description: "The two rules that drive the arithmetic below: unused hourly commitment \"expires and does not roll over\", and savings plan purchases \"can't be canceled or refunded\"."
+    domain: "learn.microsoft.com"
+  - title: "OCI billing and cost management"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/billingoverview.htm"
+    description: "Oracle's billing landing page. Deliberately a general pointer: the commitment terms that matter are in the purchasing agreement, not in product documentation."
+    domain: "docs.oracle.com"
 ---
 
 ## A discount is conditional on matching usage

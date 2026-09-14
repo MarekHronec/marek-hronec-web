@@ -3,9 +3,15 @@ title: "RTO and RPO — From Business Impact to a Tested Recovery Target"
 category: multicloud
 tags: ["Resilience", "Disaster Recovery", "Azure", "OCI"]
 date: 2026-09-11
+updated: 2026-09-14
 readTime: 4
 level: intermediate
 excerpt: "Agree what recovery means for one business operation, then measure time and data loss in a representative exercise."
+references:
+  - title: "Azure — business continuity, high availability and disaster recovery"
+    url: "https://learn.microsoft.com/en-us/azure/reliability/concept-business-continuity-high-availability-disaster-recovery"
+    description: "Microsoft's definitions of recovery point and recovery time objectives, and the separation of both from availability — the distinction this article is built on."
+    domain: "learn.microsoft.com"
 ---
 
 ## Start with a business operation
