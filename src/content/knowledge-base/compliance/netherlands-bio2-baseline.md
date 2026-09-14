@@ -10,7 +10,7 @@ excerpt: "BIO2 v1.3 is the Dutch government's security baseline since 5 March 20
 references:
   - title: "BIO2 — Baseline Informatiebeveiliging Overheid (Working Version)"
     url: "https://minbzk.github.io/Baseline-Informatiebeveiliging-Overheid/"
-    description: "The Ministry of the Interior's official working version of BIO2, including the 200+ government-specific measures layered on top of ISO/IEC 27001:2023 and 27002:2022."
+    description: "The Ministry of the Interior's official working version of BIO2, including the 200+ government-specific measures layered on top of NEN-EN-ISO/IEC 27001:2023 and 27002:2022 — the Dutch adoptions, not the ISO editions."
     domain: "minbzk.github.io"
   - title: "Digitale Overheid — BIO and ENSIA"
     url: "https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cybersecurity/bio-en-ensia/"
@@ -179,7 +179,7 @@ The Dutch political position on EUCS sovereignty has been on the more permissive
 
 BIO2 is one of the more accommodating EU national frameworks for multinational CSPs:
 
-- The ISO/IEC 27001:2023 + 27002:2022 baseline aligns with international CSP control frameworks.
+- The NEN-EN-ISO/IEC 27001:2023 + 27002:2022 baseline aligns with international CSP control frameworks. Note the designation: 2023 is the Dutch and European adoption; ISO’s own edition of 27001 is 2022.
 - The Thema-uitwerking Clouddiensten provides a focused audit scope rather than requiring full BIO2 implementation by the provider.
 - The EY CertifyPoint route is well-established and reproducible.
 - No catalogue listing process; certifications are published through the provider's own trust centre.
@@ -196,7 +196,7 @@ For a CSP targeting Dutch public-sector consumers, the highest-leverage move is 
 - **BIO2 v1.3** (dated 9 January 2026) was published in Staatscourant on **5 March 2026** and **supersedes BIO v1.04zv and BIO2 v1.2** in central-government digital communication. Next BIO2 version planned end of 2027.
 - The **Cyberbeveiligingswet (Cbw)** — Dutch NIS2 transposition — has been **in force since 15 August 2026**. It makes BIO2 a statutory obligation through the ministerial Cyberbeveiligingsregeling sector overheid, in force from the same date.
 - No baseline levels: BIO2 withdrew BBN1–BBN3 in favour of a risk analysis, ISO 27002 controls applied on a risk basis plus the mandatory overheidsmaatregelen, and a Verklaring van Toepasselijkheid recording the choices. EU/NATO-classified information (CONFIDENTIEEL and above) remains categorically excluded from public cloud — not a controls question, a hard restriction.
-- BIO2 builds on ISO/IEC 27001:2023 and 27002:2022, adding approximately 200 government-specific measures. The cloud sub-framework (Thema-uitwerking Clouddiensten) maps to CIS Controls and ISO/IEC 27017.
+- BIO2 builds on NEN-EN-ISO/IEC 27001:2023 and 27002:2022, adding approximately 200 government-specific measures. The cloud sub-framework (Thema-uitwerking Clouddiensten) maps to CIS Controls and ISO/IEC 27017.
 - No central catalogue. CSPs publish certificates through their trust centres. EY CertifyPoint is the established monitoring body for the cloud sub-framework.
 - Sanctions are reputational pre-Cbw; statutory NIS2 sanctions apply post-Cbw, with RDI as the digital infrastructure supervisor.
 - Sovereignty posture is permissive. No ownership caps; no headquartering requirements. The Netherlands is politically on the more open side of the EUCS sovereignty debate.
