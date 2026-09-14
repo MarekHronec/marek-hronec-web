@@ -177,7 +177,10 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B6a | Platform structure and landing zones | 4 | sonnet | **applied** | [11 findings](audit/B6a-platform-structure.md) | 9 + 2 spillovers |
 | B6b | Networking and addressing | 4 | sonnet | **applied** | [12 findings](audit/B6b-networking.md) | 10 + 1 found by sweep |
 | B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
-| B7 | Practice and operations | 12 | sonnet | todo | — | — |
+| B7a | Governance and access control | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
+| B7b | Service models and ownership | 3 | sonnet | todo | — | — |
+| B7c | DevOps toolchain | 3 | sonnet | todo | — | — |
+| B7d | Operating model and learning | 3 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
 | X2 | Link liveness + metadata | all | curl + sonnet | **done (links)** | 35 dead refs | 35 |
@@ -281,15 +284,43 @@ region count and that AWS has announced only Saudi Arabia and Chile.
 own split, and well past the 3–5 cap. The three groups also divide by source:
 B6a and B6b check vendor documentation, B6c checks provider region pages.
 
-### B7 — Practice and operations (sonnet)
-`gitops-with-argocd` · `source-of-truth-...` · `status-pages-...` · `policy-as-code-and-quotas-...` ·
-`rbac-and-iam-...` · `shared-responsibility-...` · `iaas-paas-saas-without-marketing-layer` ·
-`documentation-ccoe-...` · `sandboxes-...` · `tagging-metadata-...` ·
-`how-to-learn-azure-and-oci-...` · `bpm/introduction-to-bpm-solutions`
+### B7a — Governance and access control (sonnet)
+`security/policy-as-code-and-quotas-where-governance-stops-being-wiki` ·
+`identity/rbac-and-iam-authorisation-models-that-look-similar` ·
+`multicloud/sandboxes-environments-you-will-probably-set-up-wrong`
 
-Mostly conceptual and slow-moving. `gitops-with-argocd` is the oldest article in
-the corpus (2024-11-15) and the shortest of the long-form set at 978 words —
-check Argo CD version claims specifically.
+8,251 words, and the code-heaviest group in the corpus: 8 and 14 fenced blocks
+in the first two. Policy and IAM syntax is checkable the way CIDR arithmetic
+was — it either parses against the vendor's grammar or it does not.
+
+### B7b — Service models and ownership (sonnet)
+`multicloud/iaas-paas-saas-without-marketing-layer` ·
+`multicloud/shared-responsibility-for-people-who-stopped-believing-marketing` ·
+`multicloud/tagging-metadata-earn-their-keep`
+
+7,552 words. Conceptual, so the risk is service-model boundaries that have
+moved and tag/label limits that have changed.
+
+### B7c — DevOps toolchain (sonnet)
+`devops/gitops-with-argocd` · `devops/source-of-truth-where-does-your-cloud-actually-live` ·
+`devops/status-pages-service-health-things-they-wont-show`
+
+5,234 words. `gitops-with-argocd` is **the oldest article in the corpus**
+(2024-11-15) and carries Kubernetes API versions in its examples, which either
+still exist or do not.
+
+### B7d — Operating model and learning (sonnet)
+`multicloud/documentation-ccoe-why-both-decay-faster-than-you-think` ·
+`multicloud/how-to-learn-azure-and-oci-without-stale-lists` ·
+`bpm/introduction-to-bpm-solutions`
+
+6,654 words. The learning article names certifications and learning paths,
+which rename and retire often; the BPM article is the only one of its kind in
+the corpus.
+
+**Why B7 was split four ways.** Twelve articles and 27,691 words, half again
+the size of B6 before its own split, and more than twice the 3–5 article cap.
+The four groups divide by subject so a fact checked once serves its whole group.
 
 ### B8 — Short-form and FinOps (sonnet)
 `finops/budgets-cost-caps-...` · `finops/cloud-support-...` · `finops/discounts-and-commitments-...` ·
