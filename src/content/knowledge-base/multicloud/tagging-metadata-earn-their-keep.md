@@ -145,7 +145,8 @@ resource "oci_identity_tag" "cost_center" {
   tag_namespace_id = oci_identity_tag_namespace.operations.id
   name             = "CostCenter"
   description      = "Cost center for chargeback"
-  is_cost_tracking = true   # Marks as a formal cost-tracking dimension (limit: 10 per tenancy)
+  is_cost_tracking = true   # Formal cost-tracking dimension. Cap is 10 per tenancy; confirm with
+                            # `oci limits value list` — Oracle no longer documents this one.
   validator {
     validator_type = "ENUM"
     values         = ["FIN-101", "FIN-102", "ENG-201", "ENG-202"]
@@ -164,6 +165,15 @@ resource "oci_identity_tag_default" "cost_center_default" {
 ```
 
 The `is_cost_tracking = true` flag marks a defined tag as one of OCI's cost-tracking tags. That matters when you want the tag treated as a formal cost-tracking dimension, but it is not the only way tag data appears in OCI Cost Analysis or Cost and Usage Reports. Oracle exposes defined tag data in cost reporting more broadly; cost-tracking tags are the curated subset you promote for chargeback and showback. Because OCI limits cost-tracking tags to 10 tag key definitions per tenancy, reserve them for the few dimensions that actually drive financial reporting.
+
+One caveat on that number. Oracle has removed the documentation page that used to publish it, and has not restated it in the service-limits reference, so it is no longer citable to a live page. Service limits are readable from the API, which stays right when the documentation moves — list the service names, then read the values for the one you want, remembering that the tenancy is simply the root compartment:
+
+```bash
+oci limits service list --compartment-id <tenancy-ocid>
+oci limits value list --compartment-id <tenancy-ocid> --service-name <name-from-that-list>
+```
+
+That is worth doing for any hard limit you are about to design against, not only this one. A number in an article is a snapshot; the API is the source.
 
 ## The mapping that confuses everyone
 
