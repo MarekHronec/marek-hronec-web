@@ -3,7 +3,7 @@ title: "SOC 2 Reports — How to Actually Read Them"
 category: compliance
 tags: ["SOC 2", "AICPA", "Attestation", "Compliance", "Data Security", "Cross-Cutting", "Practitioner"]
 date: 2026-04-07
-updated: 2026-04-07
+updated: 2026-09-13
 readTime: 12
 level: intermediate
 excerpt: "SOC 2 is the most commonly referenced cloud security attestation in procurement. It is also the one most often misread — Type 1 confused with Type 2, scope confused with depth, exception language misunderstood. This article walks through what a SOC 2 report actually contains and how to read it for real signal."
@@ -156,7 +156,7 @@ SOC 2 maps explicitly to several EU frameworks:
 - **BSI C5** explicitly recognises reuse of SOC 2 system descriptions and test results for overlapping controls. C5 and SOC 2 are commonly performed as a joint audit by the same audit firm.
 - **EU Cloud Code of Conduct** references SOC 2 as evidence at Level 2 adherence.
 - **ENS audit** can use SOC 2 evidence as material input to the ENAC-accredited audit.
-- **PiTuKri ISAE 3000** uses the same audit methodology (ISAE 3000) as SOC 2 Type 2, making joint audits straightforward.
+- **PiTuKri ISAE 3000** rests on a closely aligned but distinct assurance standard. SOC 2 Type 2 is an AICPA engagement performed under the SSAE series; PiTuKri attestation is performed under the IAASB’s ISAE 3000. The two were deliberately harmonised, which is why the same firm commonly performs both together — but they are not the same standard, and a report issued under one does not automatically satisfy the other.
 
 A CSP with a current SOC 2 Type 2 has substantial portable evidence into every EU national framework. The framework-specific audits add country-specific controls and sovereignty considerations on top.
 

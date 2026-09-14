@@ -3,7 +3,7 @@ title: "RBAC and IAM — Authorisation Models That Look Similar and Are Not"
 category: identity
 tags: ["Azure", "OCI", "RBAC", "IAM", "Least Privilege"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 13
 level: intermediate
 excerpt: "Azure RBAC and OCI IAM look similar until inheritance, deny semantics, and role catalogues diverge. Get the model wrong and least privilege is fiction."
@@ -79,13 +79,13 @@ The thing Azure does badly: **deny is hard**. If you want exception-based author
 
 OCI IAM looks superficially similar but operates on a fundamentally different model. Permissions are granted via **policy statements** written in a declarative DSL:
 
-```
+```text
 Allow group <group-name> to <verb> <resource-type> in <compartment-or-tenancy> [where <condition>]
 ```
 
 For example:
 
-```
+```text
 Allow group PaymentsTeam to read objects in compartment payments-prod
 Allow group NetworkAdmins to manage virtual-network-family in tenancy
 Allow group DBAs to use database-family in compartment Database
@@ -99,15 +99,15 @@ The part that catches Azure architects is not "no inheritance"; it is **path-awa
 
 The classic pattern: write tenancy-root policies that target specific compartments by path.
 
-```
+```text
 Allow group PaymentsTeam to manage all-resources in compartment Workloads:Payments
 ```
 
 This grants PaymentsTeam access to the Workloads:Payments compartment and any child compartments below it through inheritance.
 
-OCI also has a powerful **Deny statement** since 2024:
+OCI also has a powerful **Deny statement**, released in November 2025:
 
-```
+```text
 deny group ContractorsTeam to manage object-storage-family in compartment payments-prod
 ```
 
@@ -133,7 +133,7 @@ resource "oci_identity_policy" "payments_team_access" {
 
 The thing OCI does well: **clean deny semantics, declarative policies, explicit path-aware scope**. The inheritance model is clear once you understand the compartment hierarchy.
 
-The thing OCI does badly: **no built-in role catalogue**. Every organisation has to build its own permission vocabulary. The CIS Landing Zone helps, but you are still defining policies, not picking from a large catalogue of ready-made Azure roles.
+The thing OCI does badly: **no built-in role catalogue**. Every organisation has to build its own permission vocabulary. The OCI Core Landing Zone helps, but you are still defining policies, not picking from a large catalogue of ready-made Azure roles.
 
 ## The mapping nobody puts in a slide
 
@@ -146,7 +146,7 @@ The thing OCI does badly: **no built-in role catalogue**. Every organisation has
 | Built-in roles | Extensive service-specific and privileged administrator catalogue | No equivalent catalogue; verbs (inspect/read/use/manage) are predefined |
 | Custom roles | Custom Role with explicit Actions/DataActions | Custom policy statements with verbs |
 | Conditions | ABAC conditions, supported on some services | Policy `where` clauses, broader support |
-| Time-bound | Entra ID PIM | OCI Identity Domains feature, less mature |
+| Time-bound | Entra ID PIM | Oracle Access Governance, less mature |
 
 The single biggest source of bugs when moving between the two: **assuming the inheritance model behaves the same way**. Azure architects think in role assignments at management group, subscription, resource group, and resource scope. OCI architects think in policy statements attached to tenancy or compartments, with inheritance through the compartment tree and explicit path syntax for nested compartments. The risk is not that OCI lacks inheritance; the risk is writing broad parent-compartment policies that grant more than intended, or writing narrow path-specific policies that do not cover the compartment you thought they covered.
 

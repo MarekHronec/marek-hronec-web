@@ -3,10 +3,10 @@ title: "Status Pages, Service Health, and the Things They Will Not Show You"
 category: devops
 tags: ["Azure", "OCI", "Service Health", "Incident Response", "Observability"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 9
 level: beginner
-excerpt: "Status pages are public communication, not monitoring. The green dot lags reality by 30+ minutes. Service Health helps. Build your own observability first."
+excerpt: "Status pages are public communication, not monitoring. The green dot typically lags reality by 15 to 60 minutes. Service Health helps. Build your own observability first."
 references:
   - title: "Azure Service Health overview"
     url: "https://learn.microsoft.com/en-us/azure/service-health/overview"

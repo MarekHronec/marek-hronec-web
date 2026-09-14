@@ -3,7 +3,7 @@ title: "Introduction to BPM Solutions: Camunda, Activiti and Kogito"
 category: bpm
 tags: ["BPM", "BPMN", "Camunda", "Activiti", "Kogito"]
 date: 2025-03-12
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 10
 level: beginner
 excerpt: "A practical introduction to modern BPM engines. What they solve, how they differ, and how to choose between Camunda, Activiti and Kogito for your organisation."
@@ -13,7 +13,7 @@ references:
     description: "Official documentation for Camunda 8, covering BPMN modelling, Zeebe engine, Tasklist, and deployment patterns for cloud and self-managed environments."
     domain: "docs.camunda.io"
   - title: "BPMN 2.0 specification — Object Management Group"
-    url: "https://www.omg.org/spec/BPMN/2.0/"
+    url: "https://www.omg.org/spec/BPMN/2.0.2/"
     description: "The formal OMG specification for Business Process Model and Notation 2.0, the standard that underpins Camunda, Activiti, Kogito, and Flowable process definitions."
     domain: "omg.org"
   - title: "Kogito — cloud-native business automation"
@@ -22,7 +22,7 @@ references:
     domain: "kogito.kie.org"
   - title: "Flowable documentation"
     url: "https://documentation.flowable.com/latest/"
-    description: "Reference documentation for Flowable, the open-source continuation of Activiti 5 that supports BPMN, CMMN, and DMN in a single embeddable or standalone engine."
+    description: "Reference documentation for Flowable, which forked from Activiti 5 and supports BPMN, CMMN and DMN in one engine. Further reading rather than a source for this article — Flowable is not compared below, and is worth a look precisely because it is the most actively developed of the open-source Java engines."
     domain: "documentation.flowable.com"
 ---
 
@@ -144,7 +144,7 @@ Key characteristics:
 - **Decision Model Notation (DMN)** — first-class support for DMN alongside BPMN
 - **Kubernetes-native** — integrates with Knative for event-driven scaling
 
-Kogito's main trade-off: it is younger, and the ecosystem is narrower. The tooling is improving but is not as mature as Camunda 7. If you are running a Red Hat / OpenShift stack and want native Quarkus integration, Kogito is the natural fit.
+Kogito's main trade-off has changed shape. It was always the younger option with the narrower ecosystem, but as of 2026 it is no longer developed as a standalone project: the `kogito-runtimes` repository is **archived**, and the code now lives in the Apache KIE incubator monorepo alongside Drools, jBPM and OptaPlanner. The technology is not abandoned — it is consolidated — but treat "adopting Kogito" as adopting Apache KIE, and check that project’s activity rather than Kogito’s own site, whose getting-started guide still specifies JDK 11. If you are running a Red Hat / OpenShift stack and want native Quarkus integration, Kogito is the natural fit.
 
 ## Comparison Summary
 
@@ -155,7 +155,7 @@ The important distinction is not only technical. It is also strategic: Camunda 7
 | Runtime model | Embedded / shared engine | Distributed orchestration cluster | Embedded / cloud-native components | Process/rule services |
 | State storage | Relational database | Zeebe state / distributed log architecture | Relational database | Runtime-specific persistence |
 | Primary stack | Java / Spring Boot | Polyglot clients, Kubernetes-oriented | Java / Spring Boot | Quarkus / Java / Kubernetes |
-| Maturity | Very high, but legacy | High and strategic | Mature core, smaller ecosystem | Younger / narrower ecosystem |
+| Maturity | Very high, but legacy | High and strategic | Mature core, smaller ecosystem | No longer standalone — folded into Apache KIE |
 | Throughput | Medium to high | Very high | Medium | Depends on architecture |
 | Best for | Existing Java BPM estates, migrations, embedded workflow | New cloud-native orchestration, high-volume processes, SaaS | Lightweight BPMN embedding, Alfresco-adjacent use cases | Quarkus/OpenShift-native process and decision services |
 | SaaS option | No native Camunda 7 SaaS path | Yes | No mainstream native SaaS | No mainstream native SaaS |
@@ -220,7 +220,7 @@ The practical implication: choose an engine based on ecosystem fit and long-term
 - For Camunda 7: appropriate for existing estates or Enterprise Edition programmes. Community Edition no longer receives security patches after October 2025; do not start new greenfield production deployments on it.
 - For Camunda 8: confirm current licensing requirements before committing to self-managed production use. The SaaS route offloads operational overhead but has its own cost and data-residency considerations.
 - For Activiti: suitable for lightweight embedding or Alfresco-adjacent projects. Verify current community activity and maintenance posture before adopting for a new project.
-- For Kogito: strongest fit when the organisation already runs Quarkus, OpenShift or Red Hat middleware. Evaluate ecosystem maturity for your specific process complexity.
+- For Kogito: no longer a standalone project — the `kogito-runtimes` repository is archived and the code now ships inside Apache KIE, so read "adopting Kogito" as adopting Apache KIE. Strongest fit when the organisation already runs Quarkus, OpenShift or Red Hat middleware.
 - Do not model everything as a BPM process. Short-lived, synchronous operations do not benefit from process state management. BPM overhead is justified for long-running, stateful, multi-step workflows that need auditability and resumption.
 - Decide on an expression language early — JUEL, FEEL, and Groovy are not interchangeable across engines. Changing mid-project is expensive.
 - Test process resumption explicitly. Stateful engines survive restarts; your test suite should prove that a process interrupted at any state resumes correctly.

@@ -3,7 +3,7 @@ title: "EU-Native Cloud Providers — The Landscape Beyond Hyperscalers and Sove
 category: compliance
 tags: ["EU-Native Cloud", "Cloud Providers", "Sovereignty", "Compliance", "Data Security", "Vendor"]
 date: 2026-05-16
-updated: 2026-05-16
+updated: 2026-09-13
 readTime: 14
 level: intermediate
 excerpt: "OVHcloud, Scaleway, Hetzner, IONOS, STACKIT, T Cloud Public, 3DS Outscale, Cegedim.cloud, Aruba. EU-native pure-play providers mapped by compliance tier, service breadth, and procurement fit."
@@ -12,9 +12,9 @@ references:
     url: "https://us.ovhcloud.com/about/global-infrastructure/"
     description: "OVHcloud's official infrastructure footprint page documenting 44+ data centres across multiple continents with the European, North American, Asia-Pacific, and other regional presence."
     domain: "us.ovhcloud.com"
-  - title: "OVHcloud SecNumCloud-qualified Hosted Private Cloud"
+  - title: "OVHcloud SecNumCloud-qualified offerings"
     url: "https://www.ovhcloud.com/en/enterprise/products/hosted-private-cloud/secnumcloud-qualified/"
-    description: "OVHcloud's documentation for the SecNumCloud 3.2-qualified VMware Hosted Private Cloud offering, available in Roubaix, Gravelines, and Strasbourg."
+    description: "OVHcloud’s documentation for its SecNumCloud 3.2-qualified offerings. Three now hold qualification: Hosted Private Cloud powered by VMware, Bare Metal Pod, and the SNC Cloud Platform public cloud."
     domain: "ovhcloud.com"
   - title: "Scaleway — About Us"
     url: "https://www.scaleway.com/en/about-us/"
@@ -33,7 +33,7 @@ references:
     description: "STACKIT's official corporate page, the Schwarz Group / Schwarz Digits sovereign cloud platform serving retail, industrial, public sector, and financial services customers."
     domain: "stackit.com"
   - title: "T-Systems — T Cloud Public (formerly Open Telekom Cloud)"
-    url: "https://t-systems.com/us/en/solutions/cloud/solutions/open-telekom-cloud/public-cloud-for-business-customers-391508"
+    url: "https://www.t-cloud-public.com/en"
     description: "T-Systems documentation for the T Cloud Public service (rebrand of Open Telekom Cloud), the Deutsche Telekom sovereign cloud platform with BSI C5 attestation."
     domain: "t-systems.com"
   - title: "3DS Outscale — SecNumCloud 3.2 Qualification"
@@ -151,7 +151,7 @@ Each category serves different procurement needs. The four-way split is the prac
 
 | Provider | ISO 27001 / 17 / 18 | BSI C5 | SecNumCloud | ENS | ACN Qualif. | HDS | KsVC-ready evidence | Notes |
 |---|---|---|---|---|---|---|---|---|
-| **OVHcloud** | ✓ (broad) | ✓ | ✓ 3.2 — Hosted Private Cloud (VMware) at Roubaix, Gravelines, Strasbourg | ENS-compatible | ✓ | ✓ | Standard evidence package portable to KsVC | Largest qualification footprint |
+| **OVHcloud** | ✓ (broad) | ✓ | ✓ 3.2 — three qualifications: Hosted Private Cloud (VMware), Bare Metal Pod, SNC Cloud Platform (Jul 2026) | ENS-compatible | ✓ | ✓ | Standard evidence package portable to KsVC | Largest qualification footprint |
 | **Scaleway** | ✓ 27001:2022 | ✓ | Process initiated 2024-25, **not yet qualified** | ✓ | ✗ | ✓ (since Jul 2024) | Standard package | Kubernetes-native |
 | **IONOS** | ✓ 27001 + BSI IT-Grundschutz | ✓ Type 1 (Compute Engine, Cloud Cubes, S3) | ✗ | ✗ | ✗ | ✗ | Standard package | Strong DACH SMB focus |
 | **Hetzner** | ✓ 27001:2022 | ✓ Type 2 | ✗ | ✗ | ✗ | ✗ | Standard package | No HIPAA BAA, narrower compliance vs hyperscalers |
@@ -160,8 +160,8 @@ Each category serves different procurement needs. The four-way split is the prac
 | **Cegedim.cloud** | ✓ | ✓ | ✓ 3.2 (CegNumCloud, Dec 2024) | ✗ | ✗ | ✓ (since 2009) | Standard package + SecNumCloud | ISO 20000-1, ISO 50001 additionally |
 | **STACKIT** | ✓ | ✓ + ISAE 3000 (SOC 2) + ISAE 3402 | ✗ | ✗ | ✗ | ✗ | Standard package | KRITIS-compliant |
 | **plusserver** | ✓ | ✓ (pluscloud open, tested) | ✗ | ✗ | ✗ | ✗ | Standard package | Sovereign Cloud Stack (SCS) participant |
-| **Numspot** | Via Outscale base | ✓ | Filed Sep 2024, target qualification pending | ✗ | ✗ | Via Outscale | Standard package | Built on SecNumCloud-qualified Outscale |
-| **ITS Integra** | ✓ | ✓ | J0 (Sep 2025) + J1 (Dec 2025); target mid-2026 | ✗ | ✗ | ✓ | Standard package | Two offerings in qualification scope |
+| **Numspot** | Via Outscale base | ✓ | ✓ 3.2 — IaaS qualified 31 Jul 2026; PaaS still in qualification | ✗ | ✗ | Via Outscale | Standard package | Built on SecNumCloud-qualified Outscale |
+| **ITS Integra** | ✓ | ✓ | J0 (Sep 2025) + J1 (Dec 2025); not in ANSSI’s qualified catalogue as of Sep 2026 | ✗ | ✗ | ✓ | Standard package | Two offerings in qualification scope |
 | **Aruba S.p.A.** | ✓ | ✗ | ✗ | ✗ | ✓ QC1 + QC2 + QC3 (multiple services) | ✗ | Standard package | Largest ACN-qualified footprint in IT |
 | **UpCloud** | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | Standard package | Performance-focused |
 | **CloudFerro** | ✓ 27001:2022 + 27017 + 27018 | ✗ | ✗ | ✗ | ✗ | ✗ | ESA SECRET / CONFIDENTIAL authorised | Earth observation specialist |
@@ -174,7 +174,7 @@ Each category serves different procurement needs. The four-way split is the prac
 
 ### Tier 1 — Full-service EU-native
 
-**OVHcloud (France)** is the **largest EU-native pure-play cloud infrastructure provider** by revenue (~€1.08B FY2025). SAP and Deutsche Telekom are larger by absolute cloud-related revenue but operate broader portfolios; OVHcloud is the largest dedicated cloud-infrastructure pure-play. Founded 1999 by Octave Klaba in Roubaix, listed on Euronext Paris since October 2021. **44+ data centres globally** as of 2026 with 7 more planned, including Local Zones in Bogota, Tallinn, Johannesburg. The SecNumCloud-qualified offering is **Hosted Private Cloud powered by VMware** at Roubaix, Gravelines, and Strasbourg — not the entire Public Cloud portfolio. Full product portfolio: Public Cloud (IaaS + PaaS), Hosted Private Cloud (VMware), Bare Metal, Web Hosting. The most comprehensive compliance portfolio of any EU-native provider.
+**OVHcloud (France)** is the **largest EU-native pure-play cloud infrastructure provider** by revenue (~€1.08B FY2025). SAP and Deutsche Telekom are larger by absolute cloud-related revenue but operate broader portfolios; OVHcloud is the largest dedicated cloud-infrastructure pure-play. Founded 1999 by Octave Klaba in Roubaix, listed on Euronext Paris since October 2021. **44+ data centres globally** as of 2026 with 7 more planned, including Local Zones in Bogota, Tallinn, Johannesburg. OVHcloud now holds **three** SecNumCloud qualifications in ANSSI’s catalogue: **Hosted Private Cloud powered by VMware** (since 28 December 2023), **Bare Metal Pod** (24 March 2025), and the **SNC Cloud Platform** public-cloud offering (31 July 2026). SNC Cloud Platform is the one that breaks the old "private cloud only" pattern, though its own scope is still narrower than the full Public Cloud portfolio — compute, block and object storage, dedicated servers and networking are in; managed Kubernetes, advanced network controls and database services are not yet. Full product portfolio: Public Cloud (IaaS + PaaS), Hosted Private Cloud (VMware), Bare Metal, Web Hosting. The most comprehensive compliance portfolio of any EU-native provider.
 
 **Scaleway (France)** is the **Iliad Group's cloud subsidiary** with strong cloud-native developer experience focus. Regions: Paris (DC2-5), Amsterdam (AMS1-2), Warsaw (WAW1-2); Milan added in 2026, additional Italy/Sweden expansion in progress. ISO 27001:2022, HDS (since July 2024). **SecNumCloud qualification process initiated 2024-2025 but not yet qualified.** Distinctive strengths: Kubernetes-native (Kapsule managed K8s, Kosmos multi-cluster), Serverless Functions/Containers/Jobs, simpler developer-friendly pricing. **Selected April 2026 for EU Commission €180M sovereign cloud framework as one of four awardees.**
 
@@ -194,7 +194,7 @@ Each category serves different procurement needs. The four-way split is the prac
 
 **plusserver (Germany)** operates **pluscloud open** (OpenStack-based, built on Sovereign Cloud Stack/SCS) and VMware-based managed services. BSI C5 tested. Registered office in Köln (Cologne) with operations across multiple German locations. **BC Partners exited November 2024**; new owner is not publicly disclosed at time of writing — confirm directly with plusserver corporate communications before any specific procurement reliance.
 
-**Numspot (France)** is a French sovereign cloud JV with **all four shareholders French-domiciled and French/EU-controlled**: Docaposte (La Poste Group), Dassault Systèmes, Bouygues Telecom, Banque des Territoires (Caisse des Dépôts). Alliance announced October 2022; commercial managed services platform launched Q1 2025. **Built on 3DS Outscale's SecNumCloud-qualified IaaS** — meaning Numspot leverages an already-EU-native, already-SecNumCloud-qualified foundation rather than a US hyperscaler stack. Unlike Bleu (Microsoft) and S3NS (Google), **Numspot is fully EU-native**. SecNumCloud qualification filed September 2024 for Numspot's own offering, target early 2026 (status unconfirmed at time of writing). Early customers: CNP Assurances, Ministry of Armed Forces, Île-de-France Region.
+**Numspot (France)** is a French sovereign cloud JV with **all four shareholders French-domiciled and French/EU-controlled**: Docaposte (La Poste Group), Dassault Systèmes, Bouygues Telecom, Banque des Territoires (Caisse des Dépôts). Alliance announced October 2022; commercial managed services platform launched Q1 2025. **Built on 3DS Outscale's SecNumCloud-qualified IaaS** — meaning Numspot leverages an already-EU-native, already-SecNumCloud-qualified foundation rather than a US hyperscaler stack. Unlike Bleu (Microsoft) and S3NS (Google), **Numspot is fully EU-native**. Numspot’s own platform was **SecNumCloud-qualified on 31 July 2026** (ANSSI decision 3395, valid to 31 July 2029), covering IaaS. Its PaaS services — managed Kubernetes, managed database, secret manager, container registry, AI platform — remain in qualification. Early customers: CNP Assurances, Ministry of Armed Forces, Île-de-France Region.
 
 **ITS Integra (France)** — privately held, headquartered in Lyon, established 1997. Two offerings in SecNumCloud qualification scope: **ITSecureCloud** (Nutanix-based IaaS) and **ITSecureKube** (Kubernetes PaaS). **J0 milestone September 2025; J1 milestone December 2025** (evaluation strategy validation); next phase is in-depth audit. Target full SecNumCloud qualification: mid-2026.
 
@@ -220,7 +220,7 @@ Each category serves different procurement needs. The four-way split is the prac
 
 For completeness, three "trusted cloud JVs" are EU-domiciled but built on US hyperscaler technology under sovereign envelope. These are **NOT mass-market commercial cloud services** like the providers above — they target government and highly regulated workloads through structured procurement:
 
-- **Bleu (France)** — Orange + Capgemini JV distributing Microsoft Azure technology. SecNumCloud J0 passed; full qualification target H1 2026.
+- **Bleu (France)** — Orange + Capgemini JV distributing Microsoft Azure technology. **J0 validated April 2025 and J1 on 17 November 2025**, which opened the audit phase for its IaaS, PaaS and CaaS services. Still not in ANSSI’s qualified catalogue as of September 2026.
 - **S3NS (France)** — Thales + Google Cloud JV. **SecNumCloud 3.2 qualified December 2025** (PREMI3NS offering, ~30 services in scope).
 - **Clarence (Belgium / Luxembourg)** — Proximus NXT + LuxConnect distributing Google Distributed Cloud Hosted (air-gapped). Selected April 2026 as part of the EU Commission €180M sovereign cloud framework.
 
@@ -248,12 +248,12 @@ Mapping common use cases to suitable EU-native providers:
 
 | Use case | Suitable providers | Why |
 |---|---|---|
-| **French OIV/OSE sensitive workloads (SecNumCloud-mandated)** | 3DS Outscale, Cegedim.cloud, OVHcloud (Hosted Private Cloud), Numspot (when qualified) | SecNumCloud 3.2 qualified |
+| **French OIV/OSE sensitive workloads (SecNumCloud-mandated)** | 3DS Outscale, Cegedim.cloud, OVHcloud (Hosted Private Cloud, Bare Metal Pod, SNC Cloud Platform), Numspot | SecNumCloud 3.2 qualified |
 | **German federal procurement (BSI C5)** | T Cloud Public, IONOS, Hetzner, STACKIT, OVHcloud, plusserver | BSI C5 attestation |
 | **Italian PA procurement (ACN-qualified)** | Aruba (QC1-QC3), plus hyperscalers via JV | ACN Qualificazione |
 | **Healthcare data (HDS-certified)** | Cegedim.cloud, 3DS Outscale, Scaleway, OVHcloud, Clever Cloud | HDS certification |
 | **Slovak public sector via KsVC (U2)** | OVHcloud, IONOS, Hetzner, STACKIT, Scaleway, T Cloud Public, Aruba, UpCloud | ISO 27001/27017/27018 evidence portable to KsVC |
-| **Slovak public sector via KsVC (U3)** | OVHcloud (Hosted Private Cloud SecNumCloud), 3DS Outscale, Cegedim.cloud | SecNumCloud-qualified — Slovak Cybersecurity Auditor evidence-mapping streamlines U3 audit |
+| **Slovak public sector via KsVC (U3)** | OVHcloud (three SecNumCloud-qualified offerings), 3DS Outscale, Cegedim.cloud, Numspot | SecNumCloud-qualified — Slovak Cybersecurity Auditor evidence-mapping streamlines U3 audit |
 | **Cost-sensitive commodity compute** | Hetzner, UpCloud, Scaleway | Aggressive pricing |
 | **Kubernetes-native development** | Scaleway, Clever Cloud, 3DS Outscale (OKS), STACKIT | Strong K8s product focus |
 | **Earth observation / HPC** | CloudFerro | Domain specialisation, ESA-data integration |
@@ -291,8 +291,8 @@ For Slovak public-sector procurement via [KsVC](/knowledge-base/compliance/slova
 - **Four operational categories**: Full-service alternatives (OVHcloud, Scaleway, IONOS) / Compute-focused (Hetzner, UpCloud) / Specialised vertical (3DS Outscale, Cegedim.cloud, CloudFerro) / Telco-conglomerate-backed (T Cloud Public, STACKIT, Aruba).
 - **Largest pure-play**: OVHcloud (~€1.08B FY2025 revenue, 44+ data centres, Euronext-listed). SAP and Deutsche Telekom are larger by absolute cloud-related revenue but operate broader portfolios.
 - **Open Telekom Cloud rebranded to T Cloud Public** as of 2025-2026. Update terminology in older references.
-- **SecNumCloud-qualified pure-play providers**: 3DS Outscale (Dec 2023, first qualified), Cegedim.cloud (Dec 2024), OVHcloud Hosted Private Cloud (VMware, multi-DC). ITS Integra (J1 Dec 2025, target mid-2026), Scaleway (in process), Numspot (filed Sep 2024).
-- **OVHcloud SecNumCloud scope is limited**: only the Hosted Private Cloud (VMware) at Roubaix, Gravelines, and Strasbourg is qualified — not the full OVHcloud Public Cloud portfolio.
+- **SecNumCloud-qualified pure-play providers**, per ANSSI’s own catalogue: 3DS Outscale (Dec 2023, first qualified), Cegedim.cloud (Dec 2024), OVHcloud (three offerings — Hosted Private Cloud Dec 2023, Bare Metal Pod Mar 2025, SNC Cloud Platform Jul 2026), and Numspot (Jul 2026). Still in qualification: ITS Integra (J1 Dec 2025), Bleu (J1 Nov 2025), Scaleway.
+- **OVHcloud holds three SecNumCloud qualifications**: Hosted Private Cloud (VMware), Bare Metal Pod, and since 31 July 2026 the SNC Cloud Platform public cloud. Scope is still not the *whole* Public Cloud portfolio — managed Kubernetes and database services sit outside it — so check the qualified service list, not the brand.
 - **ACN-qualified largest footprint**: Aruba S.p.A. holds QC1, QC2, and QC3 across various services in Italy.
 - **Earth observation specialist**: CloudFerro operates the Copernicus Data Space Ecosystem (CDSE) — the European EO data platform that superseded the Copernicus DIAS programme in 2023.
 - **April 2026 EU Commission €180M sovereign cloud framework** validates OVHcloud + Clever Cloud + Post Telecom, STACKIT, Scaleway, and the Proximus + S3NS + Clarence + Mistral consortia — industrial-policy validation event worth tracking.

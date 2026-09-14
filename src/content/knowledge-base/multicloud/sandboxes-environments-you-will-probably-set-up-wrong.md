@@ -3,7 +3,7 @@ title: "Sandboxes — The Environments You Will Probably Set Up Wrong the First 
 category: multicloud
 tags: ["Azure", "OCI", "Sandbox", "Governance", "Cost Control"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 11
 level: beginner
 excerpt: "Most orgs skip sandboxes or build them too locked-down to use. Either way, engineers find production. How to build one that gets used without eating budget."
@@ -22,7 +22,7 @@ references:
     domain: "docs.oracle.com"
   - title: "OCI Always Free tier"
     url: "https://www.oracle.com/cloud/free/"
-    description: "Oracle's always-free resources — two AMD VMs, Autonomous Database, object storage, and more kept indefinitely — the recommended starting point for personal OCI sandboxes before organisational environments are provisioned."
+    description: "Oracle's always-free resources, kept indefinitely: up to two AMD VM.Standard.E2.1.Micro instances, plus 1,500 Arm Ampere A1 OCPU hours and 9,000 GB hours a month, Autonomous AI Database, object storage and more — the recommended starting point for personal OCI sandboxes before organisational environments are provisioned."
     domain: "oracle.com"
 ---
 
@@ -40,7 +40,7 @@ It is **not** a long-lived environment. The whole point is that you can blow it 
 
 It is **not** a place to skip security. Audit logging stays on. The identity boundary stays real. The fact that you can deploy whatever you want does not mean the platform team gives up oversight of what was deployed.
 
-The Microsoft Cloud Adoption Framework explicitly calls out sandboxes as part of the recommended landing zone hierarchy — they get their own management group, with policies that *specifically* relax some controls (allow more resource types, more regions) while *tightening* others (network isolation, mandatory budgets, cleanup automation, and stricter cost controls). Oracle's CIS Landing Zone does not have an equivalent first-class concept; you build it yourself with a dedicated compartment under the tenancy root.
+The Microsoft Cloud Adoption Framework explicitly calls out sandboxes as part of the recommended landing zone hierarchy — they get their own management group, with policies that *specifically* relax some controls (allow more resource types, more regions) while *tightening* others (network isolation, mandatory budgets, cleanup automation, and stricter cost controls). Oracle's Core Landing Zone does not have an equivalent first-class concept; you build it yourself with a dedicated compartment under the tenancy root.
 
 ## The two failure modes
 
@@ -76,7 +76,7 @@ The forcing function that works well in practice is automatic teardown on a sche
 
 The Azure pattern is well-trodden because Microsoft documents it as part of CAF. The shape:
 
-```
+```text
 Tenant Root
 ├── Platform MG
 ├── Landing Zones MG
@@ -124,7 +124,7 @@ The "nuclear option" Azure scripts for sandbox cleanup that float around in the 
 
 OCI does not have a CAF-equivalent reference architecture for sandboxes specifically, but the pattern transposes cleanly:
 
-```
+```text
 Root Compartment (Tenancy)
 ├── Platform-Compartment
 ├── Workloads-Compartment
@@ -147,8 +147,8 @@ resource "oci_limits_quota" "sandbox_alice_quotas" {
   name           = "sandbox-alice-quotas"
   description    = "Caps for Alice's sandbox compartment"
   statements = [
-    "set compute quota standard-e4-core-count to 16 in compartment sandbox-alice",
-    "set compute quota gpu-a10-count to 0 in compartment sandbox-alice",
+    "set compute-core quota standard-e4-core-count to 16 in compartment sandbox-alice",
+    "set compute-core quota gpu-a10-count to 0 in compartment sandbox-alice",
     "zero database quotas in compartment sandbox-alice",
     "set object-storage quota standard-storage-bytes to 500000000000 in compartment sandbox-alice"
   ]

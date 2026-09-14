@@ -3,7 +3,7 @@ title: "France — ANSSI SecNumCloud: The Strictest Sovereignty Framework in the
 category: compliance
 tags: ["France", "ANSSI", "SecNumCloud", "NIS2", "Compliance", "Data Security", "Sovereignty"]
 date: 2026-04-22
-updated: 2026-05-16
+updated: 2026-09-13
 readTime: 12
 level: intermediate
 excerpt: "Single qualification level, 350+ requirements, hard caps on non-EU ownership, immunity from extraterritorial law. SecNumCloud is the framework that defined the modern EU sovereignty debate."
@@ -21,7 +21,7 @@ references:
     description: "A practitioner walkthrough of the SecNumCloud qualification process from a French CSP that has undergone it — costs, timelines, and operational implications."
     domain: "scalingo.com"
   - title: "Cloud at the Centre Doctrine (DINUM)"
-    url: "https://www.numerique.gouv.fr/doctrine-cloud-au-centre/"
+    url: "https://www.numerique.gouv.fr/services/cloud/doctrine/"
     description: "The French government's official 'Cloud au centre' doctrine — the policy framework that mandates SecNumCloud-qualified hosting for sensitive public-sector workloads."
     domain: "numerique.gouv.fr"
   - title: "SREN Law (10 April 2024)"
@@ -33,11 +33,11 @@ references:
     description: "Senate dossier for the projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques — the French NIS2 transposition bill. Adopted by the Senate 12 March 2025; in National Assembly review."
     domain: "senat.fr"
   - title: "ANSSI ReCyF — French Cyber Reference Framework"
-    url: "https://cyber.gouv.fr/recyf"
+    url: "https://messervices.cyber.gouv.fr/nis2#exigences"
     description: "ANSSI's French Cyber Reference Framework, published 17 March 2026 — recommended measures aligned with NIS2 objectives. Works alongside SecNumCloud rather than replacing it."
     domain: "cyber.gouv.fr"
   - title: "MonEspaceNIS2 — ANSSI Entity Self-Assessment Portal"
-    url: "https://cyber.gouv.fr/monespacenis2"
+    url: "https://messervices.cyber.gouv.fr/nis2"
     description: "Live ANSSI portal for entity identification and NIS2 self-assessment under the forthcoming Loi Résilience regime."
     domain: "cyber.gouv.fr"
 ---
@@ -59,7 +59,11 @@ SecNumCloud is anchored in a stack of regulatory instruments:
 - **Référentiel Général de Sécurité (RGS)** — the framework law for information systems in public administration.
 - **"Cloud au centre" doctrine** (2021, updated 2023) — the executive policy that requires sensitive public-sector data to be hosted on SecNumCloud-qualified services.
 - **SREN Law** (loi visant à sécuriser et réguler l'espace numérique), 10 April 2024 — reinforces SecNumCloud application in public procurement and introduces sanctions for procurement non-compliance.
-- **NIS2 transposition** — the *loi Résilience* (projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques) was adopted by the Senate on 12 March 2025 and revised by the National Assembly special commission on 10 September 2025. **Not yet in force as of mid-2026**; entry into force expected in 2026 once final adoption and implementing decrees publish. France received a reasoned opinion from the European Commission on 7 May 2025 for non-notification of full NIS2 transposition. French essential and important entities will increasingly be required to use SecNumCloud-qualified providers for sensitive workloads under the new act.
+- **Décret n° 2026-272 of 14 April 2026** — the text that finally made SREN's sovereign-hosting obligation *opposable*. It defines the "données d'une sensibilité particulière" that trigger it and names the bodies covered, including six further GIPs — among them the Agence du numérique en santé and the Centre d'accès sécurisé aux données. Existing contracts get an 18-month migration window.
+- **Arrêté of 12 August 2026** (in force 15 August) — approves *référentiel SecNumCloud 3.2* as the binding purchasing rule for those data. Conformity is shown by ANSSI qualification or an ANSSI-recognised equivalent European certification.
+
+Those two texts are the substantive change of 2026: SecNumCloud stopped being doctrine plus procurement preference and became a statutory purchasing rule with a defined scope and a deadline.
+- **NIS2 transposition** — the *loi Résilience* (projet de loi relatif à la résilience des activités d'importance vitale et à la protection des infrastructures critiques) was adopted by the Senate on 12 March 2025 and revised by the National Assembly special commission on 10 September 2025. **Not yet in force as of mid-2026**; entry into force expected in 2026 once final adoption and implementing decrees publish. France received a reasoned opinion from the European Commission on 7 May 2025 for non-notification of full NIS2 transposition, and on **8 July 2026 the Commission referred France to the Court of Justice** — alongside Ireland, Spain and the Netherlands — asking the Court to impose a lump sum and daily penalties until transposition is notified (France: INFR(2024)0274). French essential and important entities will increasingly be required to use SecNumCloud-qualified providers for sensitive workloads under the new act.
 - **French Cyber Reference Framework (ReCyF)** — published by ANSSI on 17 March 2026. Lists recommended measures aligned with NIS2 objectives; works alongside SecNumCloud rather than replacing it. The MonEspaceNIS2 portal (cyber.gouv.fr) is live for entity identification and self-assessment.
 
 The combined effect: SecNumCloud is binding for state administration and for Opérateurs d'Importance Vitale (OIV) and Opérateurs de Services Essentiels (OSE) handling sensitive data. The SREN law gives procurement officers the legal basis to enforce it.
@@ -125,15 +129,15 @@ Costs are not publicly published. Industry practice puts SecNumCloud preparation
 
 ## Catalogue and recertification
 
-The list of qualified providers is maintained on the **ANSSI website** — verify the current count directly there, as qualifications are granted, renewed, and expanded throughout the year. As of mid-2026 a small number of providers hold qualification (including 3DS Outscale, OVHcloud, Cegedim.cloud, and S3NS) with additional candidates in the pipeline. Recent milestones:
+The list of qualified providers is maintained on the **ANSSI website** — verify the current count directly there, as qualifications are granted, renewed, and expanded throughout the year. As of the September 2026 edition of the catalogue, roughly **26 qualified services across 12 providers** — Cegedim, Cloud Solutions, Cloud Temple, Index Education, Numspot, OVH, Oodrive, Orange Business Services, Outscale, Thales, Whaller and Worldline. A small number of providers hold qualification (including 3DS Outscale, OVHcloud, Cegedim.cloud, and S3NS) with additional candidates in the pipeline. Recent milestones:
 
 - **S3NS PREMI3NS** (Thales + Google Cloud) — qualified December 2025; first joint IaaS/PaaS/CaaS qualification.
-- **Bleu** (Microsoft + Orange + Capgemini) — milestone J0 validated 17 April 2025; full qualification expected during 2025–2026.
+- **Bleu** (Microsoft + Orange + Capgemini) — J0 validated 17 April 2025, then **J1 on 17 November 2025**, which opened the audit phase for its IaaS, PaaS and CaaS services. Still on ANSSI's *en cours de qualification* list as of September 2026, and absent from the qualified catalogue.
 - **ITS Integra** — milestone J1 validated December 2025.
 
-Known holders of qualification 3.2 include **3DS Outscale** (Dassault Systèmes), **OVHcloud** (specifically the Hosted Private Cloud powered by VMware at Roubaix, Gravelines, and Strasbourg — not the full Public Cloud portfolio), **Cegedim.cloud** (CegNumCloud Secured IaaS, visa date 4 December 2024), and **S3NS** (PREMI3NS, ~30 services in scope, first US-hyperscaler-tech JV to qualify).
+Known holders of qualification 3.2 include **3DS Outscale** (Dassault Systèmes), **OVHcloud** (three separate qualifications now — Hosted Private Cloud powered by VMware, Bare Metal Pod, and SNC Cloud Platform since July 2026 — though still not the full Public Cloud portfolio), **Numspot** (qualified July 2026), **Cegedim.cloud** (CegNumCloud Secured IaaS, visa date 4 December 2024), and **S3NS** (PREMI3NS, ~30 services in scope, first US-hyperscaler-tech JV to qualify).
 
-In March 2026 ANSSI and BSI published a **joint statement on harmonised cloud-sovereignty criteria** — a notable bilateral step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS.
+In November 2025 ANSSI and BSI published a **joint statement on harmonised cloud-sovereignty criteria** — a notable bilateral step toward narrowing the FR–DE sovereignty divergence that has blocked EUCS.
 
 Recertification:
 
@@ -166,7 +170,7 @@ This is the section that distinguishes SecNumCloud from every other EU national 
 
 In the [EUCS debate](/knowledge-base/compliance/eucs-watch-political-tracking-2026), SecNumCloud is the model for the **High+** assurance level — the sovereignty-strict tier that was in the 2023 draft and was removed or weakened in the March 2024 draft. France has been the principal political force behind keeping a sovereignty layer in EUCS, which is why the scheme has been stuck since 2024.
 
-In **March 2026, ANSSI and BSI published a joint statement on harmonised cloud-sovereignty criteria** — the first public bilateral step toward narrowing the FR–DE divergence that has blocked EUCS. It is a statement of direction, not yet a binding agreement on EUCS High+ content. Worth tracking as a leading indicator on whether French and German positions are converging on operational common ground.
+In **November 2025, ANSSI and BSI published a joint statement on harmonised cloud-sovereignty criteria** — the first public bilateral step toward narrowing the FR–DE divergence that has blocked EUCS. It is a statement of direction, not yet a binding agreement on EUCS High+ content. Worth tracking as a leading indicator on whether French and German positions are converging on operational common ground.
 
 :::tip[Architectural Pro Tip]
 For a multinational CSP wanting to serve French public-sector sensitive workloads, the realistic options are: (1) qualify a French subsidiary that genuinely meets the ownership and immunity tests, which is rare and structurally hard; (2) form a joint venture with a French majority partner — the Bleu and S3NS routes; (3) accept exclusion from the qualified tier and compete only for non-sensitive workloads under "Cloud au centre." Trying to argue around the ownership and immunity rules without restructuring is not a path that works in the qualification process. Plan for one of the three options, not for a fourth.

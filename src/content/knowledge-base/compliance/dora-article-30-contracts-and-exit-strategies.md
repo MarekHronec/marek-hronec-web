@@ -3,7 +3,7 @@ title: "DORA Article 30 — Cloud Contracts, Audit Rights, and Exit Strategies"
 category: compliance
 tags: ["DORA", "Article 30", "Contracts", "Financial Sector", "Exit Strategy", "Compliance", "Data Security"]
 date: 2026-04-28
-updated: 2026-04-28
+updated: 2026-09-12
 readTime: 12
 level: advanced
 excerpt: "DORA Article 30 specifies the contractual content every financial entity must obtain from its cloud providers. The list is long, the substance is operational, and most pre-DORA cloud contracts do not meet it. This article walks through each clause, what it means in practice, and what financial entities and cloud providers actually negotiate."
@@ -13,11 +13,11 @@ references:
     description: "DORA Regulation (EU) 2022/2554 Article 30, specifying the contractual content for ICT third-party service arrangements with financial entities."
     domain: "eur-lex.europa.eu"
   - title: "EBA Guidelines on ICT and Security Risk Management (EBA/GL/2019/04)"
-    url: "https://www.eba.europa.eu/regulation-and-policy/internal-governance/guidelines-ict-and-security-risk-management"
+    url: "https://www.eba.europa.eu/activities/single-rulebook/regulatory-activities/internal-governance/guidelines-ict-and-security-risk-management"
     description: "EBA's guidelines on ICT and security risk management, including third-party arrangements — the historical baseline DORA Article 30 builds on."
     domain: "eba.europa.eu"
   - title: "EBA Guidelines on Outsourcing Arrangements (EBA/GL/2019/02)"
-    url: "https://www.eba.europa.eu/regulation-and-policy/internal-governance/guidelines-outsourcing-arrangements"
+    url: "https://www.eba.europa.eu/activities/single-rulebook/regulatory-activities/internal-governance/guidelines-outsourcing-arrangements"
     description: "EBA's outsourcing guidelines, which DORA Article 30 incorporates and extends specifically for ICT arrangements."
     domain: "eba.europa.eu"
   - title: "Commission Implementing Regulation 2024/2956 — Register of Information"
@@ -25,7 +25,7 @@ references:
     description: "The Commission implementing regulation specifying the format of the Register of Information that financial entities must maintain about their ICT third-party arrangements under DORA Article 28."
     domain: "eur-lex.europa.eu"
   - title: "ECB Cyber Resilience Stress Test Methodology"
-    url: "https://www.bankingsupervision.europa.eu/press/pr/date/2024/html/ssm.pr240103~38a1ad7039.en.html"
+    url: "https://www.bankingsupervision.europa.eu/press/pr/date/2024/html/ssm.pr240103~a26e1930b0.en.html"
     description: "ECB's methodology for cyber resilience testing of significant banks, including the cloud-arrangement testing scope under DORA."
     domain: "bankingsupervision.europa.eu"
 ---
@@ -42,27 +42,34 @@ Article 30 sits alongside:
 - **Article 30** — contractual arrangements (this article's focus).
 - **Articles 31-44** — the [CTPP regime](/knowledge-base/compliance/dora-ctpp-regime-direct-esa-supervision).
 
-Article 30 applies to **all** ICT third-party arrangements supporting critical or important functions, not only to CTPP-designated providers. Every financial entity's cloud contract must meet it.
+Scope is wider than it is usually described. **Article 30(2) applies to every contract for ICT services**, not only to those supporting critical or important functions — its chapeau reads "the contractual arrangements on the use of ICT services shall include at least the following elements". Article 30(3) then *adds* requirements, "in addition to the elements referred to in paragraph 2", for arrangements that do support critical or important functions. So a non-critical cloud contract is not out of scope; it is in scope for the paragraph 2 list. None of this is limited to CTPP-designated providers.
 
 ## The fifteen clause categories
 
-Article 30(2) and 30(3) specify the required contractual content. The list groups into fifteen distinct categories:
+Article 30(2) and 30(3) specify the required contractual content — fifteen elements in total, but they are two separate lists with different scope, and conflating them is the most common way to read this article wrong.
 
-1. **Service description** — clear and complete description of all functions and services.
-2. **Service locations** — places where data is processed and stored.
-3. **Service levels** — quantitative and qualitative performance targets, including KPIs.
-4. **Data availability, authenticity, integrity, confidentiality** — security and data protection provisions.
-5. **Personal data access** — provisions for the financial entity's access to its own personal data.
-6. **Assistance with incidents** — cooperation provisions including no additional cost.
-7. **Cooperation with competent authorities** — including audit and inspection rights.
-8. **Termination rights** — clear termination conditions for the financial entity.
-9. **Audit rights** — for the financial entity, its competent authority, and external auditors.
-10. **Information rights** — access to information necessary to monitor performance and compliance.
-11. **Notification of material changes** — to subcontracting or location.
-12. **Insurance** — provisions where appropriate.
-13. **Business continuity and contingency** — measures, plans, and tested capabilities.
-14. **Personnel security and access management** — for the provider's personnel handling financial-entity data.
-15. **Exit strategies** — separately specified in detail.
+**Article 30(2) — every contract for ICT services, nine elements:**
+
+1. **(a) Service description** — a clear and complete description of all functions and ICT services, stating whether subcontracting of a service supporting a critical or important function is permitted, and on what conditions.
+2. **(b) Locations** — the regions or countries where the functions and services are provided and where data is processed.
+3. **(c) Data protection** — provisions on availability, authenticity, integrity and confidentiality, including personal data.
+4. **(d) Access, recovery and return** — of personal and non-personal data in an easily accessible format, in the event of insolvency, resolution, discontinuation, or termination.
+5. **(e) Service level descriptions** — including updates and revisions.
+6. **(f) Incident assistance** — at no additional cost, or at a cost determined ex-ante.
+7. **(g) Cooperation with authorities** — full cooperation with the financial entity's competent and resolution authorities.
+8. **(h) Termination rights** — and related minimum notice periods.
+9. **(i) Training participation** — the conditions on which the provider takes part in the financial entity's ICT security-awareness programmes and digital operational resilience training. Routinely forgotten, and a real obligation.
+
+**Article 30(3) — added on top, only where the arrangement supports a critical or important function, six elements:**
+
+10. **(a) Full service levels** — with precise quantitative and qualitative performance targets.
+11. **(b) Notice periods and reporting** — including notification of any development that might materially affect the provider's ability to deliver.
+12. **(c) Business contingency** — requirements to implement *and test* contingency plans, and to have ICT security measures, tools and policies in place.
+13. **(d) TLPT participation** — the obligation to participate and fully cooperate in the financial entity's threat-led penetration testing under Articles 26 and 27.
+14. **(e) Monitoring and audit** — the right to monitor performance on an ongoing basis, including unrestricted rights of access, inspection and audit.
+15. **(f) Exit strategies** — in particular a mandatory adequate transition period.
+
+Two things commonly listed as Article 30 requirements are **not** in it. **Insurance** appears nowhere in the article — that expectation comes from the EBA outsourcing guidelines. Nor is **personnel security** a separate head; it surfaces indirectly through the audit and cooperation clauses.
 
 For arrangements supporting **critical or important functions**, additional content is required, including specific terms on subcontracting, data location restrictions, and reinforced audit rights.
 
@@ -121,7 +128,7 @@ This is also where customer-controlled encryption ([BYOK / HYOK](/knowledge-base
 
 ## Assistance with incidents — the cooperation clause
 
-The cooperation clause requires the provider to assist with incident management **at no additional cost**. The "no additional cost" wording matters — it prevents providers from monetising incident-cooperation as a premium service.
+Article 30(2)(f) requires the provider to assist the financial entity when an ICT incident occurs, **"at no additional cost, or at a cost that is determined ex-ante"**. The second half of that phrase is usually dropped in summaries, and it changes the clause: cooperation *can* be charged for. What it cannot be is priced opportunistically after an incident, when the customer has no leverage. Fix the price in the contract or get it for nothing.
 
 The substance covered:
 
@@ -131,7 +138,7 @@ The substance covered:
 - Remediation cooperation.
 - Post-incident review participation.
 
-The 24-hour clock under DORA (initial notification to competent authority within 24 hours of incident classification) drives operational requirements on the cooperation clause. Cloud providers must support customer reporting within timelines that allow customers to meet the 24-hour deadline — meaning the cloud provider needs an established incident-cooperation interface, not ad-hoc handling.
+The initial-notification clock under DORA — **four hours** from classifying an incident as major, with a 24-hour backstop from awareness (Delegated Reg. (EU) 2025/301) — drives operational requirements on the cooperation clause. Cloud providers must support customer reporting within timelines that allow customers to meet the 24-hour deadline — meaning the cloud provider needs an established incident-cooperation interface, not ad-hoc handling.
 
 ## Cooperation with competent authorities
 
@@ -183,19 +190,20 @@ Material changes that require advance notification include:
 - Material architecture changes affecting risk profile.
 - Changes in regulatory or supervisory status.
 
-The notification period is typically 90 days for material changes, though DORA does not prescribe a specific period. Financial entities negotiate notification periods based on the materiality of the change and the financial entity's ability to react.
+DORA itself prescribes no notification period, and the 90 days often quoted is market practice rather than a rule. What does regulate this is **Commission Delegated Regulation (EU) 2025/532** of 24 March 2025 (OJ 2 July 2025), the RTS “specifying the elements that a financial entity has to determine and assess when subcontracting ICT services supporting critical or important functions”. It covers, among other things, material changes a provider makes to existing subcontracting arrangements. If you are drafting or reviewing an Article 30 contract that permits subcontracting of a critical or important function, this RTS is the document that fills in what Article 30(2)(a) leaves open, and it is routinely missed. Financial entities negotiate notification periods based on the materiality of the change and the financial entity's ability to react.
 
 ## Termination and exit strategies — the planning clause
 
-Article 30 requires clear termination conditions. For arrangements supporting critical or important functions, **exit strategies** are separately specified and must include:
+Article 30 requires clear termination conditions, and Article 30(3)(f) requires the contract to provide for **exit strategies, in particular a mandatory adequate transition period**. What the contract must carry:
 
 - **Documented exit plan** — describing how the financial entity would transition away from the provider.
 - **Data return or destruction** — provisions for the financial entity's data at exit.
 - **Migration assistance** — provider support during exit transition.
 - **Continuity period** — service continuation during exit at agreed terms.
-- **Tested capabilities** — exit plans should be tested, not only documented.
 
-The exit-strategy requirement is one of DORA's clearest practical innovations. Pre-DORA cloud contracts often had bare-bones termination clauses; DORA expects detailed, operational, tested exit plans.
+**Testing is a different article, and a different party's duty.** The requirement that exit plans be "comprehensive, documented and … sufficiently tested and reviewed periodically" is **Article 28(8)**, and it binds the financial entity, not the provider. The contract has to make that testing possible; the obligation to actually run it is not an Article 30 clause. Getting these two the wrong way round is the most common misreading of DORA's exit provisions.
+
+The exit-strategy requirement is one of DORA's clearest practical innovations. Pre-DORA cloud contracts often had bare-bones termination clauses; DORA expects the contract to make a real exit executable.
 
 For cloud providers, supporting customer exit strategies requires:
 
@@ -300,7 +308,7 @@ Cloud providers serving the EU financial sector commonly publish a "DORA-ready" 
 - Service levels must be quantitative + qualitative with measurable methodology. Move beyond credit-based remedy frameworks.
 - Cooperation with incidents is at no additional cost and supports the financial entity's 24-hour notification cadence.
 - Audit rights are the most contentious clause. Pooled audit programmes + expanded SOC 2 / C5 disclosure handles most cases; direct audits reserved for largest customers.
-- Exit strategies must be documented, operational, and tested. Maintaining a real alternative addresses concentration risk.
+- The contract must provide an exit strategy with an adequate transition period (Art. 30(3)(f)); the financial entity must keep that plan documented and tested (Art. 28(8)). Maintaining a real alternative addresses concentration risk.
 - The Register of Information under Article 28 requires structured data export from cloud providers. Build register-data export capability.
 - Build a structured DORA contract template; avoid bespoke-per-customer drift.
 - Three-layer contract stack: base contract + DORA annex (Article 30) + GDPR DPA (Article 28) + sector-specific annexes as needed.

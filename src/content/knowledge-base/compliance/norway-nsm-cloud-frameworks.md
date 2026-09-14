@@ -3,10 +3,10 @@ title: "Norway — NSM Grunnprinsipper, Sikkerhetsloven, and the EEA Cloud Posit
 category: compliance
 tags: ["Norway", "NSM", "Sikkerhetsloven", "Finanstilsynet", "Compliance", "Data Security", "Adjacent Jurisdiction"]
 date: 2026-05-13
-updated: 2026-05-15
+updated: 2026-09-13
 readTime: 10
 level: intermediate
-excerpt: "Norway is in the EEA. Most EU cloud regulation reaches Norway via EEA incorporation, including GDPR (directly applicable) and NIS2/DORA (in progress). On top, NSM's Grunnprinsipper guide ICT security, Sikkerhetsloven governs classified information, and Finanstilsynet supervises financial-sector cloud. This article maps how the Norwegian regime relates to the EU base."
+excerpt: "Norway is in the EEA. Most EU cloud regulation reaches Norway via EEA incorporation, including GDPR (directly applicable) and DORA (in force since July 2025), with NIS2 still pending. On top, NSM's Grunnprinsipper guide ICT security, Sikkerhetsloven governs classified information, and Finanstilsynet supervises financial-sector cloud. This article maps how the Norwegian regime relates to the EU base."
 references:
   - title: "NSM — National Security Authority of Norway"
     url: "https://nsm.no/"
@@ -16,6 +16,14 @@ references:
     url: "https://nsm.no/regelverk-og-hjelp/rad-og-anbefalinger/grunnprinsipper-for-ikt-sikkerhet/"
     description: "The Basic Principles for ICT Security published by NSM — the Norwegian government's recommended framework for ICT security including cloud."
     domain: "nsm.no"
+  - title: "Digitalsikkerhetsloven (LOV-2023-12-20-108)"
+    url: "https://lovdata.no/dokument/NL/lov/2023-12-20-108"
+    description: "Norway's Act on digital security, sanctioned 20 December 2023 and in force from 1 October 2025 — the NIS1 implementation via EEA Agreement Annex XI no. 5cpa."
+    domain: "lovdata.no"
+  - title: "DORA-forskriften (FOR-2025-06-24-1296)"
+    url: "https://lovdata.no/dokument/SF/forskrift/2025-06-24-1296"
+    description: "The Norwegian DORA regulation, in force 1 July 2025 under the DORA Act of 27 May 2025 no. 18 — the instrument that made DORA operative in Norway."
+    domain: "lovdata.no"
   - title: "Sikkerhetsloven (National Security Act)"
     url: "https://lovdata.no/dokument/NL/lov/2018-06-01-24"
     description: "The Norwegian National Security Act covering classified-information handling, security clearance for personnel and entities, and supervisory powers for NSM."
@@ -29,18 +37,18 @@ references:
     description: "The Norwegian financial supervisor, overseeing banks, insurers, and securities firms including their cloud and outsourcing arrangements."
     domain: "finanstilsynet.no"
   - title: "NSM Cloud Strategy and Guidance"
-    url: "https://nsm.no/regelverk-og-hjelp/rad-og-anbefalinger/skytenester/"
+    url: "https://nsm.no/regelverk-og-hjelp/rad-og-anbefalinger/introduksjon/bruk-av-tjenesteutsetting-og-skytjenester/"
     description: "NSM's specific guidance on cloud services for public sector and critical infrastructure, including risk assessment, supplier selection, and jurisdictional considerations."
     domain: "nsm.no"
 ---
 
-Norway is in the **European Economic Area (EEA)**. The EEA Agreement extends most EU single-market regulation to Norway, including GDPR (directly applicable as Norwegian law via EEA incorporation), NIS (and the NIS2 transposition is in progress), DORA (incorporation pending), and most cybersecurity-relevant EU instruments. On top of this EU-derived base, Norway runs a domestic layer: **NSM Grunnprinsipper** as ICT security guidance, **Sikkerhetsloven** for classified information, **Finanstilsynet** as financial-sector supervisor. For cloud providers operating in Norway — and Slovak organisations with Norwegian customers — the Norwegian regime is operationally close to EU expectations with some country-specific procedural plumbing. This article walks through the framework.
+Norway is in the **European Economic Area (EEA)**. The EEA Agreement extends most EU single-market regulation to Norway, including GDPR (directly applicable as Norwegian law via EEA incorporation), NIS1 through digitalsikkerhetsloven, and DORA, which has been in force in Norway since 1 July 2025. NIS2 has not yet been incorporated. On top of this EU-derived base, Norway runs a domestic layer: **NSM Grunnprinsipper** as ICT security guidance, **Sikkerhetsloven** for classified information, **Finanstilsynet** as financial-sector supervisor. For cloud providers operating in Norway — and Slovak organisations with Norwegian customers — the Norwegian regime is operationally close to EU expectations with some country-specific procedural plumbing. This article walks through the framework.
 
 ## The system at a glance
 
 The Norwegian framework operates on three layers:
 
-- **EEA-derived EU regulation** — GDPR directly applicable; NIS and NIS2 transposition through EEA Joint Committee incorporation; DORA incorporation in progress.
+- **EEA-derived EU regulation** — GDPR directly applicable; NIS1 in force through digitalsikkerhetsloven, NIS2 still awaiting EEA incorporation; DORA in force since 1 July 2025.
 - **Domestic legislation** — Sikkerhetsloven (National Security Act) for classified information; sector-specific regulation for finance, healthcare, energy.
 - **NSM guidance** — Grunnprinsipper for IKT-sikkerhet plus NSM Cloud Strategy and Guidance, principle-based rather than prescriptive.
 
@@ -60,7 +68,7 @@ The legislative stack:
 - **Personopplysningsloven** — Norwegian Personal Data Act, which incorporates GDPR as Norwegian law via the EEA Agreement. GDPR's substantive content applies directly.
 - **Sikkerhetsloven** (National Security Act) — covers classified-information handling and security clearance for the public sector and identified critical infrastructure operators.
 - **Forskrift om sikkerhetsadministrasjon** — implementing regulation under Sikkerhetsloven.
-- **NIS-loven** — Norwegian implementation of NIS Directive; NIS2 transposition in progress through EEA Joint Committee incorporation.
+- **Digitalsikkerhetsloven** (LOV-2023-12-20-108) — the Norwegian implementation of the NIS1 Directive, sanctioned 20 December 2023 and in force since **1 October 2025**. NIS2 transposition is a separate, still-unfinished exercise.
 - **Finansforetaksloven** — Financial Institutions Act, governing banking, insurance, and securities supervision under Finanstilsynet.
 - **Helselovgivning** — health sector legislation including specific provisions on health data processing.
 
@@ -72,7 +80,7 @@ Different parts of the framework apply to different actors:
 
 - **GDPR (via Personopplysningsloven)** — all personal data processing.
 - **Sikkerhetsloven** — public-sector entities and identified critical infrastructure operators handling classified information.
-- **NIS-loven / NIS2 transposition** — operators of essential services and digital service providers above size thresholds.
+- **Digitalsikkerhetsloven** — operators of essential services and digital service providers above size thresholds; NIS2 will widen this when transposed.
 - **Finanstilsynet** — banks, insurers, securities dealers, payment institutions.
 - **NSM Grunnprinsipper** — recommended for all public-sector entities and critical infrastructure; voluntary for commercial sector.
 
@@ -145,8 +153,8 @@ Recertification cadence follows the underlying attestations (ISO 27001 3-year cy
 
 Sanctions vary by regime:
 
-- **GDPR via Personopplysningsloven** — Datatilsynet can impose GDPR-level fines (up to EUR 20 million or 4% of global turnover for essential entities).
-- **NIS-loven / NIS2** — when fully transposed, NIS2-level sanctions will apply (up to EUR 10 million or 2% of global turnover for essential entities, smaller amounts for important entities).
+- **GDPR via Personopplysningsloven** — Datatilsynet can impose GDPR-level fines, up to EUR 20 million or 4% of worldwide annual turnover, whichever is higher.
+- **Digitalsikkerhetsloven / NIS2** — when NIS2 is transposed, NIS2-level sanctions will apply (up to EUR 10 million or 2% of global turnover for essential entities, smaller amounts for important entities).
 - **Sikkerhetsloven** — supervisory measures by NSM; classified-information mishandling falls under Norwegian criminal law for serious cases.
 - **Finanstilsynet** — supervisory measures including licensing consequences for serious violations.
 
@@ -154,13 +162,13 @@ Sanctions vary by regime:
 
 As an EEA state, Norway is implementing NIS2 through the EEA Joint Committee incorporation process. Once complete, Norway will have NIS2-equivalent obligations for essential and important entities including digital infrastructure cloud providers. The Norwegian cybersecurity supervisor for NIS2 will be NSM working in coordination with sector regulators.
 
-As of mid-2026, full NIS2 transposition is in progress; Norway's existing NIS-loven from 2018 provides interim coverage but is narrower than NIS2 scope. Cloud providers above the NIS2 size thresholds operating in Norway should expect the NIS2 essential-entities obligations to apply once transposition completes.
+NIS2 transposition is still in progress. Interim coverage comes from **digitalsikkerhetsloven**, which implements NIS1 and only entered into force on **1 October 2025** — so Norway had no NIS implementation in force at all before that date. Its scope is narrower than NIS2. Cloud providers above the NIS2 size thresholds operating in Norway should expect the NIS2 essential-entities obligations to apply once transposition completes.
 
 ## Norway and DORA
 
-DORA is being incorporated through the EEA Joint Committee process. Norwegian financial entities will be subject to DORA obligations including the CTPP regime for their critical ICT third-party providers. Finanstilsynet is the operative supervisor; the EEA arrangement creates coordination obligations with the EU ESAs for cross-border supervision.
+DORA is **already in force in Norway**. The regulation was taken into the EEA Agreement on 20 February 2025, and both the DORA Act (lov 27. mai 2025 nr. 18) and the DORA regulation (**DORA-forskriften**, FOR-2025-06-24-1296) took effect on **1 July 2025**. Norwegian financial entities are subject to DORA obligations today. Finanstilsynet is the operative supervisor; the EEA arrangement creates coordination obligations with the EU ESAs for cross-border supervision.
 
-For cloud providers serving Norwegian financial entities, the path of regulatory engagement runs through Finanstilsynet today; once DORA is fully incorporated, the ESA-led CTPP designation process becomes available with Norwegian-specific coordination.
+For cloud providers serving Norwegian financial entities, the path of regulatory engagement runs through Finanstilsynet, and the ESA-led CTPP designations already reach their providers — the first 19 CTPPs were designated on 18 November 2025.
 
 ## Sovereignty posture
 
@@ -195,7 +203,7 @@ For a cloud provider serving Norway in addition to the EU:
 The marginal Norwegian-specific work over a strong EU baseline is moderate. The ISO baselines, SOC 2, BSI C5, EU Cloud CoC, and [NIS2 supply-chain work](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) all carry forward; the country-specific additions are contractual and procedural rather than fresh substantive control work.
 
 :::tip[Architectural Pro Tip]
-For a CSP serving Norwegian financial-sector customers, the most efficient additional work over an EU baseline is **a Finanstilsynet outsourcing notification template** that maps existing audit rights, exit strategies, incident reporting commitments, and data location declarations to Norwegian supervisor expectations. Once DORA is fully incorporated through EEA, the CTPP-designation process becomes available; cloud providers expecting designation should engage early with Finanstilsynet to align with the supervisory model. The substantive content overlaps heavily with [DORA Article 30 contractual requirements](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay).
+For a CSP serving Norwegian financial-sector customers, the most efficient additional work over an EU baseline is **a Finanstilsynet outsourcing notification template** that maps existing audit rights, exit strategies, incident reporting commitments, and data location declarations to Norwegian supervisor expectations. DORA has applied in Norway since 1 July 2025 and the CTPP-designation process is live; cloud providers expecting designation should engage early with Finanstilsynet to align with the supervisory model. The substantive content overlaps heavily with [DORA Article 30 contractual requirements](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay).
 :::
 
 ## Multicloud factor
@@ -207,21 +215,21 @@ Norway is operationally one of the simpler European markets to extend an EU comp
 - Marginal additions: NSM Grunnprinsipper mapping document, Norwegian DPA annex, Finanstilsynet outsourcing notification template for financial-sector contracts.
 - For classified-information processing, Norwegian-controlled infrastructure is typically required — limited overlap with mainstream hyperscaler offerings.
 
-Hyperscalers operate Norwegian regions (Microsoft Azure Norway East/West, AWS planned) for customers with Norwegian data residency requirements; EU-region services are commonly used for Norwegian customers under EEA-equivalent treatment. Google Cloud has no Norwegian region as of mid-2026; Norwegian customers consuming Google services use EU-region endpoints under EEA-equivalent treatment.
+Microsoft operates Norwegian regions (Azure Norway East/West) for customers with Norwegian data residency requirements. AWS has **no announced Norwegian region** — its published expansion plans name only Saudi Arabia and Chile — and serves Norwegian residency needs from `eu-north-1` in Stockholm; EU-region services are commonly used for Norwegian customers under EEA-equivalent treatment. Google Cloud has no Norwegian region as of mid-2026; Norwegian customers consuming Google services use EU-region endpoints under EEA-equivalent treatment.
 
 :::warning[Reality Check]
-The "Norway is outside the EU" framing leads to misunderstandings. EEA membership means most EU rules apply directly to Norway, including GDPR, NIS-loven (NIS / NIS2 successor), and the financial-sector regulations. For practical purposes, treat Norway as adjacent to the EU market requiring contractual and procedural additions, not a fundamentally separate regulatory environment. Cloud providers that scope Norway as a standalone compliance project consistently over-estimate the work; cloud providers that scope it as an "EU plus a Norwegian annex" estimate correctly.
+The "Norway is outside the EU" framing leads to misunderstandings. EEA membership means most EU rules apply directly to Norway, including GDPR, digitalsikkerhetsloven (NIS1, with NIS2 to follow), and the financial-sector regulations, DORA among them. For practical purposes, treat Norway as adjacent to the EU market requiring contractual and procedural additions, not a fundamentally separate regulatory environment. Cloud providers that scope Norway as a standalone compliance project consistently over-estimate the work; cloud providers that scope it as an "EU plus a Norwegian annex" estimate correctly.
 :::
 
 ## Closing checklist
 
-- Norway operates a layered framework: EEA-incorporated EU regulation (GDPR, NIS, DORA pending) + domestic Sikkerhetsloven for classified information + sector-specific regulation + NSM Grunnprinsipper as guidance.
+- Norway operates a layered framework: EEA-incorporated EU regulation (GDPR, NIS1 via digitalsikkerhetsloven, DORA since July 2025) + domestic Sikkerhetsloven for classified information + sector-specific regulation + NSM Grunnprinsipper as guidance.
 - **NSM Grunnprinsipper** are 21 principles across 4 categories. Map cleanly to ISO 27001/27017 and NIST CSF.
 - **Sikkerhetsloven** governs classified-information handling under standard EU/NATO levels (BEGRENSET → STRENGT HEMMELIG). Effectively limits foreign providers for the higher tiers.
 - **GDPR** applies directly via EEA incorporation; Datatilsynet is the supervisor. EU↔Norway data flow is intra-EEA.
-- **NIS2 and DORA** are being incorporated through the EEA Joint Committee process; full Norwegian implementation in progress as of mid-2026.
+- **DORA** has applied since 1 July 2025. **NIS2** is still being prepared for EEA incorporation; digitalsikkerhetsloven (NIS1) has covered the gap since 1 October 2025.
 - **Finanstilsynet** is the financial supervisor. Outsourcing notification expectations align with broader European supervisory practice.
 - **No central cloud catalogue**, no multi-tier service classification. Procurement-flexible regime; assessment is customer-side.
 - For Slovak organisations: Norwegian customers are operationally similar to EU customers in cloud terms. EEA membership simplifies cross-border data flow.
 - For cloud providers: marginal additions to an EU baseline are contractual annexes (Norwegian DPA, Finanstilsynet template) and mapping documents (Grunnprinsipper → ISO 27001 mapping), not fresh substantive control implementation.
-- See [Switzerland article](/knowledge-base/compliance/switzerland-finma-cloud-frameworks) for the parallel non-EEA adjacent jurisdiction, [UK NCSC article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) for the post-Brexit adjacent regime, [NIS2 supply chain article](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the supply-chain expectations that flow through EEA incorporation, and [DORA article](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) for the financial-sector framework being incorporated into Norwegian law.
+- See [Switzerland article](/knowledge-base/compliance/switzerland-finma-cloud-frameworks) for the parallel non-EEA adjacent jurisdiction, [UK NCSC article](/knowledge-base/compliance/united-kingdom-ncsc-cloud-security-principles) for the post-Brexit adjacent regime, [NIS2 supply chain article](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the supply-chain expectations that flow through EEA incorporation, and [DORA article](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay) for the financial-sector framework that has applied in Norway since July 2025.

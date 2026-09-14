@@ -3,7 +3,7 @@ title: "NIS2 Supply Chain — What Essential Entities Actually Need From Cloud P
 category: compliance
 tags: ["NIS2", "Supply Chain", "Essential Entities", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-04-11
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 11
 level: advanced
 excerpt: "NIS2 doesn't just regulate operators directly — it regulates their supply chains, including cloud providers. This article unpacks what NIS2 supply-chain obligations actually look like for cloud customers and what evidence cloud providers must produce, with the per-country variation that matters in practice."
@@ -13,11 +13,11 @@ references:
     description: "The NIS2 Directive establishing the EU-wide cybersecurity framework for essential and important entities, including supply-chain risk management obligations."
     domain: "eur-lex.europa.eu"
   - title: "ENISA — NIS2 Implementation Resources"
-    url: "https://www.enisa.europa.eu/topics/network-and-information-systems/nis-2"
+    url: "https://www.enisa.europa.eu/topics/state-of-cybersecurity-in-the-eu/cybersecurity-policies/nis-directive-2"
     description: "ENISA's resources hub for NIS2 implementation, including guidance on supply chain security and cloud-service-specific obligations."
     domain: "enisa.europa.eu"
   - title: "ENISA — Supply Chain Security Good Practices"
-    url: "https://www.enisa.europa.eu/topics/supply-chain-security/"
+    url: "https://www.enisa.europa.eu/publications/good-practices-for-supply-chain-cybersecurity"
     description: "ENISA's supply chain security guidance, including the framework for ICT/OT supply chain risk management referenced under NIS2."
     domain: "enisa.europa.eu"
   - title: "Commission Implementing Regulation on NIS2 Cybersecurity Risk Management"
@@ -32,7 +32,7 @@ NIS2 — Directive (EU) 2022/2555 — does not regulate cloud providers only as 
 
 NIS2 hits cloud providers from two sides simultaneously:
 
-**Side 1 — Cloud provider as essential entity.** Cloud computing service providers, datacentre services, and content delivery networks are listed in NIS2 Annex I as digital infrastructure. Above size thresholds (≥50 employees and ≥€10M annual turnover, with stricter thresholds for some sectors), they are **essential entities** subject to direct NIS2 obligations: risk management, incident reporting (24h/72h/1 month), governance accountability, sanctions up to €10M or 2% of global turnover.
+**Side 1 — Cloud provider as essential entity.** Cloud computing service providers, datacentre services, and content delivery networks are listed in NIS2 Annex I as digital infrastructure. Size decides which of two regimes applies, and the thresholds are widely misquoted. A provider that **exceeds** the medium-sized ceilings — 250+ staff, or turnover above €50M with a balance sheet above €43M — is an **essential entity**: sanctions up to €10M or 2% of global turnover, and *ex ante* supervision. A medium-sized provider, from 50 staff or €10M turnover, is an **important entity** — the same substantive Article 21 duties, but *ex post* supervision and a lower ceiling of €7M or 1.4%. Two exceptions run the other way: public electronic communications providers are essential at medium size, and qualified trust service providers, TLD registries and DNS providers are essential at any size. Either way the duties are the same: risk management, incident reporting (24h/72h/1 month), governance accountability.
 
 **Side 2 — Cloud provider as supply-chain participant.** Every customer that is itself an essential or important entity has NIS2 supply-chain obligations under Article 21. The customer must assess and manage the risks posed by its ICT supply chain — which includes the cloud providers it consumes. The cloud provider is not directly regulated through this side, but the customer's obligations create operational demands on the provider.
 
@@ -136,11 +136,11 @@ NIS2 is a directive; each Member State transposes it into national law. The subs
 | **Czechia** | NÚKIB; sectoral CSIRTs | Personal management-function prohibition up to 6 months as enforcement tool |
 | **Germany** | BSI under NIS2-Umsetzungsgesetz | In force since 6 December 2025; ~29,500 entities in scope |
 | **France** | ANSSI under Loi Résilience | Not yet in force (mid-2026); ReCyF provides interim guidance |
-| **Spain** | INCIBE / sectoral authorities; CCN-CERT for public sector | Partial transposition via RDL 7/2025; coordination law pending |
+| **Spain** | INCIBE / sectoral authorities; CCN-CERT for public sector | No NIS2 transposition notified; referred to the CJEU 8 July 2026; NIS1 duties under RDL 12/2018 still apply |
 | **Italy** | ACN under D.Lgs. 138/2024 | In force since 16 October 2024; phased compliance through October 2026 |
-| **Netherlands** | NCSC and RDI under Cyberbeveiligingswet | Cbw approved Tweede Kamer Apr 2026; Senate review |
+| **Netherlands** | NCSC and RDI under Cyberbeveiligingswet | **In force since 15 August 2026**; Senate approved 7 July 2026; replaces the Wbni |
 | **Finland** | Traficom and sectoral authorities under Kyberturvallisuuslaki | In force since 8 April 2025 |
-| **Poland** | NASK CSIRT / GOV / MON depending on sector under KSC2 | In force since 3 April 2026; Constitutional Court review pending; personal liability for management |
+| **Poland** | NASK CSIRT / GOV / MON depending on sector under KSC2 | In force since 3 April 2026; Constitutional Tribunal review pending; personal liability for management |
 
 For cloud providers serving multiple EU markets, the matrix of national supervisors and incident-reporting destinations is the operational reality. The substantive supply-chain obligation under Article 21 is uniform; the procedural plumbing varies.
 
@@ -148,7 +148,7 @@ For cloud providers serving multiple EU markets, the matrix of national supervis
 
 For a cloud provider serving a customer that is simultaneously a financial entity (under DORA), a personal-data-processing controller (under GDPR), and an essential entity (under NIS2):
 
-- **DORA** governs the financial-services-specific obligations including the 24-hour classification-based reporting to financial supervisors.
+- **DORA** governs the financial-services-specific obligations, including reporting to financial supervisors within four hours of classifying an incident as major — not the 24 hours often quoted, which is a backstop measured from awareness.
 - **GDPR Article 28** governs the personal-data processing relationship and the 72-hour breach notification to data protection authorities.
 - **NIS2** governs the operational resilience obligations and the 24-hour/72-hour/1-month reporting to national cybersecurity competent authorities.
 

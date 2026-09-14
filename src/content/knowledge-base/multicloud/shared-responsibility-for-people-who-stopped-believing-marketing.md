@@ -3,7 +3,7 @@ title: "Shared Responsibility — For People Who Stopped Believing the Marketing
 category: multicloud
 tags: ["Azure", "OCI", "Security", "Shared Responsibility", "Compliance"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 12
 level: beginner
 excerpt: "The shared responsibility chart is tidy on a slide. In production it falls apart. Managed never means hands-off. What stays on you — every service, every time."
@@ -13,12 +13,12 @@ references:
     description: "Microsoft's breakdown of which security responsibilities belong to the provider versus the customer at each service model layer — the reference document this article interrogates and extends."
     domain: "learn.microsoft.com"
   - title: "OCI shared security responsibility model"
-    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/shared_responsibility.htm"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/security_overview.htm"
     description: "Oracle's equivalent shared responsibility breakdown for OCI — comparing it with Azure's version reveals how the boundary shifts differently across service tiers on each cloud."
     domain: "docs.oracle.com"
   - title: "Microsoft Cloud Security Benchmark"
     url: "https://learn.microsoft.com/en-us/security/benchmark/azure/introduction"
-    description: "Microsoft's security control framework mapped to Azure services — the operational companion to shared responsibility that defines what \"customer responsibility\" actually means in practice for each control domain."
+    description: "Microsoft's security control framework mapped to Azure services. Further reading rather than a source for this article: it is where the responsibility split below turns into named controls."
     domain: "learn.microsoft.com"
   - title: "Shared responsibility for cloud reliability — Azure"
     url: "https://learn.microsoft.com/en-us/azure/reliability/concept-shared-responsibility"
@@ -120,6 +120,8 @@ A few things SLAs commonly do *not* cover:
 - Issues during planned maintenance windows. Maintenance time is excluded from uptime calculations.
 - Issues with services in preview. Almost every provider's SLA explicitly excludes preview services.
 - Cascading effects. The platform SLA covers the platform. Downstream services that depended on it are not the platform's problem.
+
+Credits are also **not automatic**. Oracle states plainly that service credits are "the exclusive remedy" and that "we require customers to file for the SLA claim by contacting their account manager and providing the supporting evidence of the SLA breach". Nobody is monitoring your uptime on your behalf and refunding you: detecting the breach, evidencing it and claiming within the window is your job, which is the practical reason most breached SLAs are never actually paid out.
 
 The credit if a real SLA violation occurs is typically 10–25% of the bill for the affected service for the affected period, capped. It is not "we pay your damages." It is a partial refund of the spend on the broken thing.
 

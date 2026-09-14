@@ -3,7 +3,7 @@ title: "Documentation, the CCoE, and Why Both Decay Faster Than You Think"
 category: multicloud
 tags: ["Azure", "OCI", "Documentation", "CCoE", "ADR"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 11
 level: intermediate
 excerpt: "Documentation rots. CCoEs drift to meetings. The fix is treating docs as a maintained product and the CCoE as an enabling team with a real charter."
@@ -14,7 +14,7 @@ references:
     domain: "learn.microsoft.com"
   - title: "Diátaxis — a documentation framework"
     url: "https://diataxis.fr/"
-    description: "A widely-adopted framework for structuring technical documentation into four distinct types (tutorials, how-tos, reference, explanation) — the foundation for writing docs that resist decay."
+    description: "A widely-adopted framework for structuring technical documentation into four distinct types (tutorials, how-tos, reference, explanation). Further reading rather than a source: the categories below are this article’s own, aimed at platform teams rather than product docs — the foundation for writing docs that resist decay."
     domain: "diataxis.fr"
   - title: "Lightweight Architecture Decision Records — Thoughtworks Radar"
     url: "https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records"
@@ -30,7 +30,7 @@ Neither failure mode is inevitable. Both require treating these as maintained ca
 
 Cloud documentation breaks into five categories. They have different audiences, different lifecycles, and different decay rates.
 
-**Architecture decision records (ADRs).** Long-lived, narrative documents that capture a decision and its context: why we chose Azure over GCP for this workload, why we picked one VPC topology over another, why we are using OCI Autonomous Database despite the lock-in. ADRs should be treated as append-only decision records; when decisions change, new ADRs supersede prior ones rather than rewriting history. Decay rate: low, but the *applicability* fades as the world changes.
+**Architecture decision records (ADRs).** Long-lived, narrative documents that capture a decision and its context: why we chose Azure over GCP for this workload, why we picked one VPC topology over another, why we are using OCI Autonomous AI Database despite the lock-in. ADRs should be treated as append-only decision records; when decisions change, new ADRs supersede prior ones rather than rewriting history. Decay rate: low, but the *applicability* fades as the world changes.
 
 **Runbooks.** Step-by-step procedures for operational tasks: how to rotate a key, how to recover from a regional failover, how to onboard a new workload. High-decay because the underlying procedures change as services evolve. Should be tested regularly and updated when they fail.
 

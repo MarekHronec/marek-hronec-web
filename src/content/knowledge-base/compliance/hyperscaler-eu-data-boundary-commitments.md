@@ -3,7 +3,7 @@ title: "Hyperscaler EU Data Boundary Commitments — What They Actually Mean"
 category: compliance
 tags: ["EU Data Boundary", "Hyperscaler", "Data Residency", "Sovereignty", "Compliance", "Data Security", "Vendor"]
 date: 2026-05-10
-updated: 2026-05-16
+updated: 2026-09-13
 readTime: 11
 level: intermediate
 excerpt: "Microsoft EU Data Boundary, AWS European Sovereign Cloud, Google Workspace EU Data Boundary. Three different commitments, three different scopes, three different things being promised. This article unpacks what each actually covers, what each excludes, and how to read the technical small print."
@@ -17,7 +17,7 @@ references:
     description: "AWS's Digital Sovereignty Pledge — the commitment framework that underlies the European Sovereign Cloud and customer-controlled sovereignty features on existing regions."
     domain: "aws.amazon.com"
   - title: "Google Workspace EU Data Boundary"
-    url: "https://workspace.google.com/learn-more/eu-data-boundary/"
+    url: "https://workspace.google.com/products/admin/data-regions/"
     description: "Google Workspace's EU Data Boundary commitment — covering customer data location for in-scope Workspace services."
     domain: "workspace.google.com"
   - title: "Google Sovereign Controls"
@@ -83,9 +83,9 @@ AWS handles the question differently — through the **Digital Sovereignty Pledg
 
 The Pledge is less about pure data location and more about **customer-controlled sovereignty**: even when AWS is the operator, the customer retains technical controls (especially encryption key custody) that limit AWS's access to plaintext data.
 
-For data location specifically, AWS regions in Europe (Frankfurt, Ireland, London, Paris, Stockholm, Milan, Zurich, Spain) have always been EU-located. Customer data stored in an EU region stays in that region by default — global replication is an opt-in feature, not a default.
+For data location specifically, AWS regions in Europe (Frankfurt, Ireland, Paris, Stockholm, Milan, Spain) have always been EU-located. Two of AWS’s European regions are **not** in the EU at all: London is in the United Kingdom and Zurich is in Switzerland, both third countries for transfer purposes. Customer data stored in an EU region stays in that region by default — global replication is an opt-in feature, not a default.
 
-The **AWS European Sovereign Cloud** is a different proposition: a dedicated region with EU-resident operations under EU law, structurally separated from AWS's global infrastructure. Targeted for Brandenburg, Germany. Under construction as of mid-2026; not yet operational.
+The **AWS European Sovereign Cloud** is a different proposition: a dedicated region with EU-resident operations under EU law, structurally separated from AWS's global infrastructure. Its first region is in Brandenburg, Germany, and it has been **generally available since January 2026**. AWS has committed EUR 7.8 billion to it through 2040.
 
 ## Google Workspace and Google Cloud
 
@@ -114,7 +114,7 @@ The hyperscaler EU Data Boundary commitments share important limitations:
 
 **Foreign-law access** is not addressed by data location. A US-headquartered hyperscaler remains subject to US legal process (CLOUD Act, FISA) regardless of where data is stored. The substantive answer to foreign-law access concerns is either ownership-based sovereignty (JVs, EU-native operators) or strong customer-controlled encryption with customer-held keys (so that even if the hyperscaler is compelled to provide data, plaintext is not accessible without the customer's cooperation).
 
-**Sovereign certification** under the strictest national frameworks (SecNumCloud) is not automatic. EU Data Boundary commitments do not satisfy SecNumCloud's ownership-and-immunity requirements. They may satisfy other frameworks (ENS High, ACN QC2, BSI C5 with EU-localised configuration) but the specifics depend on the framework.
+**Sovereign certification** under the strictest national frameworks (SecNumCloud) is not automatic. EU Data Boundary commitments do not satisfy SecNumCloud's ownership-and-immunity requirements. They may satisfy other frameworks (ENS Alta, ACN QC2, BSI C5 with EU-localised configuration) but the specifics depend on the framework.
 
 **Service feature parity** with global mainline regions is generally maintained, but some features depend on global infrastructure (anti-abuse, certain ML services). These are usually documented as exclusions.
 
@@ -184,7 +184,7 @@ For Slovak [KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-clou
 
 - EU Data Boundary commitments are about **data location** — where data is stored and processed. They are not about ownership-based sovereignty.
 - **Microsoft EU Data Boundary** is the most clearly documented and most operationally mature. Phased rollout completed across Customer Data, Pseudonymous Personal Data, and Professional Services Data.
-- **AWS Digital Sovereignty Pledge** for mainline regions focuses on customer-controlled sovereignty (encryption keys, restricted access, dedicated local zones). The **AWS European Sovereign Cloud** is a separate dedicated region under construction.
+- **AWS Digital Sovereignty Pledge** for mainline regions focuses on customer-controlled sovereignty (encryption keys, restricted access, dedicated local zones). The **AWS European Sovereign Cloud** is a separate dedicated cloud, **generally available since January 2026** from its first region in Brandenburg.
 - **Google Workspace EU Data Boundary** covers customer data in Workspace services. **Google Cloud Sovereign Controls** is a configurable portfolio rather than a single commitment.
 - All three commitments share limitations: they do not address foreign-law access (CLOUD Act, FISA), they do not automatically satisfy SecNumCloud-style sovereignty requirements, and they may have documented exclusions for specific service features.
 - For sovereignty above EU Data Boundary, the practical pattern is **EU mainline + customer-held keys** (BYOK / HYOK / XKS / Client-side Encryption) addressing most concerns short of ownership-based foreign-law immunity.

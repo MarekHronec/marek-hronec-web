@@ -3,9 +3,19 @@ title: "Run a Recovery Exercise — Failover, Validation and Safe Failback"
 category: multicloud
 tags: ["Resilience", "Disaster Recovery", "Azure", "OCI"]
 date: 2026-09-11
+updated: 2026-09-14
 readTime: 4
 level: intermediate
 excerpt: "A practical exercise record for restoring the business operation, checking data and returning safely after a regional outage."
+references:
+  - title: "Azure Well-Architected — disaster recovery"
+    url: "https://learn.microsoft.com/en-us/azure/well-architected/reliability/disaster-recovery"
+    description: "Microsoft's guidance on documented plans, named responsibilities and regular drills — the practice this article argues most teams skip."
+    domain: "learn.microsoft.com"
+  - title: "OCI Full Stack Disaster Recovery — terminology"
+    url: "https://docs.oracle.com/en/cloud/iaas/disaster-recovery/cssgm/disaster-recovery-terminology.html"
+    description: "Oracle's definitions of switchover, failover and DR drill, which distinguish a planned transition from an unplanned one and from a rehearsal against a replica stack."
+    domain: "docs.oracle.com"
 ---
 
 ## Test a named failure and a named operation

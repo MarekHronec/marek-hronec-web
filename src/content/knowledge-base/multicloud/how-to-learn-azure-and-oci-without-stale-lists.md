@@ -3,10 +3,10 @@ title: "How to Learn Azure and OCI Without Chasing Expiring Certifications"
 category: multicloud
 tags: ["Azure", "OCI", "Learning", "Certifications", "Training"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 11
 level: beginner
-excerpt: "Most cloud training is free if you know where to look. Certification names expire in 18–24 months. The durable approach: learn by role track, not by exam code."
+excerpt: "Most cloud training is free if you know where to look. Renewal cadence differs by vendor: Microsoft annually, Oracle and the CNCF roughly every two years, Azure fundamentals never. The durable approach: learn by role track, not by exam code."
 references:
   - title: "Microsoft Learn"
     url: "https://learn.microsoft.com/en-us/training/"
@@ -86,7 +86,7 @@ For many professionals, a balanced baseline looks like this:
 - Hold one Foundations-level certification on each cloud you work with. This is cheap, fast, and signals breadth.
 - Hold a vendor-neutral certification (CKA, CKS, FOCUS) where relevant. This signals durable, cloud-portable skill.
 - Hold one Associate or Professional-level certification in your primary cloud. This is the depth signal.
-- Refresh roughly every two years, or when the certification you hold gets retired (which is the more common trigger).
+- Renewal cadence differs by vendor, so do not assume one rhythm. **Microsoft is annual**: role-based certifications expire after a year and are renewed free online in a six-month window, which extends them a further year. Fundamentals-level ones do not expire at all. **Oracle and the CNCF Kubernetes certifications run on roughly two years.** In practice the more common trigger for redoing something is the certification being retired rather than the clock running out.
 
 Going deeper than this is fine if you enjoy exams. It does not move the career needle much.
 
@@ -100,7 +100,7 @@ Reading and certs build vocabulary. Building things builds skill. The gap betwee
 
 Some places to actually build:
 
-**A free-tier or always-free account on each cloud.** OCI's Always Free tier is genuinely useful — two AMD VMs, an Autonomous Database, object storage, and a few other services, kept indefinitely. Azure's free tier is more time-bound (12 months on most services) but credible for getting started. Use them.
+**A free-tier or always-free account on each cloud.** OCI's Always Free tier is genuinely useful — two AMD VMs, an Autonomous AI Database, object storage, and a few other services, kept indefinitely. Azure's free tier is more time-bound (12 months on most services) but credible for getting started. Use them.
 
 **The Cloud Resume Challenge** is a project-based path that walks through deploying a multi-service application end-to-end: static site, API, database, CI/CD, monitoring. Free, vendor-agnostic versions exist for most clouds. Worth the time even if you never publish the resume.
 
@@ -142,12 +142,12 @@ The training plan falls out of the matrix, not the other way around. You train a
 
 A simple competency matrix template:
 
-```
-                 | Person A | Person B | Person C | Person D
-Network Design   | Expert   | Working  | Aware    | Working
-IaC (Terraform)  | Expert   | Expert   | Working  | Aware
-Kubernetes       | Working  | Aware    | Expert   | Aware
-IAM Architecture | Working  | Aware    | Aware    | Expert
+```text
+                 | Person A   | Person B   | Person C   | Person D
+Network Design   | Expert     | Working    | Aware      | Proficient
+IaC (Terraform)  | Expert     | Proficient | Working    | Aware
+Kubernetes       | Working    | Aware      | Expert     | Aware
+IAM Architecture | Proficient | Aware      | Aware      | Expert
 Cost / FinOps    | Aware    | Aware    | Aware    | Working
 Observability    | Working  | Working  | Working  | Working
 ```

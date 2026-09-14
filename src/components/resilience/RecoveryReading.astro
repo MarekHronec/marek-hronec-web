@@ -9,6 +9,7 @@ const sources=[
   ['Recovery planning and exercises','https://learn.microsoft.com/en-us/azure/well-architected/reliability/disaster-recovery'],
   ['Azure region pairing limitations','https://learn.microsoft.com/en-us/azure/reliability/regions-paired'],
   ['OCI regions, availability and fault domains','https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm'],
+  ['Replication is not backup: deletion propagates','https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup'],
 ];
 ---
 <section class="recovery-reading" aria-labelledby="recovery-reading-title">
@@ -17,7 +18,7 @@ const sources=[
   <ul role="list">{reading.map(a=><li><a href={base+'/knowledge-base/'+a.id}>{a.data.title} &rarr;</a><p>{a.data.excerpt}</p></li>)}</ul>
   <aside>
     <h3>Sources &amp; method</h3>
-    <p>Reviewed 11 September 2026. The illustrations simplify failure scenarios; the planner translates your stated targets into questions and priorities. It does not calculate achieved RTO, RPO or availability.</p>
+    <p>Reviewed 14 September 2026. The illustrations simplify failure scenarios; the planner translates your stated targets into questions and priorities. It does not calculate achieved RTO, RPO or availability.</p>
     <ul role="list">{sources.map(([label,href])=><li><a href={href}>{label} &rarr;</a></li>)}</ul>
   </aside>
 </section>

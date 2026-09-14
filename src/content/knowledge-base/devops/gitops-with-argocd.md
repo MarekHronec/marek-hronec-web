@@ -3,21 +3,25 @@ title: "GitOps at Scale with Argo CD and Multi-Cluster Kubernetes"
 category: devops
 tags: ["GitOps", "Argo CD", "Kubernetes", "Progressive Delivery", "Azure", "OCI"]
 date: 2024-11-15
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 9
 level: intermediate
 excerpt: "Production-grade GitOps with Argo CD across multiple Kubernetes clusters. Progressive delivery, drift detection, and the Azure vs OCI platform choice."
 references:
   - title: "Argo CD documentation"
     url: "https://argo-cd.readthedocs.io/en/stable/"
-    description: "Complete reference for Argo CD: application definitions, ApplicationSet, RBAC, SSO integration, multi-cluster patterns, and progressive delivery with Argo Rollouts."
+    description: "Complete reference for Argo CD: application definitions, ApplicationSet generators, multi-cluster patterns, and the reconciliation and metrics behaviour this article relies on."
     domain: "argo-cd.readthedocs.io"
+  - title: "Argo Rollouts documentation"
+    url: "https://argo-rollouts.readthedocs.io/en/stable/"
+    description: "Argo Rollouts is a separate project from Argo CD, with its own controller and CRDs. This is the reference for the canary and blue-green strategies used below — the Argo CD docs do not cover them."
+    domain: "argo-rollouts.readthedocs.io"
   - title: "OpenGitOps — GitOps principles"
     url: "https://opengitops.dev/"
     description: "The CNCF working group's vendor-neutral definition of GitOps: the four principles (declarative, versioned, pulled, continuously reconciled) that distinguish GitOps from generic CI/CD."
     domain: "opengitops.dev"
   - title: "Flux CD documentation"
-    url: "https://fluxcd.io/docs/"
+    url: "https://fluxcd.io/flux/"
     description: "Documentation for Flux, the CNCF-graduated GitOps toolkit offering modular controllers for Helm, Kustomize, and image automation — relevant for Azure Arc-integrated deployments."
     domain: "fluxcd.io"
   - title: "GitOps with Flux on Azure Arc-enabled Kubernetes"
@@ -94,7 +98,15 @@ Enabling automated sync with pruning on production clusters without a proper pro
 
 ## Drift Detection and Alerting
 
-Argo CD's health status surfaces drift in real time. Integrate with your alerting stack by exposing the `argocd_app_sync_status` Prometheus metric and alerting on `OutOfSync` states persisting beyond your SLA threshold.
+Argo CD surfaces drift on a timer, not in real time. It polls Git every three minutes by default — 120 seconds plus up to 60 seconds of jitter, tunable through `timeout.reconciliation` in the `argocd-cm` ConfigMap, and set to `0` to disable polling and rely on webhooks alone. Size your alert thresholds against that interval rather than assuming instant detection.
+
+There is no `argocd_app_sync_status` metric. Sync state is a **label** on the `argocd_app_info` gauge, which Argo CD documents as carrying "labels such as sync_status and health_status that reflect the application state". So the expression to alert on is:
+
+```promql
+argocd_app_info{sync_status="OutOfSync"}
+```
+
+Alert on that persisting beyond your SLA threshold.
 
 ## Multicloud factor
 
@@ -112,7 +124,7 @@ Argo CD is not the only GitOps implementation, and the platform context determin
 - Use ApplicationSet for fleet management. Individual Application objects per cluster do not scale; ApplicationSet with a cluster generator does.
 - Gate production sync behind a manual approval step. Automated sync with pruning on production without a promotion gate will delete resources on branch merges.
 - Pair Argo CD with Argo Rollouts for progressive delivery. Canary and blue-green strategies belong in the delivery pipeline, not in ad-hoc deployment scripts.
-- Alert on `argocd_app_sync_status` showing `OutOfSync` states persisting beyond your SLA threshold. Drift that is not surfaced is drift that accumulates.
+- Alert on `argocd_app_info{sync_status="OutOfSync"}` persisting beyond your SLA threshold — sync state is a label on that gauge, not a metric of its own. Remember reconciliation polls every three minutes by default. Drift that is not surfaced is drift that accumulates.
 - Document the promotion model explicitly: which branches correspond to which environments, what triggers a sync, and what a rollback looks like. GitOps makes rollback easy only when the promotion model is well-defined before an incident.
 - For Azure / AKS: evaluate the native Flux GitOps extension before adding self-managed Argo CD. For teams that need Argo CD's UI and ApplicationSet ecosystem, self-managed Argo CD on AKS is straightforward.
 - For OCI / OKE: self-managed Argo CD works as on any Kubernetes cluster. OCI DevOps Service provides pipeline-driven deployment but is not a continuous reconciliation engine — it does not replace GitOps if continuous reconciliation is a requirement.

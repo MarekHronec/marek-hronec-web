@@ -3,7 +3,7 @@ title: "Naming Conventions That Survive Both Azure and OCI"
 category: multicloud
 tags: ["Azure", "OCI", "Naming", "Governance", "IaC"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 11
 level: beginner
 excerpt: "Names are permanent — embedded in IaC, DNS, and certificates. A bad convention is debt you pay forever. The schema that survives Azure and OCI at real scale."
@@ -44,7 +44,7 @@ The cardinal rule, written above your monitor: **anything that might change goes
 
 Microsoft's Cloud Adoption Framework recommends a pattern roughly like:
 
-```
+```text
 <resource-type-abbrev>-<workload>-<environment>-<region-abbrev>-<instance>
 ```
 
@@ -69,7 +69,7 @@ The 15-character Windows hostname limit is where most schemas explode. If the co
 
 For globally-unique resources (storage, Key Vault, ACR, App Service, Cosmos DB), the global namespace is contested. Common workload names like `dataprod` are long gone. The defensive pattern is to add an org prefix and sometimes a short hash:
 
-```
+```text
 # A storage account that won't collide
 stcontosopaymentsprodweu001
 # Or with a deterministic short hash for guaranteed uniqueness
@@ -82,7 +82,7 @@ OCI is forgiving about display names because most resources are addressed by OCI
 
 - **Object Storage buckets** must be unique within the tenancy's Object Storage namespace.
 - **Compartment names** must be unique within their parent compartment, with a maximum of 100 characters and a restricted character set.
-- **Autonomous Database names and database identifiers** have service-specific constraints; validate them separately in IaC.
+- **Autonomous AI Database names and database identifiers** have service-specific constraints; validate them separately in IaC.
 
 OCI lets you reuse display names more freely than Azure, which is convenient but dangerous: two resources with the same display name in different regions or compartments are valid, but painful in dashboards unless your convention disambiguates them.
 
@@ -97,7 +97,7 @@ What OCI does *not* give you: a CAF-equivalent abbreviation list. Oracle has not
 | Block volume | `bv-` |
 | Object Storage bucket | `bkt-` |
 | Vault | `vlt-` |
-| Autonomous DB | `adb-` |
+| Autonomous AI DB | `adb-` |
 | OKE cluster | `oke-` |
 | Functions application | `fn-` |
 
@@ -107,13 +107,13 @@ The point is not which abbreviations you pick. The point is that they exist and 
 
 After watching this fail at enough organisations, here is the pattern that survives:
 
-```
+```text
 <cloud-prefix>-<resource-type>-<workload>-<env>-<region>-<instance>
 ```
 
 Examples:
 
-```
+```text
 az-rg-payments-prod-weu-001
 az-vnet-payments-prod-weu-001
 az-kv-payments-prod-weu-001
@@ -123,7 +123,7 @@ oci-vlt-payments-prod-fra-001
 
 For constrained resources, drop the hyphens but keep the order:
 
-```
+```text
 azstpaymentsprodweu001
 ocibktpaymentsprodfra001
 ```
@@ -226,7 +226,7 @@ Microsoft's CAF naming pages look clean in a slide deck and break the moment you
 
 ## Multicloud factor
 
-A naming convention is multicloud-portable if and only if every component can be expressed identically on both sides. The schema above does that, with one caveat: regions have different abbreviations on Azure and OCI, and you do not get to harmonise them. Microsoft uses `weu` for West Europe, `eus` for East US. OCI uses `fra` for Frankfurt (which roughly maps to West Europe), `iad` for Ashburn (which roughly maps to East US). Do not try to invent a unified region code; you will end up with something neither cloud's tooling recognises. Use the native abbreviations and accept that "this is in `weu` or `fra`" tells you which cloud you are looking at, which is a feature.
+A naming convention is multicloud-portable if and only if every component can be expressed identically on both sides. The schema above does that, with one caveat: regions have different abbreviations on Azure and OCI, and you do not get to harmonise them. Note these are community convention, not a Microsoft standard: the Cloud Adoption Framework publishes an abbreviation table for resource types but none for regions, and its own naming examples use the full region id (`westus`, `eastus2`, `westeu`). Pick a form and apply it consistently. OCI uses `fra` for Frankfurt (which roughly maps to West Europe), `iad` for Ashburn (which roughly maps to East US). Do not try to invent a unified region code; you will end up with something neither cloud's tooling recognises. Use the native abbreviations and accept that "this is in `weu` or `fra`" tells you which cloud you are looking at, which is a feature.
 
 The non-negotiables for multicloud naming:
 

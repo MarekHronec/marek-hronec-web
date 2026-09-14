@@ -3,7 +3,7 @@ title: "GDPR Article 28 and the EU Cloud Code of Conduct — What They Actually 
 category: compliance
 tags: ["GDPR", "EU Cloud CoC", "Article 28", "Compliance", "Data Security", "Cross-Cutting", "Privacy"]
 date: 2026-04-09
-updated: 2026-04-09
+updated: 2026-09-13
 readTime: 10
 level: advanced
 excerpt: "GDPR Article 28 is the operative article for every controller-processor cloud relationship. The EU Cloud Code of Conduct is the most pragmatic instrument for demonstrating Article 28 compliance at scale. This article walks through what Article 28 actually requires and what the CoC actually demonstrates."
@@ -25,12 +25,12 @@ references:
     description: "SCOPE Europe srl, the Brussels-based monitoring body accredited by the Belgian Data Protection Authority in May 2021 to operate the EU Cloud CoC."
     domain: "scope-europe.eu"
   - title: "EDPB — Code of Conduct Register"
-    url: "https://www.edpb.europa.eu/our-work-tools/accountability-tools/register-code-of-conduct/2021/eu-cloud-code-conduct_en"
+    url: "https://www.edpb.europa.eu/registers/register-of-consistency-and-of-accountability-tools/codes-of-conduct_en?page=2"
     description: "The EDPB's register entry for the EU Cloud Code of Conduct, including the formal approval documentation."
     domain: "edpb.europa.eu"
 ---
 
-GDPR Article 28 is the operative article for every controller-processor cloud relationship in the EU. Every public administration article in this series references it, every national framework demands evidence of alignment with it, and every cloud provider's procurement conversation eventually arrives at it. The **EU Cloud Code of Conduct** is the most pragmatic instrument for demonstrating Article 28 compliance at scale — and it is the only EU-wide cloud compliance instrument currently in widespread production use. This article walks through what Article 28 actually requires, what the CoC actually demonstrates, and where the limits sit.
+GDPR Article 28 is the operative article for every controller-processor cloud relationship in the EU. Every public administration article in this series references it, every national framework demands evidence of alignment with it, and every cloud provider's procurement conversation eventually arrives at it. The **EU Cloud Code of Conduct** is the most pragmatic instrument for demonstrating Article 28 compliance at scale — and it is the most widely used EU-wide cloud compliance instrument in production today — though not the only one, since the CISPE code is a second pan-European Article 40 cloud code with its own adherents, AWS among them. This article walks through what Article 28 actually requires, what the CoC actually demonstrates, and where the limits sit.
 
 ## Article 28 — what it actually requires
 
@@ -107,13 +107,14 @@ For most large cloud providers, **Level 2** is the operational target. It maps e
 
 ## Who adheres and where to find it
 
-EU Cloud CoC adoption is broad among major cloud providers. Public adherents include:
+Adoption among major cloud providers is wide but not universal. Public adherents include:
 
-- **AWS** — Level 2.
 - **Microsoft Azure** — Level 2 (Verification ID 2021LVL02SCOPE116).
 - **Google Cloud** — Level 2.
 - **Google Workspace** — Level 2.
 - **Alibaba Cloud** — multiple services.
+
+**AWS is not on this register.** It adheres to a different Article 40 instrument, the **CISPE Data Protection Code of Conduct**, with services verified by EY CertifyPoint under CNIL accreditation. If a procurement question asks whether AWS adheres to "the cloud code of conduct", the accurate answer is that it adheres to CISPE's, not SCOPE Europe's — and pointing at the wrong register is a fast way to lose credibility in a supplier assessment.
 - **IBM Cloud** — multiple services.
 - **Oracle** — multiple services.
 - **Salesforce** — multiple services.
@@ -143,7 +144,7 @@ The EU Cloud CoC includes a **Third Country Transfer Module** — a supplementar
 - Provides additional safeguards aligned with the EDPB's recommendations on transfer impact assessments.
 - Addresses the Schrems II decision's requirements on supplementary measures.
 
-The transfer module is the cloud-industry's answer to the post-Schrems-II uncertainty around standard contractual clauses (SCCs). It provides a structured framework for assessing and documenting transfer risks specific to cloud services. As of mid-2026, transfer-module adherence is increasing but is not yet as broadly adopted as base CoC adherence.
+The transfer module is intended as the cloud industry's answer to post-Schrems-II uncertainty around standard contractual clauses. **It is not yet in force, and nobody adheres to it.** SCOPE Europe describes it as still in its development phase; it becomes an Article 46 transfer safeguard only once it has a positive EDPB opinion, approval from the lead supervisory authority, and General Validity granted by the Commission. Treat it as a signal of direction, not as a transfer mechanism you can rely on today.
 
 ## What the EU Cloud CoC does *not* demonstrate
 
@@ -196,7 +197,7 @@ For Slovak organisations, GDPR is supplemented by **Act 18/2018 Z. z.** on perso
 - The EU Cloud Code of Conduct is the **GDPR Article 40 code** specifically for cloud services, approved by the Belgian DPA on 20 May 2021. The most pragmatic instrument for demonstrating Article 28 compliance at scale.
 - Three adherence levels differ by evidence type: Level 1 self-declared, Level 2 third-party validated (typical for hyperscalers), Level 3 third-party assured.
 - Monitoring body: **SCOPE Europe srl**, Brussels. Accredited by the Belgian DPA.
-- Adopted by AWS, Microsoft Azure, Google Cloud, IBM, Oracle, SAP, Salesforce, Alibaba, and many others. Register at `eucoc.cloud`; co-published in CSA STAR Registry since 2024.
+- Adopted by Microsoft Azure, Google Cloud, IBM, Oracle, SAP, Salesforce, Alibaba, and many others — but **not AWS**, which adheres to the CISPE code instead. Register at `eucoc.cloud`; co-published in CSA STAR Registry since 2024.
 - The **Third Country Transfer Module** addresses Chapter V transfer obligations post-Schrems II. Layer on top of base CoC adherence.
 - The CoC is a complementary instrument. It does not replace the Article 28 contract, the underlying operational controls, or sector-specific compliance (DORA, NIS2).
 - Operational programme: ISO 27018 + ISO 27701 → SOC 2 → CoC Level 2 declaration. The CoC is the publication layer; the operational substance is the ISO and SOC 2 work.

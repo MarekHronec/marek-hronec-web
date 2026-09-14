@@ -3,7 +3,7 @@ title: "Landing Zones — What They Actually Solve, and the Honest Catch"
 category: multicloud
 tags: ["Azure", "OCI", "Landing Zones", "Governance", "CAF"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 14
 level: intermediate
 excerpt: "The most useful and most overengineered concept in cloud adoption. What to take from reference architectures, what to skip, and the real cost of retrofitting."
@@ -17,7 +17,7 @@ references:
     description: "The eight design areas — billing, identity, management group hierarchy, network topology, security, management, governance, and platform automation — that each ALZ deployment must address."
     domain: "learn.microsoft.com"
   - title: "OCI Core Landing Zone — GitHub"
-    url: "https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart"
+    url: "https://github.com/oci-landing-zones/terraform-oci-core-landingzone"
     description: "Oracle's reference implementation for the OCI Core Landing Zone, evolving from the original CIS Landing Zone Quick Start — compartment structure, security services, network patterns, and Terraform source."
     domain: "github.com"
   - title: "Enterprise Azure Policy as Code (EPAC)"
@@ -53,15 +53,17 @@ What landing zones do **not** give you, regardless of vendor marketing:
 
 Microsoft's recommended Azure landing zone has a specific structure that has become the de facto standard:
 
-```
+```text
 Tenant Root MG
 ├── Platform MG
 │   ├── Identity (subscription)
 │   ├── Connectivity (subscription)
-│   └── Management (subscription)
+│   ├── Management (subscription)
+│   └── Security (subscription — Sentinel, SIEM tooling)
 ├── Landing Zones MG
 │   ├── Corp MG (subscriptions for connected internal workloads)
-│   └── Online MG (subscriptions for internet-facing workloads)
+│   ├── Online MG (subscriptions for internet-facing workloads)
+│   └── Local MG (workloads on Azure Local clusters)
 ├── Sandboxes MG
 │   └── (sandbox subscriptions)
 └── Decommissioned MG
@@ -74,11 +76,11 @@ The current recommended deployment path is the **Azure Landing Zones IaC Acceler
 
 ## The OCI shape
 
-Oracle's equivalent has been through some name changes that are worth tracking. The original "CIS Landing Zone Quick Start Template" was retired in May 2025. Its successor is **OCI Core Landing Zone**, which evolves the same concept. Current OCI Core Landing Zone materials target CIS OCI Foundations Benchmark v3.0, while some older documentation still references v2.0; verify the benchmark version in the release you deploy.
+Oracle's equivalent has been through some name changes that are worth tracking. The original "CIS Landing Zone Quick Start Template" was retired in May 2025. Its successor is **OCI Core Landing Zone**, which evolves the same concept. Oracle’s own Core Landing Zone documentation states that it applies **CIS OCI Foundations Benchmark v2.0**; verify the benchmark version in the release you deploy rather than assuming the newest published benchmark.
 
 A typical OCI Core Landing Zone shape:
 
-```
+```text
 Root Compartment (Tenancy)
 ├── Network compartment       (VCNs, DRGs, gateways)
 ├── Security compartment      (Vault, Logging, Cloud Guard, scanning)
@@ -101,7 +103,7 @@ This is the part the vendor docs are diplomatic about, so here it is plainly.
 | **Small (1–10 subscriptions / compartments)** | Avoid full ALZ unless governance complexity already justifies it. Use AVM modules to build the bits you need (subscription vending, baseline policies). Maybe two MG levels. | OCI Core Landing Zone with minimal configuration. The standard patterns work for many small-to-mid orgs. |
 | **Mid-size (10–100 subscriptions / compartments)** | IaC accelerator with AVM modules. Trim the management group hierarchy if it doesn't fit. | OCI Core Landing Zone, customised. Hub-and-spoke if you have multi-VCN requirements. |
 | **Enterprise (100+ subscriptions, multiple BUs)** | Full ALZ with EPAC for policy management. Customised MG hierarchy with BU separation. | Full Core Landing Zone, possibly with Operating Entities Landing Zone for multi-stack deployments across BUs. |
-| **Regulated / sovereignty-heavy** | ALZ + EPAC + Microsoft Cloud for Sovereignty controls + sovereign region restrictions. | Zero Trust Landing Zone + sovereign realm + Access Governance. |
+| **Regulated / sovereignty-heavy** | ALZ + EPAC + Microsoft Sovereign Cloud controls + sovereign region restrictions. | Zero Trust Landing Zone + sovereign realm + Access Governance. |
 
 The trap most mid-size orgs fall into: they read the enterprise reference architecture, build the enterprise version, and discover three quarters in that they have a six-level management group hierarchy with one subscription in each leaf. That is not governance; that is overhead. Right-size for your *current* scale plus 2x headroom, not for the scale described in the reference architecture.
 

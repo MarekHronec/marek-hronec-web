@@ -3,7 +3,7 @@ title: "Slovakia — KsVC: How MIRRI Decides Which Cloud Services the Government
 category: compliance
 tags: ["Slovakia", "KsVC", "MIRRI", "NBÚ", "NIS2", "Compliance", "Data Security"]
 date: 2026-04-26
-updated: 2026-04-26
+updated: 2026-09-12
 readTime: 12
 level: intermediate
 excerpt: "The Slovak government cloud catalogue is mandatory for the public sector and tied to the national cybersecurity audit framework. As of mid-2026, it is also operationally out of step with the NIS2-era risk-based regime — the methodology still classifies by U1–U4 while the underlying law has moved to risk analysis."
@@ -64,8 +64,8 @@ KsVC sits at the intersection of two legal regimes that have moved at different 
 **The public-administration IT regime** (the proximate legal anchor for KsVC):
 
 - **Act 95/2019 Z. z.** on IT in Public Administration — `§8 ods. 1 písm. c)` grants MIRRI the power to issue methodological guidelines; `§24a ods. 3 a 4` mandates the registry of government cloud services.
-- **Act 305/2013 Z. z.** on eGovernment — `§10a` makes catalogue entry a precondition for a cloud service to be used in eGovernment workflows.
-- **Vyhláška ÚPVII 179/2020 Z. z.** — categorisation method and content of security measures for public-sector IT. Operates the older three-category classification (I/II/III). Reportedly deprecated in practice by NIS2-era reforms but **a formal repeal could not be verified** as of mid-2026.
+- **Act 95/2019 Z. z.** on public-administration IT — **`§24a ods. 3 a 4`** (*Vládny cloud*) is the catalogue's statutory anchor and the basis for MIRRI's powers to suspend or remove an entry. MIRRI's methodology cites this provision twice as its own basis. (Act 305/2013 `§10a` is sometimes quoted here; it governs the provision of state-held data to persons and has nothing to do with the cloud catalogue.)
+- **Vyhláška ÚPVII 179/2020 Z. z.** — categorisation method and content of security measures for public-sector IT. Operates the older three-category classification (I/II/III). **Now formally repealed**: vyhláška MIRRI SR č. 184/2026 Z. z. of 1 July 2026 states “Zrušuje sa vyhláška … č. 179/2020 Z. z.” with effect from **1 January 2027**, so the two regimes run in parallel until 31 December 2026 and the successor is published. Until 184/2026 was issued, its status was unclear — widely described as deprecated in practice, with no repeal on the books.
 
 **The cybersecurity regime** (where the post-NIS2 shift happened):
 
@@ -74,6 +74,18 @@ KsVC sits at the intersection of two legal regimes that have moved at different 
 - **Vyhláška NBÚ 227/2025 Z. z.** — security measures decree, **effective 1 September 2025**. Replaces vyhláška 362/2018 Z. z. The operative language: "*všeobecné bezpečnostné opatrenia sa navrhujú, prijímajú a vykonávajú tak, aby ošetrili všetky riziká identifikované v rámci vykonanej analýzy rizík*". Paired with a separate NBÚ-issued risk-analysis methodology that establishes a unified national risk-management framework.
 - **Vyhláška NBÚ 226/2025 Z. z.** — related obligations, also effective 1 September 2025.
 - **Transitional regime**: entities registered under the old regime before 31 December 2024 may comply under either the old or the new rules until **31 December 2026**. From 1 January 2027, only vyhláška 227/2025 applies.
+
+**What replaces the categorisation, and why it matters for U1–U4.** Vyhláška MIRRI **184/2026 Z. z.**, effective **1 January 2027**, does not restate 179/2020's model — it changes the basis of categorisation. Security categories I, II and III attach to the **orgán riadenia**, the governing body, keyed to what kind of institution it is and how large (municipalities are split at 6 000 inhabitants, with separate treatment for ministries and central authorities). Measures then follow a **risk analysis** — the decree requires an evaluation of risks by the chosen method and a description of proposed measures for each identified risk, graded by severity.
+
+That is a different instrument from the one the U-scheme is built on. The U1–U4 levels come from a MIRRI *metodické usmernenie* issued under Act 95/2019 § 8 ods. 1 písm. c) — guidance, not a decree — and they are fed by a C/I/A → security-category chain that came from 179/2020. From 1 January 2027 that chain has no statutory basis: the confidentiality, integrity and availability of assets survive as **inputs to a risk analysis**, not as a lookup that yields a category.
+
+Be precise about what this does and does not mean:
+
+- **U1–U4 is still what MIRRI applies today.** The catalogue is live, the April 2025 guideline is still the published version, and a provider seeking entry is still classified this way. The scheme has not been withdrawn.
+- **Its legislative scaffolding has been replaced.** NBÚ 227/2025 already did this on the cybersecurity side from 1 September 2025; MIRRI 184/2026 does it on the public-administration IT side from 1 January 2027.
+- **MIRRI has not published bridging guidance.** Its methodological guidelines page still lists only the 11 April 2025 document, which predates both decrees and still cites the superseded vyhlášky 362/2018 and 179/2020 in its own *Legislatíva* list.
+
+The practical consequence for anyone classifying a system now: treat a U-level as a useful shorthand for the conversation with MIRRI, and treat the risk analysis as the thing that will actually have to stand up. A classification should be confirmed by the organisation's **manažér kybernetickej bezpečnosti** — a role Act 69/2018 § 20 ods. 4 písm. a) requires to be independent of IT operations and development — or by a certified *audítor kybernetickej bezpečnosti*. Nobody should be treating a derived U-level as a determination in its own right.
 
 The relationship between the two regimes is **legally distinct but practically overlapping**. KsVC operates under Act 95/2019 and Act 305/2013; the cybersecurity audit at U3/U4 levels under MIRRI methodology references Act 69/2018, which has now been substantially rewritten by the 366/2024 amendment.
 
@@ -90,20 +102,20 @@ The 366/2024 amendment expands the *cybersecurity* regulated-entity population (
 
 The MIRRI methodology continues to use a four-tier *level* model combined with the standard CIA triad. The governing rule:
 
-```
+```text
 classification of ISVS X ≤ level of cloud service Y
 ```
 
 | Level | Data type | Evaluation route under current MIRRI methodology |
 |---|---|---|
 | **U1 — Open data** | Publicly available, no confidentiality requirements | Self-assessment by the provider; MIRRI in oversight role |
-| **U2 — Regulated data** | Operational public-sector data not under special regulation | Independent evaluator; may be a MIRRI employee |
-| **U3 — Confidential / classified data** | Data under Act 215/2004, higher-sensitivity personal data | Audit by certified **Auditor of Cybersecurity** under Act 69/2018 |
-| **U4 — Highest level** | Critical infrastructure, foundational state registers, ISVS classified C3/I3/A3 | Private segment of the government cloud; cybersecurity audit with extended coverage |
+| **U2 — Confidential data** (*Dôverné dáta*) | Data needed to run public-sector IS — MIRRI's example is information required to resolve a citizen's life situation. Medium security level | Independent evaluator; may be a MIRRI employee |
+| **U3 — Regulated data** (*Regulované dáta*) | Data whose handling is governed by special legislation. High security level, covering C2I1A1 through **C3I3A3** | Audit by certified **Auditor of Cybersecurity** under Act 69/2018 |
+| **U4 — Special data** (*Špeciálne dáta*) | C3I3A3 **plus** a further condition: an entitled interest that jurisdiction rests exclusively with the Slovak Republic, with storage and processing on Slovak territory. Classified information under Act 215/2004 sits here, not at U3. Critical security level | Private segment of the government cloud; cybersecurity audit with extended coverage |
 
 For U2 and higher, **tenant-level encryption** with provider-side key custody is mandatory; for U3 and higher, customer-held HSM-based key custody is mandatory.
 
-The 80% minimum-conformity threshold for the cybersecurity audit at U3/U4 is set against the controls under Act 69/2018. With vyhláška 227/2025 now in force, the underlying control set has shifted from a static security-measures catalogue to a risk-output-based design. The MIRRI methodology has not yet been updated to reflect that change in the underlying audit reference.
+The minimum-conformity threshold for the cybersecurity audit is set against the controls under Act 69/2018. Be careful quoting a number here: the only figure MIRRI's methodology publishes is **“minimálne 90%?”**, it applies at **U4**, and the question mark is in the published PDF — MIRRI has left it open. A widely repeated 80% figure appears nowhere in that document. With vyhláška 227/2025 now in force, the underlying control set has shifted from a static security-measures catalogue to a risk-output-based design. The MIRRI methodology has not yet been updated to reflect that change in the underlying audit reference.
 
 ## Evaluation criteria
 
@@ -111,18 +123,18 @@ The reference frameworks for evaluation under the published MIRRI methodology ar
 
 - **[ISO/IEC 27001 / 27017 / 27018 / 27701](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines)** — the universal baseline; see the dedicated article for what each standard covers.
 - **ENISA Cloud Certification Scheme** — form `1C` of the application references the ENISA controls framework.
-- **Cybersecurity audit under Act 69/2018** with minimum 80% conformity for U3/U4.
+- **Cybersecurity audit under Act 69/2018**. U4 additionally requires the U3 conditions plus conformity of “minimálne 90%?” — MIRRI's own text, question mark included.
 
 The application package includes form `1A`, the self-assessment / evaluation form `1C`, and a ZIP of supporting evidence: ISO certificates, audit reports, general terms (VOP), contract templates, SLAs with measurable parameters, list of subcontractors with their classification levels.
 
-Where the regimes meet — and where the gap is most visible — is the cybersecurity audit. Until MIRRI updates the methodology, the U3/U4 audit references a control set whose underlying legal basis has shifted. Auditors performing work under Act 69/2018 (as amended by 366/2024) are now applying the risk-management regime; the MIRRI methodology has not formalised how that maps to the U3/U4 80% threshold.
+Where the regimes meet — and where the gap is most visible — is the cybersecurity audit. Until MIRRI updates the methodology, the U3/U4 audit references a control set whose underlying legal basis has shifted. Auditors performing work under Act 69/2018 (as amended by 366/2024) are now applying the risk-management regime; the MIRRI methodology has not formalised how that maps to the conformity threshold it publishes — which, as above, is "minimálne 90%?" at U4 and nothing at all for U3.
 
 ## The assessment process
 
 1. **Submission** — provider sends `1A` + `1C` + evidence ZIP via email to `cloud@mirri.gov.sk`.
 2. **Evaluation** — U1: self-assessment; U2: independent evaluator (potentially MIRRI staff); U3/U4: certified Cybersecurity Auditor under Act 69/2018.
 3. **Decision** — MIRRI issues a decision and enters the service into the catalogue.
-4. **Re-evaluation** — under `§10a ods. 4` of Act 305/2013, MIRRI calls for re-application when the service or its material parameters change.
+4. **Re-evaluation** — under `§24a ods. 4` of Act 95/2019, MIRRI calls for re-application when the service or its material parameters change.
 
 The auditor pool at U3/U4 is small and audits the entire public-sector ecosystem under Act 69/2018. With the post-NIS2 regime introducing new risk-analysis methodology, the same auditors are now applying it across regulated entities — including, implicitly, in their cloud-service audit work.
 
@@ -130,7 +142,7 @@ The auditor pool at U3/U4 is small and audits the entire public-sector ecosystem
 
 The catalogue is publicly accessible at `https://katalog.statneit.sk/?locale=sk`. It lists active entries with their levels and applicable scope.
 
-There is no fixed uniform recertification period. Periodicity is driven by:
+Entry in the catalogue is valid for **two years from the date of registration, for all four categories U1 to U4**. A provider may apply to extend no earlier than six months and no later than 60 calendar days before expiry; MIRRI notifies two months out. Let it lapse and the service must go through the whole evaluation and assessment process again, not a delta review. Within that fixed window, the practical triggers for re-work are:
 
 - **Validity of ISO certificates** submitted as evidence (ISO 27001 is typically a three-year cycle).
 - **Cybersecurity audit cycle** under Act 69/2018 — minimum every two years for operators of essential services. Under the 366/2024 amendment, this is now framed as a risk-analysis-based obligation rather than a fixed cycle for all subjects.
@@ -151,7 +163,7 @@ Key facts that remain knowable during the transition:
 
 - **The U1–U4 classification model is still in force** for KsVC purposes. The MIRRI methodology is what the catalogue process applies, even if its alignment with the new cybersecurity decree has not been formalised.
 - **The cybersecurity audit at U3/U4 references Act 69/2018 as amended**. Auditors apply the consolidated text, which means they are applying the risk-management framework even when documenting against the U3/U4 conformity threshold.
-- **Vyhláška 179/2020** (the public-administration IT categorisation decree) is reported as deprecated in NIS2 commentary but **no formal repeal has been verified**. The companion MIRRI classification guideline (`023107/2023/oSBATA-1`) is unchanged on the public page.
+- **Vyhláška 179/2020** (the public-administration IT categorisation decree) is **repealed by vyhláška 184/2026 Z. z. with effect from 1 January 2027**, so it remains operative through 31 December 2026. The companion MIRRI classification guideline (`023107/2023/oSBATA-1`) is unchanged on the public page.
 - **The risk-based design obligation under vyhláška 227/2025** applies to regulated entities in cybersecurity scope regardless of MIRRI's catalogue methodology. A CSP that is also in NIS2 essential-entities scope must operate the risk-based regime today; the MIRRI methodology gap is a procedural-alignment issue, not a substantive escape route.
 
 ## Sovereignty posture
@@ -183,7 +195,7 @@ For a CSP preparing for KsVC listing or maintaining an existing one, **design to
 - **NIS2 transposition (Act 366/2024 Z. z., effective 1 January 2025)** shifted the cybersecurity regime to risk-management. **Vyhláška NBÚ 227/2025 (effective 1 September 2025)** operationalises risk-based security measure design. **Transition period until 31 December 2026** allows dual operation.
 - The latest publicly available MIRRI cloud methodology is **revision 020775/ of 11 April 2025** — predates vyhláška 227/2025 and continues to use U1–U4. **No newer MIRRI methodology has been observed publicly as of May 2026.**
 - The gap between MIRRI methodology (static classification) and the cybersecurity regime (risk-based) is **pending operational alignment**, not a transposition failure. Design to vyhláška 227/2025 now; MIRRI's next revision will inevitably align.
-- Vyhláška 179/2020 (public-administration IT categorisation) is reported as deprecated in NIS2 commentary; **a formal repeal could not be verified.** Treat sweeping statements about its abolition with caution.
+- Vyhláška 179/2020 (public-administration IT categorisation) is **repealed by 184/2026 Z. z. from 1 January 2027** and stays in force until then. Commentary written before July 2026 describes it as deprecated with no repeal on the books; that was accurate at the time and is not any longer.
 - Sanctions remain procurement-based at the catalogue layer; NIS2 administrative sanctions (up to €10 million or 2% of global turnover) apply on top via the amended Act 69/2018.
 - The pragmatic sequence for a hyperscaler entering Slovak public sector in 2026: ISO 27001/27017/27018 → BSI C5 Type 2 → risk analysis under vyhláška 227/2025 → KsVC U2 listing → optional U3 path with a Slovak Cybersecurity Auditor.
 - **What to read next:** [ISO 27001/27017/27018/27701 baselines](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) for the universal evidence layer referenced throughout; [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the post-Act-366/2024 supply-chain regime; [Decision Framework](/knowledge-base/compliance/cloud-compliance-decision-framework) to map your specific organisation type to the applicable frameworks; [BYOK/HYOK article](/knowledge-base/compliance/cloud-encryption-key-custody-byok-hyok) for the U3+ HSM key-custody patterns.

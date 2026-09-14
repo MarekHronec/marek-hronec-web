@@ -3,7 +3,7 @@ title: "Czechia — NÚKIB and the New Cybersecurity Act: NIS2 Without a Dedicat
 category: compliance
 tags: ["Czechia", "NUKIB", "Cybersecurity Act", "NIS2", "Compliance", "Data Security"]
 date: 2026-05-06
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 10
 level: intermediate
 excerpt: "Czechia has no dedicated cloud qualification framework. Cloud security is regulated horizontally through the new Cybersecurity Act (264/2025 Sb.), effective 1 November 2025, with a full implementing-decree stack already in force (408, 409, 410/2025 Sb. and others). NÚKIB supervises; CSPs are assessed as supply-chain participants."
@@ -50,7 +50,7 @@ Czechia regulates cybersecurity, including cloud, through a single horizontal fr
 
 The operative law is **Act 264/2025 Sb. on Cybersecurity**, adopted 11 June 2025, published in the Collection of Laws on 4 August 2025, **effective 1 November 2025**. It replaced Act 181/2014 Sb. and implements the NIS2 Directive into Czech law. Unlike Slovakia, where the implementing-decree stack lagged the new act, NÚKIB issued the full implementing-regulation set alongside Act 264/2025 — see the Legislative basis section below for the specific decrees.
 
-The earlier concept of a *Cloud Computing in Information Systems of Public Administration Catalogue* — discussed in older versions of Act 365/2000 Sb. — was retired. There is no equivalent public catalogue under the new regime. Cloud security is treated as a supply-chain dimension of the cybersecurity obligations imposed on regulated subjects.
+The **cloud computing catalogue** under Act 365/2000 Sb. is live and taking registrations. Entry requirements are set by **vyhláška č. 505/2025 Sb.** of 28 November 2025, effective 1 January 2026, and the catalogue is operated by DIA. NÚKIB published a registration guide in April 2026. For a provider selling to Czech public authorities this is a de facto market-access step — the older vyhláška 316/2021 Sb. was replaced, not abolished. Cloud security is treated as a supply-chain dimension of the cybersecurity obligations imposed on regulated subjects.
 
 ## Legislative basis
 
@@ -66,7 +66,7 @@ Secondary regulation — **issued, in force**:
 - **Vyhláška 410/2025 Sb.** — security measures in the **lower** obligations regime.
 - A further set of vyhlášky and two government regulations completes the implementing package (the total set comprises seven decrees and two government regulations). NÚKIB has additionally published a Manual for lower-regime providers (January 2026) and municipal-cybersecurity support material (TLP:CLEAR, v1.1, 5 January 2026).
 
-The Czech approach differs from countries with cloud-specific decrees (Italy's Determinazione 307/2022) or methodological guidelines (Slovakia's MIRRI). The Czech framework operates from a single horizontal statute with supporting secondary regulation. The implementing-decree stack was issued alongside the new act — Czechia avoided the lag-style gap that Slovakia and Finland are currently dealing with.
+The Czech framework leans harder on a horizontal statute than France or Italy do, but it is not free of cloud-specific regulation: **vyhláška č. 412/2025 Sb.** of 26 September 2025, in force 1 November 2025, sets minimum security rules for public authorities *using cloud providers' services*, keyed to the security level of the information system. Read the horizontal act and this decree together. The implementing-decree stack was issued alongside the new act — Czechia avoided the lag-style gap that Slovakia and Finland are currently dealing with.
 
 ## Scope of obligation
 
@@ -120,7 +120,7 @@ For CSPs, the practical implication is that there is no Czech-specific certifica
 
 ## Catalogue and recertification
 
-There is **no public marketplace or catalogue of qualified cloud services** under the Czech framework. This is a structural choice — the framework relies on horizontal cybersecurity regulation rather than catalogue-driven procurement control.
+There is **no SecNumCloud-style qualification** in Czechia — no scheme that certifies a provider as sovereign or grants a security-tier label. There *is* a cloud computing catalogue for public administration (vyhláška 505/2025 Sb.), but it is a registration and disclosure mechanism rather than a certification: entry evidences that a service meets the stated requirements at a declared security level, it does not confer a qualification mark.
 
 Recertification of underlying attestations follows the cadence of those attestations (typically annual for Type 2 attestations, three-yearly for ISO certifications). NÚKIB's supervisory activity is risk-based and event-driven rather than calendar-driven.
 
@@ -129,12 +129,12 @@ Recertification of underlying attestations follows the cadence of those attestat
 NÚKIB has substantial supervisory powers under Act 264/2025 Sb.:
 
 - Imposition of **corrective measures** on regulated subjects.
-- **Temporary prohibition of management function** — up to 6 months for responsible individuals.
-- For non-compliance with corrective measures, **fines** up to **€10 million or 2% of turnover** for essential entities, **€7 million or 1.4%** for important entities — the NIS2 sanction levels.
+- **Temporary prohibition of management function** — until the identified deficiencies are remedied, and in any case **for at least six months** (*nejméně však na dobu 6 měsíců*). Published in the public register and on NÚKIB's site. Note the direction: six months is the floor, not the cap.
+- For non-compliance with corrective measures, **fines** up to **CZK 250 million or 2% of net worldwide turnover** under the higher-obligations regime, and **CZK 175 million or 1.4%** under the lower-obligations regime. The Czech statute sets these in crowns rather than euros, and uses *vyšší/nižší režim* rather than NIS2's essential/important wording.
 
 The management-function prohibition is unusual among EU NIS2 transpositions and is one of the more pointed enforcement tools in the Czech framework.
 
-For the **financial sector**, **DORA** (Regulation (EU) 2022/2554) applies independently of NÚKIB regulation. Financial institutions must report major ICT incidents to the **Česká národní banka (ČNB)** within **24 hours**. DORA's Critical Third-Party Provider regime can designate hyperscalers as critical and bring them under direct European supervision by the ESAs. The Czech banking sector consumes substantial cloud services; DORA is the operative framework for that consumption rather than Act 264/2025 Sb., although the two overlap in practice.
+For the **financial sector**, **DORA** (Regulation (EU) 2022/2554) applies independently of NÚKIB regulation. Financial institutions must report major ICT incidents to the **Česká národní banka (ČNB)** within **4 hours of classifying the incident as major**, and in any case no later than **24 hours from becoming aware** of it (Delegated Reg. (EU) 2025/301). DORA's Critical Third-Party Provider regime has already brought hyperscalers under direct European supervision: the ESAs designated the first 19 CTPPs on 18 November 2025, among them AWS, Microsoft, Google, Oracle, IBM, SAP and Deutsche Telekom. The Czech banking sector consumes substantial cloud services; DORA is the operative framework for that consumption rather than Act 264/2025 Sb., although the two overlap in practice.
 
 :::tip[Architectural Pro Tip]
 For a CSP serving the Czech market, the practical question is not "how do I get Czech certified" — there is no such certification. The question is "what evidence will my Czech enterprise and public-sector customers need to satisfy their supply-chain obligations under Act 264/2025 Sb. and [DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)". The answer is: current [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines), current [SOC 2 Type 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) or [BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation), an [EU Cloud Code of Conduct](/knowledge-base/compliance/gdpr-article-28-and-eu-cloud-code-of-conduct) adherence statement, and demonstrable incident reporting capabilities aligned with 24-hour NIS2/DORA timelines. Build the evidence package for those frameworks; let the Czech customer use it for their supply-chain assessment.
@@ -150,10 +150,10 @@ The Czech approach to sovereignty is to require security and resilience without 
 
 For multinational CSPs, the Czech framework is one of the simpler EU markets:
 
-- No country-specific certification to obtain.
+- No country-specific certification to obtain — but if you sell to public authorities, registration in the cloud computing catalogue under vyhláška 505/2025 Sb. is the practical gate.
 - Standard international attestations (ISO, SOC 2, BSI C5, EU Cloud CoC) are accepted as supply-chain evidence.
 - Customers' supply-chain assessments are the operational interaction point, not a regulatory submission.
-- Incident reporting expectations are NIS2-aligned (24h/72h) and DORA-aligned for financial sector (24h to ČNB).
+- Incident reporting expectations are NIS2-aligned (24h/72h) and DORA-aligned for the financial sector (four hours from classification to ČNB, 24-hour backstop from awareness).
 
 The work is in making the standard evidence package available to Czech customers and providing operational support for their supply-chain assessments. There is no separate compliance project for Czechia in the way there is for Slovakia, Italy, or France.
 
@@ -168,7 +168,7 @@ The horizontal-regulation model is operationally lighter for CSPs but heavier fo
 - Cloud providers are assessed as supply-chain participants by the regulated subject, not certified directly by NÚKIB. There is no public catalogue.
 - Reference standards are ISO/IEC 27001 and adjacent norms; NIST CSF is referenced in NÚKIB guidance. **The implementing-decree stack is in force**: vyhláška 408/2025 (regulated-entities criteria), 409/2025 (higher-regime security measures), 410/2025 (lower-regime), plus further decrees and government regulations. Czechia avoided the lag-style framework/law gap.
 - Sanctions follow NIS2: up to €10 million or 2% turnover for essential entities; up to €7 million or 1.4% for important entities. Management-function prohibition up to 6 months is an additional enforcement tool.
-- DORA applies independently for the financial sector with 24-hour major-incident reporting to ČNB.
+- DORA applies independently for the financial sector, with major-incident reporting to ČNB within four hours of classification and no later than 24 hours from awareness.
 - For CSPs, the practical evidence package is the same as for most EU markets: ISO 27001/27017/27018, SOC 2 Type 2 or BSI C5, EU Cloud CoC adherence, demonstrable incident reporting capability.
 - The CSP work is supplying Czech customers with consumable supply-chain assessment evidence, not obtaining Czech-specific certification. This is operationally simpler than the SK/IT/FR routes.
 - **What to read next:** [NIS2 Supply Chain](/knowledge-base/compliance/nis2-supply-chain-cloud-providers) for the customer-side obligation Czech regulated subjects must satisfy; [ISO 27001/27017/27018](/knowledge-base/compliance/iso-27001-27017-27018-27701-cloud-baselines) and [SOC 2](/knowledge-base/compliance/soc-2-reports-how-to-actually-read-them) for the international evidence baseline; [Slovakia KsVC](/knowledge-base/compliance/slovakia-ksvc-mirri-government-cloud) and [Poland KSC](/knowledge-base/compliance/poland-ksc-cybersecurity-system) for adjacent CEE regulatory comparisons.

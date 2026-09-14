@@ -3,10 +3,23 @@ title: "Hub-and-Spoke, Virtual WAN and DRG — Choose the Traffic Paths First"
 category: networking
 tags: ["Azure", "OCI", "Networking", "Connectivity"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 4
 level: intermediate
 excerpt: "Compare transit approaches by permitted flows, inspection, operations and cost rather than assuming the diagram controls routing."
+references:
+  - title: "Azure Virtual WAN overview"
+    url: "https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about"
+    description: "Microsoft's overview of Virtual WAN, including the Basic and Standard tier table — Basic supports site-to-site VPN only, while inter-hub and VNet-to-VNet transit require Standard, because only a Standard hub provisions a router."
+    domain: "learn.microsoft.com"
+  - title: "Azure hub-and-spoke network topology design guide"
+    url: "https://learn.microsoft.com/en-us/azure/networking/design-guide/hub-spoke"
+    description: "Microsoft’s hub-and-spoke design guide, which states the non-transitivity of peering outright: spokes reach the hub, but not each other through it, without explicit routing or direct peering. The general peering overview no longer says this in so many words."
+    domain: "learn.microsoft.com"
+  - title: "OCI — Managing Dynamic Routing Gateways"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm"
+    description: "Oracle's reference for DRG attachments, DRG route tables and route distributions — the mechanism by which a DRG learns and redistributes routes."
+    domain: "docs.oracle.com"
 ---
 
 ## Topology expresses intent; routes determine traffic
@@ -41,7 +54,7 @@ Avoid the blanket statement that managed transit automatically solves every spok
 
 ## OCI DRG routing remains explicit
 
-OCI DRGs use attachments, route tables and route distributions to govern connectivity. A VCN attachment does not remove the need for appropriate VCN routes and security rules. Multiple DRGs can exist in a region; “one per region” can be a design choice rather than a platform rule. [Oracle DRG documentation](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm).
+OCI DRGs use attachments, route tables and route distributions to govern connectivity. A VCN attachment does not remove the need for appropriate VCN routes and security rules. Multiple DRGs can exist in a region — Oracle’s service limits put the default at five per region, and that ceiling is itself raisable — so “one per region” is a design choice, not a platform rule. [Oracle DRG documentation](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingDRGs.htm).
 
 Trace traffic entering each attachment and determine which route table applies. If inspection is required, verify the complete supported insertion path and the return flow rather than relying on the firewall’s presence in a hub VCN.
 

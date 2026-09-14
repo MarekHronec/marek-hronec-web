@@ -3,7 +3,7 @@ title: "Cloud Encryption Key Custody — BYOK, HYOK, and the Practical Sovereign
 category: compliance
 tags: ["Encryption", "BYOK", "HYOK", "Key Management", "Sovereignty", "Compliance", "Data Security", "Cross-Cutting"]
 date: 2026-05-13
-updated: 2026-05-13
+updated: 2026-09-13
 readTime: 12
 level: advanced
 excerpt: "Provider-managed keys, BYOK, HYOK, External Key Stores. Every cloud sovereignty conversation eventually arrives at key custody. This article walks through the patterns, the hyperscaler implementations (AWS XKS, Azure CMK, Google EKM), the operational trade-offs, and why customer-held keys are the most practical sovereignty answer short of full sovereign cloud."
@@ -13,7 +13,7 @@ references:
     description: "AWS Key Management Service External Key Store documentation — the most advanced hyperscaler implementation of customer-held key custody with hardware-backed key managers outside AWS."
     domain: "docs.aws.amazon.com"
   - title: "Azure Customer-Managed Keys with HSM"
-    url: "https://learn.microsoft.com/en-us/azure/key-vault/keys/customer-managed-keys-overview"
+    url: "https://learn.microsoft.com/en-us/azure/security/fundamentals/key-management"
     description: "Microsoft Azure's customer-managed keys overview — Azure Key Vault, Managed HSM, and the customer-controlled encryption configurations across Azure services."
     domain: "learn.microsoft.com"
   - title: "Google Cloud External Key Manager (EKM)"
@@ -21,7 +21,7 @@ references:
     description: "Google Cloud External Key Manager documentation — keys held outside Google Cloud in customer-controlled key managers, with cryptographic operations gated by external authorisation."
     domain: "cloud.google.com"
   - title: "Google Workspace Client-side Encryption"
-    url: "https://workspace.google.com/learn-more/client-side-encryption/"
+    url: "https://knowledge.workspace.google.com/admin/security/about-client-side-encryption"
     description: "Google Workspace Client-side Encryption — end-to-end encryption with customer-held keys for Drive, Calendar, Meet, and other Workspace services."
     domain: "workspace.google.com"
   - title: "FIPS 140-3 Cryptographic Module Validation"
@@ -29,7 +29,7 @@ references:
     description: "NIST's FIPS 140-3 standard for cryptographic modules — the international reference for HSM and software cryptographic-module certification."
     domain: "csrc.nist.gov"
   - title: "ENISA Cloud Encryption Guidance"
-    url: "https://www.enisa.europa.eu/topics/data-protection/data-protection-engineering"
+    url: "https://www.enisa.europa.eu/publications/data-protection-engineering"
     description: "ENISA's guidance on encryption practices for cloud, including key management patterns and recommendations for sovereignty-relevant deployments."
     domain: "enisa.europa.eu"
 ---
@@ -156,19 +156,19 @@ XKS is a key component of AWS's [Digital Sovereignty Pledge](/knowledge-base/com
 Microsoft's pattern is layered:
 
 - **Azure Key Vault Standard** — software-protected keys; customer-managed lifecycle.
-- **Azure Key Vault Premium** — HSM-protected keys (FIPS 140-2 Level 2).
+- **Azure Key Vault Premium** — HSM-protected keys (FIPS 140-3 Level 3, multitenant, on Marvell LiquidSecurity HSMs).
 - **Azure Managed HSM** — dedicated single-tenant FIPS 140-3 Level 3 HSM controlled by the customer.
 - **Customer Lockbox** — customer approval required for Microsoft personnel access to customer data in specific scenarios.
 
 For HYOK-equivalent posture on Azure, customers use **Managed HSM** combined with **Bring Your Own Key Vault** patterns and Customer Lockbox controls. The cryptographic operations happen in Azure infrastructure, but the key material is customer-controlled and the access path is customer-auditable.
 
-Microsoft has also developed dedicated sovereign offerings like **[Microsoft Cloud for Sovereignty](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape)** which integrate customer-key-control patterns with broader sovereignty controls.
+Microsoft has also developed dedicated sovereign offerings, now branded **[Microsoft Sovereign Cloud](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape)** (formerly Microsoft Cloud for Sovereignty), which integrate customer-key-control patterns with broader sovereignty controls.
 
 ### Google Cloud External Key Manager (EKM)
 
 Google's EKM is HYOK-equivalent. Mechanics:
 
-- Customer operates an external key manager (Equinix SmartKey, Thales CipherTrust, Fortanix DSM, Atos Trustway DataProtect, others).
+- Customer operates an external key manager. Google’s own documentation lists three supported partner systems today: **Fortanix, Futurex and Thales**.
 - Google Cloud services (BigQuery, Cloud SQL, Persistent Disk, GCS) configured to use EKM route cryptographic operations to the external key manager.
 - The external key manager authorises or denies the request based on customer-controlled policy.
 - Customer key material never enters Google Cloud.
@@ -195,7 +195,7 @@ The customer-key-custody patterns map to national framework requirements at the 
 | **[ACN Qualificazione](/knowledge-base/compliance/italy-acn-cloud-qualification)** | QC3+ | Customer-controlled cryptographic posture per service |
 | **[BSI C5](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation)** | All | Cryptographic controls required; specific patterns are customer choice |
 | **[PiTuKri](/knowledge-base/compliance/finland-pitukri-cloud-assessment)** | TL III+ | Customer-controlled key custody for higher TL levels |
-| **[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)** | All | Cryptographic posture covered by Article 30 data security clause; customer-controlled keys increasingly expected for high-sensitivity financial workloads |
+| **[DORA](/knowledge-base/compliance/dora-for-cloud-financial-sector-overlay)** | All | Cryptographic posture sits in **Article 9(4)(d)** (Protection and prevention), which requires protection measures for cryptographic keys; **Article 30(2)(c)** separately requires the ICT contract to carry provisions on availability, authenticity, integrity and confidentiality of data. Customer-controlled keys increasingly expected for high-sensitivity financial workloads |
 
 The pattern: at higher tiers across most national frameworks, customer-controlled keys (BYOK or HYOK) become the expected posture. The frameworks rarely mandate the specific pattern, but the practical implementation typically converges on customer-held HSM or external key manager arrangements.
 
@@ -232,8 +232,8 @@ Customers contemplating HYOK should plan the operational architecture before the
 The customer's key manager is typically backed by an HSM. Common patterns:
 
 - **On-premises HSM** — customer-owned hardware in customer-controlled facilities. Highest sovereignty; highest operational overhead.
-- **HSM-as-a-service** — managed HSM from a third party (Equinix SmartKey, Atos Trustway, Thales CipherTrust as a Service, Fortanix Data Security Manager). The HSM is dedicated to the customer; the operations are managed by the HSM-aaS provider.
-- **Hyperscaler-resident HSM in customer control** — AWS CloudHSM, Azure Dedicated HSM, Google Cloud HSM (within Cloud KMS). HSM hardware in the hyperscaler's data centres but dedicated to one customer with customer-controlled key material.
+- **HSM-as-a-service** — managed HSM from a third party (Fortanix Data Security Manager, which absorbed Equinix SmartKey; Atos Trustway; Thales CipherTrust as a Service). The HSM is dedicated to the customer; the operations are managed by the HSM-aaS provider.
+- **Hyperscaler-resident HSM in customer control** — AWS CloudHSM, **Azure Cloud HSM** (the successor to Azure Dedicated HSM, which is retiring: Microsoft has stopped onboarding new customers and will support existing ones until 31 July 2028), Google Cloud HSM (within Cloud KMS). HSM hardware in the hyperscaler's data centres but dedicated to one customer with customer-controlled key material.
 - **Multi-cloud HSM** — HSM-aaS deployments that bridge multiple clouds, supporting workloads that span hyperscalers.
 
 The choice depends on sovereignty requirements, operational capability, and cost. For workloads where the sovereignty driver is foreign-law exposure of the cloud provider, an HSM-aaS option from an EU-resident provider can be the right architectural answer.

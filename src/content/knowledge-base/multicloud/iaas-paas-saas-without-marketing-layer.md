@@ -3,7 +3,7 @@ title: "IaaS, PaaS, and SaaS Without the Marketing Layer"
 category: multicloud
 tags: ["Azure", "OCI", "IaaS", "PaaS", "SaaS"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 12
 level: intermediate
 excerpt: "The service model pyramid tells you nothing operational. What the provider manages, what stays on you, and where lock-in lives — connector, not runtime."
@@ -17,7 +17,7 @@ references:
     description: "Microsoft's breakdown of which security responsibilities belong to the provider vs the customer at each service model layer — the operational complement to the service model decision table."
     domain: "learn.microsoft.com"
   - title: "OCI shared security responsibility model"
-    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/shared_responsibility.htm"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/security_overview.htm"
     description: "OCI's equivalent shared responsibility breakdown — comparing it with Azure's version reveals how the boundary shifts differently across service tiers on each cloud."
     domain: "docs.oracle.com"
 ---
@@ -46,10 +46,12 @@ Both Azure and OCI offer roughly the same shape, but the names are different and
 | Container PaaS | AKS, Container Apps | OKE, Container Instances | Worker images stay portable; control plane and add-ons (CSI drivers, CNI, ingress controllers) often do not. |
 | App PaaS | App Service, Functions | Functions, API Gateway | Deployment model, runtime versions, scaling primitives. |
 | Workflow PaaS | Logic Apps Consumption | OCI Process Automation | Designer-built workflows are highly proprietary. |
-| Data PaaS | Azure SQL, Cosmos DB | Autonomous Database | Query syntax, performance characteristics, backup format. |
+| Data PaaS | Azure SQL, Cosmos DB | Autonomous AI Database | Query syntax, performance characteristics, backup format. |
 | SaaS | Microsoft Fabric, Microsoft 365 | Oracle Fusion Apps, NetSuite | Almost everything. You consume; you don't own. |
 
-The pattern that matters: container-level PaaS keeps you reasonably portable because the container is the unit of deployment and Kubernetes is an open spec. App-level and workflow-level PaaS are where the trapdoors open. Data PaaS varies widely — managed Postgres is mostly portable; Cosmos DB and Autonomous Database can be portable only within narrower boundaries, depending on API choice, extensions, operational model, and surrounding integrations.
+One caveat on the bottom row: the column headings say Azure and OCI, but the SaaS examples are Microsoft and Oracle products rather than services of either cloud platform. That is the nature of the layer — at SaaS you are buying an application from a vendor, not a service from a cloud.
+
+The pattern that matters: container-level PaaS keeps you reasonably portable because the container is the unit of deployment and Kubernetes is an open spec. App-level and workflow-level PaaS are where the trapdoors open. Data PaaS varies widely — managed Postgres is mostly portable; Cosmos DB and Autonomous AI Database — the line Oracle renamed from Autonomous Database in October 2025 — can be portable only within narrower boundaries, depending on API choice, extensions, operational model, and surrounding integrations.
 
 ## Lock-in is born at the connector, not the runtime
 
@@ -57,7 +59,7 @@ Here is the thing vendors will not put on a slide: the service itself is rarely 
 
 Logic Apps Standard is more portable than Consumption because it can be containerised and run on supported hybrid infrastructure — Microsoft re-platformed it onto the Azure Functions runtime, you can package it in a container, and deploy it to Azure Arc-enabled Kubernetes. On paper, that portability is real. But it applies to the workflow runtime, not to the managed connectors. The workflow uses the Office 365 connector, the Service Bus connector, the SharePoint connector. Those are managed connections living in Azure as separate resources, and managed connections carry their own identity bindings and trigger semantics that are Azure-hosted. Move the workflow runtime to another cloud and the connectors stop working. You did not migrate; you reimplemented.
 
-The same is true for OCI Functions calling Autonomous Database via a Resource Principal, for Azure Functions binding to Cosmos DB through a managed identity, for Logic Apps using the SharePoint trigger. The runtime is portable. The umbilical cord is not.
+The same is true for OCI Functions calling Autonomous AI Database via a Resource Principal, for Azure Functions binding to Cosmos DB through a managed identity, for Logic Apps using the SharePoint trigger. The runtime is portable. The umbilical cord is not.
 
 The practical heuristic: count the proprietary integrations a workload uses. One or two may be a sprint. Five or six is usually a project. Ten or more is a strategic dependency.
 
@@ -75,7 +77,7 @@ What does breach an SLA? Provider-confirmed downtime of the managed component, m
 
 Ignore the pyramid. Ask these four questions in order:
 
-1. **Where does the data live, and who owns its format on disk?** If the answer is "in OneLake as Delta Parquet" you have some portability. If the answer is "in Cosmos DB with proprietary indexing" or "in Autonomous Database with Oracle-specific extensions" you have very little.
+1. **Where does the data live, and who owns its format on disk?** If the answer is "in OneLake as Delta Parquet" you have some portability. If the answer is "in Cosmos DB with proprietary indexing" or "in Autonomous AI Database with Oracle-specific extensions" you have very little.
 2. **What proprietary connectors does this service depend on to be useful?** Strip them and ask whether what remains still solves the problem.
 3. **What is the exit time?** Not the exit cost — the exit time. How long would it take a competent team to replace this service with something running elsewhere? If the answer is "a quarter," you have a manageable lock-in. If the answer is "a year," you have made a strategic bet whether you intended to or not.
 4. **Does the SLA cover what actually matters to your business?** Almost always: no.
@@ -104,7 +106,7 @@ For every service in your estate, classify exit difficulty. This is the column t
 |---|---|---|
 | **Low** | Open runtime or open data format; migration is mostly redeployment | AKS/OKE, managed Postgres, stateless HTTP functions with minimal platform bindings |
 | **Medium** | Provider-specific operations, but data and logic are portable | App Service deploying a container, OCI API Gateway fronting a standard service |
-| **High** | Proprietary APIs, managed connectors, designer-built workflows, or vendor-specific data features | Logic Apps Consumption, Cosmos DB with proprietary indexing, Autonomous Database with Oracle-specific extensions |
+| **High** | Proprietary APIs, managed connectors, designer-built workflows, or vendor-specific data features | Logic Apps Consumption, Cosmos DB with proprietary indexing, Autonomous AI Database with Oracle-specific extensions |
 | **Strategic lock-in** | SaaS or proprietary data platform where exit is a programme, not a task | Microsoft Fabric, Oracle Fusion Apps, NetSuite |
 
 Strategic lock-in is not wrong. Some workloads belong there deliberately. The problem is when a workload slides into the "Strategic lock-in" row without a decision ever being made.

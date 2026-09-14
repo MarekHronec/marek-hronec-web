@@ -3,17 +3,17 @@ title: "DORA CTPP Regime — Direct ESA Supervision of Critical Cloud Providers"
 category: compliance
 tags: ["DORA", "CTPP", "ESA", "Financial Sector", "Compliance", "Data Security", "Hyperscaler"]
 date: 2026-04-24
-updated: 2026-05-15
+updated: 2026-09-12
 readTime: 12
 level: advanced
 excerpt: "The Critical Third-Party Provider regime is the most consequential innovation in DORA. For the first time in EU law, the European Supervisory Authorities can directly supervise cloud providers — not via their financial-services customers, but as named regulated entities. This article walks through how CTPP designation actually works, what direct supervision means operationally, and what hyperscalers do to prepare."
 references:
   - title: "Oversight Framework for Critical ICT Third-Party Providers"
-    url: "https://www.eba.europa.eu/regulation-and-policy/operational-risk/dora/oversight-framework-critical-ict-third-party-providers"
+    url: "https://www.eba.europa.eu/activities/direct-supervision-and-oversight/digital-operational-resilience-act/dora-oversight"
     description: "EBA's framework for designating ICT third-party providers as critical under DORA and bringing them under direct European supervision by the ESAs."
     domain: "eba.europa.eu"
   - title: "ESMA — DORA Joint Oversight"
-    url: "https://www.esma.europa.eu/policy-activities/digital-finance-and-innovation/digital-operational-resilience-act-dora"
+    url: "https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/digital-operational-resilience-act-dora"
     description: "ESMA's role in the Joint Oversight Network coordinating CTPP designation and supervision across the three European Supervisory Authorities."
     domain: "esma.europa.eu"
   - title: "Commission Delegated Regulation 2024/1502 — CTPP Criticality Criteria"
@@ -25,7 +25,7 @@ references:
     description: "The articles of DORA establishing the CTPP regime: designation, Lead Overseer assignment, joint oversight network, supervisory powers, recommendations, fees, and penalties."
     domain: "eur-lex.europa.eu"
   - title: "EIOPA — DORA Implementation"
-    url: "https://www.eiopa.europa.eu/digital-operational-resilience-act_en"
+    url: "https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en"
     description: "EIOPA's DORA implementation page covering insurance and pensions sector specifics under the CTPP regime."
     domain: "eiopa.europa.eu"
 ---
@@ -71,7 +71,7 @@ The criteria are intentionally outcome-oriented. The ESAs apply judgement; the d
 5. **Lead Overseer assignment** — one of the three ESAs is assigned as Lead Overseer based on the dominant sector.
 6. **Oversight plan** — the Lead Overseer publishes the annual oversight plan within months of designation.
 
-As of mid-2026, the **first wave of CTPP designations is in progress** but no formal designations have been published yet. The ESAs began the formal process in 2025 and have collected Register of Information data from financial entities. The major hyperscalers (AWS, Microsoft Azure, Google Cloud) and several major SaaS platforms serving the financial sector are widely anticipated candidates, but the ESAs have not formally designated any provider as of mid-2026. Designations will be published on the EBA, EIOPA, and ESMA websites when they are made.
+The first wave has happened. On **18 November 2025** the ESAs jointly designated **19 CTPPs** under Article 31(9), drawing on the Register of Information data collected from financial entities during 2025. Each has an assigned Lead Overseer, engagement began in January 2026, and the list is reviewed and republished annually.
 
 ## What direct supervision actually means
 
@@ -105,25 +105,51 @@ Once designated, a CTPP is subject to a supervisory model that includes:
 
 The model is closer to how the SEC supervises systemically important market infrastructures, or how the ECB supervises systemically important banks, than to how vendors are typically regulated through their customers.
 
-## Who is in scope — the hyperscaler reality
+## Who is in scope — the actual first wave
 
-The CTPP regime is designed for, but not limited to, the major hyperscalers. The first wave of expected designations:
+The nineteen designated on 18 November 2025, in the ESAs' alphabetical order:
 
-- **AWS** — across all three ESA sectors. Likely EBA as Lead Overseer given banking concentration.
-- **Microsoft Azure** — across all three sectors. Lead Overseer designation pending.
-- **Google Cloud** — across all three sectors but lighter financial-sector adoption than AWS / Azure.
-- **Major SaaS platforms** that serve significant numbers of financial entities — Salesforce, Workday, ServiceNow, financial-services-specific platforms like Murex, Calypso, FIS, Fiserv, Temenos.
-- **Specialised infrastructure providers** — Akamai (CDN/security), Cloudflare (CDN/security), possibly major payment-card networks if they are not separately regulated.
+| | |
+|---|---|
+| Accenture plc | LSEG Data and Risk Limited |
+| Amazon Web Services EMEA Sarl | Microsoft Ireland Operations Limited |
+| Bloomberg L.P. | NTT DATA Inc. |
+| Capgemini SE | Oracle Nederland B.V. |
+| Colt Technology Services | Orange SA |
+| Deutsche Telekom AG | SAP SE |
+| Equinix (EMEA) B.V. | Tata Consultancy Services Limited |
+| Fidelity National Information Services, Inc. | |
+| Google Cloud EMEA Limited | |
+| International Business Machines Corporation | |
+| InterXion HeadQuarters B.V. | |
+| Kyndryl Inc. | |
+
+Two things about that list are worth more than the names themselves.
+
+**It is not a hyperscaler list.** The obvious three are there, but so are two
+telcos (Deutsche Telekom, Orange), two colocation operators (Equinix, InterXion),
+three systems integrators (Accenture, Capgemini, TCS) and two market-data
+businesses (Bloomberg, LSEG). Concentration risk in the financial sector runs
+through cabling, buildings and integration contracts, not only through compute.
+
+**The SaaS platforms most people expected are absent.** Salesforce, Workday,
+ServiceNow, Murex, Calypso, Fiserv and Temenos were not designated, nor were
+Akamai or Cloudflare. Being widely used by financial entities is not the test;
+Article 31 asks about systemic impact and substitutability, and a widely used
+application with credible alternatives can fail it while a datacentre operator
+passes.
 
 Designation is **per entity, not per service**. A hyperscaler designated as a CTPP brings its entire operational footprint under the regime, even though only some of its services are consumed by financial entities. This produces operational complexity: the CTPP must satisfy supervisory expectations across services that have very different risk profiles.
 
 ## CTPP and the parent-subsidiary question
 
-For hyperscalers structured as US parent + EU subsidiary, the CTPP designation can apply to either the parent group, the EU subsidiary, or both depending on operational realities:
+The first wave answers this in practice, and it went both ways. The hyperscalers were designated at **EU or EMEA entity level** — Amazon Web Services EMEA Sarl, Google Cloud EMEA Limited, Microsoft Ireland Operations Limited, Oracle Nederland B.V. Others were designated at **US parent level** — IBM, Bloomberg L.P., Kyndryl Inc., NTT DATA Inc., Fidelity National Information Services, Inc.
 
-- If the EU subsidiary is the contracting party with financial entities and operates the relevant infrastructure, the EU subsidiary is the designated CTPP.
-- If the global parent has material operational involvement, the parent can be co-designated or the designation can extend to cover global operations affecting EU financial entities.
-- Joint ventures like [Bleu](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (Microsoft + Orange + Capgemini) are separate legal entities and would be designated separately if their CTPP criteria are met.
+The pattern follows the contracting and operating reality rather than a rule:
+
+- Where an EU subsidiary is the contracting party and operates the relevant infrastructure, that subsidiary is the designated CTPP.
+- Where the group entity is what financial entities actually contract with, the parent is designated, and the designation reaches the global operations affecting EU financial entities.
+- Joint ventures like [Bleu](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (Microsoft + Orange + Capgemini) are separate legal entities and face their own separate determination. Note that two of Bleu's three parents — Microsoft and Orange — are themselves designated.
 
 This question is significant for hyperscalers contemplating [sovereign cloud structures](/knowledge-base/compliance/sovereign-cloud-products-2026-landscape) — a JV may obtain sovereignty advantages but it does not escape CTPP designation; in fact, a separate legal entity may face its own separate designation determination.
 
@@ -211,12 +237,12 @@ The CTPP regime is sometimes interpreted by financial entities as "the ESAs will
 
 ## Closing checklist
 
-- The CTPP regime under DORA Articles 31-44 allows the ESAs to designate ICT third-party providers as Critical and supervise them directly. First wave of designations in progress as of mid-2026 — no formal designations published yet.
+- The CTPP regime under DORA Articles 31-44 allows the ESAs to designate ICT third-party providers as Critical and supervise them directly. The first **19 were designated on 18 November 2025**; the list is reviewed annually.
 - Designation criteria specified in Commission Delegated Regulation 2024/1502: systemic importance, reliance and concentration, technical characteristics. Outcome-oriented; judgement-based.
 - **Lead Overseer** (one of EBA / EIOPA / ESMA) is assigned per CTPP based on dominant sector. Joint Oversight Network coordinates across sectors.
-- Supervisory powers include information collection, on-site inspections, recommendations, **periodic penalty payments up to 1% of average daily worldwide turnover per day of non-compliance**.
+- Supervisory powers include information collection, on-site inspections, recommendations, and **periodic penalty payments of up to 1% of average daily worldwide turnover**, levied daily after 30 days' notice and for **no more than six months** (Article 35).
 - Designation applies per entity. Hyperscalers' EU subsidiaries vs parents — case-by-case determination based on operational reality.
-- Expected first-wave designations: AWS, Microsoft Azure, Google Cloud, major financial-services SaaS platforms (Salesforce, Workday, FIS, Fiserv, Temenos), specialised infrastructure (Akamai, Cloudflare).
+- The designated nineteen are broader than cloud: alongside AWS, Microsoft, Google, Oracle, IBM and SAP sit two telcos, two colocation operators, three integrators and two market-data providers. The SaaS platforms widely predicted — Salesforce, Workday, ServiceNow, Temenos, Fiserv — were not designated.
 - CTPP designation creates **two parallel supervisory tracks**: direct Lead Overseer supervision of the CTPP, plus national supervisor supervision of each financial customer.
 - For cloud providers: build a supervisor-grade information disclosure interface; engage Lead Overseer early; price for supervisory overhead.
 - For financial entities: CTPP designation does not absolve customer DORA obligations. Continue full supply-chain risk management work alongside the supervisory regime.

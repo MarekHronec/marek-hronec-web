@@ -3,10 +3,23 @@ title: "Hybrid Connectivity — ExpressRoute, FastConnect and VPN in Practice"
 category: networking
 tags: ["Azure", "OCI", "Networking", "Connectivity"]
 date: 2026-04-30
-updated: 2026-09-12
+updated: 2026-09-13
 readTime: 4
 level: intermediate
 excerpt: "Compare private circuits and VPN against measured traffic, encryption requirements and the failures the complete path must survive."
+references:
+  - title: "ExpressRoute encryption"
+    url: "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-about-encryption"
+    description: "Microsoft's page on ExpressRoute encryption, covering MACsec at layer 2 and IPsec at layer 3 — the distinction that private connectivity alone does not encrypt application traffic."
+    domain: "learn.microsoft.com"
+  - title: "Designing for disaster recovery with ExpressRoute private peering"
+    url: "https://learn.microsoft.com/en-us/azure/expressroute/designing-for-disaster-recovery-with-expressroute-privatepeering"
+    description: "Microsoft's guidance on redundancy and failure domains for ExpressRoute private peering — why two circuits at one location is not the same as two locations."
+    domain: "learn.microsoft.com"
+  - title: "OCI FastConnect overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnectoverview.htm"
+    description: "Oracle's FastConnect reference, including the cross-connect group definition — a link aggregation group for bandwidth, with no stated guarantee of location diversity."
+    domain: "docs.oracle.com"
 ---
 
 ## Start with the connection, not the circuit
@@ -23,7 +36,7 @@ A VPN can support production when it meets the requirements. A private circuit c
 
 ## Private does not mean application-to-application encryption
 
-ExpressRoute keeps the supported connection off the public internet, but confidentiality still depends on the chosen protection. Application TLS, IPsec and supported MACsec designs protect different parts of the path. MACsec does not by itself promise encryption between the application endpoints. Check the current [ExpressRoute FAQ](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-faqs) and the selected service configuration.
+ExpressRoute keeps the supported connection off the public internet, but confidentiality still depends on the chosen protection. Application TLS, IPsec and supported MACsec designs protect different parts of the path. MACsec does not by itself promise encryption between the application endpoints. Check the current [ExpressRoute FAQ](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-about-encryption) and the selected service configuration.
 
 Specify the endpoints of encryption in the design. “Encrypted network” is incomplete if data is decrypted at a gateway and crosses another unprotected segment.
 

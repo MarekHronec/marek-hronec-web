@@ -3,7 +3,7 @@ title: "Tagging and Metadata That Actually Earn Their Keep"
 category: multicloud
 tags: ["Azure", "OCI", "Tagging", "FinOps", "Governance"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 12
 level: beginner
 excerpt: "Without enforcement, tagging is fiction. Most orgs believe coverage is higher than reality. The schema, enforcement model, and gotchas on Azure and OCI."
@@ -21,8 +21,8 @@ references:
     description: "Oracle's tagging reference covering free-form tags, defined tags with namespaces, tag defaults, cost-tracking tags, and the lifecycle of tag namespaces — the OCI side of the comparison in this article."
     domain: "docs.oracle.com"
   - title: "FinOps capability — tagging, account, and metadata hierarchy"
-    url: "https://www.finops.org/framework/capabilities/tagging-account-metadata-hierarchy/"
-    description: "The FinOps Foundation's framework capability for tagging strategy — the vendor-neutral governance model that underpins the cross-cloud tag schema approach described in this article."
+    url: "https://www.finops.org/framework/capabilities/allocation/"
+    description: "The FinOps Foundation's allocation capability — the vendor-neutral case for tagging as the basis of cost allocation. It is written for a single organisation rather than for multicloud; the cross-cloud application is this article’s own."
     domain: "finops.org"
 ---
 
@@ -145,7 +145,8 @@ resource "oci_identity_tag" "cost_center" {
   tag_namespace_id = oci_identity_tag_namespace.operations.id
   name             = "CostCenter"
   description      = "Cost center for chargeback"
-  is_cost_tracking = true   # Marks as a formal cost-tracking dimension (limit: 10 per tenancy)
+  is_cost_tracking = true   # Formal cost-tracking dimension. Cap is 10 per tenancy; confirm with
+                            # `oci limits value list` — Oracle no longer documents this one.
   validator {
     validator_type = "ENUM"
     values         = ["FIN-101", "FIN-102", "ENG-201", "ENG-202"]
@@ -153,17 +154,26 @@ resource "oci_identity_tag" "cost_center" {
 }
 
 # Make the tag mandatory for resources created in the workload compartment.
-# For user-applied required values, verify the exact Terraform provider syntax
-# for your OCI provider version; OCI requires either a default value or a
-# user-applied value mode.
 resource "oci_identity_tag_default" "cost_center_default" {
   compartment_id    = oci_identity_compartment.workload.id
   tag_definition_id = oci_identity_tag.cost_center.id
   is_required       = true
+  # `value` is Required by the provider. It is the fallback applied when the
+  # creator supplies nothing; omitting it fails at plan time.
+  value             = "unassigned"
 }
 ```
 
 The `is_cost_tracking = true` flag marks a defined tag as one of OCI's cost-tracking tags. That matters when you want the tag treated as a formal cost-tracking dimension, but it is not the only way tag data appears in OCI Cost Analysis or Cost and Usage Reports. Oracle exposes defined tag data in cost reporting more broadly; cost-tracking tags are the curated subset you promote for chargeback and showback. Because OCI limits cost-tracking tags to 10 tag key definitions per tenancy, reserve them for the few dimensions that actually drive financial reporting.
+
+One caveat on that number. Oracle has removed the documentation page that used to publish it, and has not restated it in the service-limits reference, so it is no longer citable to a live page. Service limits are readable from the API, which stays right when the documentation moves — list the service names, then read the values for the one you want, remembering that the tenancy is simply the root compartment:
+
+```bash
+oci limits service list --compartment-id <tenancy-ocid>
+oci limits value list --compartment-id <tenancy-ocid> --service-name <name-from-that-list>
+```
+
+That is worth doing for any hard limit you are about to design against, not only this one. A number in an article is a snapshot; the API is the source.
 
 ## The mapping that confuses everyone
 

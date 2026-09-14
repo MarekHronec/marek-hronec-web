@@ -3,7 +3,7 @@ title: "Source of Truth — Where Does Your Cloud Actually Live?"
 category: devops
 tags: ["Azure", "OCI", "IaC", "CMDB", "GitOps"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 11
 level: intermediate
 excerpt: "If you did not choose a source of truth, the live cloud chose for you. IaC repo, cloud APIs, Backstage, CMDB — pick deliberately and document the choice."
@@ -16,7 +16,7 @@ references:
     url: "https://learn.microsoft.com/en-us/azure/governance/resource-graph/overview"
     description: "The query service for interrogating live Azure resource state at scale — the runtime complement to IaC repos for answering \"what actually exists right now.\""
     domain: "learn.microsoft.com"
-  - title: "OCI Search with OpenSearch — resource query overview"
+  - title: "OCI Search — resource query overview"
     url: "https://docs.oracle.com/en-us/iaas/Content/Search/Concepts/queryoverview.htm"
     description: "OCI's equivalent resource query service for discovering and filtering resources across compartments, the runtime source of truth for OCI estate inventory."
     domain: "docs.oracle.com"

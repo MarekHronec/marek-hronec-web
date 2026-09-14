@@ -3,10 +3,31 @@ title: "Budgets, Quotas and Spending Limits — What Each Control Actually Does"
 category: finops
 tags: ["Azure", "OCI", "FinOps", "Cost Management"]
 date: 2026-04-30
-updated: 2026-09-11
+updated: 2026-09-14
 readTime: 4
 level: intermediate
 excerpt: "Budgets alert on spending; quotas constrain resources. Build a response plan that accounts for existing charges and delayed billing data."
+references:
+  - title: "Azure Cost Management — create and manage budgets"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"
+    description: "Microsoft's tutorial for budget creation, and the source for the two facts that matter here: budgets alert on actual or forecast cost, and crossing a threshold does not stop consumption."
+    domain: "learn.microsoft.com"
+  - title: "Azure spending limit"
+    url: "https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/spending-limit"
+    description: "The named Spending Limit feature, which is not a budget: it applies only to credit-based subscriptions, is unavailable for pay-as-you-go and commitment plans, and disables deployed services when the credit runs out."
+    domain: "learn.microsoft.com"
+  - title: "OCI Budgets overview"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/budgetsoverview.htm"
+    description: "Oracle's budgets reference, confirming both actual and forecast alerts and a 24-hour evaluation cycle."
+    domain: "docs.oracle.com"
+  - title: "OCI compartment quotas"
+    url: "https://docs.oracle.com/en-us/iaas/Content/Quotas/Concepts/resourcequotas.htm"
+    description: "Compartment quotas, the mechanism that actually restricts resource quantity rather than merely reporting on spend."
+    domain: "docs.oracle.com"
+  - title: "Azure Policy overview"
+    url: "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    description: "The deny effect and the rest of the policy engine — the Azure-side equivalent of a hard restriction, as distinct from a budget alert."
+    domain: "learn.microsoft.com"
 ---
 
 ## Separate notification from enforcement
@@ -15,7 +36,7 @@ A budget describes an amount you want to track. A quota restricts a resource qua
 
 Azure Cost Management budgets can notify on actual or forecast cost. Crossing a threshold does not stop consumption. Microsoft documents periodic evaluation and delayed cost data, so a budget-triggered action is not a real-time billing barrier. [Azure budget documentation](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets).
 
-OCI Budgets also provide soft spending limits, including actual and forecast alerts. The earlier suggestion that OCI has no native forecast budget alerts was incorrect. [Oracle budget documentation](https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/budgetsoverview.htm).
+OCI Budgets behave the same way, and they do include forecast alerts as well as actual-spend ones. Oracle evaluates them every 24 hours and can trigger "when your actual or forecasted spending hits either a percentage of your budget or a specified set amount". Like Azure’s, they alert; they do not stop anything. [Oracle budget documentation](https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/budgetsoverview.htm).
 
 ## Azure’s named Spending Limit is a different feature
 

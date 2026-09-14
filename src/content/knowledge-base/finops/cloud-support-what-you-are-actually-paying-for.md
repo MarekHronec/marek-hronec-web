@@ -3,10 +3,15 @@ title: "Cloud Support — What You Are Actually Paying For"
 category: finops
 tags: ["Azure", "OCI", "FinOps", "Cost Management"]
 date: 2026-04-30
-updated: 2026-09-11
+updated: 2026-09-14
 readTime: 4
 level: intermediate
 excerpt: "Distinguish initial response from recovery, check the support entitlement and budget the operating work your team still owns."
+references:
+  - title: "Azure support plan comparison"
+    url: "https://azure.microsoft.com/en-us/support/plans/"
+    description: "Microsoft's own tier comparison, and the source for the severity and response-time commitments quoted below — including that Unified Enterprise uses Severity 1 terminology rather than Severity A."
+    domain: "azure.microsoft.com"
 ---
 
 ## Response is the beginning of the incident

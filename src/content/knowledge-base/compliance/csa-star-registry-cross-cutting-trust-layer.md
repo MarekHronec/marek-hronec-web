@@ -3,7 +3,7 @@ title: "CSA STAR Registry — The Cross-Cutting Trust Layer Across Frameworks"
 category: compliance
 tags: ["CSA STAR", "CSA CCM", "Compliance", "Data Security", "Cross-Cutting", "Attestation"]
 date: 2026-04-16
-updated: 2026-05-15
+updated: 2026-09-13
 readTime: 9
 level: intermediate
 excerpt: "The Cloud Security Alliance STAR Registry is the closest thing the cloud industry has to a global trust register. Three assurance levels, the CCM as the underlying control matrix, and integration with most major national frameworks. Useful as a navigation layer when comparing CSPs across heterogeneous compliance regimes."
@@ -17,7 +17,7 @@ references:
     description: "The CCM v4 — 197 control objectives across 17 domains. The control catalogue STAR audits against and the framework most heavily referenced by BSI C5, EU Cloud CoC, and other national schemes."
     domain: "cloudsecurityalliance.org"
   - title: "CSA Consensus Assessments Initiative Questionnaire (CAIQ)"
-    url: "https://cloudsecurityalliance.org/artifacts/consensus-assessments-initiative-questionnaire-v4/"
+    url: "https://cloudsecurityalliance.org/artifacts/star-level-1-security-questionnaire-caiq-v4"
     description: "The standardised CSP self-assessment questionnaire that underlies STAR Level 1. The reusable form most procurement teams use as the first-pass evaluation document for a new CSP."
     domain: "cloudsecurityalliance.org"
   - title: "CSA STAR Attestation"
@@ -79,7 +79,7 @@ As of mid-2026, Level 3 adoption is limited. The infrastructure for continuous m
 
 STAR is referenced as supporting evidence across multiple national frameworks:
 
-- **BSI C5** explicitly maps its controls to CSA CCM v3.0.1; the **C5:2026 draft** (not yet published as final as of mid-2026) proposes updating the reference to **CCM v4** when finalised. A CSP holding BSI C5 has substantial overlap with STAR Level 2.
+- **BSI C5** maps its controls to CSA CCM v3.0.1 in the C5:2020 catalogue. **C5:2026, published as final in March 2026**, updates that reference to **CCM v4**; it applies to audit periods beginning on or after 1 June 2027, so C5:2020 and its v3.0.1 mapping remain operative until then. A CSP holding BSI C5 has substantial overlap with STAR Level 2 either way.
 - **EU Cloud Code of Conduct** integrates with the CSA STAR Registry — since 2024, EU Cloud CoC certifications are co-published in the STAR Registry.
 - **Slovak KsVC** references ENISA Cloud Certification Scheme controls; the ENISA scheme maps to CCM.
 - **Finnish PiTuKri** explicitly references CCM as one of its source standards.
@@ -149,7 +149,7 @@ Use the CCM mappings as the scaffold; use the country and overlay articles for t
 
 - The CSA Cloud Controls Matrix (CCM) is the control catalogue; the STAR Registry is the public registry of CSP assessments against the CCM.
 - Three levels: Level 1 self-assessment (CAIQ), Level 2 third-party assessed (STAR Certification with ISO 27001 or STAR Attestation with SOC 2), Level 3 continuous monitoring (emerging).
-- CCM v4 has 197 controls across 17 domains. The C5:2026 draft proposes updating the CCM reference to v4 when published; the current published C5:2020 references CCM v3.0.1.
+- CCM v4 has 197 controls across 17 domains. C5:2026, published in March 2026, references CCM v4; C5:2020, which references CCM v3.0.1, stays operative for audit periods beginning before 1 June 2027.
 - The CCM-to-other-framework mappings are the most operationally valuable CSA artefact. Use them as the scaffolding for cross-framework efficiency.
 - STAR Level 2 sits between unverified self-assessment and country-specific attestation. Useful as portable evidence; not a substitute for national framework audits where those are required.
 - For procurement: use the CAIQ as first-pass screening; layer national framework evidence on top for higher-sensitivity workloads.

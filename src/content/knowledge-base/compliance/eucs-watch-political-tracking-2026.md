@@ -3,10 +3,10 @@ title: "EUCS Watch — Political Tracking of the European Cybersecurity Certific
 category: compliance
 tags: ["EUCS", "ENISA", "Sovereignty", "EU Policy", "Compliance", "Data Security", "Tracking"]
 date: 2026-05-14
-updated: 2026-05-14
+updated: 2026-09-12
 readTime: 11
 level: intermediate
-excerpt: "EUCS has been the most-anticipated and least-delivered EU cloud regulation for half a decade. This article tracks what state EUCS is in as of mid-2026, who's blocking what, what the ANSSI/BSI March 2026 joint statement means, and what realistic adoption scenarios look like. A dated reference article — designed to be re-read against current events."
+excerpt: "EUCS has been the most-anticipated and least-delivered EU cloud regulation for half a decade. This article tracks what state EUCS is in as of mid-2026, who's blocking what, what the ANSSI/BSI November 2025 joint statement means, and what realistic adoption scenarios look like. A dated reference article — designed to be re-read against current events."
 references:
   - title: "ENISA — EUCS Programme"
     url: "https://www.enisa.europa.eu/publications/eucs-cloud-service-scheme"
@@ -36,7 +36,7 @@ references:
 
 **Status snapshot (mid-2026): EUCS remains a draft. Not adopted. Not applicable. Politically deadlocked since 2024.**
 
-The European Cybersecurity Certification Scheme for Cloud Services (EUCS) is the most-anticipated and least-delivered EU cloud regulation of the past five years. It is referenced across every national framework article in this series as the framework that *should* eventually harmonise the fragmented EU national landscape; in practice, it has been politically stuck since 2024, primarily over sovereignty content. This article is the watch piece — what state EUCS is in, who's pushing and blocking, what recent signals (notably the **ANSSI/BSI March 2026 joint statement**) mean, and what realistic adoption scenarios look like. The article is dated by design; check the `updated` date and recent regulatory news before relying on it.
+The European Cybersecurity Certification Scheme for Cloud Services (EUCS) is the most-anticipated and least-delivered EU cloud regulation of the past five years. It is referenced across every national framework article in this series as the framework that *should* eventually harmonise the fragmented EU national landscape; in practice, it has been politically stuck since 2024, primarily over sovereignty content. This article is the watch piece — what state EUCS is in, who's pushing and blocking, what recent signals (notably the **ANSSI/BSI November 2025 joint statement**) mean, and what realistic adoption scenarios look like. The article is dated by design; check the `updated` date and recent regulatory news before relying on it.
 
 ## What EUCS is and what it is meant to do
 
@@ -102,19 +102,25 @@ The voting math in ECCG and the Council favours the sceptical block over the pro
 
 **H1 2025**: **Polish Council presidency** attempts to move EUCS to adoption. Effort does not produce a vote-ready scheme. Poland's pragmatic position favours compromise but cannot bridge the divide.
 
-**April 2025**: European Commission opens a **review of the Cybersecurity Act** itself, including consideration of how EUCS development should be governed. No conclusion as of mid-2026.
+**April 2025**: European Commission opens a **review of the Cybersecurity Act** itself, including consideration of how EUCS development should be governed.
 
 **Mid-2025 through 2025**: Continued draft iterations and consultation. No formal adoption proposal advances to ECCG vote.
 
-**March 2026**: **ANSSI and BSI publish a joint statement on harmonised cloud-sovereignty criteria.** The statement is the first public bilateral step toward narrowing the France-Germany divergence on sovereignty content. It is **not** a binding agreement on EUCS High+ content, but it is the strongest positive signal in two years that the central pro-sovereignty positions may be converging.
+**November 2025**: **ANSSI and BSI publish a joint statement on harmonised cloud-sovereignty criteria.** The statement is the first public bilateral step toward narrowing the France-Germany divergence on sovereignty content. It is **not** a binding agreement on EUCS High+ content, but it is the strongest positive signal in two years that the central pro-sovereignty positions may be converging.
 
-**Mid-2026 (current)**: EUCS remains in draft. No formal adoption is imminent. The CSA review and ANSSI/BSI statement are watch items.
+**20 January 2026**: The Commission tables its cybersecurity package, including a **revised Cybersecurity Act** that reworks the certification framework — ENISA as scheme manager, a twelve-month default timeline per scheme. On cloud specifically, the Commission states that EUCS work "is expected to resume", with sovereignty gaps to be filled by the CSA revision and the forthcoming CADA rather than inside EUCS itself.
+
+**27 April 2026**: BSI publishes **C3A** (Criteria enabling Cloud Computing Autonomy), structured on the EU Cloud Sovereignty Framework and requiring C5 as a prerequisite — the first concrete output of the ANSSI/BSI direction.
+
+**3 June 2026**: The Commission proposes the **Cloud and AI Development Act (CADA)**, which defines cloud and AI sovereignty as **four assurance levels** for public-sector bodies to apply on a risk basis.
+
+**Mid-2026 (current)**: EUCS remains in draft and no formal adoption is imminent — but the reason has changed. Sovereignty is no longer waiting on EUCS; it is being placed in CADA and the revised Cybersecurity Act. Watch those two instruments, not the EUCS drafting process.
 
 :::warning[Reality Check]
 EUCS has been "imminent" in industry analyst reports continuously since 2022. Every year produces a fresh round of "this is the year EUCS adopts" coverage. The empirical pattern is that EUCS slips. Build compliance and procurement strategy against the regimes that are in force, treat EUCS as upside rather than base case, and plan to absorb EUCS when it eventually arrives rather than waiting for it. Cloud strategies that have depended on EUCS arrival have aged poorly for five consecutive years.
 :::
 
-## What the ANSSI/BSI March 2026 joint statement actually says
+## What the ANSSI/BSI November 2025 joint statement actually says
 
 The joint statement (referenced in the [France](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) and [Germany](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) articles) is a public statement of direction rather than a substantive policy agreement. It addresses:
 
@@ -128,11 +134,17 @@ The joint statement (referenced in the [France](/knowledge-base/compliance/franc
 - Resolve the dispute with Member States in the sceptical block.
 - Provide a timeline for EUCS adoption.
 
-The statement matters because it changes the political possibility space. For two years, the France-Germany positions on cloud sovereignty have been read as opposed (France: exclusion-based; Germany: transparency-based). The joint statement signals that operational common ground exists. Whether the common ground produces an adopted EUCS scheme depends on subsequent work that is not yet visible.
+The statement matters because it changes the political possibility space. For two years, the France-Germany positions on cloud sovereignty have been read as opposed (France: exclusion-based; Germany: transparency-based). The joint statement signals that operational common ground exists.
+
+The subsequent work is now visible, and it did not go where this article originally expected. BSI published **C3A** in April 2026 — sovereignty criteria built on the **EU Cloud Sovereignty Framework**, with C5 as a prerequisite. The Commission then put a four-level sovereignty framework into **CADA** rather than into EUCS. So the France-Germany convergence is real, but it is being expressed outside the certification scheme that was supposed to carry it.
 
 ## Realistic adoption scenarios
 
-Three scenarios are plausible from the mid-2026 vantage point:
+Three scenarios were plausible when this section was written. The January and
+June 2026 Commission proposals have since made **Scenario A the closest to the
+Commission's own stated plan**: sovereignty handled outside EUCS, in CADA and the
+revised Cybersecurity Act. Scenario B — High+ sovereignty restored inside EUCS —
+now looks like the least likely branch rather than the natural compromise.
 
 ### Scenario A — Adoption without sovereignty (2027)
 
@@ -242,7 +254,7 @@ For readers using this article as a tracking reference:
 - **EUCS remains a draft as of mid-2026.** Not adopted. Not applicable. Plan against operative regimes (national frameworks, GDPR, NIS2, DORA) rather than against EUCS arrival.
 - Three assurance levels in current drafts: Basic, Substantial, High. A fourth (High+) with sovereignty content was in the November 2023 draft and removed in the March 2024 draft.
 - Member State divide: pro-sovereignty (FR, IT, DE, ES) vs. sceptical (NL, IE, SE, FI, DK) vs. middle (BE, PL).
-- **ANSSI/BSI joint statement (March 2026)** is the most positive signal in two years for narrowing the central France-Germany sovereignty divergence. Watch for substantive follow-up.
+- **ANSSI/BSI joint statement (November 2025)** is the most positive signal in two years for narrowing the central France-Germany sovereignty divergence. Watch for substantive follow-up.
 - Three plausible scenarios: A) adoption without sovereignty in 2027; B) adoption with sovereignty in 2027-2028; C) continued slippage through 2027.
 - Operative EU-wide regimes apply regardless of EUCS: GDPR, NIS2, DORA, EU AI Act, EU Cloud CoC.
 - For cloud providers preparing for EUCS: build to [BSI C5:2026](/knowledge-base/compliance/germany-bsi-c5-cloud-attestation) (Substantial reference) and follow [ANSSI SecNumCloud](/knowledge-base/compliance/france-anssi-secnumcloud-qualification) (High+ candidate reference).

@@ -4,7 +4,7 @@ import { base } from '../../utils/base';
 const ids=["networking/hybrid-connectivity-expressroute-fastconnect-vpn-reality","networking/hub-and-spoke-virtual-wan-and-drg-three-topology-choices"];
 const articles=await getCollection('knowledgeBase');
 const reading=ids.map(id=>{const a=articles.find(a=>a.id===id);if(!a)throw new Error('Missing connectivity reading: '+id);return a;});
-const sources=[["Private endpoints and public access","https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"],["Routing and effective paths","https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview"],["Private endpoint DNS configuration","https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns"],["ExpressRoute disaster-recovery design","https://learn.microsoft.com/en-us/azure/expressroute/designing-for-disaster-recovery-with-expressroute-privatepeering"],["Oracle FastConnect connection models","https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnectoverview.htm"]];
+const sources=[["Private endpoints and public access","https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"],["Routing and effective paths","https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview"],["Private endpoint DNS configuration","https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns"],["ExpressRoute disaster-recovery design","https://learn.microsoft.com/en-us/azure/expressroute/designing-for-disaster-recovery-with-expressroute-privatepeering"],["Oracle FastConnect connection models","https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/fastconnectoverview.htm"],["Peering is non-transitive","https://learn.microsoft.com/en-us/azure/networking/design-guide/hub-spoke"],["ExpressRoute is unencrypted by default","https://learn.microsoft.com/en-us/azure/expressroute/expressroute-about-encryption"]];
 ---
 <section class="connectivity-reading" aria-labelledby="connectivity-reading-title">
   <h2 id="connectivity-reading-title">Read the detail behind the decision.</h2>
@@ -12,7 +12,7 @@ const sources=[["Private endpoints and public access","https://learn.microsoft.c
   <ul role="list">{reading.map(a=><li><a href={base+'/knowledge-base/'+a.id}>{a.data.title} &rarr;</a><p>{a.data.excerpt}</p></li>)}</ul>
   <aside>
     <h3>Sources &amp; method</h3>
-    <p>Reviewed 12 September 2026. The illustrations simplify network behaviour; motion duration is not a failover or latency estimate. The brief identifies requirements and checks, without inspecting your network or establishing compliance.</p>
+    <p>Reviewed 14 September 2026. The illustrations simplify network behaviour; motion duration is not a failover or latency estimate. The brief identifies requirements and checks, without inspecting your network or establishing compliance.</p>
     <ul role="list">{sources.map(([label,href])=><li><a href={href}>{label} &rarr;</a></li>)}</ul>
   </aside>
 </section>

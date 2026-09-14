@@ -3,7 +3,7 @@ title: "IPAM — IP Address Management Before You Wish You Had Done It"
 category: networking
 tags: ["Azure", "OCI", "Networking", "IPAM", "CIDR"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 11
 level: intermediate
 excerpt: "IP space looks infinite until two VNets try to peer with overlapping ranges. By then the fix is renumbering and weeks of work. IPAM costs nothing on day one."
@@ -51,14 +51,14 @@ By the time you have an enterprise estate with on-prem, Azure, OCI, M&A networks
 
 The minimum allocation hierarchy:
 
-```
+```text
 Corporate global IP plan
 ├── On-prem (existing ranges, often 10.0.0.0/12)
 ├── Azure
 │   ├── Hub region 1 (e.g., 10.100.0.0/16)
 │   ├── Hub region 2 (e.g., 10.101.0.0/16)
-│   ├── Spoke pool region 1 (e.g., 10.110.0.0/14 — workload subnets here)
-│   └── Spoke pool region 2 (e.g., 10.114.0.0/14)
+│   ├── Spoke pool region 1 (e.g., 10.108.0.0/14 — workload subnets here)
+│   └── Spoke pool region 2 (e.g., 10.112.0.0/14)
 ├── OCI
 │   ├── Hub region 1 (e.g., 10.150.0.0/16)
 │   └── Spoke pool region 1 (e.g., 10.160.0.0/14)
@@ -107,9 +107,10 @@ Both are reasonable. AVNM IPAM is cleaner because it is native; the open-source 
 # Azure VNM IPAM pool — Terraform pattern
 resource "azurerm_network_manager_ipam_pool" "primary" {
   name               = "ipam-primary"
+  location           = "westeurope"
   network_manager_id = azurerm_network_manager.main.id
   display_name       = "Primary IPv4 Pool"
-  address_prefixes   = ["10.100.0.0/12"]
+  address_prefixes   = ["10.100.0.0/14"]
   description        = "Primary IPv4 allocation pool for all workloads"
 }
 ```
@@ -135,8 +136,10 @@ locals {
   }
 }
 
-# Use cidrsubnet() and cidrcontains() helpers in CI checks
-# to validate new allocations don't overlap with existing
+# Terraform has no built-in containment test. cidrsubnet() and
+# cidrhost() help derive ranges; the overlap check itself belongs
+# in CI, or in a provider-defined function such as
+# provider::utils::cidrcontains() (Terraform 1.8+, third party).
 ```
 
 The discipline is the same on both clouds; only the tooling differs. For enterprise multicloud, OCI allocations should live in the same authoritative IPAM as Azure and on-prem. Terraform-only discipline works at smaller scale, but a central IPAM becomes important once multiple teams allocate address space independently.
@@ -214,7 +217,7 @@ In practice, the right tool is a cloud-agnostic IPAM that models all environment
 
 - **NetBox** is the most widely adopted open-source option. Supports prefixes, IP ranges, VRFs, and custom fields. API-driven; integrates with Terraform via the NetBox provider.
 - **The open-source Azure IPAM** (published by Microsoft) is Azure-native and auto-discovers VNets, but OCI and on-prem ranges require manual entry or scripted sync.
-- **Commercial platforms** (Infoblox, Men&Mice, SolarWinds IP Address Manager) offer multicloud support and enterprise integrations at enterprise cost.
+- **Commercial platforms** (Infoblox, Micetro by BlueCat — formerly Men&Mice, SolarWinds IP Address Manager) offer multicloud support and enterprise integrations at enterprise cost.
 
 For most organisations building a greenfield multicloud estate, NetBox with an IaC-backed allocation workflow is the most practical starting point: free, cloud-agnostic, API-driven, and actively maintained.
 
