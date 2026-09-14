@@ -91,7 +91,10 @@ Two rules follow, and they apply to every batch:
 10. **A correct finding does not make the proposed fix correct.** B7a's reviewer was
     right that a figure was incomplete and wrong about its replacement, and right
     that a quota family was inconsistent while wrong about what the vendor page says.
-    Verify the replacement against a source, not just the defect. `git show
+    Verify the replacement against a source, not just the defect.
+11. **When a batch reports nothing wrong, verify what it passed, not what it found.**
+    B7b returned 0 WRONG. Re-deriving a sample of the claims it cleared is the only
+    way to tell a clean corpus from a lax review. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -143,13 +146,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **42** — B1–B6c plus B7a |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **45** — B1–B6c plus B7a, B7b |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **24** |
+| **Never opened** | **21** |
 
-So: **15 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **12 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -185,7 +188,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B6b | Networking and addressing | 4 | sonnet | **applied** | [12 findings](audit/B6b-networking.md) | 10 + 1 found by sweep |
 | B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
 | B7a | Governance and access control | 3 | sonnet | **applied** | [14 findings](audit/B7a-governance-access.md) | 9 + 13 fences swept |
-| B7b | Service models and ownership | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
+| B7b | Service models and ownership | 3 | sonnet | **applied** | [3 findings](audit/B7b-service-models.md) | 3 + 1 open |
 | B7c | DevOps toolchain | 3 | sonnet | todo | — | — |
 | B7d | Operating model and learning | 3 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
@@ -1027,3 +1030,49 @@ Two articles use different names for the same object-storage quota. I could not
 settle which is right — the reference page is a stub — so both stay. Picking
 one to tidy away a contradiction without evidence is the failure this audit
 exists to prevent.
+
+## Session 14 — B7b applied (2026-09-14)
+
+**Service models and ownership.** Three articles, 3 findings applied, 1 left
+open. Detail in [B7b](audit/B7b-service-models.md).
+
+### The first clean batch, and how I tested that
+
+**0 WRONG, 0 STALE, 0 INTERNAL.** A nil result is the one that most needs
+checking, because it looks identical whether the articles are sound or the
+reviewer was lax. So I re-derived a sample of what it *passed* rather than only
+its findings: all four hard tagging limits, quoted from vendor pages I fetched
+myself. Every one correct, including the tag-key case-sensitivity claim, which
+is the kind of detail that is usually backwards.
+
+**When a batch reports nothing wrong, verify what it passed, not what it
+found.**
+
+### Fourth batch running where the only defects are citations
+
+One reference was cited for a claim the article never makes — two occurrences
+in frontmatter, zero in the body. The other described its page as underpinning
+a cross-cloud approach; that page has zero occurrences of cross-cloud,
+multicloud or multi-cloud, in stripped text and raw HTML alike.
+
+Citation hygiene is now clearly the corpus's weakest dimension. X1 should
+sweep every reference description in all 57 articles against its page, not just
+check that the URLs resolve.
+
+### One addition worth more than the fixes
+
+The SLA section explained credit size but never said credits must be
+**claimed**. Oracle: service credits are "the exclusive remedy" and "we require
+customers to file for the SLA claim". A reader who assumes credits arrive
+automatically never claims one.
+
+The reviewer also offered a 60-day window. Not on the page I fetched, so not
+published — the same rule that B7a established.
+
+### Still open
+
+OCI's 10-per-tenancy cost-tracking tag limit. Seven URLs between us: the
+dedicated topic 404s and four others resolve with zero cost-tracking content.
+Oracle has reorganised those pages. The claim is probably right and stated
+consistently, so it stands. Settled by `oci limits value list --service-name
+tagging` against a live tenancy.
