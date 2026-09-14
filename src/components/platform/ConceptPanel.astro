@@ -1,6 +1,8 @@
 ---
 // Shared scene vocabulary and controls; compact panels put results beside the scene.
 import WorkloadQuestion from './WorkloadQuestion.astro';
+import ConceptDetails from '../shared/ConceptDetails.astro';
+import '../../styles/compact-explainers.css';
 import type { ConceptStory } from '../../data/platform-concepts';
 
 interface Props {
@@ -47,11 +49,12 @@ const { story, compact = false } = Astro.props;
         data-action={story.action}
         data-reset={story.reset}
       >{story.action}</button>
-      <p class="cp__status" data-status aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
+      <p class:list={['cp__status',{'cp__status--result':compact && !Astro.slots.has('result')}]} data-status aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
     </div>
 
     <slot name="result" />
-    <WorkloadQuestion question={story.question} answers={story.answers} />
+    <WorkloadQuestion question={story.question} answers={compact ? undefined : story.answers} />
+    {compact && !Astro.slots.has('result') && <ConceptDetails analogy={story.analogy} lesson={story.lesson} />}
     {!compact && <p class="cp__lesson">{story.lesson}</p>}
   </div>
 </section>

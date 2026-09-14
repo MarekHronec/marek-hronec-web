@@ -1,28 +1,28 @@
 ---
 import type { ExplainerStory } from '../../data/cia-explainer';
+import ConceptDetails from '../shared/ConceptDetails.astro';
+import '../../styles/compact-explainers.css';
 interface Props { story: ExplainerStory; index: number }
 const { story, index } = Astro.props;
 ---
-<section class="ex__panel" id={`ex-panel-${story.key}`} role="tabpanel" aria-labelledby={`ex-tab-${story.key}`} tabindex="0" data-panel={story.key} data-demonstrate="false">
+<section class="ex__panel ex__panel--compact" id={`ex-panel-${story.key}`} role="tabpanel" aria-labelledby={`ex-tab-${story.key}`} tabindex="0" data-panel={story.key} data-demonstrate="false">
   <div class="ex__visual">
     <div class="ex__figure-label"><span>Figure 0{index + 1}</span><span>{story.name} at sea</span></div>
     <slot />
-    <div class="ex__playback" hidden>
+    <div class="ex__playback" data-needs-js hidden>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
       <button type="button" data-replay>Replay motion ↻</button>
     </div>
   </div>
   <div class="ex__copy">
-    <p class="ex__sequence">{story.letter} <span>/</span> {story.cue}</p>
     <h4>{story.title}</h4>
     <p class="ex__definition">{story.definition}</p>
-    <p>{story.analogy}</p>
-    <div class="ex__interaction" hidden>
-      <button class="ex__action" type="button" data-demonstrate aria-pressed="false" data-action={story.action} data-reset={story.reset}>{story.action}<span aria-hidden="true"> →</span></button>
-      <p class="ex__status" aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
+    <div class="ex__interaction" data-needs-js hidden>
+      <button class="ex__action" type="button" data-demonstrate aria-pressed="false" data-action={story.action} data-reset={story.reset}>{story.action}</button>
+      <p class="ex__status" data-status aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
     </div>
     <div class="ex__question"><span>Ask about your system</span><p>{story.question}</p></div>
-    <p class="ex__lesson">{story.lesson}</p>
+    <ConceptDetails analogy={story.analogy} lesson={story.lesson} />
   </div>
 </section>
 <style>
@@ -49,6 +49,7 @@ const { story, index } = Astro.props;
   .ex__playback { display: flex; justify-content: flex-end; gap: var(--space-4); padding: var(--space-3); }
   .ex__playback button { padding: var(--space-2); background: transparent; color: var(--color-primary); font-size: var(--text-label-sm); }
   .ex__playback button:hover { background: var(--color-primary-tint); }
+  .ex__playback button:disabled { opacity:.45; cursor:default; }
   .ex__visual :global(.scene) { display: block; width: 100%; height: auto; overflow: visible; }
   .ex__visual :global(.scene__line) { fill: none; stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linecap: round; stroke-linejoin: round; }
   .ex__visual :global(.scene__paper) { fill: var(--color-surface); stroke: var(--color-primary); stroke-width: var(--nautical-stroke); stroke-linejoin: round; }

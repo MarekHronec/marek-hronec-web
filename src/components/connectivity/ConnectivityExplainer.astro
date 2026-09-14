@@ -10,11 +10,11 @@ const scenes = { access: PrivateAccess, routing: InspectionRoute, dns: NameResol
 ---
 <div class="connectivity-explainer" data-explainer>
   <h2>Four checks behind every connection.</h2>
-  <p class="connectivity-explainer__lede">Reachability, route selection, name resolution and surviving paths answer different questions. Explore each, then prepare a brief for one workload connection.</p>
+  <p class="connectivity-explainer__lede">Follow the cargo from entrance to delivery. Check access, routes, addresses and what happens when a path fails.</p>
   <div class="connectivity-explainer__tabs" role="tablist" aria-label="Connectivity concepts" data-needs-js hidden>
     {CONNECTIVITY_STORIES.map((s,i) => <button type="button" role="tab" id={'concept-tab-'+s.key} aria-controls={'concept-panel-'+s.key} aria-selected={i===0} tabindex={i===0?0:-1} data-tab={s.key}><span>{s.ordinal} / {s.model}</span><strong>{s.name}</strong></button>)}
   </div>
-  {CONNECTIVITY_STORIES.map(story => { const Scene=scenes[story.key]; return <ConceptPanel story={story}><Scene /></ConceptPanel>; })}
+  {CONNECTIVITY_STORIES.map(story => { const Scene=scenes[story.key]; return <ConceptPanel story={story} compact><Scene /></ConceptPanel>; })}
 </div>
 <script>
   import { initializeExplainers } from '../../scripts/explainer';
@@ -23,11 +23,11 @@ const scenes = { access: PrivateAccess, routing: InspectionRoute, dns: NameResol
 </script>
 <style>
   h2 { font: var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); letter-spacing: var(--tracking-tight); }
-  .connectivity-explainer__lede { max-width: 75ch; margin-block: var(--space-3) var(--space-6); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
-  .connectivity-explainer__tabs { display: grid; gap: var(--space-2); }
+  .connectivity-explainer__lede { max-width: 75ch; margin-block: var(--space-2) var(--space-5); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
+  .connectivity-explainer__tabs { display: grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap: var(--space-2); }
   .connectivity-explainer__tabs[hidden] { display: none; }
-  button { border: 0; padding: var(--space-4); text-align: left; background: var(--color-surface-container-low); color: var(--color-navy); cursor: pointer; }
-  button span { display: block; margin-bottom: var(--space-2); font: var(--text-label-sm) var(--font-mono); }
+  button { border: 0; padding: var(--space-3) var(--space-4); text-align: left; background: var(--color-surface-container-low); color: var(--color-navy); cursor: pointer; }
+  button span { display: block; margin-bottom: var(--space-1); font: var(--text-label-sm) var(--font-mono); }
   button strong { font: var(--weight-semibold) var(--text-label-md) var(--font-body); }
   button[aria-selected='true'] { background: var(--color-navy); color: var(--color-on-primary); }
   .connectivity-explainer:not([data-ready]) :global(.scene *) { animation-play-state: paused; }

@@ -1,0 +1,14 @@
+---
+interface Props { analogy:string; lesson:string }
+const { analogy, lesson } = Astro.props;
+---
+<details class="concept-details">
+  <summary>Details &amp; limits of the example</summary>
+  <p>{analogy}</p>
+  <p>{lesson}</p>
+</details>
+<style>
+.concept-details { color:var(--color-on-surface-muted); font-size:var(--text-label-md); line-height:var(--leading-relaxed); }
+summary { color:var(--color-primary); cursor:pointer; font-weight:var(--weight-semibold); }
+p { margin-top:var(--space-3); }
+</style>

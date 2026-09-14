@@ -12,11 +12,11 @@ choose values. Demonstrations never modify calculator answers.
 - src/components/compliance/scenes/: one component per concept, plus the shared
   SailingVessel and ChartWater drawing vocabulary.
 - src/data/cia-explainer.ts: editable English/Slovak labels and explanatory copy.
-- src/scripts/cia-explainer.ts: tab navigation and demonstration/playback behavior.
+- src/scripts/explainer.ts: shared tab navigation and demonstration/playback behavior.
 - src/styles/tokens.css: marine colors and nautical illustration size/duration tokens.
 
 No animation library or image download is used. The SVGs scale with their
-containers. 
+containers. The compact presentation and shared controller integration are documented in [Compact guide explanations](COMPACT-GUIDE-EXPLAINERS.md).
 
 ## Stories and boundaries
 

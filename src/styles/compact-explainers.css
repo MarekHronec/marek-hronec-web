@@ -1,0 +1,14 @@
+/* One reading rhythm for every guide; the scenes keep their own marine geometry. */
+.cp.cp--compact[data-panel], .ex__panel.ex__panel--compact[data-panel] { align-items:start; gap:var(--space-5); }
+.cp.cp--compact[data-panel] .cp__visual, .ex__panel.ex__panel--compact[data-panel] .ex__visual { align-self:start; }
+.cp.cp--compact[data-panel] .cp__copy, .ex__panel.ex__panel--compact[data-panel] .ex__copy { gap:var(--space-3); }
+.cp.cp--compact[data-panel] h3, .ex__panel.ex__panel--compact[data-panel] h4 { max-width:none; font-size:var(--text-title-lg); }
+.cp.cp--compact[data-panel] .cp__interaction, .ex__panel.ex__panel--compact[data-panel] .ex__interaction { gap:var(--space-2); }
+.cp.cp--compact[data-panel] .cp__status, .ex__panel.ex__panel--compact[data-panel] .ex__status { min-height:0; }
+.cp.cp--compact[data-panel] .cp__status--result, .ex__panel.ex__panel--compact[data-panel] .ex__status { align-self:stretch; padding:var(--space-3) var(--space-4); background:var(--color-surface-container-low); color:var(--color-navy); }
+.cp.cp--compact[data-panel] .workload-question, .ex__panel.ex__panel--compact[data-panel] .ex__question { padding:var(--space-3) var(--space-4); }
+.cp.cp--compact[data-panel] .workload-question__prompt, .ex__panel.ex__panel--compact[data-panel] .ex__question p { font-size:var(--text-label-md); }
+.ex__panel--compact .ex__question span { text-transform:uppercase; letter-spacing:var(--tracking-wide); }
+@media (min-width:1024px) {
+  .cp.cp--compact[data-panel], .ex__panel.ex__panel--compact[data-panel] { grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:var(--space-7); }
+}

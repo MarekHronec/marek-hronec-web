@@ -113,8 +113,8 @@ Ambient motion runs always; the story runs only under
 
 `src/scripts/explainer.ts` is a generic, selector-driven controller (roving
 tabindex, Web Animations playback, IntersectionObserver pausing, reduced motion).
-`src/components/compliance/` has a near-identical `cia-explainer.ts` — when both
-feature branches have landed, collapse the two onto this one.
+Compliance now uses this controller too; its duplicate was removed. Shared
+compact layout and verification are recorded in [Compact guide explanations](COMPACT-GUIDE-EXPLAINERS.md).
 
 ## Verifying figure motion
 

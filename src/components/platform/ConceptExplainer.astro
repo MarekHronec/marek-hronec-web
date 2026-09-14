@@ -27,7 +27,7 @@ const scenes = {
   <div class="cx__head">
     <h2 class="cx__title">Five concepts. Different decisions.</h2>
     <p class="cx__lede">
-      These layers can work together: containers can run on VMs, Kubernetes manages containers, and a platform service may accept an image. SaaS is a decision to buy a finished product. Explore what each changes and who operates it.
+      Choose what you operate, package or hand over. These options can work together: containers can run on VMs, Kubernetes or a platform service.
     </p>
   </div>
 
@@ -55,7 +55,7 @@ const scenes = {
   {CONCEPT_STORIES.map((story) => {
     const Scene = scenes[story.key];
     return (
-      <ConceptPanel story={story}>
+      <ConceptPanel story={story} compact>
         <Scene />
       </ConceptPanel>
     );
@@ -69,8 +69,8 @@ const scenes = {
 </script>
 
 <style>
-  .cx { padding-block: var(--space-8); }
-  .cx__head { max-width: var(--container-content); margin-bottom: var(--space-6); }
+
+  .cx__head { max-width: var(--container-content); margin-bottom: var(--space-5); }
   .cx__title {
     font-family: var(--font-display);
     font-size: clamp(var(--text-title-lg), 3vw, var(--text-headline-md));
@@ -82,15 +82,15 @@ const scenes = {
   }
   .cx__lede {
     margin-top: var(--space-3); max-width: 76ch;
-    font-size: var(--text-body-lg); line-height: var(--leading-relaxed);
+    font-size: var(--text-body-md); line-height: var(--leading-relaxed);
     color: var(--color-on-surface-muted);
   }
 
-  .cx__tabs { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+  .cx__tabs { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-2); }
   .cx__tabs[hidden] { display: none; }
   .cx__tab {
     display: flex; align-items: baseline; gap: var(--space-3);
-    padding: var(--space-4);
+    padding: var(--space-3) var(--space-4);
     background: var(--color-surface-container-low);
     border: 0; text-align: left; cursor: pointer;
     color: var(--color-on-surface);

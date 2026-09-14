@@ -7,12 +7,12 @@ import AvailabilityScene from './scenes/AvailabilityScene.astro';
 import ServiceLevelScene from './scenes/ServiceLevelScene.astro';
 const scenes = [ConfidentialityScene, IntegrityScene, AvailabilityScene, ServiceLevelScene];
 ---
-<div class="ex">
+<div class="ex" data-explainer>
   <div class="ex__head">
     <h3 class="ex__title">Before you choose a cloud, know what you are protecting.</h3>
-    <p class="ex__lede">Could it leak? Could it be wrong? Could it be unavailable? These are the three lenses of the <strong>CIA triad</strong>. Assess their impact on your system; the calculator then works through the criteria that determine <strong>U, the required cloud service level.</strong></p>
+    <p class="ex__lede">A leak, a wrong record, an outage: <strong>CIA</strong> classifies their impact. For Slovak ISVS, the assessment then determines <strong>U, the required cloud service level.</strong></p>
   </div>
-  <div class="ex__tabs" role="tablist" aria-label="Understand classification" hidden>
+  <div class="ex__tabs" role="tablist" aria-label="Understand classification" data-needs-js hidden>
     {EXPLAINER_STORIES.map((story, index) => (
       <button type="button" role="tab" class="ex__tab" id={`ex-tab-${story.key}`} aria-controls={`ex-panel-${story.key}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1} data-tab={story.key}>
         <span class="ex__tab-letter">{story.letter}</span>
@@ -27,19 +27,19 @@ const scenes = [ConfidentialityScene, IntegrityScene, AvailabilityScene, Service
   })}
 </div>
 <script>
-  import { initializeExplainers } from '../../scripts/cia-explainer';
+  import { initializeExplainers } from '../../scripts/explainer';
   initializeExplainers();
-  document.addEventListener('astro:page-load', initializeExplainers);
+  document.addEventListener('astro:page-load', () => initializeExplainers());
 </script>
 <style>
-  .ex { padding-block: var(--space-6); }
-  .ex__head { max-width: var(--container-content); margin-bottom: var(--space-6); }
+
+  .ex__head { max-width: var(--container-content); margin-bottom: var(--space-5); }
   .ex__title { font-family: var(--font-display); font-size: clamp(var(--text-title-lg), 3vw, var(--text-headline-md)); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight); line-height: var(--leading-snug); color: var(--color-on-surface); text-wrap: balance; }
-  .ex__lede { font-size: var(--text-body-lg); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); margin-top: var(--space-3); max-width: 82ch; }
+  .ex__lede { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); margin-top: var(--space-3); max-width: 82ch; }
   .ex__lede strong { font-weight: var(--weight-medium); color: var(--color-on-surface); }
   .ex__tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
   .ex__tabs[hidden] { display: none; }
-  .ex__tab { position: relative; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); background: var(--color-surface-container-low); border: 0; text-align: left; cursor: pointer; color: var(--color-on-surface); transition: background var(--duration-fast) var(--ease-standard); }
+  .ex__tab { position: relative; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--color-surface-container-low); border: 0; text-align: left; cursor: pointer; color: var(--color-on-surface); transition: background var(--duration-fast) var(--ease-standard); }
   .ex__tab:hover { background: var(--color-primary-tint); }
   .ex__tab[aria-selected="true"] { background: var(--color-navy); color: var(--color-on-primary); }
   .ex__tab-letter { font: var(--weight-medium) var(--text-title-lg) var(--font-mono); }

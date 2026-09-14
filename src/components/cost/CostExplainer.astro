@@ -35,14 +35,5 @@ const scenes = { idle: IdleCapacity, scaling: DemandScaling, transfer: TransferR
   button[aria-selected='true'] { background: var(--color-navy); color: var(--color-on-primary); }
   .cost-explainer:not([data-ready]) :global(.scene *) { animation-play-state: paused; }
   .cost-explainer__tabs { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .cost-explainer :global(.cp--compact) { align-items:start; gap:var(--space-5); }
-  .cost-explainer :global(.cp--compact .cp__visual) { align-self:start; }
-  .cost-explainer :global(.cp--compact .cp__copy) { gap:var(--space-3); }
-  .cost-explainer :global(.cp--compact h3) { max-width:none; font-size:var(--text-title-lg); }
-  .cost-explainer :global(.cp--compact .cp__interaction) { gap:var(--space-2); }
-  .cost-explainer :global(.cp--compact .cp__status) { min-height:0; }
-  .cost-explainer :global(.cp--compact .workload-question) { padding:var(--space-3) var(--space-4); }
-  .cost-explainer :global(.cp--compact .workload-question__prompt) { font-size:var(--text-label-md); }
-  @media (min-width: 1024px) { .cost-explainer :global(.cp--compact) { grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:var(--space-7); } }
   @media (min-width: 1024px) { .cost-explainer__tabs { grid-template-columns: repeat(4,minmax(0,1fr)); } }
 </style>
