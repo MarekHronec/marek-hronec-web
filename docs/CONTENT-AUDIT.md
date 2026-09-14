@@ -186,8 +186,48 @@ article whose **claims were read and verified** and one that merely had a
 | Inventoried and link-checked only | all 57 |
 | **Never opened** | **0** |
 
-So: **every article has now been audited.** What remains is cross-cutting: X1 and X3. B2–B8 is not a formality; it is
-almost all of the work. B2 is running as of 2026-09-12.
+So: **every article has now been audited.** B2–B8 was not a formality; it was almost all
+of the work.
+
+### The second corpus — the guide pages, added to this scorecard 2026-09-14
+
+The table above counts *articles*. It has never counted the five interactive guide pages,
+and that omission was hiding roughly as much prose as a whole batch. Found while scoping X3:
+
+| Guide | Where its content lives | Words | Status |
+|---|---|---|---|
+| `/cost` | 4 data files + 5 components | 1,641 | **X3** |
+| `/resilience` | 2 data files + 3 components | 1,429 | **X3** |
+| `/connectivity` | 2 data files + 4 components | 1,411 | **X3** |
+| `/platform` | 4 data files + 10 components | **5,794** | **not audited** |
+| `/compliance` | `cia-explainer` + `security-calculator` | 4,204 | **partial** — X1 corrected the calculator's §20 result text; nothing else read |
+
+**`/platform` alone holds more words than the three guides X3 is auditing combined.** It is
+not a stub: `platform-chooser.ts` (1,968 words) emits a recommended shortlist from a
+questionnaire, and `platform-approaches.ts` (1,689) describes operating models a reader picks
+between. That is prescriptive advice with operational consequences, and no one has checked it.
+
+**This needs a batch X4.** X3 does not close the guide corpus, and the tracker should stop
+implying the audit ends when it lands.
+
+### A premise I got wrong, recorded because rule 15 exists
+
+Rule 15 says verify the premise of a batch before dispatching it. I dispatched X3 stating
+that the guide data files carry **zero source URLs** and framing the guides as a less-sourced
+home for content moved out of sourced articles. The first half is true and the framing is
+false. Each guide carries a page-level *Sources & method* aside inside its Reading component
+— 8 URLs for cost, 5 for connectivity, 4 for resilience — each with a review date and an
+explicit statement of what the tool does *not* do. I had grepped the data files and concluded
+"unsourced" without opening the components that render them.
+
+Sources attached to the guide rather than to each story object is a defensible architecture,
+not a defect. The question that survives is narrower and better: **does each guide's source
+list cover the load-bearing claims in its data files?** The reviewer was corrected mid-flight.
+
+Same shape as the B7a extraction failure, in mirror image: there, a count could not be
+reproduced because the extraction was wrong; here, an absence was reported because the
+extraction looked in the wrong files. **An absence found by grep is a claim about your grep
+until you have checked what renders.**
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
 twelve findings, of which four were errors that were wrong *when published*
