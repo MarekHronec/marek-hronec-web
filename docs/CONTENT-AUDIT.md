@@ -94,7 +94,14 @@ Two rules follow, and they apply to every batch:
     Verify the replacement against a source, not just the defect.
 11. **When a batch reports nothing wrong, verify what it passed, not what it found.**
     B7b returned 0 WRONG. Re-deriving a sample of the claims it cleared is the only
-    way to tell a clean corpus from a lax review. `git show
+    way to tell a clean corpus from a lax review.
+12. **Ask what happens if the reader follows the advice and it is wrong.** B7c found a
+    Prometheus metric that does not exist. A malformed CIDR fails loudly at apply time;
+    a phantom metric fails *silently* — the alert never fires and looks like health.
+    Weight silent-failure defects above loud ones in operational articles.
+13. **Do not prime a reviewer for a pattern.** B7c’s brief mentioned a defect type from
+    earlier batches; the reviewer correctly reported it could not reproduce it here.
+    Describe the *method*, not the expected finding. `git show
    --unified=0` on your own commit, every changed line, every time. The
    question is "is each line I changed still true", not "is the old string
    gone".
@@ -146,13 +153,13 @@ article whose **claims were read and verified** and one that merely had a
 
 | | Articles |
 |---|---|
-| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **45** — B1–B6c plus B7a, B7b |
+| **Content-audited and corrected** (read end to end, claims checked against fetched sources, findings applied) | **48** — B1–B6c plus B7a–B7c |
 | Citation repointed only, content never examined | 8 |
 | Touched by a single verified correction, rest of the article unexamined | 2 (`rbac-and-iam-authorisation-models-that-look-similar`, `sandboxes-environments-you-will-probably-set-up-wrong`) |
 | Inventoried and link-checked only | all 57 |
-| **Never opened** | **21** |
+| **Never opened** | **18** |
 
-So: **12 of 57 articles have not been audited.** B2–B8 is not a formality; it is
+So: **9 of 57 articles have not been audited.** B2–B8 is not a formality; it is
 almost all of the work. B2 is running as of 2026-09-12.
 
 **What B1 cost, as a planning input for the rest.** Seven articles produced
@@ -189,7 +196,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
 | B7a | Governance and access control | 3 | sonnet | **applied** | [14 findings](audit/B7a-governance-access.md) | 9 + 13 fences swept |
 | B7b | Service models and ownership | 3 | sonnet | **applied** | [3 findings](audit/B7b-service-models.md) | 3 + 1 open |
-| B7c | DevOps toolchain | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
+| B7c | DevOps toolchain | 3 | sonnet | **applied** | [6 findings](audit/B7c-devops-toolchain.md) | 4 applied |
 | B7d | Operating model and learning | 3 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
@@ -1076,3 +1083,55 @@ dedicated topic 404s and four others resolve with zero cost-tracking content.
 Oracle has reorganised those pages. The claim is probably right and stated
 consistently, so it stands. Settled by `oci limits value list --service-name
 tagging` against a live tenancy.
+
+## Session 15 — B7c applied (2026-09-14)
+
+**DevOps toolchain.** Three articles, 6 findings, 4 applied. Detail in
+[B7c](audit/B7c-devops-toolchain.md). Every defect was in the oldest article
+in the corpus; the two newer ones came through clean.
+
+### A new severity class: the defect that fails silently
+
+The article told readers to alert on `argocd_app_sync_status`. **That metric
+does not exist** — zero occurrences in Argo CD's metrics reference. Sync state
+is a *label* on the `argocd_app_info` gauge.
+
+This is worse than an ordinary error and deserves its own name. A malformed
+CIDR (B6b) fails loudly at apply time. A wrong metric name **fails silently**:
+the alert returns no series, never fires, and the absence of alerts is
+indistinguishable from health. The article's own closing line — "drift that is
+not surfaced is drift that accumulates" — describes exactly what its
+instruction would cause.
+
+**When auditing operational advice, ask what happens if the reader follows it
+and it is wrong.** Loud failures are self-correcting; silent ones are not.
+
+### The claim in the same sentence
+
+"Surfaces drift in real time." Argo CD polls every three minutes by default
+(120s + up to 60s jitter). The sentence continued into SLA threshold advice,
+so the error propagated directly into how a reader would size alerts.
+
+### Citations again
+
+Third defect was a reference promising "progressive delivery with Argo
+Rollouts" from a page whose only use of the word concerns sync hooks — Argo
+Rollouts being a separate project entirely. That left a real gap, since the
+article teaches canary steps with nothing backing them; the Rollouts project's
+own docs are now cited.
+
+The same description advertised RBAC and SSO coverage. Those two words appear
+in the **entire corpus** only inside that one description and in no article
+body — a reference selling content nobody uses.
+
+### What the reviewer did well
+
+It went looking for a defect in the ApplicationSet manifest, found the article
+was right, and said so: the official example uses `goTemplate: true` with
+dotted syntax, the article uses the undotted legacy form, and that is correct
+because `goTemplate` defaults to false and the article never mixes the two.
+
+It also **refused to reproduce a pattern I had primed it for.** My brief
+mentioned that recent batches found references supporting no claim at all; it
+reported plainly that it could not reproduce that here. A reviewer that
+declines to find what you suggested is worth more than one that obliges.
