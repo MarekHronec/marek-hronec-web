@@ -189,7 +189,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
 | B7a | Governance and access control | 3 | sonnet | **applied** | [14 findings](audit/B7a-governance-access.md) | 9 + 13 fences swept |
 | B7b | Service models and ownership | 3 | sonnet | **applied** | [3 findings](audit/B7b-service-models.md) | 3 + 1 open |
-| B7c | DevOps toolchain | 3 | sonnet | todo | — | — |
+| B7c | DevOps toolchain | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
 | B7d | Operating model and learning | 3 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
 | X1 | Cross-cutting consistency | all | opus | todo | — | — |
