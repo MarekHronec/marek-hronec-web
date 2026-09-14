@@ -66,14 +66,22 @@ does not make every detail of the proposed fix correct.
 
 ## Not applied
 
-- **OCI's 10-per-tenancy cost-tracking tag limit.** The reviewer could not source it and
-  neither could I. Between us we tried seven URLs: the dedicated cost-tracking topic 404s,
-  and the tagging overview, tag-defaults, free-form-tags and cost-analysis pages all resolve
-  with **zero** cost-tracking content. Oracle appears to have reorganised these topics. The
-  claim is probably right, is stated consistently in both places the article makes it, and
-  general search surfaces text that reads as authentic Oracle documentation. **Left
-  unchanged.** Would be settled by `oci limits value list --service-name tagging` against a
-  live tenancy.
+- **OCI's 10-per-tenancy cost-tracking tag limit — resolved as far as it can be.** Eleven
+  URLs tried across two sessions. The dedicated topic 404s to curl **and to a real browser**,
+  and issues no redirect. Oracle's service-limits reference has **zero** cost-tracking
+  mentions and no tagging section. The tagging overview, tag defaults, free-form tags, cost
+  analysis, both tag-key-definition pages and the cloud governance guide all resolve with
+  nothing. Search engines still return the dead URL *with its content*, which is a stale
+  index, not a live source — a useful reminder that a search snippet can outlive the page.
+
+  The number stays, because it is probably right and stated consistently. But the article no
+  longer implies it is citable: it now records that the page was removed and shows the reader
+  how to ask the API instead, which stays correct when documentation moves. Both commands were
+  verified against Oracle's CLI reference before publishing, and the service name is discovered
+  from `oci limits service list` rather than guessed.
+
+  **Generalised in the article**: do this for any hard limit you are about to design against.
+  A number in an article is a snapshot; the API is the source.
 - The reviewer's observation that a container-service pairing in the comparison table is
   approximate rather than exact. The article already frames the table as "roughly the same
   shape", so the hedge is present.
@@ -92,3 +100,22 @@ which resource types cannot be tagged, and whether credits are automatic — and
 them as vendor context rather than dressing silence up as a finding. Silence is not a
 contradiction, and a reviewer that knows the difference is worth more than one that
 maximises its count.
+
+## A rendering trap worth recording
+
+The verification note was first written as a `:::note` callout with the commands inside it.
+Both parts of that would have failed silently:
+
+- `src/plugins/remark-callouts.mjs` handles **only** `tip` and `warning`. Any other directive
+  name falls through unrendered.
+- The plugin keeps only `type === 'paragraph'` children, so **a fenced code block inside a
+  callout is dropped entirely** — no error, no warning, the code simply does not appear.
+
+The note is therefore plain prose followed by a fenced block. Worth knowing before putting
+anything but prose in a callout anywhere in this corpus.
+
+Second trap, and the same one B6c caught: my first check of the rendered page reported the
+code block missing, because the syntax highlighter wraps every token in its own span, so the
+command is not greppable as contiguous text. Parsing the `<pre>` blocks and unescaping them
+showed it rendering correctly. **Stripping tags is the wrong tool for verifying highlighted
+code, exactly as it was for script-embedded tables.**
