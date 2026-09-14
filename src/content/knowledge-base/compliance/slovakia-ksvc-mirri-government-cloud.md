@@ -102,7 +102,7 @@ The 366/2024 amendment expands the *cybersecurity* regulated-entity population (
 
 The MIRRI methodology continues to use a four-tier *level* model combined with the standard CIA triad. The governing rule:
 
-```
+```text
 classification of ISVS X ≤ level of cloud service Y
 ```
 

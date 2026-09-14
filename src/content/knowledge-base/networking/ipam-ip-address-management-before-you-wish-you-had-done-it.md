@@ -51,7 +51,7 @@ By the time you have an enterprise estate with on-prem, Azure, OCI, M&A networks
 
 The minimum allocation hierarchy:
 
-```
+```text
 Corporate global IP plan
 ├── On-prem (existing ranges, often 10.0.0.0/12)
 ├── Azure

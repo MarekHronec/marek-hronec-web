@@ -44,7 +44,7 @@ The cardinal rule, written above your monitor: **anything that might change goes
 
 Microsoft's Cloud Adoption Framework recommends a pattern roughly like:
 
-```
+```text
 <resource-type-abbrev>-<workload>-<environment>-<region-abbrev>-<instance>
 ```
 
@@ -69,7 +69,7 @@ The 15-character Windows hostname limit is where most schemas explode. If the co
 
 For globally-unique resources (storage, Key Vault, ACR, App Service, Cosmos DB), the global namespace is contested. Common workload names like `dataprod` are long gone. The defensive pattern is to add an org prefix and sometimes a short hash:
 
-```
+```text
 # A storage account that won't collide
 stcontosopaymentsprodweu001
 # Or with a deterministic short hash for guaranteed uniqueness
@@ -107,13 +107,13 @@ The point is not which abbreviations you pick. The point is that they exist and 
 
 After watching this fail at enough organisations, here is the pattern that survives:
 
-```
+```text
 <cloud-prefix>-<resource-type>-<workload>-<env>-<region>-<instance>
 ```
 
 Examples:
 
-```
+```text
 az-rg-payments-prod-weu-001
 az-vnet-payments-prod-weu-001
 az-kv-payments-prod-weu-001
@@ -123,7 +123,7 @@ oci-vlt-payments-prod-fra-001
 
 For constrained resources, drop the hyphens but keep the order:
 
-```
+```text
 azstpaymentsprodweu001
 ocibktpaymentsprodfra001
 ```

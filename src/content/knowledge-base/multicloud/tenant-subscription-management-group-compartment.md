@@ -34,7 +34,7 @@ In Azure these boundaries are spread across several constructs. In OCI they are 
 
 The Azure hierarchy looks like this:
 
-```
+```text
 Microsoft Entra Tenant (the identity boundary)
 └── Tenant Root Management Group
     └── Management Group (policy/RBAC scope, up to 6 levels deep)
@@ -55,7 +55,7 @@ The CAF recommendation, which is right on this point, is *subscription democrati
 
 OCI has fewer constructs and they do more work each:
 
-```
+```text
 Tenancy (contract, identity root, billing relationship, and service-limit boundary)
 └── Root Compartment (= the tenancy itself)
     └── Compartment (RBAC + quota + organisation, up to 6 levels deep)

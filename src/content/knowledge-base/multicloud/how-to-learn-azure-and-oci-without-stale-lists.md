@@ -142,7 +142,7 @@ The training plan falls out of the matrix, not the other way around. You train a
 
 A simple competency matrix template:
 
-```
+```text
                  | Person A | Person B | Person C | Person D
 Network Design   | Expert   | Working  | Aware    | Working
 IaC (Terraform)  | Expert   | Expert   | Working  | Aware

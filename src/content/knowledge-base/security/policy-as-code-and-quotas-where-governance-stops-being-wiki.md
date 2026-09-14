@@ -3,7 +3,7 @@ title: "Policy as Code and Quotas — Where Governance Stops Being a Wiki Page"
 category: security
 tags: ["Azure", "OCI", "Policy as Code", "Governance", "Compliance"]
 date: 2026-04-30
-updated: 2026-05-13
+updated: 2026-09-14
 readTime: 13
 level: intermediate
 excerpt: "Governance as a wiki page is fiction. Governance is what the platform enforces. EPAC, Security Zones, quotas, Cloud Guard — the gaps and how to combine them."
@@ -145,13 +145,13 @@ Quota names are service-family-specific; verify exact quota names in the OCI quo
 **Tag defaults** enforce mandatory tagging at compartment level. Combined with `is_required = true`, they force the tag to be specified at creation, not just present. Tag defaults apply at resource creation time; they are not a retroactive cleanup mechanism. This is Azure's "deny if tag missing" pattern, but built into the platform without writing a policy:
 
 ```hcl
-# Conceptual pattern — verify exact provider syntax for your OCI provider version
 resource "oci_identity_tag_default" "cost_center_required" {
   compartment_id    = oci_identity_compartment.workload.id
   tag_definition_id = oci_identity_tag.cost_center.id
   is_required       = true
-  # Configure as a user-applied required tag: the creator must supply the value at resource creation.
-  # Omit 'value' or set it per your OCI provider version's required-tag documentation.
+  # `value` is Required by the provider, not optional. With is_required = true it is the
+  # fallback applied when the creator supplies nothing; omitting it fails at plan time.
+  value             = "unassigned"
 }
 ```
 

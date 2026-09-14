@@ -53,7 +53,7 @@ What landing zones do **not** give you, regardless of vendor marketing:
 
 Microsoft's recommended Azure landing zone has a specific structure that has become the de facto standard:
 
-```
+```text
 Tenant Root MG
 ├── Platform MG
 │   ├── Identity (subscription)
@@ -80,7 +80,7 @@ Oracle's equivalent has been through some name changes that are worth tracking. 
 
 A typical OCI Core Landing Zone shape:
 
-```
+```text
 Root Compartment (Tenancy)
 ├── Network compartment       (VCNs, DRGs, gateways)
 ├── Security compartment      (Vault, Logging, Cloud Guard, scanning)

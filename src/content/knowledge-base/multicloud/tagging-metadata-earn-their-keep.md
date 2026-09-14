@@ -153,13 +153,13 @@ resource "oci_identity_tag" "cost_center" {
 }
 
 # Make the tag mandatory for resources created in the workload compartment.
-# For user-applied required values, verify the exact Terraform provider syntax
-# for your OCI provider version; OCI requires either a default value or a
-# user-applied value mode.
 resource "oci_identity_tag_default" "cost_center_default" {
   compartment_id    = oci_identity_compartment.workload.id
   tag_definition_id = oci_identity_tag.cost_center.id
   is_required       = true
+  # `value` is Required by the provider. It is the fallback applied when the
+  # creator supplies nothing; omitting it fails at plan time.
+  value             = "unassigned"
 }
 ```
 

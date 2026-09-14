@@ -50,7 +50,7 @@ Six things, in order:
 
 A worked example for a mid-size enterprise:
 
-```
+```text
 Corporate envelope: 10.0.0.0/8 (RFC 1918)
 
 On-prem (legacy): 10.0.0.0/12 (10.0–10.15)
