@@ -26,6 +26,7 @@ export function initializeExplainers(rootSelector = '[data-explainer]') {
 
     const animations = (panel: HTMLElement) =>
       (panel.querySelector('svg')?.getAnimations({ subtree: true }) ?? []).filter(isCssAnimation);
+    const savedMotion = new WeakMap<HTMLElement, { name: string; time: Animation['currentTime']; finished: boolean }[]>();
 
     const restart = (panel: HTMLElement) => {
       animations(panel).forEach((animation) => {
@@ -41,7 +42,8 @@ export function initializeExplainers(rootSelector = '[data-explainer]') {
       panels.forEach((panel) =>
         animations(panel).forEach((animation) => {
           if (reduced.matches) animation.finish();
-          else if (paused || panel.hidden) animation.pause();
+          // Keep completed results at their endpoint when hiding a tab.
+          else if (paused || panel.hidden) { if (animation.playState === 'running') animation.pause(); }
           else if (animation.playState === 'paused') animation.play();
         }),
       );
@@ -54,10 +56,20 @@ export function initializeExplainers(rootSelector = '[data-explainer]') {
     };
 
     const activate = (index: number, focus = false) => {
+      // display:none destroys CSS timelines; retain them before hiding a panel.
+      panels.filter(panel => !panel.hidden).forEach(panel => {
+        savedMotion.set(panel, animations(panel).map(animation => ({ name: animation.animationName, time: animation.currentTime, finished: animation.playState === 'finished' })));
+      });
       tabs.forEach((tab, current) => {
         tab.setAttribute('aria-selected', String(current === index));
         tab.tabIndex = current === index ? 0 : -1;
         panels[current].hidden = current !== index;
+      });
+      animations(panels[index]).forEach((animation, current) => {
+        const saved = savedMotion.get(panels[index])?.[current];
+        if (!saved || saved.name !== animation.animationName) return;
+        if (saved.finished) animation.finish();
+        else animation.currentTime = saved.time;
       });
       if (focus) tabs[index].focus();
       setPlayback();

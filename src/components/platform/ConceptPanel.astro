@@ -1,23 +1,18 @@
 ---
-/*
- * One concept panel: figure on the left, narrative on the right.
- *
- * Carries the shared SVG vocabulary the scenes draw with, so a scene file is
- * only geometry and its own motion. Scenes opt into the story toggle by styling
- * .scene__before / .scene__after, or by keying off [data-demonstrate="true"].
- */
+// Shared scene vocabulary and controls; compact panels put results beside the scene.
 import WorkloadQuestion from './WorkloadQuestion.astro';
 import type { ConceptStory } from '../../data/platform-concepts';
 
 interface Props {
   story: ConceptStory<string>;
+  compact?: boolean;
 }
 
-const { story } = Astro.props;
+const { story, compact = false } = Astro.props;
 ---
 
 <section
-  class="cp"
+  class:list={['cp', { 'cp--compact': compact }]}
   id={`concept-panel-${story.key}`}
   role="tabpanel"
   aria-labelledby={`concept-tab-${story.key}`}
@@ -38,10 +33,10 @@ const { story } = Astro.props;
   </div>
 
   <div class="cp__copy">
-    <p class="cp__sequence">{story.model} <span>/</span> {story.cue}</p>
+    {!compact && <p class="cp__sequence">{story.model} <span>/</span> {story.cue}</p>}
     <h3>{story.title}</h3>
     <p class="cp__definition">{story.definition}</p>
-    <p>{story.analogy}</p>
+    {!compact && <p>{story.analogy}</p>}
 
     <div class="cp__interaction" data-needs-js hidden>
       <button
@@ -55,8 +50,9 @@ const { story } = Astro.props;
       <p class="cp__status" data-status aria-live="polite" aria-atomic="true" data-before={story.before} data-after={story.after}>{story.before}</p>
     </div>
 
+    <slot name="result" />
     <WorkloadQuestion question={story.question} answers={story.answers} />
-    <p class="cp__lesson">{story.lesson}</p>
+    {!compact && <p class="cp__lesson">{story.lesson}</p>}
   </div>
 </section>
 

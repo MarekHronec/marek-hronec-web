@@ -10,11 +10,11 @@ const scenes = { idle: IdleCapacity, scaling: DemandScaling, transfer: TransferR
 ---
 <div class="cost-explainer" data-explainer>
   <h2>Four costs hiding behind the server price.</h2>
-  <p class="cost-explainer__lede">Explore one cost driver at a time. Each demonstration connects a harbour decision to a cloud decision, with a clear next step for your workload.</p>
+  <p class="cost-explainer__lede">Make a harbour decision. Watch the cost change. Apply the question to your workload.</p>
   <div class="cost-explainer__tabs" role="tablist" aria-label="Cost concepts" data-needs-js hidden>
     {COST_STORIES.map((s,i) => <button type="button" role="tab" id={'concept-tab-'+s.key} aria-controls={'concept-panel-'+s.key} aria-selected={i===0} tabindex={i===0?0:-1} data-tab={s.key}><span>{s.ordinal} / {s.model}</span><strong>{s.name}</strong></button>)}
   </div>
-  {COST_STORIES.map(story => { const Scene=scenes[story.key]; return <ConceptPanel story={story}><Scene /><CostLedger concept={story.key} /></ConceptPanel>; })}
+  {COST_STORIES.map(story => { const Scene=scenes[story.key]; return <ConceptPanel story={story} compact><Scene /><CostLedger slot="result" concept={story.key} /></ConceptPanel>; })}
 </div>
 <script>
   import { initializeExplainers } from '../../scripts/explainer';
@@ -26,14 +26,23 @@ const scenes = { idle: IdleCapacity, scaling: DemandScaling, transfer: TransferR
 </script>
 <style>
   h2 { font: var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); letter-spacing: var(--tracking-tight); }
-  .cost-explainer__lede { max-width: 75ch; margin-block: var(--space-3) var(--space-6); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
+  .cost-explainer__lede { max-width: 75ch; margin-block: var(--space-2) var(--space-5); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
   .cost-explainer__tabs { display: grid; gap: var(--space-2); }
   .cost-explainer__tabs[hidden] { display: none; }
-  button { border: 0; padding: var(--space-4); text-align: left; background: var(--color-surface-container-low); color: var(--color-navy); cursor: pointer; }
-  button span { display: block; margin-bottom: var(--space-2); font: var(--text-label-sm) var(--font-mono); }
+  button { border: 0; padding: var(--space-3) var(--space-4); text-align: left; background: var(--color-surface-container-low); color: var(--color-navy); cursor: pointer; }
+  button span { display: block; margin-bottom: var(--space-1); font: var(--text-label-sm) var(--font-mono); }
   button strong { font: var(--weight-semibold) var(--text-label-md) var(--font-body); }
   button[aria-selected='true'] { background: var(--color-navy); color: var(--color-on-primary); }
   .cost-explainer:not([data-ready]) :global(.scene *) { animation-play-state: paused; }
-  @media (min-width: 640px) { .cost-explainer__tabs { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  .cost-explainer__tabs { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .cost-explainer :global(.cp--compact) { align-items:start; gap:var(--space-5); }
+  .cost-explainer :global(.cp--compact .cp__visual) { align-self:start; }
+  .cost-explainer :global(.cp--compact .cp__copy) { gap:var(--space-3); }
+  .cost-explainer :global(.cp--compact h3) { max-width:none; font-size:var(--text-title-lg); }
+  .cost-explainer :global(.cp--compact .cp__interaction) { gap:var(--space-2); }
+  .cost-explainer :global(.cp--compact .cp__status) { min-height:0; }
+  .cost-explainer :global(.cp--compact .workload-question) { padding:var(--space-3) var(--space-4); }
+  .cost-explainer :global(.cp--compact .workload-question__prompt) { font-size:var(--text-label-md); }
+  @media (min-width: 1024px) { .cost-explainer :global(.cp--compact) { grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:var(--space-7); } }
   @media (min-width: 1024px) { .cost-explainer__tabs { grid-template-columns: repeat(4,minmax(0,1fr)); } }
 </style>

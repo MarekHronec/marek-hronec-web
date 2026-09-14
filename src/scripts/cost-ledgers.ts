@@ -22,7 +22,7 @@ const before=scenario.rows.reduce((n,r)=>n+r.before,0);
 const write=(selector:string,text:string)=>{const el=ledger.querySelector(selector);if(el&&el.textContent!==text)el.textContent=text;};
 write('[data-cost-before]',money(before));
 write('[data-billing-hour-label]',hour+' hours · day '+hour/24);write('[data-billing-days-label]',days+' days');write('[data-billing-gb-label]',gb.toLocaleString('en-IE')+' GB');
-write('[data-cost-assumption]',scenario.assumption);write('[data-cost-outcome]','After the decision: '+scenario.outcome);
+write('[data-cost-assumption]',scenario.assumption);write('[data-cost-outcome]','After the decision: '+scenario.outcome);write('[data-cost-summary]',scenario.summary);
 if(scenario.accrued!==undefined)write('[data-cost-accrual]',money(scenario.accrued)+' already accrued or owed at release. '+money(scenario.remaining!)+' further charges after release in the completed scenario.');
 let value=0;
 const total=ledger.querySelector('[data-cost-total]'),delta=ledger.querySelector('[data-cost-delta]');
@@ -37,6 +37,11 @@ if(bar){bar.max=Math.max(before,scenario.rows.reduce((n,r)=>n+r.after,0));bar.va
 });
 if(total)total.textContent=money(value);
 if(delta){const change=value-before;delta.textContent=money(Math.abs(change))+(change<0?' less ':change>0?' more ':' change')+(change===0?'':ledger.dataset.period);}
+// Announce a settled result, never every animation frame.
+if(progress>=1 || (ledger.dataset.resultAnnounced==='true' && panel.dataset.demonstrate!=='true')){
+write('[data-cost-announcement]',(panel.dataset.demonstrate==='true'?'After the action: ':'Example reset: ')+money(value)+'. '+delta?.textContent+'. '+scenario.summary);
+ledger.dataset.resultAnnounced='true';
+}else if(panel.dataset.demonstrate==='true')write('[data-cost-announcement]','');
 if(animation?.playState==='running'&&progress<1)moving=true;
 }
 if(moving&&!document.hidden)frame=requestAnimationFrame(tick);

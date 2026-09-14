@@ -4,7 +4,7 @@ interface Props { concept:CostKey }
 const {concept}=Astro.props;
 ---
 {concept!=='operations'&&<fieldset class="billing-controls" data-needs-js hidden>
-<legend>Change the billing assumptions</legend>
+<legend>Try a different billing case</legend>
 {concept==='idle'&&<>
 <label>Capacity billing
 <select data-billing-mode><option value="hourly">By allocated hour</option><option value="monthly">Fixed monthly fee · no prorating</option><option value="commitment">Existing commitment · still payable</option></select>
@@ -13,18 +13,18 @@ const {concept}=Astro.props;
 <input type="range" data-billing-hour min="0" max="720" step="24" value="360" aria-label="Hours elapsed before release" />
 </label>
 <label class="billing-controls__check"><input type="checkbox" data-billing-storage /> Also release the unused storage allocation</label>
-<p>The storage meter is separate. Deallocating compute does not delete storage. Deleting files need not shrink a provisioned disk; check its actual meter and safe retention requirements.</p>
+<p>Storage is billed separately. Deleting files may not reduce allocated disk size. Check retention needs before releasing it.</p>
 </>}
 {concept==='scaling'&&<label>Peak duration: <output data-billing-days-label>10 days</output><input type="range" data-billing-days min="0" max="30" step="1" value="10" aria-label="Peak duration in days" /></label>}
 {concept==='transfer'&&<label>Shipment volume: <output data-billing-gb-label>1,000 GB</output><input type="range" data-billing-gb min="0" max="10000" step="100" value="1000" aria-label="Shipment volume in gigabytes" /></label>}
 <button type="button" data-billing-reset>Reset assumptions</button>
 </fieldset>}
 <style>
-.billing-controls { border: 0; padding: var(--space-3) 0; margin-block: var(--space-3); min-width: 0; }
+.billing-controls { border: 0; padding: var(--space-2) 0; margin-top: var(--space-3); min-width: 0; }
 .billing-controls[hidden] { display:none; }
-legend { font-weight: var(--weight-semibold); font-size: var(--text-body-md); }
-label { display:block; margin-top:var(--space-3); font-size:var(--text-label-md); }
-select { display:block; width:100%; padding:var(--space-3); border:0; background:var(--color-surface); color:var(--color-navy); font:inherit; margin-top:var(--space-2); }
+legend { font-weight: var(--weight-semibold); font-size: var(--text-label-md); }
+label { display:block; margin-top:var(--space-2); font-size:var(--text-label-md); }
+select { display:block; width:100%; padding:var(--space-2); border:0; background:var(--color-surface); color:var(--color-navy); font:inherit; margin-top:var(--space-1); }
 input[type='range'] { display:block; width:100%; accent-color:var(--color-primary); margin-block:var(--space-2); }
 .billing-controls__check { display:flex; gap:var(--space-2); align-items:start; }
 input[type='checkbox'] { accent-color:var(--color-primary); }
