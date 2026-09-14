@@ -185,7 +185,7 @@ Status: `todo` · `running` · `reported` (findings in, not yet applied) · `don
 | B6b | Networking and addressing | 4 | sonnet | **applied** | [12 findings](audit/B6b-networking.md) | 10 + 1 found by sweep |
 | B6c | Regions and service availability | 2 | sonnet | **applied** | [5 findings](audit/B6c-regions-availability.md) | 4 + 2 carried-over closed |
 | B7a | Governance and access control | 3 | sonnet | **applied** | [14 findings](audit/B7a-governance-access.md) | 9 + 13 fences swept |
-| B7b | Service models and ownership | 3 | sonnet | todo | — | — |
+| B7b | Service models and ownership | 3 | sonnet | **running** (dispatched 2026-09-14) | — | — |
 | B7c | DevOps toolchain | 3 | sonnet | todo | — | — |
 | B7d | Operating model and learning | 3 | sonnet | todo | — | — |
 | B8 | Short-form and FinOps | 6 | sonnet | todo | — | — |
