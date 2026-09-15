@@ -54,6 +54,11 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: 4.5rem;
+  /* Always reserve the scrollbar track. Without this a short page (no
+     scrollbar) is 6px wider than a long one, and every centred element —
+     the header nav most visibly — jumps sideways by half that on each
+     navigation. */
+  scrollbar-gutter: stable;
 }
 
 body {
