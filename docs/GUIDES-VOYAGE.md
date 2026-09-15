@@ -1,6 +1,6 @@
 # Guides voyage and connected plan
 
-/guides now presents five connected decisions as a harbour departure: protection/cargo, platform/vessel, connectivity/passage, recovery/rough water, and cost/voyage accounting. A crane, numbered containers, vessel and lighthouse share the site's marine palette. The suggested sequence is local to this page; the standalone guides remain independently available. Hover or keyboard focus aligns the crane with the corresponding guide. There is no continuous ambient animation.
+/guides now presents five connected decisions as a harbour departure: protection/cargo, platform/vessel, connectivity/passage, recovery/rough water, and cost/voyage accounting. A crane, numbered containers, vessel and lighthouse share the site's marine palette. The suggested sequence also orders the navigation and onward offers; the standalone guides remain independently available. Hover or keyboard focus aligns the crane with the corresponding guide. There is no continuous ambient animation.
 
 ## Connected tools
 
@@ -41,3 +41,9 @@ Two independent reviews identified support gaps after simplification; the crane 
 Separated the dock from the stern, raised the crane spreader clear of the bridge, and placed a smaller lighthouse on a distant island with its own water marks. Cargo now sits behind a visible hold edge and foreground hull. Added clearance beside the bridge and synchronized all five trolley positions with the revised container spacing.
 
 Two independent reviews checked geometry and progressive state updates; the remaining bridge-to-cargo spacing finding was corrected. Desktop and phone renders were inspected, all five trolley alignments passed, the full guides browser regression passed, and the production build completed. Local merge only; no push.
+
+## Compact standalone guides
+
+The five standalone pages now use illustrated section previews and live answer
+explanations. The combined journey remains directly embedded. See
+[COMPACT-GUIDES.md](COMPACT-GUIDES.md) for behavior, model changes and verification.

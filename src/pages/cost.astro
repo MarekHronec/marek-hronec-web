@@ -1,4 +1,5 @@
 ---
+import GuideChapter from '../components/shared/GuideChapter.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GuideHero from '../components/shared/GuideHero.astro';
 import CostReading from '../components/cost/CostReading.astro';
@@ -6,9 +7,8 @@ import CostPlanner from '../components/cost/CostPlanner.astro';
 import CostExplainer from '../components/cost/CostExplainer.astro';
 ---
 <BaseLayout title="Cost — Understand the Whole Architecture" description="Explore idle capacity, scaling, data transfer and operational effort before estimating cloud workload costs.">
-<GuideHero title="Understand what" accent="the architecture will cost" description="A server price is a starting point. Follow the capacity you keep, the demand you serve, the data you move and the work your team still owns." tool={{href:'#cost-planner',title:'Prepare a cost checklist',description:'Identify measurements, hidden costs and questions to resolve before pricing.'}} reference={{href:'#options',title:'Understand the four cost drivers',description:'Explore capacity, demand, data movement and operational effort.'}}  />
-<section id="options" class="cost-section container"><CostExplainer /></section>
-<div class="cost-section container"><CostPlanner /></div>
-<div class="cost-section container"><CostReading /></div>
+<GuideHero title="Understand what" accent="the architecture will cost" description="A server price is a starting point. Follow the capacity you keep, the demand you serve, the data you move and the work your team still owns." tool={{label:'Cost planner',href:'#cost-planner',title:'Prepare a cost checklist',description:'Identify measurements, hidden costs and questions to resolve before pricing.'}} reference={{href:'#options',title:'Understand the four cost drivers',description:'Explore capacity, demand, data movement and operational effort.'}}  />
+<GuideChapter id="options" guide="cost" kind="learn" title="Four costs behind the server price" description="See how releasing capacity, scaling and moving data affect the bill." topics={["Capacity", "Demand", "Transfer", "Operations"]} action="Explore"><CostExplainer /></GuideChapter>
+<GuideChapter id="workload" guide="cost" kind="calculator" title="Prepare a cost checklist" description="Five answers identify measurements and costs to include. This is a planning checklist, not a price quote." topics={["5 questions", "Live priorities", "Next steps"]} action="Start planning"><CostPlanner /></GuideChapter>
+<GuideChapter id="reading" guide="cost" kind="reading" title="Billing and operating costs" description="Selected articles and primary sources for the decisions that need a closer look." topics={["Practical articles", "Source documents"]} action="Browse notes"><CostReading /></GuideChapter>
 </BaseLayout>
-<style>.cost-section { padding-block: var(--space-8); }</style>

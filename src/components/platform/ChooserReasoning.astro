@@ -1,0 +1,28 @@
+---
+import { APPROACHES } from '../../data/platform-approaches';
+---
+<div class="chooser-reasoning" data-chooser-reasoning hidden>
+  <p class="chooser-reasoning__label" data-eligibility-count></p>
+  <ul class="chooser-reasoning__options" role="list">
+    {APPROACHES.map(a => <li data-eligibility={a.key}><span>{a.name}</span><small data-eligibility-state></small></li>)}
+  </ul>
+  <h3>What is driving this</h3>
+  <p data-chooser-driving></p>
+  <ul class="chooser-reasoning__drivers" data-chooser-drivers></ul>
+  <p class="chooser-reasoning__licence" data-licence-check hidden>Check the licence before the platform. A VM is not the only possibility, and may not satisfy a physical-hardware binding. <a href="https://docs.revenera.com/fnp/2024r1/LicAdmin_Guide/Content/helplibrary/Container_ID.htm">Container ID licensing</a> and <a href="https://docs.revenera.com/fnp/2024r1/LicAdmin_Guide/Content/helplibrary/Binding_Solutions_in_a_Virtual_Environment.htm">VM binding</a> are examples; the software publisher must approve the arrangement.</p>
+</div>
+<style>
+  .chooser-reasoning { margin-bottom: var(--space-5); }
+  [hidden] { display: none; }
+  .chooser-reasoning__label { color: var(--color-primary); font: var(--weight-semibold) var(--text-label-md) var(--font-body); }
+  .chooser-reasoning__options { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-block: var(--space-3) var(--space-4); }
+  .chooser-reasoning__options li { display: grid; gap: var(--space-1); padding: var(--space-2); background: var(--color-primary-tint); font-size: var(--text-label-md); color: var(--color-navy); }
+  .chooser-reasoning__options small { font-size: var(--text-label-sm); }
+  .chooser-reasoning__options [data-excluded='true'] { background: var(--color-surface-container); color: var(--color-on-surface-muted); }
+  .chooser-reasoning__options [data-excluded='true'] span { text-decoration: line-through; }
+  h3 { font: var(--weight-semibold) var(--text-body-md) var(--font-display); margin-bottom: var(--space-2); color: var(--color-navy); }
+  p, .chooser-reasoning__drivers { font-size: var(--text-label-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); }
+  .chooser-reasoning__drivers { margin-block: var(--space-2); padding-left: var(--space-4); list-style: disc; }
+  .chooser-reasoning__licence { padding: var(--space-3); background: var(--color-primary-tint); margin-top: var(--space-3); }
+  a { text-decoration: underline; text-underline-offset: .2em; }
+</style>

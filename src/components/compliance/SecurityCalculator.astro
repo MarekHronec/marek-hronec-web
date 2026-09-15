@@ -8,8 +8,8 @@
  * transmitted; the whole calculation runs in the browser.
  */
 
-interface Props { embedded?: boolean }
-const { embedded = false } = Astro.props;
+interface Props { embedded?: boolean; showIntro?: boolean }
+const { embedded = false, showIntro = !embedded } = Astro.props;
 import { AXES, INCIDENT_QUESTIONS } from '../../data/security-calculator';
 import GuideNextSteps from '../shared/GuideNextSteps.astro';
 import CiaExplainer from './CiaExplainer.astro';
@@ -19,7 +19,7 @@ import CalculatorGuide from './CalculatorGuide.astro';
 <section class="calc" id="calculator">
   <div class="calc__inner container">
 
-    {!embedded && <CiaExplainer />}
+    {showIntro && <CiaExplainer />}
     {!embedded && <CalculatorGuide />}
 
     <!-- Running readout — fills in as the classification is made -->

@@ -21,8 +21,12 @@ const ts = require('typescript');
   visit(0,{});
   assert.equal(combinations,288);
   for(const selection of [{},{rto:'bogus'},{rto:'minutes',scope:'region'}]) {
-    const result=planRecovery(selection);assert(!result.complete);assert.equal(result.priorities.length,0);
+    const result=planRecovery(selection);assert(!result.complete);assert(!result.priorities.some(p=>p.title==='Keep a usable recovery point within 24 hours'));
+    assert(!result.priorities.some(p=>p.title==='Run a representative recovery exercise'));
+    assert(!result.priorities.some(p=>p.title==='Prepare and exercise the alternate region'));
   }
+  const partial=planRecovery({scope:'region',placement:'restricted'});
+  assert(!partial.complete);assert(partial.gaps.some(g=>g.includes('conflicts')));
   const region=planRecovery({rto:'minutes',rpo:'zero',scope:'region',placement:'restricted',evidence:'untested'});
   assert(region.gaps.some(g=>g.includes('conflicts')));
   assert(region.priorities.some(p=>p.title.includes('acknowledged')));

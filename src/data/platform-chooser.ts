@@ -74,7 +74,7 @@ export const QUESTIONS: ChooserQuestion[] = [
     key: 'host',
     label: 'Constraints',
     prompt: 'Does the software you intend to keep need something only the host machine can give it?',
-    help: 'The one technical question that can settle the answer on its own.',
+    help: 'Distinguish a hard host requirement from a preference. These approaches can also be combined.',
     options: [
       {
         value: 'kernel',
@@ -89,13 +89,20 @@ export const QUESTIONS: ChooserQuestion[] = [
       {
         value: 'licence',
         label: 'A licence pinned to a stable host identifier',
-        detail: 'A host ID or MAC address, common with older commercial software and appliance vendors.',
+        detail: 'The vendor requires this application to keep a specific machine identity; no portable licensing arrangement is approved.',
         excludes: [
-          { approach: 'paas', reason: 'Instances are replaced without warning, so a licence pinned to one host cannot hold.' },
+          { approach: 'paas', reason: 'Your unchanged machine-bound licence needs a vendor-approved identity that the managed app services compared here do not promise. A supported portable licence would change this constraint.' },
           { approach: 'saas', reason: 'You would be replacing the licensed product rather than hosting it, which is question 01.' },
         ],
         scores: { vm: 6, container: -4, orchestrated: -4 },
-        note: 'Verify the vendor terms for the exact product, edition and cloud deployment. Per-core licensing can permit shared VMs; dedicated hosts are not a universal requirement. Stable identifiers and VM replacement rules also need checking.',
+        note: 'A VM is a starting point, not proof of licence compatibility. Confirm the exact identifier, virtualisation rights and replacement/failover rules. Containers on a compatible host may work if the vendor permits them. A licence tied to physical hardware may need a dedicated host or bare metal, outside this five-way comparison. Container-bound or floating licences can change the requirement; confirm support for this exact product.',
+      },
+      {
+        value: 'portable-licence',
+        label: 'The vendor supports portable or floating licensing for our intended runtime',
+        detail: 'We have checked container/cloud support and the licence server or identity requirements.',
+        scores: { container: 2, paas: 2 },
+        note: 'Portable licensing removes the machine-bound blocker, not the licence obligation. Verify supported runtimes, network access to any licence server, capacity limits and recovery rights.',
       },
       {
         value: 'os',
@@ -277,6 +284,11 @@ export function evaluate(selection: Selection) {
     total: QUESTIONS.length,
     complete: chosen.length === QUESTIONS.length,
     verdicts,
+    viableCount: viable.length,
+    drivers: chosen.flatMap(option => {
+      const weight = viable[0] ? option.scores?.[viable[0].key] ?? 0 : 0;
+      return weight ? [{ label: option.label, weight }] : [];
+    }).sort((a,b) => Math.abs(b.weight) - Math.abs(a.weight)),
     ranked,
     notes,
     top: viable[0],

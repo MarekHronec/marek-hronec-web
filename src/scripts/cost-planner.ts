@@ -1,3 +1,4 @@
+import { renderAnswerImpacts } from './planner-feedback';
 import { publishGuideResult } from './guide-results';
 import { COST_QUESTIONS, planCost, type CostSelection } from '../data/cost-planner';
 export function initializeCostPlanner() {
@@ -23,8 +24,9 @@ export function initializeCostPlanner() {
         if(label){label.textContent=option?.label??'No answer selected';label.dataset.selected=String(!!option);}
       }
       const result=planCost(selection);
+      renderAnswerImpacts(root, COST_QUESTIONS, selection, planCost);
       progress.textContent=result.answered+' of 5 answered'+(result.complete?' · Checklist ready':'');
-      summary.textContent=result.summary;output.hidden=!result.complete;
+      summary.textContent=result.summary;output.hidden=result.answered===0;
       resets.forEach(button=>button.disabled=result.answered===0);
       priorities.replaceChildren(...result.priorities.map(item=>{
         const li=document.createElement('li'),title=document.createElement('h4'),detail=document.createElement('p');

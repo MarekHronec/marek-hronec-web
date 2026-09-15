@@ -12,22 +12,21 @@ for(const q of COST_QUESTIONS)if(q.options.some(o=>o.value===selection[q.key]))a
 const answered=Object.keys(answers).length;
 const priorities:{title:string;detail:string}[]=[];
 const gaps:string[]=[];
-if(answered!==COST_QUESTIONS.length)return{answered,complete:false,priorities,gaps,summary:'Complete the five questions to prepare your cost checklist.'};
 const add=(title:string,detail:string)=>priorities.push({title,detail});
 if(answers.demand==='unknown')gaps.push('Measure a representative demand cycle: useful work, resource consumption, peak and quiet periods.');
 else if(answers.demand==='variable')add('Price quiet, typical and peak scenarios','Record how long each lasts. Test scaling delay and safe scale-in, then include the minimum allocation, peak capacity and consumption meters.');
-else add('Size against the measured baseline','Check memory, throughput and latency alongside CPU. Keep the capacity required for failure or maintenance; identify excess separately.');
+else if(answers.demand) add('Size against the measured baseline','Check memory, throughput and latency alongside CPU. Keep the capacity required for failure or maintenance; identify excess separately.');
 if(answers.idle==='unknown')gaps.push('Test which services can stop, how long they take to restart and which charges remain.');
 else if(answers.idle==='yes')add('Evaluate a shutdown schedule','List eligible hours and verify the billable state. Retained disks, IP addresses, backups or service minimums can remain chargeable. Preserve the recovery target.');
-else add('Make the always-ready cost explicit','Price the minimum live footprint, redundancy and standby separately. Explain why each is needed rather than labelling all low utilisation as waste.');
+else if(answers.idle) add('Make the always-ready cost explicit','Price the minimum live footprint, redundancy and standby separately. Explain why each is needed rather than labelling all low utilisation as waste.');
 if(answers.movement==='unknown')gaps.push('Map sources, destinations, directions and monthly volumes before applying transfer rates.');
-else add(answers.movement==='external'?'Price every external route':'Check the local routes too','Record bytes in each direction, repeated copies and expected growth. Check service-specific transfer, gateway, inspection, request and retrieval meters; include backup and recovery traffic.');
+else if(answers.movement) add(answers.movement==='external'?'Price every external route':'Check the local routes too','Record bytes in each direction, repeated copies and expected growth. Check service-specific transfer, gateway, inspection, request and retrieval meters; include backup and recovery traffic.');
 if(answers.operations==='unknown')gaps.push('Name the operating owner and estimate recurring hours, support coverage and tooling.');
-else add(answers.operations==='managed'?'Account for the work that stays with you':'Include the team’s operating effort','Budget application support, incident response, upgrades, access reviews and recovery exercises. Compare provider fees and team hours for the same responsibilities without counting a task twice.');
+else if(answers.operations) add(answers.operations==='managed'?'Account for the work that stays with you':'Include the team’s operating effort','Budget application support, incident response, upgrades, access reviews and recovery exercises. Compare provider fees and team hours for the same responsibilities without counting a task twice.');
 if(answers.commitment==='unknown')gaps.push('Establish eligible baseline usage and the forecast horizon before purchasing a commitment.');
 else if(answers.commitment==='changing')add('Keep the uncertain portion flexible','Compare on-demand use with commitment exposure if the workload changes. Record existing obligations and any verified exchange or cancellation terms.');
-else add('Test a commitment against downside usage','Use your actual eligible rates, term and matching rules. Calculate the break-even usage and model a migration or demand drop; a measured baseline does not guarantee future savings.');
+else if(answers.commitment) add('Test a commitment against downside usage','Use your actual eligible rates, term and matching rules. Calculate the break-even usage and model a migration or demand drop; a measured baseline does not guarantee future savings.');
 add('Build the complete estimate','Attach current regional and contractual rates to measured quantities. Include storage, requests, licences, support, security, observability, recovery and one-time migration or exit work.');
 add('Assign a cost owner and response plan','Choose a useful unit such as cost per completed order. Compare actuals with the estimate and investigate deviations. Budget alerts notify; they do not by themselves stop consumption.');
-return{answered,complete:true,priorities,gaps,summary:gaps.length?'Your checklist is ready. Resolve the measurement gaps before treating an estimate as reliable.':'Your checklist is ready. Use these measurements to compare designs against the same service requirements.'};
+return{answered,complete:answered===COST_QUESTIONS.length,priorities,gaps,summary:answered!==COST_QUESTIONS.length?'Complete the remaining questions to finish the cost checklist.':gaps.length?'Your checklist is ready. Resolve the measurement gaps before treating an estimate as reliable.':'Your checklist is ready. Use these measurements to compare designs against the same service requirements.'};
 }

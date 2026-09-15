@@ -1,6 +1,7 @@
 ---
 interface Props { embedded?: boolean }
 const { embedded = false } = Astro.props;
+import ChooserReasoning from './ChooserReasoning.astro';
 import { QUESTIONS } from '../../data/platform-chooser';
 import { APPROACHES } from '../../data/platform-approaches';
 import GuideNextSteps from '../shared/GuideNextSteps.astro';
@@ -24,6 +25,7 @@ import ApproachDetail from './ApproachDetail.astro';
           anything ruled out will say why.
         </p>
 
+        <ChooserReasoning />
         <div data-chooser-verdict hidden>
           <p class="pc__partial" data-chooser-partial hidden>
             Provisional — the order can still change.
@@ -34,13 +36,16 @@ import ApproachDetail from './ApproachDetail.astro';
             Review the joint leaders below. If questions remain, answer them; if all seven are complete, compare service fit, cost and a small workload trial.
           </p>
 
+          <details class="pc__more" data-leading-detail><summary>About the leading approach</summary>
           {APPROACHES.map((approach, index) => <ApproachDetail approach={approach} hidden={index > 0} />)}
+          </details>
 
           <p class="pc__close" data-chooser-close hidden>
             The top two are close. Treat it as a tie, and let the people who will
             operate it break it.
           </p>
 
+          <details class="pc__more" data-tradeoffs><summary>Trade-offs &amp; next steps</summary>
           <div class="pc__aside" data-chooser-notes hidden>
             <span>Worth saying</span>
             <p data-chooser-notes-body></p>
@@ -55,11 +60,12 @@ import ApproachDetail from './ApproachDetail.astro';
             <span>On leaving</span>
             <p data-chooser-lock-body></p>
           </div>
+          </details>
         </div>
 
         {!embedded && <GuideNextSteps current="platform" />}
-        <div class="pc__rank" data-chooser-rank hidden>
-          <h3 class="pc__rank-head">All five, ranked</h3>
+        <details class="pc__rank" data-chooser-rank hidden>
+          <summary class="pc__rank-head">Compare all five &amp; see exclusions</summary>
           <ul role="list">
             {APPROACHES.map((approach) => (
               <li class="pc__rank-row" data-rank-row={approach.key}>
@@ -69,11 +75,13 @@ import ApproachDetail from './ApproachDetail.astro';
               </li>
             ))}
           </ul>
-        </div>
+        </details>
         </div>
       </div>
     </aside>
 <style>
+  .pc__more { margin-block: var(--space-4); }
+  summary { cursor: pointer; color: var(--color-navy); font: var(--weight-semibold) var(--text-label-md) var(--font-body); padding-block: var(--space-2); }
   /* ── Verdict ─────────────────────────────────────────────────────── */
   /* Named container so ApproachDetail lays itself out against the panel width
      rather than the viewport — this column is narrow on desktop, wide on mobile. */

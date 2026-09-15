@@ -9,6 +9,9 @@
  * lives in src/data/security-calculator.ts.
  */
 
+import GuideChapter from '../components/shared/GuideChapter.astro';
+import GuideHero from '../components/shared/GuideHero.astro';
+import CiaExplainer from '../components/compliance/CiaExplainer.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SecurityCalculator from '../components/compliance/SecurityCalculator.astro';
 import CalculatorNotice from '../components/compliance/CalculatorNotice.astro';
@@ -96,51 +99,11 @@ const countryCount = LAYERS[1].slugs.length;
   title="EU Cloud Compliance"
   description="National cloud qualification frameworks across the EU, the regulation above them, and a calculator for classifying a Slovak ISVS and its required controls."
 >
-  <!-- ── Hero ──────────────────────────────────────────────────────── -->
-  <section class="ca-hero">
-    <div class="ca-hero__inner container">
-      <h1 class="ca-hero__heading">
-        Cloud compliance in the
-        <span class="ca-hero__accent">European Union</span><span class="ca-hero__period">.</span>
-      </h1>
-      <p class="ca-hero__body">
-        Every member state has arrived at its own answer to the same question:
-        which cloud services may hold public-sector and essential-service data,
-        and under what assurance. {countryCount} of those answers are mapped here,
-        alongside the EU instruments above them and the certifications they all
-        rest on — plus a calculator that works a Slovak ISVS through to its
-        required cloud service level.
-      </p>
-      <div class="ca-choice">
-        <a class="ca-choice__card" href="#calculator">
-          <span class="ca-choice__kicker">Tool</span>
-          <span class="ca-choice__title">Classify a system</span>
-          <span class="ca-choice__body">
-            Work an ISVS through to its C, I, A classification, its security
-            category, and the cloud service level and controls that follow.
-          </span>
-          <span class="ca-choice__go">Open the calculator &rarr;</span>
-        </a>
-        <a class="ca-choice__card" href="#reference">
-          <span class="ca-choice__kicker">Reference</span>
-          <span class="ca-choice__title">Read the frameworks</span>
-          <span class="ca-choice__body">
-            {compliance.length} sourced notes: {countryCount} national frameworks,
-            the EU regulation above them, and the assurance they all rest on.
-          </span>
-          <span class="ca-choice__go">Browse the reference &rarr;</span>
-        </a>
-      </div>
-
-      <CalculatorNotice />
-    </div>
-  </section>
-
-  <!-- ── Calculator ────────────────────────────────────────────────── -->
-  <div class="section-rule">
-    <SecurityCalculator />
-  </div>
-
+  <GuideHero title="Cloud compliance in the" accent="European Union" description={`Understand data protection and cloud placement across ${countryCount} European national frameworks, alongside EU requirements. The calculator applies specifically to a Slovak ISVS.`} tool={{label:'Calculator',href:'#calculator',title:'Classify a Slovak ISVS',description:'Work through C, I, A and the modelled cloud service level.'}} reference={{href:'#options',title:'Understand data classification',description:'See confidentiality, integrity, availability and service level.'}} />
+  <div class="container"><CalculatorNotice /></div>
+  <GuideChapter id="options" guide="compliance" kind="learn" title="Know what you are protecting" description="Who can see the cargo, whether the chart is right, and whether the lighthouse is available when needed." topics={['Confidentiality','Integrity','Availability','Service level']} action="Explore"><CiaExplainer /></GuideChapter>
+  <GuideChapter id="workload" guide="compliance" kind="calculator" title="Classify a system and assess placement" description="Work through the Slovak ISVS model. See compatible levels, incident impact and the controls that follow." topics={['C · I · A','Incident impact','Modelled service level']} action="Start classifying"><SecurityCalculator showIntro={false} /></GuideChapter>
+  <GuideChapter id="frameworks" guide="compliance" kind="reading" title="Read the applicable frameworks" description={`${compliance.length} sourced notes, grouped by the layer of assurance you need to check.`} topics={['EU regulation','National frameworks','Assurance']} action="Browse frameworks">
   <!-- ── Reference ─────────────────────────────────────────────────── -->
   <section class="ca-layers section-rule" id="reference">
     <div class="ca-layers__inner container">
@@ -174,6 +137,7 @@ const countryCount = LAYERS[1].slugs.length;
     </div>
   </section>
 
+  </GuideChapter>
   <!-- ── Close ─────────────────────────────────────────────────────── -->
   <section class="ca-close section-rule">
     <div class="ca-close__inner container">
@@ -189,118 +153,6 @@ const countryCount = LAYERS[1].slugs.length;
 </BaseLayout>
 
 <style>
-  /* ── Hero ──────────────────────────────────────────────────────────── */
-  .ca-hero__inner {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    padding-block: var(--space-8) var(--space-7);
-  }
-
-  .ca-hero__heading {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--leading-tight);
-    color: var(--color-on-surface);
-    max-width: 18ch;
-  }
-
-  .ca-hero__accent {
-    color: var(--color-primary);
-  }
-
-  .ca-hero__period {
-    color: var(--color-meta-label);
-  }
-
-  .ca-hero__body {
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-    max-width: 68ch;
-  }
-
-  /* ── Choice ────────────────────────────────────────────────────────── */
-  .ca-choice {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    margin-top: var(--space-2);
-  }
-
-  @media (min-width: 768px) {
-    .ca-choice {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .ca-choice__card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-5);
-    border: 1px solid var(--color-divider-strong);
-    text-decoration: none;
-    transition:
-      border-color var(--duration-fast) var(--ease-standard),
-      background-color var(--duration-fast) var(--ease-standard);
-  }
-
-  .ca-choice__card:hover {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary-tint);
-    opacity: 1;
-  }
-
-  .ca-choice__kicker {
-    font-family: var(--font-mono);
-    font-size: var(--text-label-sm);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-meta-label);
-  }
-
-  .ca-choice__title {
-    font-family: var(--font-display);
-    font-size: var(--text-title-lg);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-on-surface);
-  }
-
-  .ca-choice__body {
-    font-size: var(--text-body-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-  }
-
-  .ca-choice__go {
-    margin-top: var(--space-2);
-    font-family: var(--font-display);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    color: var(--color-primary);
-  }
-
-  .ca-hero__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    font-family: var(--font-body);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-meta-label);
-  }
-
-  /* ── Layers ────────────────────────────────────────────────────────── */
-  #reference {
-    scroll-margin-top: calc(var(--nav-height) + var(--space-4));
-  }
-
   .ca-layers__inner {
     display: flex;
     flex-direction: column;

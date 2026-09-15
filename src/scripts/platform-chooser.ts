@@ -1,3 +1,4 @@
+import { renderPlatformReasoning } from './platform-reasoning';
 import { publishGuideResult } from './guide-results';
 /*
  * Chooser wiring. Reads the same model the page was built from, so the answer a
@@ -68,6 +69,7 @@ export function initializeChooser() {
 
       publishGuideResult(root, {complete:result.complete,title:result.undecided ? 'Platform shortlist — options tied' : result.top ? APPROACH_BY_KEY.get(result.top.key)!.name : 'Platform shortlist',summary:result.undecided ? 'Several approaches remain level. Compare the joint leaders before selecting a service.' : result.top ? APPROACH_BY_KEY.get(result.top.key)!.oneLine : 'Answer all seven questions.',points:[...QUESTIONS.map(q=>q.label+': '+(q.options.find(o=>o.value===selection[q.key])?.label??'Unanswered')),...result.ranked.map(v=>APPROACH_BY_KEY.get(v.key)!.name+' — '+(v.excluded ? 'ruled out: '+v.reasons.join(' ') : 'score '+v.score))],gaps:[...result.notes,...(result.undecided ? ['Resolve the tied approaches with service limits, costs and a workload trial.'] : []),...(result.close ? ['The top two approaches are close. Treat them as a tie and let the operating team test the trade-offs.'] : []),...(selection.exit && LOCK_IN_NOTE[selection.exit] ? [LOCK_IN_NOTE[selection.exit]] : [])]});
       renderSelectionLabels(selection);
+      renderPlatformReasoning(root, selection, result);
       progress.textContent = String(result.answered);
       resetButtons.forEach((button) => { button.disabled = result.answered === 0; });
       // A changed recommendation must start at its heading, not an old scroll offset.
@@ -79,6 +81,8 @@ export function initializeChooser() {
       rank.hidden = !hasAnswer;
 
       if (hasAnswer) {
+        const leadingDetail = root.querySelector<HTMLElement>('[data-leading-detail]');
+        if (leadingDetail) leadingDetail.hidden = result.undecided;
         details.forEach((el, key) => { el.hidden = result.undecided || key !== result.top!.key; });
 
         // With several options level, the "winner" would be whichever the data
@@ -104,6 +108,8 @@ export function initializeChooser() {
           }
         }
 
+        const tradeoffs = root.querySelector<HTMLElement>('[data-tradeoffs]');
+        if (tradeoffs) tradeoffs.hidden = !result.notes.length && (!second || result.undecided) && !selection.exit;
         const exit = selection.exit;
         if (lock && lockBody) {
           lock.hidden = !exit;

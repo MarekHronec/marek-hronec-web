@@ -36,7 +36,7 @@ const titleId = idPrefix + "-q-" + question.key;
     <span data-q-selection={question.key}>No answer selected</span>
   </div>
 
-  <div class="pcq__opts" role="radiogroup" aria-labelledby={titleId} aria-describedby={`${titleId}-help`}>
+  <div class="pcq__opts" role="radiogroup" aria-labelledby={titleId} aria-describedby={`${titleId}-help ${titleId}-impact`}>
     {question.options.map((option) => (
       <label class="pcq__opt">
         <input type="radio" name={question.key} value={option.value} />
@@ -48,11 +48,14 @@ const titleId = idPrefix + "-q-" + question.key;
       </label>
     ))}
   </div>
+  <p class="pcq__impact" id={`${titleId}-impact`} data-q-impact={question.key} hidden></p>
 </li>
 
 <style>
   .pcq { padding: var(--space-4); background: var(--color-surface-container-low); }
 
+  .pcq__impact { margin-top: var(--space-3); padding: var(--space-3); background: var(--color-primary-tint); font-size: var(--text-label-md); color: var(--color-navy); line-height: var(--leading-relaxed); }
+  .pcq__impact[hidden] { display: none; }
   .pcq__head {
     display: flex;
     align-items: flex-start;
@@ -107,7 +110,7 @@ const titleId = idPrefix + "-q-" + question.key;
     display: flex;
     align-items: flex-start;
     gap: var(--space-3);
-    padding: var(--space-5);
+    padding: var(--space-3) var(--space-4);
     background: var(--color-surface-container-lowest);
     cursor: pointer;
     transition:
@@ -130,13 +133,13 @@ const titleId = idPrefix + "-q-" + question.key;
   .pcq__opt-detail { font-family: var(--font-mono); font-size: var(--text-label-sm); line-height: var(--leading-normal); color: var(--color-meta-label); }
 
   .pcq__chosen {
-    display: none;
+    visibility: hidden;
     margin-top: var(--space-1);
     font-size: var(--text-label-md);
     font-weight: var(--weight-semibold);
     color: var(--color-primary);
   }
-  .pcq__opt:has(input:checked) .pcq__chosen { display: inline; }
+  .pcq__opt:has(input:checked) .pcq__chosen { visibility: visible; }
   .pcq__opt:has(input:checked) .pcq__opt-label { font-weight: var(--weight-semibold); color: var(--color-navy); }
 
   @media (min-width: 768px) { .pcq { padding: var(--space-6); } }

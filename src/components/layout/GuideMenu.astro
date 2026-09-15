@@ -6,9 +6,9 @@ const { mobile = false } = Astro.props;
 const active = GUIDES.some(g => Astro.url.pathname.startsWith(base + g.href)) || Astro.url.pathname.startsWith(base + '/guides');
 ---
 <details class:list={['guide-menu', { 'guide-menu--mobile': mobile, 'guide-menu--active': active }]}>
-  <summary>Architecture Guides <span aria-hidden="true">⌄</span></summary>
+  <summary>Architecture Guides <svg class="guide-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
   <ul role="list">
-    <li><a href={base + '/guides'} aria-current={Astro.url.pathname.replace(/\/$/, '') === base + '/guides' ? 'page' : undefined}>All architecture guides &rarr;</a></li>
+    <li><a class="guide-menu__all" href={base + '/guides'} aria-current={Astro.url.pathname.replace(/\/$/, '') === base + '/guides' ? 'page' : undefined}><span>All architecture guides</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a></li>
     {GUIDES.map(g => <li><a href={base + g.href} aria-current={Astro.url.pathname.replace(/\/$/, '') === base + g.href ? 'page' : undefined}><strong>{g.title}</strong><span>{g.description}</span></a></li>)}
   </ul>
 </details>
@@ -19,10 +19,15 @@ const active = GUIDES.some(g => Astro.url.pathname.startsWith(base + g.href)) ||
   });
 </script>
 <style>
-  .guide-menu { position: relative; color: var(--color-on-surface-muted); font: var(--weight-medium) var(--text-label-md) var(--font-display); }
+  .guide-menu { position: relative; color: var(--color-on-surface-muted); font: var(--weight-semibold) var(--text-body-md) var(--font-display); }
   summary { display: flex; align-items: center; gap: var(--space-2); cursor: pointer; list-style: none; white-space: nowrap; }
   summary::-webkit-details-marker { display: none; }
-  .guide-menu--active summary { color: var(--color-primary); font-weight: var(--weight-bold); }
+  .guide-menu--active summary { color: var(--color-primary); font-weight: var(--weight-semibold); }
+  .guide-menu__chevron { flex: 0 0 16px; transition: transform var(--duration-fast) var(--ease-standard); }
+  .guide-menu[open] > summary .guide-menu__chevron { transform: rotate(180deg); }
+  .guide-menu__all { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-2); background: var(--color-primary-tint); }
+  .guide-menu__all span { margin: 0; color: var(--color-navy); font: var(--weight-semibold) var(--text-body-md) var(--font-display); }
+  .guide-menu__all svg { flex-shrink: 0; }
   ul { position: absolute; top: calc(100% + var(--space-4)); left: 0; width: 22rem; padding: var(--space-3); background: var(--color-surface); box-shadow: var(--shadow-card); list-style: none; }
   a { display: block; padding: var(--space-3); color: var(--color-navy); }
   a:hover, a[aria-current='page'] { background: var(--color-primary-tint); }

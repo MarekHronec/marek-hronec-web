@@ -10,6 +10,8 @@
  * Content model lives in src/data/platform-*.ts so wording and scoring can be
  * tuned without touching a component.
  */
+import GuideChapter from '../components/shared/GuideChapter.astro';
+import GuideHero from '../components/shared/GuideHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResponsibilityTable from '../components/platform/ResponsibilityTable.astro';
 import ConceptExplainer from '../components/platform/ConceptExplainer.astro';
@@ -40,73 +42,12 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
   title="Platform Architecture"
   description="VMs, containers, Kubernetes, managed platforms and SaaS — what each one hands over, what it takes away, and what it would cost to leave."
 >
-  <!-- ── Hero ──────────────────────────────────────────────────────── -->
-  <section class="pf-hero">
-    <div class="pf-hero__inner container">
-      <h1 class="pf-hero__heading">
-        Decide how much you
-        <span class="pf-hero__accent">run yourself</span><span class="pf-hero__period">.</span>
-      </h1>
-      <p class="pf-hero__body">
-        Containers, Kubernetes, PaaS, serverless — the words usually arrive
-        already attached to a recommendation. This page takes them apart instead:
-        what each one hands over, what it quietly takes away, and what
-        it would cost to leave. Portability is not a virtue you either have or
-        lack. It is a bill you either price up front or get handed later.
-      </p>
-
-      <div class="pf-choice">
-        <a class="pf-choice__card" href="#chooser">
-          <span class="pf-choice__kicker">Tool</span>
-          <span class="pf-choice__title">Find the right fit</span>
-          <span class="pf-choice__body">
-            Answer seven questions and get a recommendation, an honest second
-            choice, and a straight account of where the lock-in would sit.
-          </span>
-          <span class="pf-choice__go">Open the chooser &rarr;</span>
-        </a>
-        <a class="pf-choice__card" href="#options">
-          <span class="pf-choice__kicker">Reference</span>
-          <span class="pf-choice__title">See the five options</span>
-          <span class="pf-choice__body">
-            Each of the five, with an animated figure showing what it does —
-            and the table of who is responsible for what,
-            including the decisions that remain yours.
-          </span>
-          <span class="pf-choice__go">Walk through them &rarr;</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── The five options ──────────────────────────────────────────── -->
-  <section class="section-rule" id="options">
-    <div class="container">
-      <ConceptExplainer />
-    </div>
-  </section>
-
-  <!-- ── Responsibility ────────────────────────────────────────────── -->
-  <section class="section-rule">
-    <div class="container">
-      <ResponsibilityTable />
-    </div>
-  </section>
-
-  <!-- ── Chooser ───────────────────────────────────────────────────── -->
-  <section class="section-rule">
-    <div class="container">
-      <PlatformChooser />
-    </div>
-  </section>
-
-  <!-- ── Portability ───────────────────────────────────────────────── -->
-  <section class="section-rule" id="portability">
-    <div class="container">
-      <PortabilityPractices />
-    </div>
-  </section>
-
+  <GuideHero title="Decide how much you" accent="run yourself" description="Compare five approaches to running a workload: what you operate, what a provider handles, and what it takes to move later." tool={{label:'Platform chooser',href:'#chooser',title:'Find a platform fit',description:'Seven answers, a shortlist and the reasons behind it.'}} reference={{href:'#options',title:'Understand the five approaches',description:'Marine demonstrations, shared responsibility and portability.'}} />
+  <GuideChapter id="options" guide="platform" kind="learn" title="Five approaches. Different responsibilities." description="Choose a vessel, package the cargo or hand over the voyage. See what remains yours to operate." topics={['VMs','Containers','Kubernetes','PaaS','SaaS']} action="Explore">
+    <ConceptExplainer /><ResponsibilityTable /><div id="portability"><PortabilityPractices /></div>
+  </GuideChapter>
+  <GuideChapter id="workload" guide="platform" kind="calculator" title="Find the right platform fit" description="Separate technical constraints from preferences. See which answers narrow your shortlist, and why." topics={['7 questions','Live shortlist','Trade-offs']} action="Start choosing"><PlatformChooser /></GuideChapter>
+  <GuideChapter id="reading" guide="platform" kind="reading" title="The detail behind the trade-offs" description="Practical articles and the source documents behind this guide." topics={['Responsibilities','Portability','Operations']} action="Browse notes">
   <!-- ── Reading ───────────────────────────────────────────────────── -->
   <section class="pf-reading section-rule">
     <div class="container">
@@ -130,6 +71,7 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
     </div>
   </section>
 
+  </GuideChapter>
   <!-- ── Close ─────────────────────────────────────────────────────── -->
   <section class="pf-close section-rule">
     <div class="pf-close__inner container">
@@ -145,87 +87,6 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
 </BaseLayout>
 
 <style>
-  .pf-hero__inner {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    padding-block: var(--space-8) var(--space-7);
-  }
-
-  .pf-hero__heading {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, var(--text-display-lg));
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--leading-tight);
-    color: var(--color-on-surface);
-    max-width: 18ch;
-  }
-  .pf-hero__accent { color: var(--color-primary); }
-  .pf-hero__period { color: var(--color-meta-label); }
-
-  .pf-hero__body {
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-    max-width: 68ch;
-  }
-
-  /* ── Choice ──────────────────────────────────────────────────────── */
-  .pf-choice {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    margin-top: var(--space-2);
-  }
-  @media (min-width: 768px) {
-    .pf-choice { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .pf-choice__card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-5);
-    border: 1px solid var(--color-divider-strong);
-    text-decoration: none;
-    transition:
-      border-color var(--duration-fast) var(--ease-standard),
-      background-color var(--duration-fast) var(--ease-standard);
-  }
-  .pf-choice__card:hover {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary-tint);
-    opacity: 1;
-  }
-  .pf-choice__kicker {
-    font-family: var(--font-mono);
-    font-size: var(--text-label-sm);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-meta-label);
-  }
-  .pf-choice__title {
-    font-family: var(--font-display);
-    font-size: var(--text-title-lg);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-on-surface);
-  }
-  .pf-choice__body {
-    font-size: var(--text-body-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-on-surface-muted);
-  }
-  .pf-choice__go {
-    margin-top: var(--space-2);
-    font-family: var(--font-display);
-    font-size: var(--text-label-md);
-    font-weight: var(--weight-bold);
-    color: var(--color-primary);
-  }
-
-  /* ── Reading ─────────────────────────────────────────────────────── */
   .pf-reading { padding-block: var(--space-8); }
   .pf-reading__title {
     font-family: var(--font-display);

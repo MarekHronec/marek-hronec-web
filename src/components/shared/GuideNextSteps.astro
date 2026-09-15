@@ -10,13 +10,18 @@ const offers: Record<GuideKey, Partial<Record<GuideKey, string>>> = {
   cost: { connectivity: 'Identify the network services and traffic to price', platform: 'Compare what each platform leaves you to operate', compliance: 'Check the protection requirements before cutting cost', resilience: 'Include the recovery design in your estimate' },
   connectivity: { platform: 'Check endpoint and platform capabilities', compliance: 'Confirm the permitted data and access boundaries', resilience: 'Agree recovery targets for the connection', cost: 'Price the paths and traffic you have identified' },
 };
+const next = GUIDES[GUIDES.findIndex(guide => guide.key === current) + 1];
 ---
 <aside class="guide-next" aria-label="Continue your architecture decision">
   <p class="guide-next__label">Continue your architecture decision</p>
-  {GUIDES.filter(g => g.key !== current).map(g => <a href={base + g.href}>{offers[current][g.key] ?? g.title} <span aria-hidden="true">&rarr;</span></a>)}
+  {next ? <a href={base + next.href}>{offers[current][next.key] ?? next.title} <span aria-hidden="true">&rarr;</span></a> : <a href={base + '/guides'}>Bring the decisions into one cloud plan <span aria-hidden="true">&rarr;</span></a>}
+  <details><summary>Explore the other guides</summary>
+  {GUIDES.filter(g => g.key !== current && g.key !== next?.key).map(g => <a href={base + g.href}>{offers[current][g.key] ?? g.title} <span aria-hidden="true">&rarr;</span></a>)}
+  </details>
   <p class="guide-next__note">A platform category alone does not establish compliance. Check the specific service, configuration, contract and recovery location.</p>
 </aside>
 <style>
+  summary { cursor: pointer; margin-top: var(--space-3); font-size: var(--text-label-md); color: var(--color-navy); }
   .guide-next { margin-top: var(--space-5); padding: var(--space-4); background: var(--color-primary-tint); }
   .guide-next__label { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
   a { display: block; margin-top: var(--space-3); font: var(--weight-semibold) var(--text-body-md) var(--font-body); line-height: var(--leading-relaxed); color: var(--color-navy); }

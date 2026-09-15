@@ -1,0 +1,50 @@
+---
+import type { GuideKey } from '../../data/architecture-guides';
+interface Props { guide: GuideKey }
+const { guide } = Astro.props;
+---
+<svg viewBox="0 0 260 110" fill="none" aria-hidden="true" class="guide-preview">
+  <path class="wash" d="M8 85 Q64 70 130 85 T252 83 V101 H8Z" />
+  <path class="water" d="M12 93 Q70 82 135 94 T247 90" />
+  {guide === 'platform' && <g>
+    <path class="hull" d="M33 68 H217 L202 88 H55Z" />
+    <path d="M45 68 V38 H76 V68 M49 38 V30 H74 M62 30 V20 H84" />
+    <path class="wash" d="M92 47 H130 V67 H92Z M136 47 H174 V67 H136Z" />
+    <path d="M55 47 H67 M55 55 H67 M99 51 V63 M123 51 V63 M143 51 V63 M167 51 V63" />
+    <path class="white" d="M45 73 Q126 81 207 73" />
+  </g>}
+  {guide === 'compliance' && <g>
+    <path d="M49 80 V44 L82 27 L115 44 V80 M43 44 H121 M49 52 H115" />
+    <path class="wash" d="M64 64 H101 V85 H64Z" />
+    <path d="M72 68 V81 M93 68 V81" />
+    <path class="hull" d="M157 24 L198 35 V54 Q198 75 177 84 Q157 75 157 54Z" />
+    <path class="white" d="M166 51 L175 61 L190 44" />
+  </g>}
+  {guide === 'connectivity' && <g>
+    <path class="wash" d="M10 48 H56 V80 H10Z M202 48 H248 V80 H202Z" />
+    <path d="M16 48 V28 H49 V48 M210 48 V28 H241 V48 M16 36 H49 M210 36 H241" />
+    <path stroke-dasharray="4 5" d="M57 56 Q129 8 202 56 M58 73 Q127 98 202 73" />
+    <path class="hull" d="M108 61 H155 L148 71 H116Z" />
+    <path d="M124 61 V47 H139 V61 M129 47 V40" />
+  </g>}
+  {guide === 'resilience' && <g>
+    <path class="wash" d="M91 30 L202 5 V48Z" />
+    <path d="M62 87 L71 36 H89 L98 87 M66 24 H94 V36 H66Z M62 24 L80 12 L98 24 M60 88 H101" />
+    <path class="hull" d="M69 50 H91 L94 65 H67Z M151 70 H217 L206 85 H163Z" />
+    <path d="M166 70 V53 H185 V70 M173 53 V42 H190" />
+    <path stroke-dasharray="3 5" d="M123 76 Q139 35 209 59" />
+  </g>}
+  {guide === 'cost' && <g>
+    <path class="hull" d="M24 65 H117 L105 83 H38Z" />
+    <path d="M39 65 V42 H62 V65 M43 48 H56 M47 42 V30 H67" />
+    <path class="wash" d="M73 49 H103 V64 H73Z M155 21 H183 V83 H155Z M194 49 H222 V83 H194Z" />
+    <path d="M153 89 H224 M159 33 H179 M159 43 H179 M159 53 H179 M159 63 H179 M198 63 H217" />
+  </g>}
+</svg>
+<style>
+  .guide-preview { width: 100%; stroke: var(--color-primary); stroke-width: 1.4; stroke-linejoin: round; }
+  .wash { fill: var(--color-primary-tint); stroke: none; }
+  .hull { fill: var(--color-navy); stroke: var(--color-navy); }
+  .white { stroke: var(--color-on-primary); }
+  .water { opacity: .4; }
+</style>

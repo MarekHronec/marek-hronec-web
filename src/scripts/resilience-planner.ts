@@ -1,3 +1,4 @@
+import { renderAnswerImpacts } from './planner-feedback';
 import { publishGuideResult } from './guide-results';
 import { RECOVERY_QUESTIONS, planRecovery, type RecoverySelection } from '../data/resilience-planner';
 export function initializeRecoveryPlanner() {
@@ -23,8 +24,9 @@ export function initializeRecoveryPlanner() {
         if(label){label.textContent=option?.label??'No answer selected';label.dataset.selected=String(!!option);}
       }
       const result=planRecovery(selection);
+      renderAnswerImpacts(root, RECOVERY_QUESTIONS, selection, planRecovery);
       progress.textContent=result.answered+' of 5 answered'+(result.complete?' · Brief ready':'');
-      summary.textContent=result.summary;output.hidden=!result.complete;
+      summary.textContent=result.summary;output.hidden=result.answered===0;
       resets.forEach(button=>button.disabled=result.answered===0);
       priorities.replaceChildren(...result.priorities.map(item=>{
         const li=document.createElement('li'),title=document.createElement('h4'),detail=document.createElement('p');

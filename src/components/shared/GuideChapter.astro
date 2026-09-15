@@ -1,0 +1,57 @@
+---
+import GuidePreview from './GuidePreview.astro';
+import type { GuideKey } from '../../data/architecture-guides';
+interface Props { id: string; guide: GuideKey; kind: 'learn' | 'calculator' | 'reading'; title: string; description: string; topics: string[]; action: string }
+const { id, guide, kind, title, description, topics, action } = Astro.props;
+const label = { learn: 'Understand the concepts', calculator: 'Apply to your workload', reading: 'Go deeper' }[kind];
+---
+<details class:list={['guide-chapter', `guide-chapter--${kind}`, 'container']} id={id} data-guide-chapter>
+  <summary>
+    <span class="guide-chapter__visual">
+      {kind === 'learn' ? <GuidePreview guide={guide} /> : kind === 'calculator' ? <span class="guide-chapter__worksheet"><span>YOUR WORKLOAD</span><span class="guide-chapter__marks" aria-hidden="true"><span>✓</span><span>✓</span><span>·</span><span>·</span></span><span>Answers → decision brief</span></span> : <span class="guide-chapter__index"><span>FIELD NOTES</span><strong>Read.<br/>Check.<br/>Decide.</strong></span>}
+    </span>
+    <span class="guide-chapter__copy"><span class="guide-chapter__label">{label}</span><span class="guide-chapter__title">{title}</span><span class="guide-chapter__description">{description}</span><span class="guide-chapter__topics">{topics.map(topic => <span>{topic}</span>)}</span></span>
+    <span class="guide-chapter__action"><span class="guide-chapter__open">{action}</span><span class="guide-chapter__close">Close section</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </summary>
+  <div class="guide-chapter__body"><slot /><button type="button" class="guide-chapter__return" data-close-chapter hidden>Close this section ↑</button></div>
+</details>
+<script>
+  import { initializeGuideChapters } from '../../scripts/guide-chapters';
+  initializeGuideChapters();
+  document.addEventListener('astro:page-load', initializeGuideChapters);
+</script>
+<style>
+  .guide-chapter { margin-block: var(--space-4); scroll-margin-top: calc(var(--nav-height) + var(--space-4)); }
+  summary { display: grid; grid-template-columns: 1fr; align-items: center; gap: var(--space-4); padding: var(--space-5); background: var(--color-surface-container-low); cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { background: var(--color-primary-tint); }
+  .guide-chapter__visual { display: none; }
+  .guide-chapter__copy { min-width: 0; display: grid; gap: var(--space-2); }
+  .guide-chapter__label, .guide-chapter__worksheet, .guide-chapter__index > span { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); letter-spacing: var(--tracking-wide); }
+  .guide-chapter__label { text-transform: uppercase; }
+  .guide-chapter__title { font: var(--weight-semibold) var(--text-title-lg)/var(--leading-snug) var(--font-display); color: var(--color-navy); }
+  .guide-chapter__description { font-size: var(--text-body-md); line-height: var(--leading-relaxed); color: var(--color-on-surface-muted); max-width: 66ch; }
+  .guide-chapter__topics { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); margin-top: var(--space-1); }
+  .guide-chapter__action { grid-column: 1 / -1; justify-self: start; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-primary-tint); color: var(--color-navy); font: var(--weight-semibold) var(--text-label-md) var(--font-body); }
+  .guide-chapter__action svg { flex-shrink: 0; }
+  .guide-chapter--calculator .guide-chapter__action { background: var(--color-navy); color: var(--color-on-primary); }
+  .guide-chapter__close { display: none; }
+  .guide-chapter[open] > summary .guide-chapter__close { display: inline; }
+  .guide-chapter[open] > summary :is(.guide-chapter__open, .guide-chapter__visual, .guide-chapter__description, .guide-chapter__topics) { display: none; }
+  .guide-chapter[open] > summary { grid-template-columns: minmax(0,1fr) auto; }
+  .guide-chapter[open] > summary svg { transform: rotate(-90deg); }
+  .guide-chapter__body { padding-block: var(--space-6); }
+  .guide-chapter__body :global(> .container), .guide-chapter__body :global(.calc__inner.container) { padding-inline: 0; }
+  .guide-chapter__return { border: 0; margin-top: var(--space-5); padding: var(--space-3) var(--space-4); background: var(--color-primary-tint); color: var(--color-navy); cursor: pointer; font: var(--weight-semibold) var(--text-label-md) var(--font-body); }
+  @media (min-width: 768px) {
+    .guide-chapter__action { grid-column: auto; }
+    summary { grid-template-columns: 12rem minmax(0,1fr) auto; gap: var(--space-5); }
+    .guide-chapter__visual { display: block; }
+    .guide-chapter__worksheet { letter-spacing: normal; display: grid; gap: var(--space-3); padding: var(--space-4); background: var(--color-surface); }
+    .guide-chapter__marks { display: flex; justify-content: space-between; font-size: var(--text-title-lg); }
+    .guide-chapter__index { display: grid; gap: var(--space-2); padding-left: var(--space-5); }
+    .guide-chapter__index strong { font: var(--weight-medium) var(--text-title-lg)/var(--leading-snug) var(--font-display); color: var(--color-primary); }
+  }
+  .guide-chapter[open] > summary .guide-chapter__action { grid-column: auto; }
+  [data-close-chapter][hidden] { display: none; }
+</style>
