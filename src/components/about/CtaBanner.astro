@@ -61,8 +61,11 @@ import Lighthouse from '../icons/Lighthouse.astro';
   }
 
   .cta-banner__mark {
+    width: var(--space-16); height: var(--space-16); opacity: .8;
     display: none;
   }
+
+  .cta-banner :global(.cta-banner__mark path) { stroke: var(--color-navy); stroke-width: 2; stroke-linejoin: round; }
 
   /*
    * 1024, not 768: between those widths the row is only just wide enough for

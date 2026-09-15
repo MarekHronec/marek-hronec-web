@@ -19,17 +19,18 @@ const active = GUIDES.some(g => Astro.url.pathname.startsWith(base + g.href)) ||
   });
 </script>
 <style>
-  .guide-menu { position: relative; color: var(--color-on-surface-muted); font: var(--weight-semibold) var(--text-body-md) var(--font-display); }
+  .guide-menu { position: relative; color: var(--color-on-surface-muted); font: var(--weight-medium) var(--text-body-md) var(--font-display); }
   summary { display: flex; align-items: center; gap: var(--space-2); cursor: pointer; list-style: none; white-space: nowrap; }
   summary::-webkit-details-marker { display: none; }
-  .guide-menu--active summary { color: var(--color-primary); font-weight: var(--weight-semibold); }
+  .guide-menu--active summary { color: var(--color-primary); }
   .guide-menu__chevron { flex: 0 0 16px; transition: transform var(--duration-fast) var(--ease-standard); }
   .guide-menu[open] > summary .guide-menu__chevron { transform: rotate(180deg); }
   .guide-menu__all { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-2); background: var(--color-primary-tint); }
   .guide-menu__all span { margin: 0; color: var(--color-navy); font: var(--weight-semibold) var(--text-body-md) var(--font-display); }
   .guide-menu__all svg { flex-shrink: 0; }
   ul { position: absolute; top: calc(100% + var(--space-4)); left: 0; width: 22rem; padding: var(--space-3); background: var(--color-surface); box-shadow: var(--shadow-card); list-style: none; }
-  a { display: block; padding: var(--space-3); color: var(--color-navy); }
+  a strong { font-weight: var(--weight-medium); }
+  a { font-weight: var(--weight-regular); display: block; padding: var(--space-3); color: var(--color-navy); }
   a:hover, a[aria-current='page'] { background: var(--color-primary-tint); }
   a span { display: block; margin-top: var(--space-1); color: var(--color-on-surface-muted); font-size: var(--text-label-sm); line-height: var(--leading-relaxed); }
   .guide-menu--mobile { padding-block: var(--space-3); }

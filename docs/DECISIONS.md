@@ -758,3 +758,11 @@ Almost all of the change landed in `src/styles/tokens.css`, because colour and r
 **Open follow-up.** No `site.webmanifest` yet — the apple-touch-icon is linked directly from `BaseLayout`.
 
 **Colour note.** The supplied logo file paints its plate `#041f42`, appreciably darker than the `#14315c` this ADR adopts. `#14315c` was sampled from the logo as rendered and is what every contrast ratio here was checked against; the site and the brand assets both use it. If the artwork's value is the canonical one, changing `--color-navy` is a one-token edit, but the on-dark text ratios need re-checking.
+
+### Architecture guide hierarchy
+
+The no-eyebrow decision also applies to all architecture guide heroes, the guide
+hub and compact section previews. Guide titles use the same scale and top spacing
+as other page titles. Remove duplicate navigation cards when the three section
+previews are visible: the navy planner preview is the primary entry, followed by
+learning and field notes. Keep the compliance source limitation notice above them.

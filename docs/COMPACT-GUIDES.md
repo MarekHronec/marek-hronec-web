@@ -1,7 +1,7 @@
 # Compact architecture guides
 
-The five standalone guides start with three compact previews: learn the concepts,
-apply them to a workload, and read the supporting material. Learning has a small
+The five standalone guides start with three compact previews: apply them to a workload,
+learn the concepts, and read the supporting material. Learning has a small
 marine illustration; calculator and reading previews have distinct treatments.
 Full explanations, questions and sources remain available inside each section.
 
@@ -12,8 +12,8 @@ still requires iteration. The menu, onward offers and combined voyage agree.
 
 ## Components and behavior
 
-- `GuideHero`: compact introduction with a prominent, accurately named planner or
-  calculator entry and a secondary learning entry.
+- `GuideHero`: title and one coherent introduction, matching the other page heroes.
+  No eyebrow labels or duplicate entry cards.
 - `GuideChapter`: native details/summary with a designed preview when closed and
   a compact heading when open. Closing preserves answers.
 - `GuidePreview`: static decorative marine SVGs. Full animations keep their
@@ -66,3 +66,21 @@ compact pages; fragment links and reopening; keyboard/focus; four viewport width
 retained answers; motion/replay; no-JavaScript learning; and the combined calculator
 including both classification scopes and exported limitations. Production build
 and Astro type checking passed. Integration is local, with no push or deployment.
+
+## Visual hierarchy
+
+Planner comes first as a navy summary with a light action, then the learning
+preview and field notes. Compliance keeps its unofficial-source notice above all
+three. Use Data Classification, Platform Planner, Connectivity Planner, Resilience
+Planner and Cost Planner as the primary titles. No eyebrow labels above guide or
+preview titles. All summary actions share a width. Quiet chart, vessel and logbook
+illustrations replace decorative check marks and stacked slogans. Only the hub
+link receives emphasis in the navigation dropdown; sibling links stay regular.
+
+The hub uses one coherent introductory paragraph. Its connected planner heading
+only appears once the workspace opens; start still moves keyboard focus to that
+heading. The home CTA retains the existing lighthouse paths with a smaller,
+muted rendering and thinner outlines applied only inside that banner. Two
+independent reviews caught title alignment and an overpromise of priced output;
+both were corrected. Browser checks confirmed all six title positions/sizes,
+planner-first order, equal actions, four widths, and the combined journey.

@@ -9,10 +9,10 @@ import RecoveryPlanner from '../resilience/RecoveryPlanner.astro';
 import CostPlanner from '../cost/CostPlanner.astro';
 import '../../styles/guide-journey.css';
 ---
-<section class="journey container" id="cloud-plan" data-journey aria-labelledby="journey-title">
-  <header class="journey__intro"><h2 id="journey-title" tabindex="-1">Your cloud plan, one decision at a time.</h2><p>Use one workload throughout. Answers stay in this page while it is open; nothing is sent or saved to an account. Changing an earlier decision asks you to review the later stages again.</p></header>
+<section class="journey container" id="cloud-plan" data-journey aria-label="Your cloud plan">
   <noscript><p>JavaScript is needed for the connected plan. The five guide links above remain available.</p></noscript>
   <div data-journey-workspace hidden>
+    <h2 id="journey-title" tabindex="-1">Your cloud plan</h2>
     <div class="journey__overview" tabindex="-1"><VoyageScene mode="plan"/><div><p class="journey__progress" data-journey-progress aria-live="polite">0 of 5 results added</p><h3>Your cargo manifest</h3><ol class="journey__manifest" data-journey-manifest role="list"></ol><button type="button" data-journey-reset>Start the whole plan over</button></div></div>
     <div class="journey__checkpoint" data-journey-checkpoint hidden><div><h3 data-journey-checkpoint-title></h3><p data-journey-checkpoint-summary></p></div><button type="button" data-journey-proceed>Continue →</button></div>
     <nav aria-label="Planning stages"><ol class="journey__steps" role="list">{VOYAGE.map((s,i)=><li><button type="button" data-journey-step={i} disabled={i>0}><span>{String(i+1).padStart(2,'0')}</span>{s.label}</button></li>)}</ol></nav>

@@ -1,50 +1,63 @@
 ---
 import type { GuideKey } from '../../data/architecture-guides';
-interface Props { guide: GuideKey }
-const { guide } = Astro.props;
+interface Props { guide: GuideKey; kind: 'learn' | 'calculator' | 'reading' }
+const { guide, kind } = Astro.props;
 ---
-<svg viewBox="0 0 260 110" fill="none" aria-hidden="true" class="guide-preview">
-  <path class="wash" d="M8 85 Q64 70 130 85 T252 83 V101 H8Z" />
-  <path class="water" d="M12 93 Q70 82 135 94 T247 90" />
-  {guide === 'platform' && <g>
-    <path class="hull" d="M33 68 H217 L202 88 H55Z" />
-    <path d="M45 68 V38 H76 V68 M49 38 V30 H74 M62 30 V20 H84" />
-    <path class="wash" d="M92 47 H130 V67 H92Z M136 47 H174 V67 H136Z" />
-    <path d="M55 47 H67 M55 55 H67 M99 51 V63 M123 51 V63 M143 51 V63 M167 51 V63" />
-    <path class="white" d="M45 73 Q126 81 207 73" />
-  </g>}
-  {guide === 'compliance' && <g>
-    <path d="M49 80 V44 L82 27 L115 44 V80 M43 44 H121 M49 52 H115" />
-    <path class="wash" d="M64 64 H101 V85 H64Z" />
-    <path d="M72 68 V81 M93 68 V81" />
-    <path class="hull" d="M157 24 L198 35 V54 Q198 75 177 84 Q157 75 157 54Z" />
-    <path class="white" d="M166 51 L175 61 L190 44" />
-  </g>}
-  {guide === 'connectivity' && <g>
-    <path class="wash" d="M10 48 H56 V80 H10Z M202 48 H248 V80 H202Z" />
-    <path d="M16 48 V28 H49 V48 M210 48 V28 H241 V48 M16 36 H49 M210 36 H241" />
-    <path stroke-dasharray="4 5" d="M57 56 Q129 8 202 56 M58 73 Q127 98 202 73" />
-    <path class="hull" d="M108 61 H155 L148 71 H116Z" />
-    <path d="M124 61 V47 H139 V61 M129 47 V40" />
-  </g>}
-  {guide === 'resilience' && <g>
-    <path class="wash" d="M91 30 L202 5 V48Z" />
-    <path d="M62 87 L71 36 H89 L98 87 M66 24 H94 V36 H66Z M62 24 L80 12 L98 24 M60 88 H101" />
-    <path class="hull" d="M69 50 H91 L94 65 H67Z M151 70 H217 L206 85 H163Z" />
-    <path d="M166 70 V53 H185 V70 M173 53 V42 H190" />
-    <path stroke-dasharray="3 5" d="M123 76 Q139 35 209 59" />
-  </g>}
-  {guide === 'cost' && <g>
-    <path class="hull" d="M24 65 H117 L105 83 H38Z" />
-    <path d="M39 65 V42 H62 V65 M43 48 H56 M47 42 V30 H67" />
-    <path class="wash" d="M73 49 H103 V64 H73Z M155 21 H183 V83 H155Z M194 49 H222 V83 H194Z" />
-    <path d="M153 89 H224 M159 33 H179 M159 43 H179 M159 53 H179 M159 63 H179 M198 63 H217" />
+<svg viewBox="0 0 260 130" fill="none" aria-hidden="true" class="guide-preview">
+  {kind === 'calculator' ? <g>
+    <path class="wash" d="M33 29 L103 20 L160 32 L222 22 V105 L160 115 L103 102 L33 112Z" />
+    <path d="M33 29 L103 20 L160 32 L222 22 V105 L160 115 L103 102 L33 112Z M103 20 V102 M160 32 V115" />
+    <path class="faint" d="M42 79 Q57 52 82 64 T122 78 T185 67 M45 90 Q65 73 84 81 M174 96 Q192 88 211 92" />
+    <path stroke-dasharray="3 5" d="M57 91 C71 32 137 104 190 51" />
+    <circle cx="57" cy="91" r="3" class="solid"/><circle cx="190" cy="51" r="3" />
+    <path d="M191 9 V31 M180 20 H202 M184 27 L198 13" />
+    <path class="solid" d="M191 9 L195 20 L191 17 L187 20Z" />
+  </g> : kind === 'reading' ? <g>
+    <path class="wash" d="M39 33 Q83 23 127 40 Q171 23 216 33 V101 Q173 89 127 108 Q82 90 39 101Z" />
+    <path d="M39 33 Q83 23 127 40 Q171 23 216 33 V101 Q173 89 127 108 Q82 90 39 101Z M127 40 V108 M32 40 V109 Q80 97 127 116 Q175 97 223 109 V40" />
+    <path class="faint" d="M53 48 Q84 43 111 52 M53 58 Q84 53 111 62 M53 78 Q84 73 111 82 M143 79 Q168 73 201 77 M143 89 Q168 83 201 87" />
+    <path d="M153 61 H194 L187 69 H162Z M171 60 V41 L186 58 H173 M171 44 L160 58 H169" />
+    <path d="M204 12 L211 16 L176 80 L169 85 L170 77Z M170 77 L176 80" />
+  </g> : <g>
+    <path class="wash" d="M13 101 Q69 89 131 101 T248 98 V113 Q178 123 120 111 T13 119Z" />
+    <path class="faint" d="M17 111 Q75 99 134 110 T241 109" />
+    {guide === 'platform' && <g>
+      <path d="M35 82 H224 L208 103 Q143 116 58 101Z" class="solid" />
+      <path d="M47 81 V49 H76 V81 M51 49 V40 H74 M62 40 V28 H85 M54 57 H67 M54 65 H67" />
+      <path class="wash" d="M89 57 H128 V81 H89Z M134 57 H173 V81 H134Z" />
+      <path d="M89 57 H128 V81 H89Z M134 57 H173 V81 H134Z M96 62 V76 M121 62 V76 M141 62 V76 M166 62 V76" />
+      <path class="reverse" d="M46 89 Q132 101 212 89" />
+    </g>}
+    {guide === 'compliance' && <g>
+      <path d="M34 89 V61 L87 38 L140 61 V89 M29 61 H145 M47 88 V70 H78 V89 M94 89 V70 H126 V89" />
+      <path class="wash" d="M44 93 H139 V104 H44Z" />
+      <path d="M179 98 H226 L219 106 H187Z M195 97 V71 L212 94 H198 M193 76 L183 94 H192" />
+      <path stroke-dasharray="3 4" d="M158 61 V110" />
+      <circle cx="158" cy="50" r="10"/><path d="m153 50 4 4 6-8" />
+    </g>}
+    {guide === 'connectivity' && <g>
+      <path d="M19 89 H65 V99 H19 M29 89 V57 H55 V89 M25 57 L42 46 L59 57 M35 66 H48 M197 89 H241 V99 H197 M207 89 V57 H232 V89 M203 57 L219 46 L237 57" />
+      <path stroke-dasharray="3 5" d="M65 68 Q133 13 197 68 M65 94 Q132 120 197 94" />
+      <path class="solid" d="M107 84 H163 L154 96 H117Z" /><path d="M120 83 V66 H138 V83 M127 66 V55 H141" />
+    </g>}
+    {guide === 'resilience' && <g>
+      <path class="wash" d="M84 43 L165 24 V56Z" />
+      <path d="M55 101 L64 49 H83 L92 101 M60 36 H87 V49 H60Z M56 36 L74 24 L92 36 M48 103 H99 M69 99 V86 H78 V99 M62 63 H85" />
+      <path class="solid" d="M155 88 H223 L211 103 H166Z" /><path d="M169 87 V69 H188 V87 M176 69 V56 H193" />
+      <path class="faint" d="M146 48 Q160 39 173 48 M174 43 Q188 33 202 43" />
+    </g>}
+    {guide === 'cost' && <g>
+      <path class="solid" d="M29 87 H143 L130 104 H46Z" /><path d="M44 87 V63 H69 V87 M48 70 H60 M54 63 V49 H77" />
+      <path d="M81 69 H125 V86 H81Z M88 73 V82 M118 73 V82" />
+      <path d="M165 32 H216 V98 H165Z M174 45 H207 M174 56 H202 M174 67 H207 M174 85 H188" />
+      <path class="faint" d="M177 25 H223 V91" />
+    </g>}
   </g>}
 </svg>
 <style>
-  .guide-preview { width: 100%; stroke: var(--color-primary); stroke-width: 1.4; stroke-linejoin: round; }
-  .wash { fill: var(--color-primary-tint); stroke: none; }
-  .hull { fill: var(--color-navy); stroke: var(--color-navy); }
-  .white { stroke: var(--color-on-primary); }
-  .water { opacity: .4; }
+  .guide-preview { width: 100%; stroke: var(--guide-ink, var(--color-primary)); stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; }
+  .wash { fill: var(--guide-wash, var(--color-primary-tint)); stroke: none; }
+  .solid { fill: var(--guide-solid, var(--color-navy)); stroke: var(--guide-solid, var(--color-navy)); }
+  .reverse { stroke: var(--guide-reverse, var(--color-on-primary)); }
+  .faint { opacity: .4; }
 </style>

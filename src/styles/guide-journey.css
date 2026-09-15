@@ -1,8 +1,7 @@
 .journey { padding-block:var(--space-8) var(--space-12); scroll-margin-top:calc(var(--nav-height) + var(--space-5)); }
 .journey [hidden] { display:none; }
-.journey__intro h2 { font:var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); }
+#journey-title { font:var(--weight-semibold) var(--text-headline-md)/var(--leading-snug) var(--font-display); margin-bottom:var(--space-5); }
 .journey p { line-height:var(--leading-relaxed); }
-.journey__intro p { max-width:78ch; margin-block:var(--space-3) var(--space-6); color:var(--color-on-surface-muted); }
 .journey__overview { display:grid; gap:var(--space-5); padding-bottom:var(--space-7); align-items:center; }
 .journey__overview > div { min-width:0; }
 .journey__overview h3 { font-size:var(--text-title-lg); margin-block:var(--space-2) var(--space-3); }

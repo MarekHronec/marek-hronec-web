@@ -42,11 +42,11 @@ const reading = READING.map((id) => byId.get(id)).filter((a) => a !== undefined)
   title="Platform Architecture"
   description="VMs, containers, Kubernetes, managed platforms and SaaS — what each one hands over, what it takes away, and what it would cost to leave."
 >
-  <GuideHero title="Decide how much you" accent="run yourself" description="Compare five approaches to running a workload: what you operate, what a provider handles, and what it takes to move later." tool={{label:'Platform chooser',href:'#chooser',title:'Find a platform fit',description:'Seven answers, a shortlist and the reasons behind it.'}} reference={{href:'#options',title:'Understand the five approaches',description:'Marine demonstrations, shared responsibility and portability.'}} />
+  <GuideHero title="Decide how much you" accent="run yourself" description="Compare five approaches to running a workload: what you operate, what a provider handles, and what it takes to move later." />
+  <GuideChapter id="workload" guide="platform" kind="calculator" title="Platform Planner" description="Separate technical constraints from preferences. See which answers narrow your shortlist, and why." topics={['7 questions','Live shortlist','Trade-offs']} action="Start choosing"><PlatformChooser /></GuideChapter>
   <GuideChapter id="options" guide="platform" kind="learn" title="Five approaches. Different responsibilities." description="Choose a vessel, package the cargo or hand over the voyage. See what remains yours to operate." topics={['VMs','Containers','Kubernetes','PaaS','SaaS']} action="Explore">
     <ConceptExplainer /><ResponsibilityTable /><div id="portability"><PortabilityPractices /></div>
   </GuideChapter>
-  <GuideChapter id="workload" guide="platform" kind="calculator" title="Find the right platform fit" description="Separate technical constraints from preferences. See which answers narrow your shortlist, and why." topics={['7 questions','Live shortlist','Trade-offs']} action="Start choosing"><PlatformChooser /></GuideChapter>
   <GuideChapter id="reading" guide="platform" kind="reading" title="The detail behind the trade-offs" description="Practical articles and the source documents behind this guide." topics={['Responsibilities','Portability','Operations']} action="Browse notes">
   <!-- ── Reading ───────────────────────────────────────────────────── -->
   <section class="pf-reading section-rule">
