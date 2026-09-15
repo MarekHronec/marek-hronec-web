@@ -146,6 +146,7 @@ import CalculatorGuide from './CalculatorGuide.astro';
 
 <script>
   import { publishGuideResult } from '../../scripts/guide-results';
+  import { CLASSIFICATION_LIMITS } from '../../data/classification-limits';
   const calculator = document.querySelector<HTMLElement>('.calc')!;
   import {
     INCIDENT_QUESTIONS, DEGREE_LABEL,
@@ -344,7 +345,7 @@ import CalculatorGuide from './CalculatorGuide.astro';
 
     const mandatory = out.controls.filter((c) => c.obligation === 'mandatory');
     const recommended = out.controls.filter((c) => c.obligation === 'recommended');
-    publishGuideResult(calculator,{complete:true,title:'U'+out.u+' · C'+ctx.c+' I'+ctx.i+' A'+ctx.a,summary:out.governing.name+' · '+mandatory.length+' mandatory measures; '+recommended.length+' recommended.',points:[...mandatory.map(c=>'Mandatory: '+c.area.name+' ('+c.area.ref+')'),...recommended.map(c=>'Recommended: '+c.area.name+' ('+c.area.ref+')')],gaps:['Slovak ISVS workbook guidance only. Confirm the classification, applicability and current source requirements with the operator and formal risk analysis.']});
+    publishGuideResult(calculator,{complete:true,title:'U'+out.u+' · C'+ctx.c+' I'+ctx.i+' A'+ctx.a,summary:out.governing.name+' · '+mandatory.length+' mandatory modelled control areas; '+recommended.length+' recommended.',points:[...mandatory.map(c=>'Mandatory: '+c.area.name+' ('+c.area.ref+')'),...recommended.map(c=>'Recommended: '+c.area.name+' ('+c.area.ref+')')],gaps:[...CLASSIFICATION_LIMITS]});
     const list = (rows: typeof mandatory) =>
       rows.map((c) => `<li><span>${c.area.name}</span><span class="calc__control-ref">${c.area.ref}</span></li>`).join('');
 

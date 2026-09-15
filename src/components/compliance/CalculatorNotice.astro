@@ -1,28 +1,26 @@
+---
+import { CLASSIFICATION_LIMITS } from '../../data/classification-limits';
+---
 <aside class="calculator-notice" aria-labelledby="calculator-notice-title">
   <svg class="calculator-notice__icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" /><path d="M16 14 V23 M16 9 V10" /></svg>
   <div class="calculator-notice__body">
     <h2 id="calculator-notice-title">Guidance, not an official classification</h2>
-    <p>This independent calculator reproduces the logic of published Slovak documents.
-      Use it to understand the requirements, then check the result against the official
-      workbook and a formal risk analysis. The system operator remains responsible
-      for its classification.</p>
-    <p>Two things to know about what it models. The U1&ndash;U4 levels come from a MIRRI
-      methodological guideline, not from a decree, and the C/I/A&nbsp;&rarr;&nbsp;category
-      chain they rest on came from vyhl&aacute;&scaron;ka 179/2020, which
-      <strong>vyhl&aacute;&scaron;ka 184/2026 repeals with effect from 1&nbsp;January&nbsp;2027</strong>.
-      From that date categories attach to the governing body rather than to the system, and
-      measures follow a risk analysis. MIRRI has not yet published guidance bridging the two.</p>
-    <p>So treat the result as an illustration of how the classification has been done, not as a
-      determination. A real classification should be confirmed by the organisation&rsquo;s
-      <strong>manaž&eacute;r kybernetickej bezpe&ccaron;nosti</strong> or a certified
-      <em>aud&iacute;tor kybernetickej bezpe&ccaron;nosti</em>.</p>
+    <p>This illustrative Slovak ISVS model has gaps in control coverage. Confirm a real
+      classification through your security manager and a formal risk analysis.
+      The underlying framework changes on <strong>1 January 2027</strong>.</p>
     <details>
-      <summary>Source documents <span>4 references</span></summary>
+      <summary>Limits, framework change &amp; sources <span>5 references</span></summary>
+      {CLASSIFICATION_LIMITS.map(limit => <p>{limit}</p>)}
+      <p>U1–U4 come from a MIRRI methodological guideline, not from a decree.
+        Under the successor framework, categories attach to the governing body rather than
+        to the system, and measures follow a risk analysis. The operator remains responsible
+        for classification; this example does not approve a cloud placement.</p>
       <dl>
         <div><dt>Workbook</dt><dd>MIRRI SR — <em>Určenie parametrov UxCxIxAx</em>, príloha č. 1, v10.0</dd></div>
         <div><dt>Guidance</dt><dd>MIRRI SR — <em>Metodické usmernenie pre klasifikáciu ISVS</em>, 023107/2023/oSBATA-1</dd></div>
         <div><dt>Act</dt><dd>Zákon č. 69/2018 Z. z. o kybernetickej bezpečnosti, §20</dd></div>
         <div><dt>Decree</dt><dd>Vyhláška č. 165/2018 Z. z. — kritériá kategórií incidentov</dd></div>
+        <div><dt>Framework transition</dt><dd><a href="https://kyberportal.slovensko.sk/aktuality/nov%C3%A1-vyhl%C3%A1%C5%A1ka-k-bezpe%C4%8Dnostn%C3%BDm-opatreniam-itvs-menej-formality-viac-re%C3%A1lnej-bezpe%C4%8Dnosti/">Official notice: 184/2026 replaces 179/2020 from 1 January 2027</a></dd></div>
       </dl>
     </details>
   </div>
@@ -40,6 +38,7 @@
   dl > div { display: grid; gap: var(--space-1); }
   dt { font: var(--text-label-sm) var(--font-mono); color: var(--color-primary); }
   dd { font-size: var(--text-label-md); color: var(--color-on-surface-muted); line-height: var(--leading-relaxed); }
+  dd a { color:var(--color-primary); }
   @media (min-width: 768px) { dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); } }
 </style>
 
